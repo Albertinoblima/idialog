@@ -3,14 +3,17 @@ class ComponentLoader {
     static getBasePath() {
         const path = window.location.pathname;
         const segments = path.split('/').filter(s => s !== '');
-        // Identifica se o último segmento é um arquivo (tem extensão)
         const lastSegment = segments[segments.length - 1] || '';
         const isFile = lastSegment.includes('.');
         const dirSegments = isFile ? segments.slice(0, -1) : segments;
-        // No GitHub Pages o path começa com /reponame/, subtraímos 1 nível
-        // No localhost o path começa na raiz, sem ajuste
-        const isLocalhost = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
-        const depth = isLocalhost ? dirSegments.length : Math.max(0, dirSegments.length - 1);
+        // Sites hospedados na raiz: localhost, domínio próprio
+        // Sites no subdiretório: *.github.io/reponame (sem domínio próprio)
+        const hostname = window.location.hostname;
+        const isRootHosted = hostname === '' ||
+            hostname === 'localhost' ||
+            hostname === '127.0.0.1' ||
+            !hostname.endsWith('github.io');
+        const depth = isRootHosted ? dirSegments.length : Math.max(0, dirSegments.length - 1);
         return '../'.repeat(depth);
     }
 

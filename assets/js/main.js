@@ -132,7 +132,7 @@ function initContactForm() {
     const contactForm = document.getElementById('contactForm') || document.getElementById('contact-form');
 
     if (contactForm) {
-        contactForm.addEventListener('submit', async function (e) {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
             const formData = new FormData(this);
@@ -141,33 +141,27 @@ function initContactForm() {
 
             if (!validateForm(formObject)) return;
 
-            showFormLoading(true);
+            // Monta mensagem para o WhatsApp
+            const lines = [
+                '📋 *Novo contato via site iDialog*',
+                '',
+                `*Nome:* ${formObject.name || ''}`,
+                `*Email:* ${formObject.email || ''}`,
+                formObject.phone ? `*Telefone:* ${formObject.phone}` : '',
+                formObject.company ? `*Empresa:* ${formObject.company}` : '',
+                formObject.service ? `*Serviço:* ${formObject.service}` : '',
+                formObject.budget ? `*Orçamento:* ${formObject.budget}` : '',
+                formObject.timeline ? `*Prazo:* ${formObject.timeline}` : '',
+                formObject.subject ? `*Assunto:* ${formObject.subject}` : '',
+                '',
+                `*Mensagem:*\n${formObject.message || ''}`
+            ].filter(Boolean).join('\n');
 
-            // Formspree: crie uma conta em formspree.io, crie um formulário
-            // e substitua YOUR_FORMSPREE_ID pelo ID gerado (ex: xbjnakvz)
-            const FORMSPREE_ID = 'YOUR_FORMSPREE_ID';
+            const whatsappUrl = `https://wa.me/5587988568605?text=${encodeURIComponent(lines)}`;
+            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
 
-            try {
-                const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
-                });
-
-                showFormLoading(false);
-
-                if (response.ok) {
-                    showNotification('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
-                    contactForm.reset();
-                } else {
-                    const data = await response.json();
-                    const msg = data.errors ? data.errors.map(e => e.message).join(', ') : 'Erro ao enviar. Tente novamente.';
-                    showNotification(msg, 'error');
-                }
-            } catch (err) {
-                showFormLoading(false);
-                showNotification('Falha de conexão. Verifique sua internet e tente novamente.', 'error');
-            }
+            showNotification('Redirecionando para o WhatsApp...', 'success');
+            contactForm.reset();
         });
     }
 }
