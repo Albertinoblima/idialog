@@ -2,9 +2,34 @@
 const S = {
   round: 1, queue: [], idx: 0, answered: false,
   results: [], failIds: new Set(), seen: new Set(),
-  voice: null, speaking: false
+  voice: null, speaking: false,
+  startTime: Date.now()
 };
 const LETTERS = ['A', 'B', 'C', 'D'];
+
+// ─── TOPIC → SUBJECT MAPPING (for progress tracking) ─────────────────────
+const TOPIC_SUBJECT = {};
+(function buildTopicSubject() {
+  // Map topic prefixes to catalog subject IDs
+  const prefixMap = {
+    'RL_': 'raciocinio-logico',
+    'DA_': 'direito-administrativo',
+    'DC_': 'direito-constitucional',
+    'DPP_': 'direito-processual-penal',
+    'DCV_': 'direito-civil',
+    'DT_': 'direito-tributario',
+    'DP_': 'direito-penal',
+  };
+  if (typeof ALL !== 'undefined') {
+    ALL.forEach(q => {
+      if (!TOPIC_SUBJECT[q.topic]) {
+        for (const [prefix, subId] of Object.entries(prefixMap)) {
+          if (q.topic.startsWith(prefix)) { TOPIC_SUBJECT[q.topic] = subId; break; }
+        }
+      }
+    });
+  }
+})();
 
 // ─── BUILD QUEUE ─────────────────────────────────────────────────────────
 function buildQueue() {
@@ -216,6 +241,24 @@ function showScore() {
   const total = S.results.length;
   const ok = S.results.filter(r => r.correct).length;
   const pct = Math.round(ok / total * 100);
+
+  // ── Save progress to Student system ──────────────────────────────
+  if (window.Student && Student.isRegistered && Student.isRegistered()) {
+    try {
+      const elapsed = S.startTime ? Math.round((Date.now() - S.startTime) / 60000) : 0;
+      // Record per-subject results
+      const subMap = {};
+      S.results.forEach(r => {
+        const subId = TOPIC_SUBJECT[r.topic] || r.topic;
+        if (!subMap[subId]) subMap[subId] = { total: 0, correct: 0 };
+        subMap[subId].total++;
+        if (r.correct) subMap[subId].correct++;
+      });
+      Object.entries(subMap).forEach(([subId, data]) => {
+        Student.recordSession(subId, data.total, data.correct, Math.round(elapsed * data.total / total));
+      });
+    } catch (e) { /* silently ignore save errors */ }
+  }
 
   let scoreColor = '#0D7A5C', msg = '', sub = '';
   if (pct >= 80) { scoreColor = '#0D7A5C'; msg = 'Excelente domínio da matéria!'; sub = 'Você está muito bem preparado para o próximo concurso!'; }

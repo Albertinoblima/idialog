@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Montar Simulado · Aprova Concursos</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../../src/styles/main.css">
@@ -14,31 +14,20 @@
     <style>
         /* ── Reset / Base ─────────────────────────────────────────────────────── */
         :root {
-            --navy: #0A1628;
-            --navy2: #132238;
-            --navy3: #1E3250;
-            --gold: #C9982A;
-            --gold-l: #E8C55A;
-            --cream: #FAF7F2;
-            --paper: #F3EDE4;
-            --paper2: #E9E1D6;
-            --text: #0A1628;
-            --text2: #3A4558;
-            --text3: #6B7A92;
-            --font-h: 'Playfair Display', Georgia, serif;
-            --font-b: 'DM Sans', system-ui, sans-serif;
+            --navy: #0a0a0f;
+            --navy2: #0d1117;
+            --navy3: #1a1f2e;
+            --gold: #00e5ff;
+            --gold-l: #7df9ff;
+            --cream: #e8eaf0;
+            --paper: #0d1117;
+            --paper2: #1a1f2e;
+            --text: #e8eaf0;
+            --text2: #8b93a8;
+            --text3: #5a6178;
+            --font-h: 'Orbitron', sans-serif;
+            --font-b: 'Exo 2', system-ui, sans-serif;
             --r: 10px;
-        }
-
-        [data-dark] {
-            --navy: #E8E0D5;
-            --cream: #0A1628;
-            --paper: #111D2E;
-            --paper2: #1A2A40;
-            --text: #E8E0D5;
-            --text2: #B8C5D6;
-            --text3: #7A90A8;
-            --gold: #E8C55A;
         }
 
         *,
@@ -55,7 +44,7 @@
 
         body {
             font-family: var(--font-b);
-            background: var(--cream);
+            background: var(--navy);
             color: var(--text);
             font-size: 15px;
             line-height: 1.6;
@@ -65,11 +54,11 @@
 
         /* ── COVER ─────────────────────────────────────────────────────────────── */
         #cover {
-            background: var(--navy);
+            background: radial-gradient(ellipse 80% 70% at 50% 0%, rgba(0, 229, 255, 0.12) 0%, transparent 70%), var(--navy);
             color: var(--cream);
-            padding: 3rem 2rem 2rem;
+            padding: calc(3rem + 72px) 2rem 2rem;
             text-align: center;
-            border-bottom: 4px solid var(--gold);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.25);
             position: relative;
             overflow: hidden;
         }
@@ -78,7 +67,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201, 152, 42, .05) 40px, rgba(201, 152, 42, .05) 41px);
+            background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(0, 229, 255, .04) 40px, rgba(0, 229, 255, .04) 41px);
             pointer-events: none;
         }
 
@@ -121,7 +110,7 @@
             gap: .75rem;
             flex-wrap: wrap;
             position: sticky;
-            top: 0;
+            top: 72px;
             z-index: 50;
         }
 
@@ -130,7 +119,7 @@
             padding: 5px 13px;
             border: 1px solid var(--paper2);
             border-radius: 99px;
-            background: var(--cream);
+            background: var(--navy);
             cursor: pointer;
             color: var(--text2);
             font-family: var(--font-b);
@@ -139,7 +128,8 @@
         }
 
         .ctrl:hover {
-            background: var(--paper2);
+            background: var(--navy3);
+            color: var(--gold);
         }
 
         /* ── BODY ──────────────────────────────────────────────────────────────── */
@@ -186,14 +176,14 @@
         }
 
         .subject-card:hover:not(.disabled) {
-            border-color: var(--color, #0A1628);
-            box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+            border-color: var(--gold);
+            box-shadow: 0 2px 12px rgba(0, 229, 255, .12);
         }
 
         .subject-card.selected {
-            border-color: var(--color, #0A1628);
-            background: var(--color-pale, var(--paper));
-            box-shadow: 0 0 0 3px rgba(var(--color-rgb, 10, 22, 40), .1);
+            border-color: var(--gold);
+            background: rgba(0, 229, 255, 0.06);
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, .1);
         }
 
         .subject-card.disabled {
@@ -212,18 +202,18 @@
             height: 18px;
             border: 2px solid var(--paper2);
             border-radius: 5px;
-            background: var(--cream);
+            background: var(--navy);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 11px;
-            color: white;
+            color: var(--navy);
             transition: background .15s, border-color .15s;
         }
 
         .subject-card.selected .sc-check {
-            background: var(--color, #0A1628);
-            border-color: var(--color, #0A1628);
+            background: var(--gold);
+            border-color: var(--gold);
         }
 
         .subject-card.selected .sc-check::after {
@@ -310,15 +300,9 @@
         }
 
         .radio-pill input:checked+label {
-            background: var(--navy);
-            color: white;
-            border-color: var(--navy);
-        }
-
-        [data-dark] .radio-pill input:checked+label {
-            background: #C9982A;
-            color: #0A1628;
-            border-color: #C9982A;
+            background: var(--gold);
+            color: var(--navy);
+            border-color: var(--gold);
         }
 
         /* ── ACTION BAR ────────────────────────────────────────────────────────── */
@@ -328,8 +312,8 @@
             left: 0;
             right: 0;
             z-index: 100;
-            background: var(--navy);
-            border-top: 3px solid var(--gold);
+            background: var(--navy2);
+            border-top: 1px solid rgba(0, 229, 255, 0.25);
             padding: .75rem 1.5rem;
             display: flex;
             align-items: center;
@@ -386,7 +370,7 @@
     <!-- CONTROLS BAR -->
     <div id="controls">
         <a class="ctrl" href="index.html">← Revista</a>
-        <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+        <a class="ctrl" href="index.html#dashboard">📊 Dashboard</a>
     </div>
 
     <!-- BODY -->
@@ -586,18 +570,6 @@
             };
             localStorage.setItem('APROVA_SIMULADO_CONFIG', JSON.stringify(cfg));
             window.location.href = 'simulado-combinado.html';
-        }
-
-        // ── Dark mode ──────────────────────────────────────────────────────────
-        function toggleDark() {
-            var dark = document.body.hasAttribute('data-dark');
-            if (dark) {
-                document.body.removeAttribute('data-dark');
-                document.getElementById('dark-toggle').textContent = '🌙 Modo escuro';
-            } else {
-                document.body.setAttribute('data-dark', '');
-                document.getElementById('dark-toggle').textContent = '☀️ Modo claro';
-            }
         }
 
         // ── Listeners para recalcular ao mudar opções ──────────────────────────
