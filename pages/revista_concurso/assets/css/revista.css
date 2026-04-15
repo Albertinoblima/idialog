@@ -1,68 +1,40 @@
     :root {
-        --navy: #0A1628;
-        --navy2: #132238;
-        --navy3: #1E3250;
-        --gold: #C9982A;
-        --gold-light: #E8C55A;
-        --gold-pale: #FBF3DC;
-        --cream: #FAF7F2;
-        --paper: #F3EDE4;
-        --paper2: #E9E1D6;
-        --red: #B83232;
-        --red-pale: #FCEAEA;
-        --red-border: #DDA0A0;
-        --teal: #0D7A5C;
-        --teal-pale: #E3F5EF;
-        --teal-border: #7ECAB3;
-        --purple: #5B3FA0;
-        --purple-pale: #EDE8F8;
-        --purple-border: #BAA8E8;
-        --amber: #A06B10;
-        --amber-pale: #FFF3DC;
-        --amber-border: #E8C97A;
-        --blue: #1A5CA8;
-        --blue-pale: #E8F0FA;
-        --blue-border: #8CB4E8;
-        --text: #0A1628;
-        --text2: #3A4558;
-        --text3: #6B7A92;
-        --font-h: 'Playfair Display', Georgia, serif;
-        --font-b: 'DM Sans', system-ui, sans-serif;
+        /* ── Dark Cyberpunk Theme (alinhado com o site iDialog) ── */
+        --navy: #0a0a0f;
+        --navy2: #0d1117;
+        --navy3: #1a1f2e;
+        --gold: #00e5ff;
+        --gold-light: #7df9ff;
+        --gold-pale: rgba(0, 229, 255, 0.07);
+        --cream: #e8eaf0;
+        --paper: #0d1117;
+        --paper2: #1a1f2e;
+        --red: #ff6b6b;
+        --red-pale: rgba(255, 107, 107, 0.08);
+        --red-border: rgba(255, 107, 107, 0.3);
+        --teal: #00ff88;
+        --teal-pale: rgba(0, 255, 136, 0.08);
+        --teal-border: rgba(0, 255, 136, 0.3);
+        --purple: #a855f7;
+        --purple-pale: rgba(168, 85, 247, 0.08);
+        --purple-border: rgba(168, 85, 247, 0.3);
+        --amber: #fbbf24;
+        --amber-pale: rgba(251, 191, 36, 0.08);
+        --amber-border: rgba(251, 191, 36, 0.3);
+        --blue: #38bdf8;
+        --blue-pale: rgba(56, 189, 248, 0.08);
+        --blue-border: rgba(56, 189, 248, 0.3);
+        --text: #e8eaf0;
+        --text2: #8b93a8;
+        --text3: #5a6178;
+        --font-h: 'Orbitron', sans-serif;
+        --font-b: 'Exo 2', sans-serif;
         --font-m: 'Fira Mono', monospace;
         --sidebar-w: 260px;
         --radius: 10px;
         --radius-lg: 16px;
-        --shadow: 0 2px 8px rgba(10, 22, 40, 0.10);
-        --shadow-lg: 0 6px 24px rgba(10, 22, 40, 0.15);
-    }
-
-    [data-theme="dark"] {
-        --navy: #F3EDE4;
-        --cream: #0A1628;
-        --paper: #111D2E;
-        --paper2: #1A2A40;
-        --text: #E8E0D5;
-        --text2: #B8C5D6;
-        --text3: #7A90A8;
-        --gold-pale: #1A2030;
-        --red-pale: #2A1515;
-        --teal-pale: #0D2420;
-        --purple-pale: #1A1530;
-        --amber-pale: #2A1E0A;
-        --blue-pale: #0D1E35;
-        --shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-        --shadow-lg: 0 6px 24px rgba(0, 0, 0, 0.45);
-        /* Cores de acento clarificadas para legibilidade em fundos escuros */
-        --red: #FF8080;
-        --teal: #4FCCA8;
-        --blue: #6BB8FF;
-        --amber: #FFB848;
-        --purple: #B090FF;
-        --red-border: #883030;
-        --teal-border: #206050;
-        --blue-border: #2A4A80;
-        --amber-border: #7A5520;
-        --purple-border: #503080;
+        --shadow: 0 2px 12px rgba(0, 229, 255, 0.06);
+        --shadow-lg: 0 6px 28px rgba(0, 229, 255, 0.12);
     }
 
     * {
@@ -78,7 +50,7 @@
 
     body {
         font-family: var(--font-b);
-        background: var(--cream);
+        background: var(--navy);
         color: var(--text);
         font-size: 15px;
         line-height: 1.7;
@@ -87,20 +59,21 @@
 
     /* ── COVER ── */
     #cover {
-        background: var(--navy);
+        background: radial-gradient(ellipse 80% 70% at 50% 0%, rgba(0, 229, 255, 0.12) 0%, transparent 70%),
+            var(--navy);
         color: var(--cream);
-        padding: 4rem 2rem 3rem;
+        padding: calc(4rem + 72px) 2rem 3rem;
         text-align: center;
         position: relative;
         overflow: hidden;
-        border-bottom: 4px solid var(--gold);
+        border-bottom: 1px solid rgba(0, 229, 255, 0.25);
     }
 
     #cover::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201, 152, 42, .04) 40px, rgba(201, 152, 42, .04) 41px);
+        background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(0, 229, 255, .04) 40px, rgba(0, 229, 255, .04) 41px);
         pointer-events: none;
     }
 
@@ -217,8 +190,9 @@
     }
 
     .sb-item.active {
-        background: var(--navy);
-        color: var(--cream);
+        background: rgba(0, 229, 255, 0.1);
+        color: var(--gold);
+        border-left: 2px solid var(--gold);
     }
 
     .sb-dot {
@@ -340,7 +314,7 @@
         font-size: 3.5rem;
         font-weight: 700;
         line-height: 1;
-        color: var(--paper2);
+        color: rgba(0, 229, 255, 0.18);
         flex-shrink: 0;
         width: 56px;
         text-align: right;
@@ -549,51 +523,31 @@
     .c-alert {
         background: var(--red-pale);
         border-color: var(--red);
-        color: #6A1515;
+        color: #ff8080;
     }
 
     .c-tip {
         background: var(--teal-pale);
         border-color: var(--teal);
-        color: #0A4A38;
+        color: #4dffa8;
     }
 
     .c-example {
         background: var(--purple-pale);
         border-color: var(--purple);
-        color: #3A246A;
+        color: #c084fc;
     }
 
     .c-note {
         background: var(--blue-pale);
         border-color: var(--blue);
-        color: #0D3A70;
+        color: #7dd3fc;
     }
 
     .c-gold {
         background: var(--gold-pale);
         border-color: var(--gold);
-        color: #6A4800;
-    }
-
-    [data-theme="dark"] .c-alert {
-        color: #F4A0A0;
-    }
-
-    [data-theme="dark"] .c-tip {
-        color: #7FD9BC;
-    }
-
-    [data-theme="dark"] .c-example {
-        color: #C4AEFF;
-    }
-
-    [data-theme="dark"] .c-note {
-        color: #90C4FF;
-    }
-
-    [data-theme="dark"] .c-gold {
-        color: #F0CC70;
+        color: var(--gold);
     }
 
     /* ── COMPARISON TABLE ── */
@@ -629,25 +583,17 @@
     }
 
     .comp-table tr:nth-child(even) td {
-        background: rgba(0, 0, 0, .025);
-    }
-
-    [data-theme="dark"] .comp-table tr:nth-child(even) td {
         background: rgba(255, 255, 255, .025);
     }
 
     /* ── SCHEMA (visual diagrams) ── */
     .schema {
-        background: var(--cream);
+        background: rgba(0, 229, 255, 0.04);
         border: 1px solid var(--paper2);
         border-radius: var(--radius);
         padding: 1rem;
         margin: .75rem 0;
         overflow-x: auto;
-    }
-
-    [data-theme="dark"] .schema {
-        background: var(--navy2);
     }
 
     .schema-title {
@@ -871,71 +817,7 @@
     }
 
     .fc-back .fc-ans strong {
-        color: var(--navy);
-    }
-
-    [data-theme="dark"] .fc-back .fc-ans strong {
-        color: var(--gold-light);
-    }
-
-    /* ── DARK MODE: manter fundo naval escuro para elementos que usam --navy como BG ── */
-    [data-theme="dark"] #cover {
-        background: #0A1628;
-        color: #E8E0D5;
-    }
-
-    [data-theme="dark"] .cover-sub {
-        color: var(--text3);
-    }
-
-    [data-theme="dark"] .fc-front {
-        background: var(--navy2);
-        color: var(--text);
-    }
-
-    [data-theme="dark"] .fc-front .fc-hint,
-    [data-theme="dark"] .fc-flip-hint {
-        color: var(--text3);
-    }
-
-    [data-theme="dark"] .formula {
-        background: var(--navy2);
-        color: var(--text);
-    }
-
-    [data-theme="dark"] .formula small {
-        color: var(--text3);
-    }
-
-    [data-theme="dark"] .rule-card {
-        background: var(--navy2);
-        color: var(--text);
-    }
-
-    [data-theme="dark"] .rule-card .rule-eq .comment {
-        color: var(--text3);
-    }
-
-    [data-theme="dark"] .comp-table th,
-    [data-theme="dark"] .truth-table th {
-        background: var(--navy2);
-        color: var(--text);
-    }
-
-    [data-theme="dark"] .sb-navy {
-        background: var(--navy2);
-        color: var(--text);
-        border-color: var(--navy3);
-    }
-
-    [data-theme="dark"] .practice-btn {
-        background: var(--navy2);
-        color: var(--text);
-        border-color: var(--navy3);
-    }
-
-    [data-theme="dark"] .practice-btn:hover {
-        background: var(--navy3);
+        color: var(--gold);
     }
 
     .fc-tag {
