@@ -129,30 +129,44 @@ function initHeaderScroll() {
 // Contact Form
 // ===========================
 function initContactForm() {
-    const contactForm = document.getElementById('contact-form');
+    const contactForm = document.getElementById('contactForm') || document.getElementById('contact-form');
 
     if (contactForm) {
-        contactForm.addEventListener('submit', function (e) {
+        contactForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // Get form data
             const formData = new FormData(this);
             const formObject = {};
-            formData.forEach((value, key) => {
-                formObject[key] = value;
-            });
+            formData.forEach((value, key) => { formObject[key] = value; });
 
-            // Validate form
-            if (validateForm(formObject)) {
-                // Show loading state
-                showFormLoading(true);
+            if (!validateForm(formObject)) return;
 
-                // Simulate form submission (replace with actual form handling)
-                setTimeout(() => {
-                    showFormLoading(false);
-                    showFormSuccess();
+            showFormLoading(true);
+
+            // Formspree: crie uma conta em formspree.io, crie um formulário
+            // e substitua YOUR_FORMSPREE_ID pelo ID gerado (ex: xbjnakvz)
+            const FORMSPREE_ID = 'YOUR_FORMSPREE_ID';
+
+            try {
+                const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                showFormLoading(false);
+
+                if (response.ok) {
+                    showNotification('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
                     contactForm.reset();
-                }, 2000);
+                } else {
+                    const data = await response.json();
+                    const msg = data.errors ? data.errors.map(e => e.message).join(', ') : 'Erro ao enviar. Tente novamente.';
+                    showNotification(msg, 'error');
+                }
+            } catch (err) {
+                showFormLoading(false);
+                showNotification('Falha de conexão. Verifique sua internet e tente novamente.', 'error');
             }
         });
     }

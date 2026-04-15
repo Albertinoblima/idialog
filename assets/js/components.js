@@ -2,7 +2,15 @@
 class ComponentLoader {
     static getBasePath() {
         const path = window.location.pathname;
-        const depth = (path.match(/\//g) || []).length - 1;
+        const segments = path.split('/').filter(s => s !== '');
+        // Identifica se o último segmento é um arquivo (tem extensão)
+        const lastSegment = segments[segments.length - 1] || '';
+        const isFile = lastSegment.includes('.');
+        const dirSegments = isFile ? segments.slice(0, -1) : segments;
+        // No GitHub Pages o path começa com /reponame/, subtraímos 1 nível
+        // No localhost o path começa na raiz, sem ajuste
+        const isLocalhost = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+        const depth = isLocalhost ? dirSegments.length : Math.max(0, dirSegments.length - 1);
         return '../'.repeat(depth);
     }
 
@@ -69,13 +77,21 @@ class ComponentLoader {
 
     static setActiveNavLink() {
         const currentPath = window.location.pathname;
-        const navLinks = document.querySelectorAll('.nav-link, .dropdown-link');
+        // Remove o prefixo do repositório (GitHub Pages) para comparação relativa
+        const pathParts = currentPath.split('/').filter(Boolean);
+        const isLocalhost = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+        // No GitHub Pages o primeiro segmento é o nome do repositório
+        const normalizedPath = isLocalhost ? currentPath : '/' + pathParts.slice(1).join('/');
 
+        const navLinks = document.querySelectorAll('.nav-link, .dropdown-link');
         navLinks.forEach(link => {
             link.classList.remove('active');
             const href = link.getAttribute('href');
-            if (href && (currentPath.includes(href.replace('/iDialog', '')) ||
-                (currentPath.endsWith('index.html') && href.includes('index.html')))) {
+            if (!href || href === '#') return;
+            // Normaliza o href (remove ../ e paths absolutos)
+            const cleanHref = href.replace(/^(\.\.\/)*/g, '/').replace(/\/+/g, '/');
+            if (normalizedPath.includes(cleanHref) ||
+                (normalizedPath === '/' || normalizedPath === '') && href.includes('index.html')) {
                 link.classList.add('active');
             }
         });
