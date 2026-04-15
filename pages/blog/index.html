@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog iDialog - Artigos sobre tecnologia, gestão pública e inovação">
+    <meta name="keywords" content="blog, tecnologia, gestão pública, inovação, idialog">
+    <meta name="author" content="iDialog">
+    <title>Blog - iDialog</title>
+
+    <link rel="icon" type="image/x-icon" href="/public/icon/1 iDialog icone.ico">
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ---- Blog Layout ---- */
+        .blog-header {
+            background: linear-gradient(135deg, #1273EB 0%, #0a4fa3 100%);
+            color: #fff;
+            padding: 80px 0 48px;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .blog-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .blog-header p {
+            font-size: 1.15rem;
+            opacity: .85;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        /* filtros de categoria */
+        .blog-filters {
+            background: #f8f9fa;
+            padding: 20px 0;
+            border-bottom: 1px solid #e9ecef;
+            position: sticky;
+            top: 70px;
+            z-index: 100;
+        }
+
+        .filters-inner {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 6px 18px;
+            border-radius: 50px;
+            border: 2px solid #1273EB;
+            background: transparent;
+            color: #1273EB;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .25s;
+            font-size: .9rem;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #1273EB;
+            color: #fff;
+        }
+
+        /* grid de posts */
+        .blog-grid-section {
+            padding: 56px 0 80px;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 32px;
+        }
+
+        /* card */
+        .post-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, .08);
+            overflow: hidden;
+            transition: transform .3s, box-shadow .3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .14);
+        }
+
+        .post-thumb {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #e8f0fe 0%, #c7d9ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1273EB;
+            font-size: 3rem;
+        }
+
+        .post-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-body {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: .82rem;
+            color: #888;
+        }
+
+        .post-cat {
+            background: #e8f0fe;
+            color: #1273EB;
+            padding: 3px 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: .8rem;
+        }
+
+        .post-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .post-resumo {
+            font-size: .95rem;
+            color: #666;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .post-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 20px;
+            color: #1273EB;
+            font-weight: 600;
+            font-size: .95rem;
+            transition: gap .2s;
+        }
+
+        .post-link:hover {
+            gap: 10px;
+        }
+
+        /* vazio */
+        .blog-empty {
+            text-align: center;
+            padding: 80px 20px;
+            color: #999;
+        }
+
+        .blog-empty i {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .blog-header h1 {
+                font-size: 2rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <main>
+        <!-- Hero do Blog -->
+        <section class="blog-header">
+            <div class="container">
+                <h1><i class="fas fa-newspaper"></i> Blog iDialog</h1>
+                <p>Artigos sobre tecnologia, gestão pública, inovação e muito mais — publicados diariamente.</p>
+            </div>
+        </section>
+
+        <!-- Filtros de Categoria -->
+        <section class="blog-filters">
+            <div class="container">
+                <div class="filters-inner" id="categorias-filtro">
+                    <button class="filter-btn active" data-cat="todas">Todas</button>
+                    <!-- categorias geradas dinamicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Grid de Posts -->
+        <section class="blog-grid-section">
+            <div class="container">
+                <div class="blog-grid" id="blog-grid">
+                    <div class="blog-empty">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Carregando artigos...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/assets/js/components.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="posts-data.js"></script>
+    <script>
+        // ── Formata data "AAAA-MM-DD" → "15 de abril de 2026"
+        function formatarData(str) {
+            const [ano, mes, dia] = str.split('-');
+            const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+                'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+            return `${parseInt(dia)} de ${meses[parseInt(mes) - 1]} de ${ano}`;
+        }
+
+        // ── Ícone padrão por categoria
+        function iconeCat(cat) {
+            const mapa = {
+                'Tecnologia': 'fa-microchip',
+                'Gestão Pública': 'fa-landmark',
+                'Inovação': 'fa-lightbulb',
+                'Novidades': 'fa-star',
+                'Concursos': 'fa-graduation-cap',
+                'Jurídico': 'fa-gavel'
+            };
+            return mapa[cat] || 'fa-newspaper';
+        }
+
+        // ── Renderiza cards
+        function renderPosts(lista) {
+            const grid = document.getElementById('blog-grid');
+            if (!lista.length) {
+                grid.innerHTML = `<div class="blog-empty">
+                    <i class="fas fa-inbox"></i>
+                    <p>Nenhum artigo encontrado.</p></div>`;
+                return;
+            }
+            grid.innerHTML = lista.map(post => `
+                <article class="post-card">
+                    <div class="post-thumb">
+                        ${post.imagem
+                    ? `<img src="${post.imagem}" alt="${post.titulo}" loading="lazy">`
+                    : `<i class="fas ${iconeCat(post.categoria)}"></i>`}
+                    </div>
+                    <div class="post-body">
+                        <div class="post-meta">
+                            <span class="post-cat">${post.categoria}</span>
+                            <span><i class="fas fa-calendar-alt"></i> ${formatarData(post.data)}</span>
+                        </div>
+                        <h2 class="post-title">${post.titulo}</h2>
+                        <p class="post-resumo">${post.resumo}</p>
+                        <a href="${post.arquivo}" class="post-link">
+                            Ler artigo <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // ── Gera botões de categoria
+        function renderFiltros(lista) {
+            const cats = [...new Set(lista.map(p => p.categoria))];
+            const container = document.getElementById('categorias-filtro');
+            cats.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.dataset.cat = cat;
+                btn.textContent = cat;
+                container.appendChild(btn);
+            });
+        }
+
+        // ── Filtro
+        let catAtiva = 'todas';
+        document.getElementById('categorias-filtro').addEventListener('click', e => {
+            if (!e.target.classList.contains('filter-btn')) return;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            catAtiva = e.target.dataset.cat;
+            const filtrado = catAtiva === 'todas' ? posts : posts.filter(p => p.categoria === catAtiva);
+            renderPosts(filtrado);
+        });
+
+        // ── Init
+        // posts ordenados do mais recente para o mais antigo
+        const postsOrdenados = [...posts].sort((a, b) => b.data.localeCompare(a.data));
+        renderFiltros(postsOrdenados);
+        renderPosts(postsOrdenados);
+    </script>
+</body>
+
+</html>
