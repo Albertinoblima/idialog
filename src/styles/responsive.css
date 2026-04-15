@@ -133,6 +133,19 @@
         min-width: 100%;
         padding: 8px 0;
     }
+
+    /* Contact page */
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+
+    /* Institutional banners */
+    .privados-institutional,
+    .publicos-institutional,
+    .contato-institutional {
+        padding-top: 88px;
+        padding-bottom: 40px;
+    }
 }
 
 @media (max-width: 767px) {
@@ -207,6 +220,25 @@
     .form-row {
         grid-template-columns: 1fr;
     }
+
+    /* Cards - reduce padding on mobile */
+    .contact-info,
+    .contact-form-section {
+        padding: 24px;
+    }
+
+    /* Grids - 2 cols on tablet/phone */
+    .tech-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .industry-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .integration-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 575px) {
@@ -228,6 +260,12 @@
 
     .navbar {
         padding: 0 12px;
+    }
+
+    .tech-grid,
+    .industry-grid,
+    .integration-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
