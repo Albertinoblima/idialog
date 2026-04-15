@@ -14,7 +14,8 @@
     <link rel="stylesheet" href="/src/styles/responsive.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -25,39 +26,86 @@
             padding: 100px 0 64px;
             text-align: center;
         }
-        .revista-hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 14px; }
-        .revista-hero p  { font-size: 1.2rem; opacity: .88; max-width: 600px; margin: 0 auto 32px; }
-        .revista-hero .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+        .revista-hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .revista-hero p {
+            font-size: 1.2rem;
+            opacity: .88;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .revista-hero .hero-btns {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
         /* ---- Áreas ---- */
-        .areas-section { padding: 72px 0; background: #f8fafc; }
+        .areas-section {
+            padding: 72px 0;
+            background: #f8fafc;
+        }
+
         .areas-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 28px;
             margin-top: 48px;
         }
+
         .area-card {
             background: #fff;
             border-radius: 16px;
             padding: 32px 28px;
-            box-shadow: 0 2px 14px rgba(0,0,0,.07);
+            box-shadow: 0 2px 14px rgba(0, 0, 0, .07);
             transition: transform .3s, box-shadow .3s;
             border-top: 4px solid var(--cor, #1273EB);
         }
-        .area-card:hover { transform: translateY(-5px); box-shadow: 0 8px 28px rgba(0,0,0,.13); }
+
+        .area-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, .13);
+        }
+
         .area-icon {
-            width: 56px; height: 56px;
+            width: 56px;
+            height: 56px;
             border-radius: 14px;
             background: var(--cor-bg, #e8f0fe);
             color: var(--cor, #1273EB);
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.5rem;
             margin-bottom: 18px;
         }
-        .area-card h3 { font-size: 1.15rem; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
-        .area-card p  { font-size: .9rem; color: #666; line-height: 1.6; margin-bottom: 20px; }
-        .area-materia-list { list-style: none; margin-bottom: 20px; }
+
+        .area-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .area-card p {
+            font-size: .9rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .area-materia-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
         .area-materia-list li {
             padding: 6px 0;
             font-size: .88rem;
@@ -67,8 +115,16 @@
             align-items: center;
             gap: 8px;
         }
-        .area-materia-list li:last-child { border-bottom: none; }
-        .area-materia-list li i { color: var(--cor, #1273EB); font-size: .8rem; }
+
+        .area-materia-list li:last-child {
+            border-bottom: none;
+        }
+
+        .area-materia-list li i {
+            color: var(--cor, #1273EB);
+            font-size: .8rem;
+        }
+
         .area-btn {
             display: inline-flex;
             align-items: center;
@@ -78,7 +134,10 @@
             font-size: .9rem;
             transition: gap .2s;
         }
-        .area-btn:hover { gap: 10px; }
+
+        .area-btn:hover {
+            gap: 10px;
+        }
 
         /* ---- simulador ---- */
         .simulador-section {
@@ -87,9 +146,27 @@
             color: #fff;
             text-align: center;
         }
-        .simulador-section h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 14px; }
-        .simulador-section p  { opacity: .88; font-size: 1.1rem; max-width: 560px; margin: 0 auto 32px; }
-        .simulador-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+        .simulador-section h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .simulador-section p {
+            opacity: .88;
+            font-size: 1.1rem;
+            max-width: 560px;
+            margin: 0 auto 32px;
+        }
+
+        .simulador-btns {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .btn-white {
             background: #fff;
             color: #1273EB;
@@ -99,21 +176,35 @@
             border: 2px solid #fff;
             transition: all .25s;
         }
-        .btn-white:hover { background: transparent; color: #fff; }
+
+        .btn-white:hover {
+            background: transparent;
+            color: #fff;
+        }
+
         .btn-outline-white {
             background: transparent;
             color: #fff;
             padding: 14px 36px;
             border-radius: 50px;
             font-weight: 700;
-            border: 2px solid rgba(255,255,255,.7);
+            border: 2px solid rgba(255, 255, 255, .7);
             transition: all .25s;
         }
-        .btn-outline-white:hover { background: rgba(255,255,255,.15); border-color: #fff; }
+
+        .btn-outline-white:hover {
+            background: rgba(255, 255, 255, .15);
+            border-color: #fff;
+        }
 
         @media(max-width:600px) {
-            .revista-hero h1 { font-size: 2rem; }
-            .simulador-section h2 { font-size: 1.6rem; }
+            .revista-hero h1 {
+                font-size: 2rem;
+            }
+
+            .simulador-section h2 {
+                font-size: 1.6rem;
+            }
         }
     </style>
 </head>
@@ -126,12 +217,15 @@
         <section class="revista-hero">
             <div class="container">
                 <h1><i class="fas fa-graduation-cap"></i> Revista Concurso</h1>
-                <p>Material completo para sua aprovação: simulados interativos, questões por matéria e módulos de reforço.</p>
+                <p>Material completo para sua aprovação: simulados interativos, questões por matéria e módulos de
+                    reforço.</p>
                 <div class="hero-btns">
-                    <a href="/revista_concurso/index.html" class="btn btn-primary" style="background:#fff;color:#1273EB;border-color:#fff;">
+                    <a href="/revista_concurso/index.html" class="btn btn-primary"
+                        style="background:#fff;color:#1273EB;border-color:#fff;">
                         <i class="fas fa-book-open"></i> Acessar Revista
                     </a>
-                    <a href="/revista_concurso/simulador.html" class="btn btn-secondary" style="border-color:rgba(255,255,255,.8);color:#fff;">
+                    <a href="/revista_concurso/simulador.html" class="btn btn-secondary"
+                        style="border-color:rgba(255,255,255,.8);color:#fff;">
                         <i class="fas fa-pencil-alt"></i> Simulado Geral
                     </a>
                 </div>
@@ -159,7 +253,8 @@
                             <li><i class="fas fa-chevron-right"></i> Raciocínio Lógico</li>
                             <li><i class="fas fa-chevron-right"></i> Informática</li>
                         </ul>
-                        <a href="/revista_concurso/materias/nucleo-comum/direito-administrativo/simulado.html" class="area-btn">
+                        <a href="/revista_concurso/materias/nucleo-comum/direito-administrativo/simulado.html"
+                            class="area-btn">
                             Estudar <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -176,7 +271,8 @@
                             <li><i class="fas fa-chevron-right"></i> Processo Penal</li>
                             <li><i class="fas fa-chevron-right"></i> Direito do Trabalho</li>
                         </ul>
-                        <a href="/revista_concurso/materias/area-judiciaria/direito-civil/simulado.html" class="area-btn" style="color:#7c3aed;">
+                        <a href="/revista_concurso/materias/area-judiciaria/direito-civil/simulado.html"
+                            class="area-btn" style="color:#7c3aed;">
                             Estudar <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -193,7 +289,8 @@
                             <li><i class="fas fa-chevron-right"></i> Gestão de Pessoas</li>
                             <li><i class="fas fa-chevron-right"></i> Recursos Materiais</li>
                         </ul>
-                        <a href="/revista_concurso/materias/area-administrativa/administracao-geral/simulado.html" class="area-btn" style="color:#059669;">
+                        <a href="/revista_concurso/materias/area-administrativa/administracao-geral/simulado.html"
+                            class="area-btn" style="color:#059669;">
                             Estudar <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -208,7 +305,8 @@
                             <li><i class="fas fa-chevron-right"></i> Matemática Financeira</li>
                             <li><i class="fas fa-chevron-right"></i> Mercado Financeiro</li>
                         </ul>
-                        <a href="/revista_concurso/materias/area-bancaria/conhecimentos-bancarios/simulado.html" class="area-btn" style="color:#d97706;">
+                        <a href="/revista_concurso/materias/area-bancaria/conhecimentos-bancarios/simulado.html"
+                            class="area-btn" style="color:#d97706;">
                             Estudar <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -224,7 +322,8 @@
                             <li><i class="fas fa-chevron-right"></i> Auditoria</li>
                             <li><i class="fas fa-chevron-right"></i> Economia</li>
                         </ul>
-                        <a href="/revista_concurso/materias/area-fiscal-controle/contabilidade-geral/simulado.html" class="area-btn" style="color:#dc2626;">
+                        <a href="/revista_concurso/materias/area-fiscal-controle/contabilidade-geral/simulado.html"
+                            class="area-btn" style="color:#dc2626;">
                             Estudar <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -240,7 +339,8 @@
                             <li><i class="fas fa-chevron-right"></i> Direitos Humanos</li>
                             <li><i class="fas fa-chevron-right"></i> Legislação Extravagante</li>
                         </ul>
-                        <a href="/revista_concurso/materias/area-seguranca-publica/criminologia/simulado.html" class="area-btn" style="color:#0891b2;">
+                        <a href="/revista_concurso/materias/area-seguranca-publica/criminologia/simulado.html"
+                            class="area-btn" style="color:#0891b2;">
                             Estudar <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -271,4 +371,5 @@
     <script src="/assets/js/components.js"></script>
     <script src="/assets/js/main.js"></script>
 </body>
+
 </html>

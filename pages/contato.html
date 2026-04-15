@@ -30,42 +30,6 @@
     <div id="header-placeholder"></div>
     <!-- Main Content -->
     <main class="main">
-        <!-- Footer Placeholder -->
-        <div id="footer-placeholder"></div>
-
-        <!-- JavaScript -->
-        <script src="../assets/js/main.js"></script>
-        <script src="../assets/js/components.js"></script>
-        <script>
-            // Torna todas as imagens com a classe 'clickable' interativas
-            document.addEventListener('DOMContentLoaded', function () {
-                document.querySelectorAll('img.clickable').forEach(function (img) {
-                    img.style.cursor = 'pointer';
-                    img.addEventListener('click', function () {
-                        const link = img.getAttribute('data-link');
-                        if (link) window.location.href = link;
-                    });
-                });
-            });
-
-            // Carrega header e footer dinâmicos dos componentes
-            async function loadComponent(elementId, componentPath) {
-                try {
-                    const response = await fetch(componentPath);
-                    const html = await response.text();
-                    const element = document.getElementById(elementId);
-                    if (element) {
-                        element.innerHTML = html;
-                    }
-                } catch (error) {
-                    console.error(`Erro ao carregar componente ${componentPath}:`, error);
-                }
-            }
-            document.addEventListener('DOMContentLoaded', async () => {
-                await loadComponent('header-placeholder', '../components/header.html');
-                await loadComponent('footer-placeholder', '../components/footer.html');
-            });
-        </script>
         <!-- Destaque institucional -->
         <section class="contato-institutional">
             <div class="container">
@@ -117,7 +81,7 @@
                             </div>
                             <div class="contact-item">
                                 <div class="contact-icon">
-                                    <img src="../public/portfolio/imagens portfolio/iDialog Empresas Privadas-pag11-img0.png"
+                                    <img src="../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag11-img0.png"
                                         alt="Telefone iDialog" class="contact-img clickable"
                                         data-link="tel:+551199999999">
                                 </div>
@@ -385,29 +349,11 @@
             });
             // Form submission
             const contactForm = document.getElementById('contactForm');
-            contactForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
-                contactForm.reset();
-            });
-        });
-
-        // Carrega header e footer dinâmicos dos componentes
-        async function loadComponent(elementId, componentPath) {
-            try {
-                const response = await fetch(componentPath);
-                const html = await response.text();
-                const element = document.getElementById(elementId);
-                if (element) {
-                    element.innerHTML = html;
-                }
-            } catch (error) {
-                console.error(`Erro ao carregar componente ${componentPath}:`, error);
+            if (contactForm) {
+                contactForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                });
             }
-        }
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadComponent('header-placeholder', '../components/header.html');
-            await loadComponent('footer-placeholder', '../components/footer.html');
         });
     </script>
 </body>

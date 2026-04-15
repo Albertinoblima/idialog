@@ -1,9 +1,14 @@
 // ===========================
-// DOM Content Loaded
+// Inicialização no DOM pronto (imagens inline)
 // ===========================
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialize all components
-    initNavbar();
+    initClickableImages();
+});
+
+// ===========================
+// Inicialização (após componentes carregados)
+// ===========================
+document.addEventListener('components:ready', function () {
     initSmoothScroll();
     initContactForm();
     initScrollAnimations();
@@ -11,63 +16,15 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // ===========================
-// Navbar Functionality
+// Imagens clicáveis
 // ===========================
-function initNavbar() {
-    const navbarToggle = document.getElementById('navbar-toggle');
-    const navbarMenu = document.getElementById('navbar-menu');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    // Mobile menu toggle
-    if (navbarToggle) {
-        navbarToggle.addEventListener('click', function () {
-            navbarToggle.classList.toggle('active');
-            navbarMenu.classList.toggle('active');
-            document.body.classList.toggle('menu-open');
+function initClickableImages() {
+    document.querySelectorAll('img.clickable').forEach(function (img) {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', function () {
+            const link = img.getAttribute('data-link');
+            if (link) window.location.href = link;
         });
-    }
-
-    // Close mobile menu when clicking on a link
-    navLinks.forEach(link => {
-        link.addEventListener('click', function () {
-            navbarToggle.classList.remove('active');
-            navbarMenu.classList.remove('active');
-            document.body.classList.remove('menu-open');
-        });
-    });
-
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function (e) {
-        if (!navbarToggle.contains(e.target) && !navbarMenu.contains(e.target)) {
-            navbarToggle.classList.remove('active');
-            navbarMenu.classList.remove('active');
-            document.body.classList.remove('menu-open');
-        }
-    });
-
-    // Update active nav link based on scroll position
-    updateActiveNavLink();
-    window.addEventListener('scroll', updateActiveNavLink);
-}
-
-function updateActiveNavLink() {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const scrollPos = window.scrollY + 100;
-
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-
-        if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
     });
 }
 
@@ -239,50 +196,6 @@ function showNotification(message, type) {
         </div>
     `;
 
-    // Add notification styles
-    notification.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        z-index: 1001;
-        background: ${type === 'success' ? '#d4edda' : '#f8d7da'};
-        color: ${type === 'success' ? '#155724' : '#721c24'};
-        border: 1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'};
-        border-radius: 10px;
-        padding: 15px 20px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        max-width: 400px;
-        animation: slideIn 0.3s ease;
-    `;
-
-    // Add animation styles
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        .notification-content {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .notification-close {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            margin-left: auto;
-            padding: 0;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    `;
-    document.head.appendChild(style);
-
     // Add to page
     document.body.appendChild(notification);
 
@@ -327,50 +240,6 @@ function initScrollAnimations() {
         element.classList.add('animate-element');
         observer.observe(element);
     });
-
-    // Add CSS for animations
-    const animationStyles = document.createElement('style');
-    animationStyles.textContent = `
-        .animate-element {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-        
-        .animate-element.animate-in {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .stat:nth-child(2).animate-in {
-            transition-delay: 0.2s;
-        }
-        
-        .stat:nth-child(3).animate-in {
-            transition-delay: 0.4s;
-        }
-        
-        .service-card:nth-child(2).animate-in {
-            transition-delay: 0.1s;
-        }
-        
-        .service-card:nth-child(3).animate-in {
-            transition-delay: 0.2s;
-        }
-        
-        .service-card:nth-child(4).animate-in {
-            transition-delay: 0.3s;
-        }
-        
-        .service-card:nth-child(5).animate-in {
-            transition-delay: 0.4s;
-        }
-        
-        .service-card:nth-child(6).animate-in {
-            transition-delay: 0.5s;
-        }
-    `;
-    document.head.appendChild(animationStyles);
 }
 
 // ===========================

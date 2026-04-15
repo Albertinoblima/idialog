@@ -5,19 +5,15 @@
     "main": "index.html",
     "scripts": {
         "dev": "live-server --port=3000 --open=/",
-        "build": "npm run build:css && npm run build:js && npm run optimize:images",
-        "build:css": "postcss src/styles/main.css -o assets/css/style.css --use autoprefixer cssnano",
-        "build:js": "terser src/scripts/main.js -o assets/js/main.js --compress --mangle",
-        "optimize:images": "imagemin public/images/* --out-dir=assets/images",
+        "serve": "http-server -p 8080 -c-1",
         "lint": "npm run lint:css && npm run lint:js",
         "lint:css": "stylelint src/styles/**/*.css",
-        "lint:js": "eslint src/scripts/**/*.js",
+        "lint:js": "eslint assets/js/**/*.js",
         "format": "prettier --write .",
-        "serve": "http-server -p 8080 -c-1",
         "test": "jest",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage",
-        "validate": "npm run lint && npm run test && npm run build"
+        "validate": "npm run lint && npm run test"
     },
     "keywords": [
         "website",

@@ -13,15 +13,36 @@
     <link rel="stylesheet" href="/src/styles/responsive.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        .post-page { max-width: 780px; margin: 0 auto; padding: 40px 20px 80px; }
-        .post-page-header { margin-top: 90px; margin-bottom: 40px; }
-        .post-breadcrumb { font-size: .85rem; color: #888; margin-bottom: 20px; }
-        .post-breadcrumb a { color: #1273EB; }
-        .post-breadcrumb a:hover { text-decoration: underline; }
+        .post-page {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .post-page-header {
+            margin-top: 90px;
+            margin-bottom: 40px;
+        }
+
+        .post-breadcrumb {
+            font-size: .85rem;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .post-breadcrumb a {
+            color: #1273EB;
+        }
+
+        .post-breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
         .post-cat-badge {
             display: inline-block;
             background: #e8f0fe;
@@ -32,17 +53,70 @@
             font-weight: 600;
             margin-bottom: 16px;
         }
-        .post-page h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.25; color: #1a1a2e; margin-bottom: 16px; }
-        .post-page-meta { display: flex; gap: 20px; color: #888; font-size: .88rem; margin-bottom: 32px; flex-wrap: wrap; }
-        .post-page-meta span { display: flex; align-items: center; gap: 6px; }
-        .post-divider { border: none; border-top: 2px solid #e9ecef; margin: 32px 0; }
+
+        .post-page h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            line-height: 1.25;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+        }
+
+        .post-page-meta {
+            display: flex;
+            gap: 20px;
+            color: #888;
+            font-size: .88rem;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .post-page-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .post-divider {
+            border: none;
+            border-top: 2px solid #e9ecef;
+            margin: 32px 0;
+        }
+
         /* Conteúdo do artigo */
-        .post-content { font-size: 1.05rem; line-height: 1.85; color: #333; }
-        .post-content h2 { font-size: 1.6rem; font-weight: 700; color: #1a1a2e; margin: 40px 0 16px; }
-        .post-content h3 { font-size: 1.25rem; font-weight: 600; color: #1a1a2e; margin: 30px 0 12px; }
-        .post-content p  { margin-bottom: 20px; }
-        .post-content ul, .post-content ol { margin: 0 0 20px 24px; }
-        .post-content li { margin-bottom: 8px; }
+        .post-content {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: #333;
+        }
+
+        .post-content h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin: 40px 0 16px;
+        }
+
+        .post-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin: 30px 0 12px;
+        }
+
+        .post-content p {
+            margin-bottom: 20px;
+        }
+
+        .post-content ul,
+        .post-content ol {
+            margin: 0 0 20px 24px;
+        }
+
+        .post-content li {
+            margin-bottom: 8px;
+        }
+
         .post-content blockquote {
             border-left: 4px solid #1273EB;
             background: #f0f6ff;
@@ -52,15 +126,43 @@
             font-style: italic;
             color: #555;
         }
-        .post-content img { border-radius: 12px; margin: 24px 0; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+
+        .post-content img {
+            border-radius: 12px;
+            margin: 24px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .1);
+        }
+
         /* rodapé do post */
-        .post-footer { margin-top: 60px; padding-top: 32px; border-top: 2px solid #e9ecef; }
-        .post-footer-nav { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-        .post-nav-link { display: flex; align-items: center; gap: 8px; color: #1273EB; font-weight: 600; }
-        .post-nav-link:hover { text-decoration: underline; }
+        .post-footer {
+            margin-top: 60px;
+            padding-top: 32px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .post-footer-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .post-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1273EB;
+            font-weight: 600;
+        }
+
+        .post-nav-link:hover {
+            text-decoration: underline;
+        }
 
         @media(max-width:600px) {
-            .post-page h1 { font-size: 1.8rem; }
+            .post-page h1 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -150,4 +252,5 @@
     <script src="/assets/js/components.js"></script>
     <script src="/assets/js/main.js"></script>
 </body>
+
 </html>

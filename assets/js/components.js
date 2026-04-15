@@ -105,6 +105,7 @@ class ComponentLoader {
 document.addEventListener('DOMContentLoaded', async () => {
     await ComponentLoader.loadHeader();
     await ComponentLoader.loadFooter();
+    document.dispatchEvent(new CustomEvent('components:ready'));
 });
 
 // Função para scroll suave (se necessário)
