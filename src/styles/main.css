@@ -951,8 +951,15 @@ ul {
    Notificações
 =========================== */
 @keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 .notification {
@@ -1013,11 +1020,30 @@ ul {
     transform: translateY(0);
 }
 
-.stat:nth-child(2).animate-in { transition-delay: 0.2s; }
-.stat:nth-child(3).animate-in { transition-delay: 0.4s; }
+.stat:nth-child(2).animate-in {
+    transition-delay: 0.2s;
+}
 
-.service-card:nth-child(2).animate-in { transition-delay: 0.1s; }
-.service-card:nth-child(3).animate-in { transition-delay: 0.2s; }
-.service-card:nth-child(4).animate-in { transition-delay: 0.3s; }
-.service-card:nth-child(5).animate-in { transition-delay: 0.4s; }
-.service-card:nth-child(6).animate-in { transition-delay: 0.5s; }
+.stat:nth-child(3).animate-in {
+    transition-delay: 0.4s;
+}
+
+.service-card:nth-child(2).animate-in {
+    transition-delay: 0.1s;
+}
+
+.service-card:nth-child(3).animate-in {
+    transition-delay: 0.2s;
+}
+
+.service-card:nth-child(4).animate-in {
+    transition-delay: 0.3s;
+}
+
+.service-card:nth-child(5).animate-in {
+    transition-delay: 0.4s;
+}
+
+.service-card:nth-child(6).animate-in {
+    transition-delay: 0.5s;
+}
