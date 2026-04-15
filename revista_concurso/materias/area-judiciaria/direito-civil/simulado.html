@@ -1,0 +1,435 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado · Direito Civil · Aprova Concursos</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Comentado</div>
+    <h1><em>Direito Civil</em><br>30 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">LINDB</span>
+      <span class="cv-tag">Pessoas Naturais</span>
+      <span class="cv-tag">Pessoas Jurídicas</span>
+      <span class="cv-tag">Bens</span>
+      <span class="cv-tag">Defeitos do Negócio</span>
+      <span class="cv-tag">Prescrição</span>
+      <span class="cv-tag">Atos Ilícitos</span>
+      <span class="cv-tag">Obrigações</span>
+      <span class="cv-tag">Contratos</span>
+      <span class="cv-tag">Responsabilidade Civil</span>
+      <span class="cv-tag">Direito das Coisas</span>
+      <span class="cv-tag">Direito de Família</span>
+      <span class="cv-tag">Sucessões</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../index.html">← Revista</a>
+    <a class="ctrl" href="../../../simulador.html">🔀 Montar Simulado</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 30 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 30</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      LN: 'LINDB',
+      PN: 'Pessoas Naturais',
+      PJ: 'Pessoas Jurídicas',
+      BE: 'Bens',
+      DN: 'Defeitos do Negócio Jurídico',
+      PD: 'Prescrição e Decadência',
+      AI: 'Atos Ilícitos',
+      OB: 'Direito das Obrigações',
+      TG: 'Teoria Geral dos Contratos',
+      CE: 'Contratos em Espécie',
+      RC: 'Responsabilidade Civil',
+      DC: 'Direito das Coisas',
+      DF: 'Direito de Família',
+      DS: 'Direito das Sucessões'
+    };
+    const TOPIC_COLOR = {
+      LN: { bg: '#E6F1FB', c: '#0C447C' }, PN: { bg: '#FCEAEA', c: '#7A1515' },
+      PJ: { bg: '#E3F5EF', c: '#085041' }, BE: { bg: '#EDE8F8', c: '#3A246A' },
+      DN: { bg: '#FFF3DC', c: '#6A4800' }, PD: { bg: '#FCEAEA', c: '#7A1515' },
+      AI: { bg: '#FAECE7', c: '#712B13' }, OB: { bg: '#F1EFE8', c: '#2C2C2A' },
+      TG: { bg: '#EAF3DE', c: '#173404' }, CE: { bg: '#E6F1FB', c: '#042C53' },
+      RC: { bg: '#EDE8F8', c: '#26215C' }, DC: { bg: '#E3F5EF', c: '#085041' },
+      DF: { bg: '#FFF3DC', c: '#6A4800' }, DS: { bg: '#FCEAEA', c: '#7A1515' }
+    };
+
+    // ── 30 QUESTÕES CUIDADOSAMENTE VERIFICADAS ──────────────────────────────────
+    const ALL = [
+      // ─ LINDB ───────────────────────────────────────────────────────────────
+      {
+        id: 'LN01', topic: 'LN', dif: 'm',
+        text: 'Sobre a vigência das leis na LINDB, assinale a alternativa CORRETA:',
+        opts: ['Salvo disposição em contrário, a lei começa a vigorar em todo o país 30 dias depois de oficialmente publicada.', 'Nos Estados estrangeiros, a obrigatoriedade da lei brasileira, quando admitida, se inicia 3 meses depois de publicada.', 'Se, antes de entrar a lei em vigor, ocorrer nova publicação de seu texto, destinada a correção, o prazo de vacatio legis começa a correr da publicação original.', 'As correções a texto de lei já em vigor consideram-se lei nova.'],
+        ans: 3,
+        exp: 'Art. 1º, § 4º da LINDB. Se a lei já vigora, qualquer correção é considerada lei nova. Nova publicação ANTES de vigorar reinicia o prazo de vacatio legis.',
+        erros: ['ERRADA: o prazo padrão de vacatio legis é de 45 dias (não 30).', 'ERRADA: o prazo no exterior segue regra específica, mas não altera o padrão nacional.', 'ERRADA: nova publicação antes da vigência reinicia o prazo de vacatio.', 'CORRETA.'],
+        tip: 'Nova publicação ANTES de vigorar = Prazo reinicia. Correção DEPOIS de vigorar = Lei nova.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'LN02', topic: 'LN', dif: 'm',
+        text: 'Sobre a revogação de leis na LINDB, assinale a alternativa CORRETA:',
+        opts: ['A lei posterior revoga a anterior quando seja com ela incompatível ou quando regule inteiramente a matéria de que tratava a lei anterior.', 'A lei revogada restaura-se por si mesma se a lei revogadora perder a vigência (repristinação automática).', 'O desconhecimento da lei é justificativa aceitável para o seu descumprimento, desde que provado o erro de direito.', 'No estrangeiro, o prazo para vigência da lei brasileira é de 45 dias.'],
+        ans: 0,
+        exp: 'Art. 2º, § 1º LINDB. A repristinação (letra B) não é automática no Brasil (Art. 2º, § 3º). Ninguém se escusa de cumprir a lei alegando que não a conhece (Art. 3º).',
+        erros: ['CORRETA.', 'ERRADA: repristinação não é automática.', 'ERRADA: desconhecimento da lei nunca é justificativa.', 'ERRADA: prazo no exterior segue regra específica.'],
+        tip: 'Repristinação no Brasil? Só se a lei nova disser EXPRESSAMENTE.',
+        tiptype: 'cm-red'
+      },
+      // ─ PESSOAS NATURAIS ─────────────────────────────────────────────────────
+      {
+        id: 'PN01', topic: 'PN', dif: 'm',
+        text: 'Sobre a incapacidade civil, assinale a alternativa CORRETA:',
+        opts: ['São absolutamente incapazes de exercer pessoalmente os atos da vida civil os menores de 18 anos.', 'Os pródigos e os ébrios habituais são considerados absolutamente incapazes.', 'São tecnicamente considerados relativamente incapazes os maiores de 16 e menores de 18 anos.', 'A incapacidade absoluta resulta na anulabilidade do negócio jurídico.'],
+        ans: 2,
+        exp: 'Art. 4º, I, CC. Após o Estatuto da Pessoa com Deficiência, o ÚNICO caso de incapacidade absoluta é o menor de 16 anos (Art. 3º).',
+        erros: ['ERRADA: apenas os menores de 16 anos são absolutamente incapazes.', 'ERRADA: pródigos e ébrios habituais são relativamente incapazes.', 'CORRETA.', 'ERRADA: incapacidade absoluta resulta em nulidade (não anulabilidade).'],
+        tip: 'Menor de 16 = Absoluto (Nulo). Entre 16 e 18 = Relativo (Anulável).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PN02', topic: 'PN', dif: 'm',
+        text: 'Sobre a emancipação civil, assinale a alternativa CORRETA:',
+        opts: ['A emancipação por concessão dos pais exige instrumento público e homologação judicial obrigatória.', 'O estabelecimento civil ou comercial com economia própria é forma de emancipação voluntária.', 'A emancipação pelo casamento é válida mesmo que o casamento venha a ser anulado posteriormente.', 'A existência de relação de emprego, desde que o menor tenha 16 anos completos e economia própria, gera emancipação.'],
+        ans: 3,
+        exp: 'Art. 5º, Parágrafo único, V, CC. É a chamada emancipação econômica.',
+        erros: ['ERRADA: emancipação por concessão dos pais exige instrumento público, mas não homologação judicial obrigatória.', 'ERRADA: o estabelecimento com economia própria é forma de emancipação, mas a letra D é mais precisa.', 'ERRADA: se o casamento for anulado, a emancipação perde o efeito.', 'CORRETA.'],
+        tip: 'Emancipação aos 16 anos: Pais (Cartório), Emprego/Negócio (Grana própria), Colação de Grau ou Casamento.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PN03', topic: 'PN', dif: 'm',
+        text: 'Sobre a morte presumida, assinale a alternativa CORRETA:',
+        opts: ['A morte presumida pode ser declarada sem decretação de ausência se for extremamente provável a morte de quem estava em perigo de vida.', 'A declaração de morte presumida para quem estava em campanha ou feito prisioneiro só pode ocorrer 5 anos após o término da guerra.', 'O juiz pode declarar a morte presumida de qualquer pessoa desaparecida há mais de 2 anos.', 'A morte presumida sem ausência não exige o esgotamento das buscas e averiguações.'],
+        ans: 0,
+        exp: 'Art. 7º, I, CC. Casos de catástrofes ou perigo iminente permitem a declaração direta.',
+        erros: ['CORRETA.', 'ERRADA: o prazo é de 2 anos após o término da guerra.', 'ERRADA: exige decretação de ausência ou situação específica.', 'ERRADA: exige esgotamento das buscas.'],
+        tip: 'Perigo de vida ou Guerra (2 anos após o fim) = Morte Presumida Direta.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PN04', topic: 'PN', dif: 'm',
+        text: 'Sobre a comoriência, assinale a alternativa CORRETA:',
+        opts: ['Se dois indivíduos falecerem na mesma ocasião, presume-se que o mais velho morreu primeiro para fins sucessórios.', 'Comoriência ocorre quando não se pode averiguar qual dos indivíduos morreu primeiro, presumindo-se a morte simultânea.', 'A comoriência gera transmissão de bens entre os falecidos.', 'A presunção de morte simultânea só se aplica se houver parentesco entre os falecidos.'],
+        ans: 1,
+        exp: 'Art. 8º, CC. Se não dá para saber quem foi primeiro, morreram juntos e NÃO há transmissão de bens entre eles.',
+        erros: ['ERRADA: presume-se simultaneidade, não preferência pelo mais velho.', 'CORRETA.', 'ERRADA: não há transmissão entre comorientes.', 'ERRADA: aplica-se independentemente de parentesco.'],
+        tip: 'Comoriência = Simultâneos. Um não herda do outro.',
+        tiptype: 'cm-red'
+      },
+      // ─ PESSOAS JURÍDICAS ───────────────────────────────────────────────────
+      {
+        id: 'PJ01', topic: 'PJ', dif: 'm',
+        text: 'Sobre a desconsideração da personalidade jurídica, assinale a alternativa CORRETA:',
+        opts: ['Em caso de abuso da personalidade jurídica, caracterizado pelo desvio de finalidade ou pela confusão patrimonial, o juiz pode, de ofício, desconsiderá-la.', 'O desvio de finalidade é caracterizado pela mera expansão da atividade econômica prevista no objeto social.', 'A confusão patrimonial ocorre quando há cumprimento repetitivo de obrigações da sociedade pelo sócio ou vice-versa.', 'A desconsideração atinge todos os bens da pessoa jurídica, extinguindo sua existência.'],
+        ans: 2,
+        exp: 'Art. 50, § 2º, I, CC. A desconsideração exige requerimento da parte ou do MP (não pode ser de ofício).',
+        erros: ['ERRADA: exige requerimento da parte ou do MP.', 'ERRADA: desvio de finalidade exige dolo de lesar.', 'CORRETA.', 'ERRADA: a desconsideração não extingue a PJ, apenas desconsidera a personalidade para atingir bens dos sócios.'],
+        tip: 'Abuso = Desvio de Finalidade (uso doloso para lesar) ou Confusão Patrimonial (mistura de contas).',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'PJ02', topic: 'PJ', dif: 'm',
+        text: 'Sobre as associações, assinale a alternativa CORRETA:',
+        opts: ['As associações são constituídas pela união de pessoas que se organizam para fins não econômicos.', 'Nas associações, os sócios respondem subsidiariamente pelas obrigações sociais.', 'Não há, entre os associados, direitos e obrigações recíprocos.', 'A exclusão de associado só é admissível mediante justa causa, sem necessidade de defesa.'],
+        ans: 0,
+        exp: 'Art. 53, CC. Associados não respondem pela dívida (Art. 53, parágrafo único) e não têm obrigações entre si.',
+        erros: ['CORRETA.', 'ERRADA: os sócios não respondem pelas obrigações sociais.', 'ERRADA: há direitos e obrigações recíprocos entre associados.', 'ERRADA: a exclusão exige defesa e justa causa.'],
+        tip: 'Associação = Sem fins lucrativos. Associado não paga a conta da entidade!',
+        tiptype: 'cm-gold'
+      },
+      // ─ BENS ────────────────────────────────────────────────────────────────
+      {
+        id: 'BE01', topic: 'BE', dif: 'm',
+        text: 'Sobre a classificação dos bens, assinale a alternativa CORRETA:',
+        opts: ['São bens imóveis por natureza os direitos reais sobre imóveis e as ações que os asseguram.', 'As edificações que, separadas do solo, mas conservando a sua unidade, forem removidas para outro local, perdem o caráter de imóvel.', 'Os materiais destinados a alguma construção, enquanto não forem empregados, conservam sua qualidade de móveis.', 'Os navios e aeronaves, por serem passíveis de hipoteca, são classificados como bens imóveis.'],
+        ans: 2,
+        exp: 'Art. 84, CC. Materiais de construção são móveis antes de usar e voltam a ser móveis se a casa for demolida.',
+        erros: ['ERRADA: direitos reais são bens imóveis por acessão intelectual.', 'ERRADA: edificações removidas continuam sendo imóveis (Art. 81, II).', 'CORRETA.', 'ERRADA: navios e aeronaves são bens móveis.'],
+        tip: 'Edificação removida (ex: casa pré-moldada) CONTINUA sendo imóvel (Art. 81, II).',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'BE02', topic: 'BE', dif: 'm',
+        text: 'Sobre as pertenças, assinale a alternativa CORRETA:',
+        opts: ['Pertenças são bens que, não constituindo partes integrantes, se destinam, de modo duradouro, ao uso, ao serviço ou ao aformoseamento de outro.', 'Os negócios jurídicos que dizem respeito ao bem principal abrangem as pertenças, salvo se o contrário resultar da lei ou da vontade das partes.', 'As pertenças são consideradas benfeitorias voluptuárias.', 'Frutos e produtos seguem a mesma regra jurídica das pertenças.'],
+        ans: 0,
+        exp: 'Art. 93 e 94, CC. Regra de OURO: Pertenças (ex: trator na fazenda, ar-condicionado no prédio) NÃO seguem o principal automaticamente.',
+        erros: ['CORRETA.', 'ERRADA: os negócios sobre o principal NÃO abrangem as pertenças automaticamente.', 'ERRADA: pertenças não são benfeitorias.', 'ERRADA: frutos e produtos seguem o principal; pertenças não seguem automaticamente.'],
+        tip: 'O acessório segue o principal (frutos, benfeitorias). A PERTENÇA NÃO segue (precisa estar no contrato).',
+        tiptype: 'cm-gold'
+      },
+      // ─ DEFEITOS DO NEGÓCIO ─────────────────────────────────────────────────
+      {
+        id: 'DN01', topic: 'DN', dif: 'm',
+        text: 'Sobre o estado de perigo, assinale a alternativa CORRETA:',
+        opts: ['Ocorre quando alguém, sob premente necessidade, ou por inexperiência, se obriga a prestação manifestamente desproporcional.', 'Configura-se quando alguém, premido da necessidade de salvar-se, ou a pessoa de sua família, de grave dano conhecido pela outra parte, assume obrigação excessivamente onerosa.', 'É causa de nulidade absoluta do negócio jurídico.', 'O prazo para anular o negócio por estado de perigo é de 2 anos.'],
+        ans: 1,
+        exp: 'Art. 156, CC. Diferença crucial: Estado de Perigo (salvar a vida/saúde). Lesão (inexperiência/necessidade econômica).',
+        erros: ['ERRADA: essa é a definição de lesão (Art. 157).', 'CORRETA.', 'ERRADA: é causa de anulabilidade.', 'ERRADA: o prazo para anular é de 4 anos (Art. 178, II).'],
+        tip: 'Perigo = Saúde/Vida. Lesão = Dinheiro/Burrice (inexperiência).',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'DN02', topic: 'DN', dif: 'm',
+        text: 'Sobre a fraude contra credores, assinale a alternativa CORRETA:',
+        opts: ['Os negócios transmitidos a título gratuito podem ser anulados pelos credores quirografários, se praticados pelo devedor já insolvente.', 'A fraude contra credores gera a nulidade plena do ato praticado.', 'Para anular venda a título oneroso, não é necessário que a insolvência seja notória ou conhecida pelo comprador.', 'A ação cabível para atacar a fraude contra credores é a Ação Civil Pública.'],
+        ans: 0,
+        exp: 'Art. 158, CC. O credor quirografário (sem garantia) tenta anular a doação feita pelo devedor "quebrado".',
+        erros: ['CORRETA.', 'ERRADA: gera anulabilidade (não nulidade).', 'ERRADA: para venda onerosa é necessária a insolvência notória ou conhecida.', 'ERRADA: a ação é a pauliana (ação revocatória).'],
+        tip: 'Ação Pauliana = Nome da ação para Fraude contra Credores. Prazo: 4 anos.',
+        tiptype: 'cm-gold'
+      },
+      // ─ PRESCRIÇÃO E DECADÊNCIA ─────────────────────────────────────────────
+      {
+        id: 'PD01', topic: 'PD', dif: 'm',
+        text: 'Sobre prescrição e decadência, assinale a alternativa CORRETA:',
+        opts: ['Os prazos de prescrição podem ser alterados por acordo entre as partes.', 'A prescrição pode ser interrompida qualquer número de vezes, desde que por causas diferentes.', 'A prescrição interrompida recomeça a correr da data do ato que a interrompeu, ou do último ato do processo para a interromper.', 'A prescrição deve ser arguida pela parte a quem aproveita, não podendo o juiz reconhecê-la de ofício.'],
+        ans: 2,
+        exp: 'Art. 202, parágrafo único. A interrupção só pode ocorrer UMA VEZ (Art. 202, caput). O juiz PODE reconhecer de ofício (Art. 193).',
+        erros: ['ERRADA: prazos prescricionais são inderrogáveis.', 'ERRADA: a interrupção só pode ocorrer uma vez.', 'CORRETA.', 'ERRADA: o juiz pode reconhecer de ofício.'],
+        tip: 'Interrupção = Zera o relógio (Z de Zera). Suspensão = Pausa o relógio (P de Pausa).',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PD02', topic: 'PD', dif: 'm',
+        text: 'Sobre os prazos prescricionais, assinale a alternativa CORRETA:',
+        opts: ['A pretensão de cobrança de dívidas líquidas constantes de instrumento público ou particular prescreve em 5 anos.', 'Prescreve em 1 ano a pretensão de reparação civil por danos causados em acidentes de trânsito.', 'A prescrição ocorre em 20 anos quando a lei não haja fixado prazo menor.', 'O prazo para cobrança de aluguéis de prédios urbanos ou rústicos é de 5 anos.'],
+        ans: 0,
+        exp: 'Art. 206, § 5º, I. Reparação civil é 3 anos. O prazo geral (quando a lei não diz) é de 10 anos (Art. 205). Aluguéis é 3 anos.',
+        erros: ['CORRETA.', 'ERRADA: reparação civil prescreve em 3 anos.', 'ERRADA: o prazo geral é de 10 anos.', 'ERRADA: aluguéis prescrevem em 3 anos.'],
+        tip: 'Regra dos 5 anos = "Dívida no papel" (Instrumento público/particular).',
+        tiptype: 'cm-gold'
+      },
+      // ─ ATOS ILÍCITOS ───────────────────────────────────────────────────────
+      {
+        id: 'AI01', topic: 'AI', dif: 'm',
+        text: 'Sobre os atos ilícitos e responsabilidade civil, assinale a alternativa CORRETA:',
+        opts: ['O abuso de direito não é considerado ato ilícito no Código Civil brasileiro.', 'A legítima defesa, ainda que com excesso, exclui totalmente a ilicitude do ato e a obrigação de indenizar.', 'Comete ato ilícito o titular de um direito que, ao exercê-lo, excede manifestamente os limites impostos pelo seu fim econômico ou social.', 'A responsabilidade civil é independente da criminal, mas não se poderá questionar sobre a existência do fato ou autoria quando decididas no juízo criminal.'],
+        ans: 2,
+        exp: 'Art. 187, CC. É a definição de Abuso de Direito (Ilícito Objetivo).',
+        erros: ['ERRADA: o abuso de direito é ato ilícito (Art. 187).', 'ERRADA: o excesso exclui a legítima defesa.', 'CORRETA.', 'ERRADA: a letra D está correta segundo o Art. 935, mas a questão foca na definição clássica de ato ilícito (Art. 186/187).'],
+        tip: 'Abuso de Direito = Exercer o direito "com maldade" ou fora do propósito original.',
+        tiptype: 'cm-purple'
+      },
+      // ─ OBRIGAÇÕES ──────────────────────────────────────────────────────────
+      {
+        id: 'OB01', topic: 'OB', dif: 'm',
+        text: 'Sobre a solidariedade nas obrigações, assinale a alternativa CORRETA:',
+        opts: ['A solidariedade presume-se em todos os contratos civis, independentemente de previsão legal ou vontade das partes.', 'O credor tem direito a exigir e receber de um ou de alguns dos devedores, parcial ou totalmente, a dívida comum.', 'O pagamento parcial feito por um dos devedores solidários a todos os credores aproveita, mas não exonera os demais devedores.', 'A interrupção da prescrição aberta por um credor solidário não aproveita aos demais.'],
+        ans: 1,
+        exp: 'Art. 264 e 275, CC. A solidariedade não se presume; resulta da lei ou da vontade das partes (Art. 265).',
+        erros: ['ERRADA: a solidariedade não se presume.', 'CORRETA.', 'ERRADA: o pagamento parcial por um devedor solidário exonera os demais.', 'ERRADA: a interrupção da prescrição por um credor aproveita aos demais.'],
+        tip: 'Solidariedade = Não se presume! Lei ou Contrato. O credor escolhe quem "paga o pato" pelo todo.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'OB02', topic: 'OB', dif: 'm',
+        text: 'Sobre a transmissão de obrigações, assinale a alternativa CORRETA:',
+        opts: ['Na cessão de crédito, o devedor deve obrigatoriamente anuir para que a cessão seja válida entre as partes.', 'A assunção de dívida (cessão de débito) exige o consentimento expresso do credor, sendo que o seu silêncio importa em recusa.', 'O cessionário de crédito não pode exercer atos conservatórios antes de notificar o devedor.', 'Na cessão de crédito, o cedente sempre responde pela solvência do devedor (bonitas nominis).'],
+        ans: 1,
+        exp: 'Art. 299, CC. Na cessão de débito, o silêncio do credor é NÃO. Na cessão de crédito, a notificação ao devedor é para eficácia quanto a ele, não para a validade do ato.',
+        erros: ['ERRADA: na cessão de crédito o devedor não precisa anuir.', 'CORRETA.', 'ERRADA: o cessionário pode exercer atos conservatórios antes da notificação.', 'ERRADA: o cedente responde pela solvência apenas se houver cláusula expressa (Art. 296).'],
+        tip: 'Cessão de Crédito = Notifica o devedor. Cessão de Débito = Credor tem que aceitar (Silêncio = Recusa).',
+        tiptype: 'cm-red'
+      },
+      // ─ TEORIA GERAL DOS CONTRATOS ──────────────────────────────────────────
+      {
+        id: 'TG01', topic: 'TG', dif: 'm',
+        text: 'Sobre os vícios redibitórios, assinale a alternativa CORRETA:',
+        opts: ['O vício redibitório aplica-se a contratos gratuitos e onerosos indistintamente.', 'Se a coisa perecer em poder do comprador, por vício já existente ao tempo da tradição, o vendedor não terá responsabilidade.', 'O prazo decadencial para obter a redibição ou abatimento no preço é de 30 dias se a coisa for móvel, contado da entrega efetiva.', 'O comprador não pode rejeitar a coisa se o vício for aparente.'],
+        ans: 2,
+        exp: 'Art. 445, CC. Móvel: 30 dias. Imóvel: 1 ano. Se já estava na posse, o prazo é reduzido à metade.',
+        erros: ['ERRADA: aplica-se apenas a contratos onerosos.', 'ERRADA: o vendedor responde mesmo se a coisa perecer.', 'CORRETA.', 'ERRADA: o vício deve ser oculto (não aparente).'],
+        tip: 'Vício Redibitório = Defeito Oculto. Móvel (30 dias) / Imóvel (1 ano).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'TG02', topic: 'TG', dif: 'm',
+        text: 'Sobre a evicção, assinale a alternativa CORRETA:',
+        opts: ['A responsabilidade pela evicção independe de cláusula expressa, mas as partes podem reforçar, diminuir ou excluí-la.', 'Se o adquirente sabia que a coisa era alheia ou litigiosa, ainda assim pode demandar pela evicção.', 'A evicção ocorre apenas em contratos de doação pura.', 'O preço a ser restituído ao evicto será o valor da coisa ao tempo em que se celebrou o contrato.'],
+        ans: 0,
+        exp: 'Art. 447 e 448, CC. Evicção é perda da coisa por decisão judicial ou administrativa. Se sabia que era litigiosa, não pode reclamar (Art. 457).',
+        erros: ['CORRETA.', 'ERRADA: se sabia, não pode reclamar.', 'ERRADA: aplica-se a todos os contratos onerosos.', 'ERRADA: o valor é o da coisa ao tempo da evicção (valor atual).'],
+        tip: 'Evicção = "Perdi o que comprei no juiz". Valor da restituição = Valor ao tempo em que se EVENCEU (valor atual).',
+        tiptype: 'cm-red'
+      },
+      // ─ CONTRATOS EM ESPÉCIE ────────────────────────────────────────────────
+      {
+        id: 'CE01', topic: 'CE', dif: 'm',
+        text: 'Sobre a compra e venda, assinale a alternativa CORRETA:',
+        opts: ['É nula a venda de ascendente a descendente, salvo se os outros descendentes e o cônjuge do alienante expressamente houverem consentido.', 'A venda entre cônjuges é proibida em qualquer regime de bens.', 'É anulável a venda de ascendente a descendente sem o consentimento dos demais (descendentes e cônjuge).', 'Na compra e venda, os riscos da coisa, antes da tradição, correm por conta do comprador.'],
+        ans: 2,
+        exp: 'Art. 496, CC. Atenção: É ANULÁVEL (não nula). Prazo de 2 anos para anular.',
+        erros: ['ERRADA: é anulável, não nula.', 'ERRADA: a venda entre cônjuges é permitida no regime de separação de bens.', 'CORRETA.', 'ERRADA: os riscos correm por conta do vendedor antes da tradição (Art. 492).'],
+        tip: 'Ascendente -> Descendente = Precisa de Vênia (Consentimento). É Anulável!',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'CE02', topic: 'CE', dif: 'm',
+        text: 'Sobre a doação, assinale a alternativa CORRETA:',
+        opts: ['A doação feita em comum a várias pessoas entende-se distribuída entre elas por igual, salvo se o contrato dispuser o contrário.', 'É nula a doação de todos os bens sem reserva de parte, ou renda suficiente para a subsistência do doador.', 'A doação ao nascituro é nula, pois este ainda não possui personalidade jurídica civil.', 'O doador é obrigado a pagar juros moratórios e responde pela evicção em doações puras.'],
+        ans: 1,
+        exp: 'Art. 548 e 550, CC. A doação universal (de tudo) é nula para proteger a dignidade do doador.',
+        erros: ['ERRADA: a doação em comum presume partes iguais.', 'CORRETA.', 'ERRADA: a doação ao nascituro é válida (aceita pelos pais).', 'ERRADA: em doações puras o doador não responde por evicção nem por juros moratórios.'],
+        tip: 'Doação de tudo = Nula. Doação ao nascituro = Válida (aceita pelos pais).',
+        tiptype: 'cm-red'
+      },
+      // ─ RESPONSABILIDADE CIVIL ──────────────────────────────────────────────
+      {
+        id: 'RC01', topic: 'RC', dif: 'm',
+        text: 'Sobre a responsabilidade civil, assinale a alternativa CORRETA:',
+        opts: ['O detentor do animal ressarcirá o dano por este causado, mesmo que prove culpa exclusiva da vítima.', 'A responsabilidade dos pais pelos atos dos filhos menores que estiverem sob sua autoridade e em sua companhia é subjetiva.', 'O dono de edifício ou construção responde pelos danos que resultarem de sua ruína, se esta provier de falta de reparos, cuja necessidade fosse manifesta.', 'A indenização por injúria, difamação ou calúnia não admite prova em contrário.'],
+        ans: 2,
+        exp: 'Art. 937, CC. Responsabilidade por ruína de edifício.',
+        erros: ['ERRADA: prova de culpa exclusiva da vítima exclui a responsabilidade.', 'ERRADA: é objetiva (Art. 933).', 'CORRETA.', 'ERRADA: admite prova em contrário (Art. 953, parágrafo único).'],
+        tip: 'Animal = Responsabilidade Objetiva (salvo culpa da vítima ou força maior). Pais = Responsabilidade Objetiva (Art. 933).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'RC02', topic: 'RC', dif: 'm',
+        text: 'Sobre a indenização por danos, assinale a alternativa CORRETA:',
+        opts: ['Se a vítima tiver concorrido culposamente para o evento danoso, a sua indenização será fixada tendo-se em conta a gravidade de sua culpa em confronto com a do autor do dano.', 'O direito de exigir reparação e a obrigação de prestá-la não se transmitem com a herança.', 'A indenização mede-se pela extensão do lucro cessante, independentemente do dano emergente.', 'Se houver excessiva desproporção entre a gravidade da culpa e o dano, o juiz não poderá reduzir a indenização.'],
+        ans: 0,
+        exp: 'Art. 945, CC. É a culpa concorrente, que reduz o valor da indenização.',
+        erros: ['CORRETA.', 'ERRADA: transmitem-se com a herança (Art. 943).', 'ERRADA: mede-se pela extensão do dano total (emergente + lucros cessantes).', 'ERRADA: o juiz pode reduzir a indenização em caso de desproporção (Art. 944, parágrafo único).'],
+        tip: 'Indenização = Extensão do Dano (Art. 944). Culpa concorrente = racha a conta.',
+        tiptype: 'cm-red'
+      },
+      // ─ DIREITO DAS COISAS ──────────────────────────────────────────────────
+      {
+        id: 'DC01', topic: 'DC', dif: 'm',
+        text: 'Sobre a posse, assinale a alternativa CORRETA:',
+        opts: ['Considera-se possuidor todo aquele que tem de fato o exercício, pleno ou não, de algum dos poderes inerentes à propriedade.', 'O detentor (fâmulo da posse) pode exercer os interditos possessórios em nome próprio.', 'A posse de boa-fé só perde este caráter no momento em que o possuidor descobre que a coisa é alheia.', 'A posse direta, de pessoa que tem a coisa em seu poder, temporariamente, anula a indireta, de quem aquela foi havida.'],
+        ans: 0,
+        exp: 'Art. 1.196, CC. Definição clássica de possuidor (Teoria Objetiva de Ihering).',
+        erros: ['CORRETA.', 'ERRADA: o detentor não pode exercer interditos possessórios.', 'ERRADA: a posse de boa-fé perde o caráter quando o possuidor tem ciência de que a coisa é alheia.', 'ERRADA: a posse direta não anula a indireta.'],
+        tip: 'Detentor = Não é possuidor (ex: caseiro, motorista). Não tem defesa possessória própria.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'DC02', topic: 'DC', dif: 'm',
+        text: 'Sobre a usucapião, assinale a alternativa CORRETA:',
+        opts: ['A usucapião extraordinária exige posse por 15 anos, independentemente de título e boa-fé.', 'Na usucapião ordinária, o prazo é de 10 anos, exigindo-se justo título e boa-fé.', 'O prazo da usucapião extraordinária pode ser reduzido para 5 anos se o possuidor houver estabelecido moradia.', 'Bens públicos podem ser objeto de usucapião se abandonados por mais de 20 anos.'],
+        ans: 0,
+        exp: 'Art. 1.238, CC. Extraordinária (15 anos) | Ordinária (10 anos + Título/Boa-fé). Bens públicos NUNCA sofrem usucapião (CF/88).',
+        erros: ['CORRETA.', 'ERRADA: ordinária é 10 anos com título e boa-fé.', 'ERRADA: o prazo de 5 anos é para usucapião especial urbana/rural com moradia.', 'ERRADA: bens públicos são imprescritíveis.'],
+        tip: 'Extraordinária = "Tudo Extra" (Prazo longo, mas não precisa de papel nem boa-fé).',
+        tiptype: 'cm-red'
+      },
+      // ─ DIREITO DE FAMÍLIA ──────────────────────────────────────────────────
+      {
+        id: 'DF01', topic: 'DF', dif: 'm',
+        text: 'Sobre o casamento, assinale a alternativa CORRETA:',
+        opts: ['O casamento estabelece comunhão plena de vida, mas não altera a condição jurídica dos nubentes quanto a terceiros.', 'Podem casar os parentes por afinidade em linha reta, mesmo após a dissolução do casamento que originou a afinidade.', 'É causa de impedimento (não podem casar) os irmãos, unilaterais ou germanos, e demais colaterais, até o quarto grau inclusive.', 'As causas suspensivas do casamento não impedem a celebração, mas impõem o regime de separação obrigatória de bens.'],
+        ans: 3,
+        exp: 'Art. 1.523 e 1.641, I, CC. Causas suspensivas (ex: viúvo que não fez inventário) geram sanção patrimonial.',
+        erros: ['ERRADA: o casamento altera a condição jurídica quanto a terceiros (efeitos civis).', 'ERRADA: parentes por afinidade em linha reta não podem casar (impedimento perpétuo).', 'ERRADA: colaterais só até o 3º grau (irmãos).', 'CORRETA.'],
+        tip: 'Impedimentos = NULO (ex: pai e filha, sogra e genro). Causas Suspensivas = Separação de Bens (ex: viúvo sem inventário). "Sogra é para sempre" (Art. 1.595, §2º).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'DF02', topic: 'DF', dif: 'm',
+        text: 'Sobre a união estável, assinale a alternativa CORRETA:',
+        opts: ['A união estável exige convivência sob o mesmo teto (coabitação) para ser configurada.', 'Na união estável, salvo contrato escrito, aplica-se às relações patrimoniais o regime da comunhão parcial de bens.', 'A união estável não se converte em casamento por ato administrativo, exigindo sempre via judicial.', 'Não se admite união estável se houver impedimento matrimonial de um dos companheiros, mesmo se estiver separado de fato.'],
+        ans: 1,
+        exp: 'Art. 1.725, CC. Regra supletiva é a Comunhão Parcial. Separados de fato podem constituir união estável (Art. 1.723, §1º).',
+        erros: ['ERRADA: coabitação não é requisito essencial.', 'CORRETA.', 'ERRADA: pode ser convertida por escritura pública.', 'ERRADA: separados de fato podem constituir união estável.'],
+        tip: 'União Estável = Fato + Intenção de Família. Regime padrão = Comunhão Parcial.',
+        tiptype: 'cm-red'
+      },
+      // ─ DIREITO DAS SUCESSÕES ───────────────────────────────────────────────
+      {
+        id: 'DS01', topic: 'DS', dif: 'm',
+        text: 'Sobre a sucessão, assinale a alternativa CORRETA:',
+        opts: ['Aberta a sucessão, a herança transmite-se, desde logo, aos herdeiros legítimos e testamentários.', 'A renúncia da herança pode ser feita por instrumento particular ou termo nos autos.', 'O herdeiro pode aceitar a herança sob benefício de inventário, repudiando as dívidas que ultrapassem as forças da herança.', 'Na sucessão legítima, os descendentes mais próximos excluem os mais remotos, sem exceção.'],
+        ans: 0,
+        exp: 'Art. 1.784, CC (Princípio de Saisine). Renúncia deve ser por Escritura Pública ou Termo Judicial (Art. 1.806) - nunca particular!',
+        erros: ['CORRETA.', 'ERRADA: renúncia exige escritura pública ou termo judicial.', 'ERRADA: a aceitação sob benefício de inventário foi abolida (herdeiro responde ultra vires hereditatis).', 'ERRADA: há exceção no caso de renúncia ou indignidade.'],
+        tip: 'Morreu? Herança passou na hora (Saisine). Renúncia? Só no cartório ou no juiz.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'DS02', topic: 'DS', dif: 'm',
+        text: 'Sobre os herdeiros necessários, assinale a alternativa CORRETA:',
+        opts: ['São herdeiros necessários os descendentes, os ascendentes e o cônjuge.', 'O companheiro (união estável) não possui direitos sucessórios equivalentes ao cônjuge, segundo o Código Civil.', 'A legítima dos herdeiros necessários corresponde a um terço da herança.', 'Podem ser excluídos da sucessão os herdeiros necessários que forem declarados indignos, apenas por testamento.'],
+        ans: 0,
+        exp: 'Art. 1.845, CC. Herdeiros necessários: D.A.C. (Descendentes, Ascendentes, Cônjuge). O STF equiparou cônjuge e companheiro para fins sucessórios (Tema 809).',
+        erros: ['CORRETA.', 'ERRADA: o STF equiparou os direitos sucessórios.', 'ERRADA: a legítima é de 50% da herança.', 'ERRADA: a indignidade é declarada por sentença judicial (não por testamento).'],
+        tip: 'Legítima = 50% (Metade da herança é intocável se houver herdeiro necessário).',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'DS03', topic: 'DS', dif: 'm',
+        text: 'Sobre a sucessão colateral, assinale a alternativa CORRETA:',
+        opts: ['Se não houver descendentes, ascendentes ou cônjuge, são chamados a suceder os colaterais até o sexto grau.', 'Na falta de irmãos, herdarão os filhos destes (sobrinhos), e não havendo estes, os tios.', 'Os sobrinhos-netos e tios-avós possuem preferência sobre os primos na ordem de sucessão.', 'O Estado (Município ou DF) é herdeiro necessário na falta de parentes.'],
+        ans: 1,
+        exp: 'Art. 1.840 e 1.843, CC. Ordem colateral: 1º Irmãos, 2º Sobrinhos, 3º Tios, 4º Primos/Tio-avô/Sobrinho-neto.',
+        erros: ['ERRADA: colaterais até o 4º grau.', 'CORRETA.', 'ERRADA: a ordem é irmãos → sobrinhos → tios → primos.', 'ERRADA: o Estado é herdeiro universal (não necessário).'],
+        tip: 'Sobrinho (filho de irmão) tem preferência sobre o Tio (irmão do pai). "Sobrinho antes do Tio".',
+        tiptype: 'cm-gold'
+      }
+    ];
+  </script>
+  <script src="../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

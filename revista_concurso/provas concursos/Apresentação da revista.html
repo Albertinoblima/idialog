@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Revista Estratégica TJPE</title>
+
+<style>
+
+body{
+margin:0;
+font-family: 'Segoe UI', sans-serif;
+background:#0b0f19;
+color:#e6e6e6;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:40px 20px;
+}
+
+.hero{
+text-align:center;
+padding:80px 20px;
+background:linear-gradient(180deg,#0b0f19,#121a2b);
+}
+
+.hero h1{
+font-size:48px;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:20px;
+color:#b9c0d0;
+max-width:700px;
+margin:auto;
+}
+
+.section{
+margin-top:60px;
+}
+
+.section h2{
+font-size:34px;
+margin-bottom:25px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+}
+
+.card{
+background:#151d31;
+padding:25px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.4);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card h3{
+margin-top:0;
+color:#60a5fa;
+}
+
+.highlight{
+background:#1a2338;
+padding:30px;
+border-radius:10px;
+margin-top:30px;
+}
+
+.voice{
+margin-top:30px;
+text-align:center;
+}
+
+.voice button{
+background:#2563eb;
+border:none;
+color:white;
+padding:14px 28px;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.voice button:hover{
+background:#1d4ed8;
+}
+
+.price-section{
+text-align:center;
+padding:80px 20px;
+background:linear-gradient(180deg,#121a2b,#0b0f19);
+}
+
+.price-section h2{
+font-size:38px;
+}
+
+.price{
+font-size:60px;
+color:#22c55e;
+margin:20px 0;
+}
+
+.btn{
+display:inline-block;
+background:#25D366;
+color:white;
+padding:18px 40px;
+font-size:22px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.btn:hover{
+background:#1fb657;
+}
+
+.footer{
+text-align:center;
+padding:40px;
+color:#888;
+font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="hero">
+
+<h1>Revista Estratégica de Estudos</h1>
+
+<p>
+Um material criado para quem deseja estudar com inteligência estratégica,
+com análise da banca IBFC, estrutura didática e recursos modernos de aprendizado.
+</p>
+
+</div>
+
+<div class="container">
+
+<div class="section">
+
+<h2>Vantagens da Revista</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>Análise da Banca IBFC</h3>
+<p>
+Estudo específico do comportamento da banca, padrões de cobrança,
+estilo das provas e distribuição de assuntos.
+</p>
+</div>
+
+<div class="card">
+<h3>Classificação dos Assuntos</h3>
+<p>
+Os temas são organizados conforme o grau de incidência nas provas,
+permitindo priorizar o que realmente tem mais probabilidade de aparecer.
+</p>
+</div>
+
+<div class="card">
+<h3>Cartões de Memorização</h3>
+<p>
+Flashcards estratégicos para revisão rápida e fixação de conceitos essenciais.
+</p>
+</div>
+
+<div class="card">
+<h3>Observações Importantíssimas</h3>
+<p>
+Destaques de pontos críticos que frequentemente aparecem em provas.
+</p>
+</div>
+
+<div class="card">
+<h3>Estrutura Didática</h3>
+<p>
+Conteúdo organizado de forma clara, facilitando compreensão e revisão.
+</p>
+</div>
+
+<div class="card">
+<h3>Estudo Mais Inteligente</h3>
+<p>
+A revista ajuda a estudar com foco no que realmente importa.
+</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Análise estratégica da banca IBFC</h2>
+
+<div class="highlight">
+
+<p>
+A banca IBFC possui um perfil característico de cobrança.
+Ela tende a explorar conceitos específicos,
+interpretação precisa de dispositivos legais
+e pequenas diferenças conceituais.
+</p>
+
+<p>
+A revista apresenta uma análise detalhada da forma
+como os conteúdos são tradicionalmente abordados,
+permitindo ao leitor entender não apenas o conteúdo,
+mas também a lógica por trás da elaboração das provas.
+</p>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Recursos modernos de aprendizado</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>Leitura em Voz</h3>
+<p>
+Os textos podem ser reproduzidos em áudio,
+permitindo revisar conteúdos enquanto realiza outras atividades.
+</p>
+</div>
+
+<div class="card">
+<h3>Revisão Rápida</h3>
+<p>
+Estrutura ideal para revisões periódicas e fixação do conteúdo.
+</p>
+</div>
+
+<div class="card">
+<h3>Estudo Organizado</h3>
+<p>
+O conteúdo foi estruturado para facilitar aprendizado progressivo.
+</p>
+</div>
+
+</div>
+
+<div class="voice">
+
+<button onclick="lerTexto()">Ouvir apresentação da revista</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="price-section">
+
+<h2>Acesso completo à revista</h2>
+
+<p>
+Todo o conteúdo organizado em um único material.
+</p>
+
+<div class="price">R$ 10</div>
+
+<a class="btn" href="https://wa.me/5587988568605">
+Comprar pelo WhatsApp
+</a>
+
+<p style="margin-top:15px">
+Contato: Albertino Bezerra
+</p>
+
+</div>
+
+<div class="footer">
+
+WhatsApp: 87 98856-8605
+
+</div>
+
+<script>
+
+function lerTexto(){
+const texto = `
+Esta revista apresenta análise da banca IBFC,
+classificação estratégica dos assuntos cobrados,
+cartões de memorização e observações importantes
+para facilitar o estudo.
+`;
+
+const fala = new SpeechSynthesisUtterance(texto);
+
+fala.lang = "pt-BR";
+
+speechSynthesis.speak(fala);
+}
+
+</script>
+
+</body>
+
+</html>

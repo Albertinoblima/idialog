@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado · Dir. Processual Penal · Aprova Concursos</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Comentado</div>
+    <h1><em>Direito Processual Penal</em><br>30 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição
+      inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Inquérito Policial</span>
+      <span class="cv-tag">Flagrante</span>
+      <span class="cv-tag">Ação Penal</span>
+      <span class="cv-tag">Provas</span>
+      <span class="cv-tag">Prisões Cautelares</span>
+      <span class="cv-tag">Nulidades</span>
+      <span class="cv-tag">Habeas Corpus</span>
+      <span class="cv-tag">Júri & Recursos</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../index.html">← Revista</a>
+    <a class="ctrl" href="../../../simulador.html">🔀 Montar Simulado</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 30 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 30</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      IP: 'Inquérito Policial',
+      FL: 'Flagrante',
+      AP: 'Ação Penal',
+      PR: 'Provas',
+      IT: 'Interceptação Telefônica',
+      PP: 'Prisão Preventiva',
+      PT: 'Prisão Temporária',
+      NU: 'Nulidades',
+      HC: 'Habeas Corpus',
+      JR: 'Tribunal do Júri',
+      RC: 'Recursos'
+    };
+    const TOPIC_COLOR = {
+      IP: { bg: '#E6F1FB', c: '#0C447C' }, FL: { bg: '#FCEAEA', c: '#7A1515' },
+      AP: { bg: '#E3F5EF', c: '#085041' }, PR: { bg: '#EDE8F8', c: '#3A246A' },
+      IT: { bg: '#FFF3DC', c: '#6A4800' }, PP: { bg: '#FCEAEA', c: '#7A1515' },
+      PT: { bg: '#FAECE7', c: '#712B13' }, NU: { bg: '#F1EFE8', c: '#2C2C2A' },
+      HC: { bg: '#EAF3DE', c: '#173404' }, JR: { bg: '#E6F1FB', c: '#042C53' },
+      RC: { bg: '#EDE8F8', c: '#26215C' }
+    };
+
+    // ── 30 QUESTÕES CUIDADOSAMENTE VERIFICADAS ──────────────────────────────────
+    const ALL = [
+      // ─ INQUÉRITO POLICIAL ───────────────────────────────────────────────────
+      {
+        id: 'IP01', topic: 'IP', dif: 'l',
+        text: 'Quanto à natureza jurídica do inquérito policial, é correto afirmar que se trata de:',
+        opts: ['Processo judicial de natureza inquisitória, com plena garantia do contraditório.', 'Procedimento administrativo pré-processual, inquisitório, escrito e dispensável para a ação penal.', 'Ação penal ajuizada pelo Ministério Público para apurar a autoria do crime.', 'Procedimento jurisdicional que produz coisa julgada material ao ser arquivado.'],
+        ans: 1,
+        exp: 'O inquérito policial (IP) é procedimento administrativo (não judicial) conduzido pela polícia judiciária para apurar infrações penais e sua autoria. É inquisitório (sem contraditório amplo), escrito (art. 9º CPP), sigiloso e dispensável — o MP pode oferecer denúncia sem o IP, desde que disponha de elementos suficientes (art. 39, §5º CPP). Não há processo nem ação penal nessa fase.',
+        erros: ['O IP é procedimento administrativo, não judicial, e não há contraditório pleno nessa fase — ele vigora no processo, não no IP.', 'CORRETA.', 'O MP ajuíza a ação penal, mas o IP é conduzido pelo Delegado de Polícia — não é ação penal.', 'O arquivamento do IP não produz coisa julgada material — pode ser reaberto com novas provas (art. 18 CPP).'],
+        tip: 'MACETE: IP = Investigação Policial Administrativa — sem contraditório, sem processo, sem coisa julgada.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'IP02', topic: 'IP', dif: 'm',
+        text: 'Sobre o indiciamento no inquérito policial, com base na Lei 12.830/2013, assinale a alternativa CORRETA:',
+        opts: ['O juiz pode determinar o indiciamento sempre que verificar indícios suficientes de autoria.', 'O Ministério Público pode requisitar o indiciamento quando dispuser de elementos probatórios.', 'O indiciamento é ato formal e privativo da autoridade policial (delegado de polícia).', 'O indiciamento pode ser determinado pelo juiz a requerimento do MP ou do delegado.'],
+        ans: 2,
+        exp: 'A Lei 12.830/2013 (Lei da Investigação Criminal conduzida pelo Delegado) estabelece expressamente no art. 2º, §6º que "o indiciamento, privativo do delegado de polícia, dar-se-á por ato fundamentado, mediante análise técnico-jurídica do fato". O STF confirma: nem o juiz nem o MP podem determinar o indiciamento. É ato exclusivo do delegado, que deve fundamentar sua decisão analisando a prova material e os indícios de autoria.',
+        erros: ['ERRADA: o juiz não pode determinar o indiciamento — é ato privativo do delegado (Lei 12.830/2013, art. 2º, §6º; STF).', 'ERRADA: o MP pode requisitar diligências ao delegado, mas o indiciamento é ato privativo do delegado, não pode ser determinado pelo Parquet.', 'CORRETA.', 'ERRADA: o indiciamento não pode ser determinado pelo juiz, nem mesmo a requerimento de terceiros — é decisão técnica exclusiva do delegado.'],
+        tip: 'IBFC adora: Indiciamento = ato PRIVATIVO do DELEGADO. Nem o juiz, nem o MP podem determinar.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'IP03', topic: 'IP', dif: 'm',
+        text: 'Em relação aos prazos para conclusão do inquérito policial, assinale a alternativa CORRETA:',
+        opts: ['Réu preso: 30 dias; réu solto: 60 dias, prorrogáveis por mais 60 dias.', 'Réu preso: 10 dias; réu solto: 30 dias, podendo ser prorrogado.', 'Réu preso: 15 dias; réu solto: 90 dias, improrrogáveis.', 'Réu preso: 5 dias; réu solto: 20 dias, prorrogáveis uma vez por igual período.'],
+        ans: 1,
+        exp: 'O art. 10 do CPP estabelece: prazo de 10 dias para conclusão do IP quando o indiciado estiver preso e de 30 dias quando estiver solto. O prazo de 10 dias para réu preso é improrrogável. Para réu solto, o prazo pode ser prorrogado mediante requisição da autoridade competente. Atenção: na Justiça Federal (crime federal), o prazo é de 15 dias para preso (prorrogável por mais 15) e 30 dias para solto. Na Lei de Drogas: 30 dias para preso e 90 dias para solto.',
+        erros: ['ERRADA: os prazos corretos são 10 dias (preso) e 30 dias (solto), não 30/60 dias.', 'CORRETA.', 'ERRADA: o prazo para réu preso é 10 dias (não 15). Para réu solto o prazo é 30 dias (não 90), embora na Lei de Drogas seja 90 dias para solto.', 'ERRADA: os prazos são 10 dias (preso) e 30 dias (solto), não 5 e 20 dias.'],
+        tip: 'MEMORIZE: 10 dias (preso) | 30 dias (solto) | Lei de Drogas: 30 (preso) / 90 (solto).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'IP04', topic: 'IP', dif: 'm',
+        text: 'Sobre o arquivamento do inquérito policial, é correto afirmar:',
+        opts: ['O arquivamento produz coisa julgada material, impedindo definitivamente nova investigação sobre o mesmo fato.', 'O IP arquivado não pode ser reaberto em nenhuma hipótese, por força do princípio ne bis in idem.', 'O arquivamento do IP não faz coisa julgada material e pode ser reaberto mediante novas provas.', 'O arquivamento por atipicidade da conduta não impede a propositura de nova ação penal.'],
+        ans: 2,
+        exp: 'O art. 18 do CPP determina que "depois de ordenado o arquivamento do inquérito pela autoridade judiciária, por falta de base para a denúncia, a autoridade policial poderá proceder a novas pesquisas, se de outras provas tiver notícia". O arquivamento por insuficiência de provas NÃO faz coisa julgada material — pode ser reaberto com novas provas. Contudo, o arquivamento por atipicidade da conduta ou por reconhecimento de causa excludente da ilicitude produz coisa julgada material (STF, Inq 2.604/STF).',
+        erros: ['ERRADA: o arquivamento por insuficiência de provas não produz coisa julgada material — pode ser reaberto com novas provas (art. 18 CPP).', 'ERRADA: o IP pode ser reaberto com novas provas — o ne bis in idem não impede nova investigação baseada em novos elementos.', 'CORRETA.', 'ERRADA: o arquivamento por atipicidade da conduta impede nova ação penal, pois produz coisa julgada material (STF).'],
+        tip: 'Arquivamento por INSUFICIÊNCIA DE PROVAS = sem coisa julgada (reabrível). Arquivamento por ATIPICIDADE = coisa julgada material.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'IP05', topic: 'IP', dif: 'h',
+        text: 'Ana, delegada de polícia, ao concluir o inquérito policial instaurado para apurar suposto crime de furto, decidiu não indiciar o investigado por entender que as provas eram insuficientes. O Ministério Público, discordando, requereu ao juiz que determinasse o indiciamento. Sobre essa situação, assinale a alternativa CORRETA:',
+        opts: ['O juiz deve acatar o requerimento do MP e determinar o indiciamento, pois é o titular da ação penal.', 'O juiz não pode determinar o indiciamento, pois é ato privativo do delegado, mesmo mediante requerimento do MP.', 'O MP pode diretamente proceder ao indiciamento, dispensando a atuação do delegado.', 'O juiz pode determinar o indiciamento quando o MP comprovar elementos suficientes de autoria.'],
+        ans: 1,
+        exp: 'Conforme a Lei 12.830/2013 e entendimento consolidado do STF, o indiciamento é ato técnico-jurídico exclusivo e privativo do delegado de polícia. Nem o juiz pode determiná-lo — mesmo a requerimento do MP —, nem o MP pode proceder ao indiciamento diretamente. O STF julgou o HC 115.015 no sentido de que o indiciamento compulsório viola o princípio da independência técnica do delegado. Se o MP discorda, pode oferecer denúncia diretamente com base nos elementos que possui.',
+        erros: ['ERRADA: o juiz NÃO pode determinar o indiciamento mesmo a requerimento do MP — é ato privativo do delegado (STF, HC 115.015; Lei 12.830/2013, art. 2º, §6º).', 'CORRETA.', 'ERRADA: o MP não tem competência para indiciamento — é ato privativo do delegado. O MP pode requisitar diligências, mas não indiciar.', 'ERRADA: o juiz não pode determinar o indiciamento em nenhuma hipótese, por mais que o MP apresente elementos.'],
+        tip: 'Caso concreto clássico: o MP discorda do não-indiciamento → pode oferecer denúncia diretamente (sem indiciamento), mas não pode forçar o indiciamento.',
+        tiptype: 'cm-purple'
+      },
+
+      // ─ FLAGRANTE ────────────────────────────────────────────────────────────
+      {
+        id: 'FL01', topic: 'FL', dif: 'l',
+        text: 'Sobre as espécies de prisão em flagrante previstas no art. 302 do CPP, assinale a alternativa que corretamente identifica o flagrante PRESUMIDO (também chamado de ficto ou assimilado):',
+        opts: ['O agente é surpreendido no exato momento da prática da infração penal.', 'O agente é perseguido logo após a infração, em situação que faça presumir ser o autor do fato.', 'O agente é encontrado, logo depois da infração, com instrumentos, armas, objetos ou papéis que façam presumir ser ele o autor.', 'O agente é induzido por policial a praticar o crime para ser preso em seguida.'],
+        ans: 2,
+        exp: 'O art. 302, IV do CPP define o flagrante presumido (ficto): o agente é "encontrado, logo depois, com instrumentos, armas, objetos ou papéis que façam presumir ser ele o autor da infração". A característica essencial é que o agente é ENCONTRADO (não está em perseguição) e há objetos que o vinculam ao crime. Difere do flagrante impróprio (art. 302, III), em que o agente está sendo PERSEGUIDO logo após o crime.',
+        erros: ['Descreve o flagrante próprio (art. 302, I) — preso no momento da infração.', 'Descreve o flagrante impróprio (art. 302, III) — agente sendo perseguido logo após o crime. A diferença do presumido é que no impróprio há perseguição; no presumido, o agente é encontrado sem perseguição.', 'CORRETA — flagrante presumido/ficto (art. 302, IV).', 'Descreve o flagrante preparado (ILEGAL — Súmula 145 STF). O agente é induzido a praticar o crime por ação de terceiro, o que configura crime impossível.'],
+        tip: 'DIFERENÇA CRUCIAL: Impróprio = PERSEGUIÇÃO. Presumido = ENCONTRADO com objetos. Ambos são legais. O Preparado (armadilha) = ILEGAL.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'FL02', topic: 'FL', dif: 'm',
+        text: 'Sobre o flagrante preparado, à luz da Súmula 145 do Supremo Tribunal Federal, assinale a alternativa CORRETA:',
+        opts: ['É válido quando realizado por agentes estatais devidamente autorizados por ordem judicial.', 'Configura crime impossível, pois o agente é induzido à infração que jamais poderia se consumar sem a intervenção do provocador.', 'É válido apenas quando há risco real de consumação do crime, mesmo que o agente tenha sido induzido.', 'É válido quando o agente já estava planejando cometer o crime, independentemente da indução.'],
+        ans: 1,
+        exp: 'A Súmula 145 do STF estabelece: "Não há crime quando a preparação do flagrante pela polícia torna impossível a sua consumação." O flagrante preparado (ou provocado) ocorre quando o agente policial (ou terceiro) induz alguém a praticar um crime para então prendê-lo. Configura crime impossível (art. 17 CP), pois a consumação era inviável desde o início pela própria intervenção do provocador. O resultado: a prisão é ilegal e o agente é absolvido. Difere do flagrante ESPERADO (legal): neste, a autoridade apenas aguarda que o crime aconteça sem interferir na decisão do agente.',
+        erros: ['ERRADA: o flagrante preparado é SEMPRE ilegal (Súmula 145 STF), mesmo com ordem judicial — a ordem judicial não legitima a indução ao crime.', 'CORRETA.', 'ERRADA: o risco de consumação não legitima o flagrante preparado. A súmula é absoluta: se houve indução, é crime impossível e a prisão é ilegal.', 'ERRADA: mesmo que o agente tivesse intenção prévia, o flagrante preparado invalida a prisão — o que importa é a intervenção que tornou impossível a consumação.'],
+        tip: 'Preparado × Esperado: No ESPERADO a autoridade aguarda (LEGAL). No PREPARADO a autoridade induz (ILEGAL). A Súmula 145 STF é taxativa.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'FL03', topic: 'FL', dif: 'm',
+        text: 'Em relação à possibilidade de prisão em flagrante por particular, o CPP determina que:',
+        opts: ['Apenas a autoridade policial pode efetuar prisão em flagrante, sendo vedada ao particular.', 'Qualquer do povo poderá prender quem quer que seja encontrado em situação de flagrância, e as autoridades policiais e seus agentes deverão prender quem se encontrar em flagrante delito.', 'O particular somente pode prender em flagrante crimes apenados com reclusão.', 'O particular pode prender em flagrante, mas deve apresentar a pessoa à autoridade policial no prazo de 24 horas.'],
+        ans: 1,
+        exp: 'O art. 301 do CPP estabelece expressamente: "Qualquer do povo poderá e as autoridades policiais e seus agentes deverão prender quem quer que seja encontrado em flagrante delito." Portanto: (1) para o PARTICULAR = FACULDADE (pode, mas não é obrigado); (2) para a AUTORIDADE POLICIAL = OBRIGAÇÃO (deve prender). Não há restrição quanto ao tipo de crime (reclusão ou detenção) para a prisão em flagrante por particular.',
+        erros: ['ERRADA: qualquer pessoa pode efetuar prisão em flagrante (art. 301 CPP) — a vedação não existe.', 'CORRETA — é a transcrição fiel do art. 301 CPP.', 'ERRADA: não há restrição de tipo de crime para o particular prender em flagrante. Qualquer infração pode ser objeto de flagrante por qualquer pessoa.', 'ERRADA: o prazo para apresentar o preso à autoridade é imediato, não 24 horas. A audiência de custódia deve ocorrer em até 24 horas da prisão.'],
+        tip: 'Art. 301 CPP: PARTICULAR = PODE (faculdade). POLÍCIA = DEVE (obrigação). Não há restrição de tipo de crime.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FL04', topic: 'FL', dif: 'm',
+        text: 'A audiência de custódia, instituída no ordenamento jurídico brasileiro por decisão do STF e regulamentada pela Resolução CNJ 213/2015, determina que:',
+        opts: ['O preso em flagrante deve ser apresentado ao juiz em até 48 horas da prisão.', 'O preso em flagrante deve ser apresentado ao juiz em até 24 horas da prisão.', 'A audiência de custódia é facultativa, sendo realizada apenas quando o MP requerer.', 'A audiência só é obrigatória em crimes hediondos ou quando o réu estiver preso preventivamente.'],
+        ans: 1,
+        exp: 'A audiência de custódia (ou audiência de apresentação) foi implementada pelo STF na ADPF 347 e regulamentada pela Resolução CNJ 213/2015. Determina que toda pessoa presa em flagrante deve ser apresentada pessoalmente ao juiz competente em até 24 horas após sua prisão. O juiz analisa: (1) legalidade da prisão; (2) necessidade de conversão em preventiva; (3) possibilidade de liberdade provisória com ou sem fiança; (4) ocorrência de tortura ou maus-tratos. Finalidade: garantir os direitos do preso e combater abusos na fase do flagrante.',
+        erros: ['ERRADA: o prazo é de 24 horas, não 48 horas (Resolução CNJ 213/2015; ADPF 347 STF).', 'CORRETA.', 'ERRADA: a audiência de custódia é OBRIGATÓRIA para toda pessoa presa em flagrante, independentemente de requerimento do MP.', 'ERRADA: a audiência de custódia é obrigatória para qualquer prisão em flagrante, não apenas em crimes hediondos ou preventivas.'],
+        tip: 'Audiência de custódia: OBRIGATÓRIA, em até 24 HORAS, para QUALQUER prisão em flagrante. Verifica legalidade e possibilidade de liberdade.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'FL05', topic: 'FL', dif: 'h',
+        text: 'Carlos foi preso por policiais que, em rondas noturnas, o encontraram com uma televisão, dois celulares e ferramentas de arrombamento, sem conseguir comprovar a origem dos bens. Uma hora antes, havia sido registrada ocorrência de furto qualificado em residência próxima. Sobre a prisão de Carlos, é correto afirmar que se trata de:',
+        opts: ['Flagrante próprio (art. 302, I CPP), pois Carlos estava no local próximo ao crime.', 'Flagrante impróprio (art. 302, III CPP), pois os policiais o perseguiram logo após o crime.', 'Flagrante presumido (art. 302, IV CPP), pois Carlos foi encontrado com objetos que fazem presumir ser o autor da infração.', 'Flagrante forjado, pois as provas foram plantadas pelos policiais.'],
+        ans: 2,
+        exp: 'O caso descreve o flagrante presumido (art. 302, IV CPP): Carlos foi ENCONTRADO "logo depois" com objetos (televisão, celulares, ferramentas de arrombamento) que fazem presumir ser ele o autor do furto. Não há narrativa de perseguição (o que seria flagrante impróprio). O flagrante próprio exige que o agente seja pego no exato momento do crime. O flagrante forjado é aquele em que os objetos são plantados — o enunciado não menciona isso. A expressão "logo depois" é fundamental: não pode ser muito tempo depois do crime.',
+        erros: ['ERRADA: o flagrante próprio exige que o agente seja pego no momento da infração ou imediatamente após (arts. 302, I e II). Não há essa informação no caso — Carlos foi encontrado uma hora depois, próximo ao local.', 'ERRADA: o flagrante impróprio exige perseguição logo após o crime. O enunciado não menciona perseguição — Carlos foi encontrado durante rondas de rotina.', 'CORRETA.', 'ERRADA: não há no enunciado nenhum elemento que indique que os objetos foram plantados pelos policiais.'],
+        tip: 'APLIQUE ao caso: há PERSEGUIÇÃO? → Impróprio. Há OBJETOS que vinculam ao crime, sem perseguição? → Presumido. É no ato? → Próprio.',
+        tiptype: 'cm-blue'
+      },
+
+      // ─ AÇÃO PENAL ───────────────────────────────────────────────────────────
+      {
+        id: 'AP01', topic: 'AP', dif: 'l',
+        text: 'Sobre as espécies de ação penal, assinale a alternativa que descreve corretamente a ação penal pública incondicionada:',
+        opts: ['Depende de representação do ofendido para que o Ministério Público possa oferecer denúncia.', 'O Ministério Público age de ofício, independentemente de qualquer provocação do ofendido ou de terceiros.', 'É proposta diretamente pelo ofendido mediante queixa-crime perante o juízo competente.', 'Depende de requisição do Ministro da Justiça para crimes praticados por estrangeiros.'],
+        ans: 1,
+        exp: 'Na ação penal pública incondicionada, o Ministério Público é o titular exclusivo da ação penal e age de ofício — independentemente de qualquer manifestação de vontade da vítima, de representação ou de requisição. O MP está obrigado a oferecer a denúncia quando presentes os requisitos legais (princípio da obrigatoriedade). Exemplos: homicídio, roubo, tráfico de drogas, corrupção. É a espécie mais comum de ação penal no sistema brasileiro.',
+        erros: ['ERRADA: na ação pública INCONDICIONADA não há necessidade de representação — o MP age de ofício.', 'CORRETA.', 'ERRADA: descreve a ação penal privada, proposta pelo ofendido mediante queixa-crime.', 'ERRADA: a requisição do Ministro da Justiça é condição de procedibilidade apenas para crimes praticados por estrangeiro contra brasileiro no exterior (art. 7º, §3º, b, CP) ou em crimes de calúnia/injúria contra o Presidente da República.'],
+        tip: 'Pública INCONDICIONADA: MP age de OFÍCIO. Nenhuma condição é necessária para iniciar a ação.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'AP02', topic: 'AP', dif: 'm',
+        text: 'Em relação à ação penal nos crimes de lesão corporal leve e culposa, e à alteração promovida pela Lei 9.099/1995 (Juizados Especiais), assinale a alternativa CORRETA:',
+        opts: ['A ação penal por lesão corporal leve é pública incondicionada, podendo o MP oferecer denúncia independentemente da vítima.', 'A ação penal por lesão corporal leve e culposa é pública condicionada à representação do ofendido (art. 88, Lei 9.099/95).', 'A ação penal por lesão corporal leve é privada exclusiva, sendo proposta pelo próprio ofendido.', 'A ação penal por lesão corporal leve é pública subsidiária — a vítima pode assumir a ação se o MP for inerte.'],
+        ans: 1,
+        exp: 'O art. 88 da Lei 9.099/1995 estabelece que, nos crimes de lesão corporal leve e lesão culposa, a ação penal será pública condicionada à representação. Isso significa que o MP só pode oferecer denúncia se a vítima (ou seu representante legal) manifestar vontade de processar o agressor dentro do prazo de 6 meses. Contudo, atenção à exceção: no contexto de violência doméstica e familiar (Lei Maria da Penha), a lesão corporal é PÚBLICA INCONDICIONADA — o STF decidiu na ADI 4.424/DF que o MP pode oferecer denúncia independentemente da representação da vítima.',
+        erros: ['ERRADA: a lesão corporal leve passou a ser de ação PÚBLICA CONDICIONADA com a Lei 9.099/95. Antes era incondicionada.', 'CORRETA — art. 88 da Lei 9.099/95.', 'ERRADA: não é ação privada exclusiva — continua sendo pública (condicionada). Quem propõe é o MP, não o ofendido.', 'ERRADA: subsidiária é a ação que a vítima propõe quando o MP é inerte em crime de ação pública. A lesão corporal leve é condicionada, não subsidiária.'],
+        tip: 'EXCEÇÃO FUNDAMENTAL: Em violência doméstica (Lei Maria da Penha), lesão corporal = PÚBLICA INCONDICIONADA (STF, ADI 4424).',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'AP03', topic: 'AP', dif: 'm',
+        text: 'Sobre a ação penal privada e o princípio da indivisibilidade, assinale a alternativa CORRETA:',
+        opts: ['Na ação penal privada, o querelante pode optar por processar apenas alguns dos coautores, deixando os demais imunes.', 'A renúncia ao direito de queixa em favor de um dos coautores não se estende aos demais — cada um responde individualmente.', 'O princípio da indivisibilidade determina que a renúncia ao direito de queixa feita a favor de um dos coautores se estende a todos.', 'Na ação penal privada, o Ministério Público pode assumir a ação se o querelante renunciar à queixa.'],
+        ans: 2,
+        exp: 'O art. 49 do CPP consagra o princípio da indivisibilidade na ação penal privada: "A renúncia ao exercício do direito de queixa, em relação a um dos autores do crime, a todos se estenderá." A ratio é evitar o uso seletivo da ação penal como instrumento de pressão ou vingança pessoal — o ofendido não pode escolher a quem processar entre os coautores. Se o querelante inclui apenas um dos coautores, o juiz intima para que inclua os demais; se não incluir, o MP pode requerer a extinção da punibilidade de todos por renúncia tácita.',
+        erros: ['ERRADA: o princípio da indivisibilidade veda a escolha seletiva de coautores — o querelante não pode processar apenas alguns (art. 49 CPP).', 'ERRADA: é exatamente o contrário — a renúncia em relação a um se estende a todos (art. 49 CPP).', 'CORRETA — art. 49 CPP.', 'ERRADA: na ação privada, se o querelante renunciar, a ação não pode ser assumida pelo MP (que só atua na pública). A renúncia extingue a punibilidade (art. 107, V CP).'],
+        tip: 'INDIVISIBILIDADE (AP Privada): renúncia/perdão a UM → estende-se a TODOS os coautores. Oposto da ação pública (divisível).',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'AP04', topic: 'AP', dif: 'h',
+        text: 'Pedro foi vítima de calúnia praticada por João. O prazo de 6 meses para oferecer queixa-crime transcorreu sem que Pedro tomasse qualquer providência. Posteriormente, Pedro contratou advogado e tentou ajuizar ação penal subsidiária da pública, alegando inércia do MP. Sobre essa situação, assinale a alternativa CORRETA:',
+        opts: ['Pedro pode ajuizar a ação penal subsidiária, pois o MP foi inerte dentro do prazo legal.', 'Pedro não pode ajuizar ação alguma, pois ocorreu decadência do direito de queixa na ação penal privada, extinguindo-se a punibilidade.', 'A ação penal subsidiária da pública é cabível quando o querelante deixar de oferecer a queixa no prazo legal.', 'O prazo de 6 meses é para a ação penal subsidiária, que pode ser ajuizada a qualquer tempo nos casos de ação privada.'],
+        ans: 1,
+        exp: 'Calúnia é crime de ação penal privada exclusiva. O prazo para oferecer queixa-crime é decadencial de 6 meses a contar do conhecimento da autoria (art. 38 CPP). A decadência é causa extintiva da punibilidade (art. 107, IV CP). Como Pedro não ofereceu queixa no prazo, operou-se a decadência, extinguindo-se a punibilidade de João. A ação penal subsidiária da pública (art. 5º, LIX CF) existe quando o MP NÃO oferece denúncia em crime de ação pública dentro do prazo. Não se confunde com a hipótese de decadência na ação privada.',
+        erros: ['ERRADA: a ação penal subsidiária da pública é cabível quando o MP for inerte em crime de AÇÃO PÚBLICA, não quando o ofendido deixou transcorrer o prazo da ação privada.', 'CORRETA — ocorreu decadência do direito de queixa (art. 38 CPP e art. 107, IV CP).', 'ERRADA: a ação penal subsidiária pressupõe crime de ação pública em que o MP foi inerte. Aqui o crime é de ação privada e foi a vítima que foi inerte.', 'ERRADA: o prazo de 6 meses é para oferecer a QUEIXA-CRIME (ação privada). A ação subsidiária tem prazo diferente (15 dias a 6 meses, conforme o caso).'],
+        tip: 'Decadência (ação privada): ofendido não propõe em 6 meses → punibilidade extinta. Subsidiária da pública: MP inerte em ação pública → ofendido age.',
+        tiptype: 'cm-red'
+      },
+
+      // ─ PROVAS ───────────────────────────────────────────────────────────────
+      {
+        id: 'PR01', topic: 'PR', dif: 'l',
+        text: 'Acerca das provas ilícitas no processo penal brasileiro, com fundamento na Constituição Federal e no CPP, assinale a alternativa CORRETA:',
+        opts: ['As provas obtidas por meios ilícitos são admissíveis quando favoráveis ao réu, em homenagem ao princípio da presunção de inocência.', 'São inadmissíveis, no processo, as provas obtidas por meios ilícitos, conforme determina o art. 5º, LVI da Constituição Federal.', 'A prova ilícita pode ser admitida mediante autorização judicial fundamentada, desde que o crime seja de natureza grave.', 'O juiz pode valorar a prova ilícita desde que desconsidere os elementos obtidos ilicitamente e utilize apenas o restante.'],
+        ans: 1,
+        exp: 'O art. 5º, LVI da Constituição Federal é categórico: "são inadmissíveis, no processo, as provas obtidas por meios ilícitos." Não há exceção constitucional com base na natureza do crime ou no favorecimento do réu. O art. 157 do CPP complementa: "São inadmissíveis, devendo ser desentranhadas do processo, as provas ilícitas, assim entendidas as obtidas em violação a normas constitucionais ou legais." A teoria dos frutos da árvore envenenada também contamina as provas derivadas (art. 157, §1º CPP).',
+        erros: ['ERRADA: a CF veda as provas ilícitas de forma ampla, sem exceção para os casos em que favorecem o réu. O texto literal proíbe absolutamente.', 'CORRETA — art. 5º, LVI CF e art. 157 CPP.', 'ERRADA: não existe previsão legal de autorização judicial para utilização de prova ilícita. A CF é expressa na vedação absoluta.', 'ERRADA: a prova ilícita deve ser desentranhada dos autos (art. 157 CPP) — o juiz não pode valorá-la nem parcialmente.'],
+        tip: 'Prova ilícita: INADMISSÍVEL (CF, art. 5º, LVI). Deve ser DESENTRANHADA dos autos. Sem exceção pelo texto constitucional.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PR02', topic: 'PR', dif: 'm',
+        text: 'A teoria dos frutos da árvore envenenada (fruits of the poisonous tree), prevista no art. 157, §1º do CPP, determina que:',
+        opts: ['As provas derivadas de provas ilícitas são sempre admissíveis, pois sua ilicitude é independente da prova originária.', 'As provas derivadas da prova ilícita também são inadmissíveis, salvo quando não evidenciado nexo de causalidade com a prova ilícita originária ou quando puderem ser obtidas por fonte independente.', 'As provas derivadas de ilícitas são inadmissíveis sem qualquer exceção, devendo ser todas desentranhadas dos autos.', 'A teoria dos frutos da árvore envenenada não foi recepcionada pelo ordenamento processual penal brasileiro.'],
+        ans: 1,
+        exp: 'O art. 157, §1º do CPP acolhe a teoria dos frutos da árvore envenenada: "São também inadmissíveis as provas derivadas das ilícitas, salvo quando não evidenciado o nexo de causalidade entre umas e outras, ou quando as derivadas puderem ser obtidas por uma fonte independente das primeiras." Portanto, o Brasil adota a teoria com DUAS exceções: (1) ausência de nexo causal — se a derivada teria sido obtida de qualquer forma, independentemente da ilícita; (2) fonte independente — a prova poderia ter sido obtida por outro meio legítimo. A doutrina também menciona a "descoberta inevitável" como terceira exceção.',
+        erros: ['ERRADA: as provas derivadas não são automáticamente admissíveis — regra geral são inadmissíveis, com as exceções previstas no art. 157, §1º CPP.', 'CORRETA — art. 157, §1º CPP.', 'ERRADA: o CPP prevê exceções expressas (sem nexo causal e fonte independente). A afirmação de que não há exceção alguma está incorreta.', 'ERRADA: a teoria foi expressamente incorporada ao CPP pelo art. 157, §1º (reforma de 2008 — Lei 11.690/2008).'],
+        tip: 'EXCEÇÕES à teoria do fruto envenenado: (1) sem nexo causal entre ilícita e derivada; (2) fonte independente. Com essas exceções, a derivada pode ser usada.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'PR03', topic: 'PR', dif: 'm',
+        text: 'O princípio do livre convencimento motivado (ou persuasão racional), adotado pelo CPP, significa que:',
+        opts: ['O juiz pode decidir com base em seu íntimo convencimento, sem necessidade de fundamentação ou apreciação das provas.', 'O juiz aprecia livremente as provas, mas deve indicar na sentença os motivos que embasaram seu convencimento, de forma racional e fundamentada.', 'O juiz está vinculado ao sistema de provas tarifadas, devendo dar peso fixo a cada tipo de prova.', 'O juiz deve decidir de acordo com o que a maioria das testemunhas afirmar, sendo esse o critério objetivo de valoração.'],
+        ans: 1,
+        exp: 'O sistema do livre convencimento motivado (persuasão racional), previsto nos arts. 155 e 381, III do CPP (e reforçado no art. 93, IX CF), significa que o juiz não está preso a critérios pré-fixados de valoração de provas (não é sistema de prova tarifada), mas também não pode decidir por convicção puramente íntima sem explicitação (sistema da íntima convicção). O juiz aprecia livremente as provas, mas DEVE fundamentar sua decisão racionalmente, indicando os elementos probatórios que o convenceram. A motivação é garantia de controle pelas partes e pelos tribunais.',
+        erros: ['ERRADA: isso descreveria o sistema da íntima convicção (adotado no Tribunal do Júri, em que os jurados votam secretamente sem fundamentação). No sistema do juiz singular, a fundamentação é obrigatória (art. 93, IX CF).', 'CORRETA.', 'ERRADA: o sistema de provas tarifadas (tarifa legal) foi abandonado — nele cada prova tinha valor predefinido em lei. O Brasil não adota esse sistema.', 'ERRADA: não há critério majoritário de testemunhas. O juiz avalia cada prova racionalmente, podendo até preferir o depoimento de uma testemunha ao de várias outras.'],
+        tip: 'Livre convencimento motivado: LIBERA o juiz dos critérios tarifados, mas EXIGE fundamentação racional. Sem fundamentação = nulidade da sentença.',
+        tiptype: 'cm-teal'
+      },
+
+      // ─ INTERCEPTAÇÃO TELEFÔNICA ─────────────────────────────────────────────
+      {
+        id: 'IT01', topic: 'IT', dif: 'm',
+        text: 'Acerca da interceptação das comunicações telefônicas, com base na Lei 9.296/1996, assinale a alternativa que indica requisito ESSENCIAL para sua validade:',
+        opts: ['Pode ser realizada pelo Delegado de Polícia sem ordem judicial quando houver urgência e perigo de dano irreparável.', 'A interceptação depende de ordem judicial, é cabível apenas em crimes punidos com reclusão e quando houver indícios razoáveis de autoria ou participação.', 'É admissível em qualquer infração penal, desde que devidamente fundamentada em relatório policial.', 'Pode ser determinada de ofício pelo Ministério Público, independentemente de ordem judicial, nos crimes de tráfico de drogas.'],
+        ans: 1,
+        exp: 'A Lei 9.296/96 (art. 2º) estabelece os requisitos cumulativos para a interceptação telefônica: (1) ordem judicial fundamentada; (2) crime punido com pena de reclusão; (3) existência de indícios razoáveis de autoria ou participação; (4) impossibilidade de obtenção da prova por outros meios disponíveis. O prazo inicial é de 15 dias, renovável por igual período quantas vezes necessárias (não há limite expresso de renovações). A interceptação em crime punido com DETENÇÃO é expressamente vedada (art. 2º, III da Lei 9.296/96).',
+        erros: ['ERRADA: jamais pode ser feita sem ordem judicial — nem em situações de urgência. A Lei 9.296/96 exige sempre decisão judicial fundamentada.', 'CORRETA.', 'ERRADA: crimes de detenção são expressamente excluídos (art. 2º, III Lei 9.296/96). Não é admissível em qualquer infração.', 'ERRADA: apenas o JUIZ pode autorizar a interceptação. MP e delegado podem apenas REQUERER ao juiz — nunca determinar por conta própria.'],
+        tip: '3 requisitos da interceptação: (1) ORDEM JUDICIAL; (2) crime de RECLUSÃO; (3) INDÍCIOS de autoria. Crime de DETENÇÃO = vedada.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'IT02', topic: 'IT', dif: 'h',
+        text: 'Delegado investiga suposto crime de ameaça (art. 147 CP), punido com pena de detenção de 1 a 6 meses ou multa. Para obter provas, requer ao juiz autorização para interceptação das comunicações telefônicas do suspeito. O juiz deve:',
+        opts: ['Autorizar a interceptação, pois o crime representa risco à integridade física da vítima, justificando a medida.', 'Indeferir o pedido, pois a Lei 9.296/96 veda expressamente a interceptação em crimes punidos com detenção.', 'Autorizar a interceptação, pois cabe ao juiz analisar a gravidade concreta do caso, independentemente da pena prevista.', 'Autorizar a interceptação desde que o delegado demonstre que não há outro meio de obter a prova.'],
+        ans: 1,
+        exp: 'O art. 2º, III da Lei 9.296/96 é expresso ao vedar a interceptação telefônica quando "o fato investigado constituir infração penal punida, no máximo, com pena de detenção." O crime de ameaça (art. 147 CP) é punido com detenção — portanto a interceptação é VEDADA, independentemente da gravidade concreta, do risco à vítima ou da ausência de outros meios de prova. Esse é um requisito legal que não admite ponderação judicial. A interceptação telefônica em crimes de detenção é prova ilícita por violação à lei.',
+        erros: ['ERRADA: a gravidade para a vítima não supera o requisito legal — a Lei 9.296/96 é explícita: crime de detenção = vedação absoluta.', 'CORRETA.', 'ERRADA: o juiz não tem poder de afastar o requisito legal. Se o crime é de detenção, a interceptação é vedada por lei, sem margem de ponderação.', 'ERRADA: mesmo sem outro meio de prova, a lei é clara. A ausência de outros meios apenas é requisito adicional em crimes de reclusão — não supera a vedação para crimes de detenção.'],
+        tip: 'Ameaça = detenção = interceptação VEDADA. Regra é simples e absoluta na Lei 9.296/96. Não importa a gravidade concreta do caso.',
+        tiptype: 'cm-red'
+      },
+
+      // ─ PRISÃO PREVENTIVA ────────────────────────────────────────────────────
+      {
+        id: 'PP01', topic: 'PP', dif: 'm',
+        text: 'Sobre a possibilidade de o juiz decretar a prisão preventiva de ofício, após a reforma promovida pela Lei 13.964/2019 (Pacote Anticrime), assinale a alternativa CORRETA:',
+        opts: ['O juiz pode decretar a prisão preventiva de ofício tanto na fase de inquérito policial quanto na fase processual.', 'O juiz não pode decretar a prisão preventiva de ofício em nenhuma fase — sempre depende de requerimento do MP, do querelante ou de representação do delegado.', 'O juiz não pode decretar a prisão preventiva de ofício na fase do inquérito policial, mas pode durante a fase processual.', 'O juiz só pode decretar a preventiva de ofício nos crimes hediondos e assemelhados.'],
+        ans: 1,
+        exp: 'O art. 311 do CPP, com a redação dada pela Lei 13.964/2019 (Pacote Anticrime), eliminou a possibilidade de decretação de ofício pelo juiz em QUALQUER fase. O novo texto exige sempre requerimento do MP, do querelante ou representação da autoridade policial, tanto no inquérito quanto no processo. O STF confirmou essa orientação ao julgar as ADIs 6298, 6299, 6300 e 6305, reforçando que o sistema acusatório (art. 3º-A CPP) impede a atuação jurisdicional de ofício em matéria de prisão cautelar. A decretação de ofício, mesmo na fase processual, é vedada.',
+        erros: ['ERRADA: após o Pacote Anticrime (Lei 13.964/2019), o juiz não pode mais decretar a preventiva de ofício em nenhuma fase — nem no IP, nem no processo. Sempre depende de provocação.', 'CORRETA — O art. 311 CPP (redação dada pela Lei 13.964/2019) exige requerimento em qualquer fase. O STF confirmou nas ADIs 6298/6299/6300/6305 que o sistema acusatório veda a decretação de ofício.', 'ERRADA: a redação anterior do art. 311 CPP permitia de ofício "no curso da ação penal", mas o Pacote Anticrime REMOVEU essa possibilidade. O novo texto não faz distinção entre IP e processo — exige provocação em ambos.', 'ERRADA: não há restrição à natureza do crime para essa regra procedimental. A vedação à decretação de ofício vale para qualquer crime.'],
+        tip: 'Após Pacote Anticrime (2019): juiz NÃO pode decretar preventiva de ofício em NENHUMA fase (IP ou processo). Sempre depende de requerimento do MP, querelante ou representação do delegado.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PP02', topic: 'PP', dif: 'm',
+        text: 'O art. 312 do CPP elenca os fundamentos da prisão preventiva. Marque a alternativa que apresenta fundamento INIDÔNEO para a decretação da prisão preventiva, segundo entendimento consolidado do STF e STJ:',
+        opts: ['Garantia da ordem pública para evitar reiteração criminosa pelo acusado.', 'Conveniência da instrução criminal diante de ameaças às testemunhas pelo réu.', 'Gravidade abstrata do crime e clamor social gerado pelo fato delituoso.', 'Assegurar a aplicação da lei penal quando há indícios de que o réu pretende fugir.'],
+        ans: 2,
+        exp: 'O STF e o STJ pacificaram que a "gravidade abstrata do crime" (gravidade genérica do tipo penal) e o "clamor público/social" NÃO são fundamentos idôneos para a prisão preventiva. A fundamentação deve ser CONCRETA, baseada em elementos específicos do caso em análise — não na simples consideração do crime previsto em abstrato. A Súmula 21 do STJ (antiga) e diversos julgados do STF afirmam que a simples alegação de gravidade do delito não justifica a segregação cautelar. Os fundamentos válidos estão no art. 312 CPP: ordem pública, ordem econômica, instrução criminal e aplicação da lei penal — mas sempre com fundamento concreto.',
+        erros: ['Fundamento VÁLIDO: garantia da ordem pública pode justificar a preventiva, desde que baseada em elementos concretos (risco real de reiteração criminosa comprovado no caso).', 'Fundamento VÁLIDO: conveniência da instrução criminal é fundamento expresso no art. 312 CPP quando há ameaça concreta às provas ou testemunhas.', 'INIDÔNEO — a resposta correta. Gravidade abstrata e clamor público não são fundamentos legais para a preventiva (STF e STJ).', 'Fundamento VÁLIDO: assegurar a aplicação da lei penal é fundamento expresso no art. 312 CPP quando há risco concreto de fuga do acusado.'],
+        tip: 'GRAVIDADE ABSTRATA e CLAMOR PÚBLICO = INIDÔNEOS. A fundamentação da preventiva deve ser sempre CONCRETA e específica ao caso.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PP03', topic: 'PP', dif: 'h',
+        text: 'Mariana é presa preventivamente durante a instrução processual de crime de tráfico de drogas. Após 6 meses presa, seus advogados ingressam com pedido de liberdade alegando excesso de prazo. O magistrado mantém a preventiva alegando que o processo é complexo. Sobre essa situação, assinale a alternativa mais correta:',
+        opts: ['A prisão preventiva não tem prazo máximo, podendo o juiz mantê-la enquanto subsistirem os fundamentos, independentemente do tempo.', 'A prisão preventiva deve ser encerrada automaticamente ao final de 90 dias, conforme previsão do CPP.', 'A ausência de prazo máximo legal não impede o reconhecimento de excesso de prazo constrangedor, que deve ser aferido caso a caso pelo Judiciário.', 'A prisão preventiva em crimes de tráfico tem prazo máximo de 180 dias, após o qual é obrigatória a liberdade provisória.'],
+        ans: 2,
+        exp: 'A prisão preventiva realmente não tem prazo máximo fixado em lei no CPP (diferente da temporária). Contudo, o STF consolidou que a ausência de prazo legal não confere ao Estado licença para manter o preso indefinidamente. O excesso de prazo (constrangimento ilegal) deve ser aferido concretamente, levando em conta: (1) complexidade da causa; (2) conduta do réu e de seu defensor; (3) atuação do Estado. Há súmulas do STF e STJ sobre o tema. O juiz deve realizar revisões periódicas da necessidade da custódia (art. 316, par. único CPP — inserido pelo Pacote Anticrime: revisão a cada 90 dias).',
+        erros: ['ERRADA: embora não haja prazo máximo expresso, o STF reconhece o excesso de prazo como constrangimento ilegal. A ausência de prazo não é carta branca para prisão indefinida.', 'ERRADA: não há prazo de 90 dias para encerramento automático da preventiva. O que o Pacote Anticrime criou foi a REVISÃO obrigatória a cada 90 dias (art. 316, par. único CPP).', 'CORRETA.', 'ERRADA: não existe prazo máximo de 180 dias para a preventiva em tráfico de drogas previsto no CPP. Os prazos específicos existem na prisão temporária (Lei 7.960/90).'],
+        tip: 'Preventiva: SEM prazo máximo legal, mas o STF coíbe o excesso. O Pacote Anticrime criou REVISÃO obrigatória a cada 90 dias (art. 316, §único CPP).',
+        tiptype: 'cm-purple'
+      },
+
+      // ─ PRISÃO TEMPORÁRIA ────────────────────────────────────────────────────
+      {
+        id: 'PT01', topic: 'PT', dif: 'm',
+        text: 'Sobre a prisão temporária, prevista na Lei 7.960/1990, assinale a alternativa CORRETA:',
+        opts: ['Pode ser decretada pelo juiz de ofício ou mediante requerimento do Ministério Público ou do delegado.', 'Pode ser decretada somente mediante requerimento do Ministério Público ou por representação do delegado — jamais de ofício pelo juiz.', 'Pode ser decretada pelo Ministério Público diretamente, sem necessidade de ordem judicial.', 'É cabível durante toda a fase de instrução processual, quando conveniente para a instrução do feito.'],
+        ans: 1,
+        exp: 'A Lei 7.960/1990 (art. 3º) determina que a prisão temporária somente pode ser decretada mediante "representação da autoridade policial ou requerimento do Ministério Público." Diferentemente da prisão preventiva na fase processual, o juiz NUNCA pode decretar a temporária de ofício. Além disso, a temporária só é cabível durante o INQUÉRITO POLICIAL — não pode ser decretada na fase processual (após o recebimento da denúncia). Quando o MP ou delegado requer, o juiz decide em 24 horas ouvido o MP (quando a representação vier do delegado).',
+        erros: ['ERRADA: o juiz NUNCA pode decretar a temporária de ofício — é vedação expressa da Lei 7.960/90.', 'CORRETA.', 'ERRADA: o MP não pode decretar prisão — é reserva de jurisdição. O MP requer ao juiz, que então decide.', 'ERRADA: a temporária é cabível apenas no INQUÉRITO POLICIAL. Após o recebimento da denúncia (fase processual), só cabe preventiva.'],
+        tip: 'Temporária: NUNCA de ofício. Só no IP. Requer MP ou Delegado → Juiz decide em 24h.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PT02', topic: 'PT', dif: 'm',
+        text: 'Em relação ao prazo da prisão temporária em crimes hediondos e equiparados, com base na Lei 7.960/1990 e na Lei 8.072/1990, assinale a alternativa CORRETA:',
+        opts: ['O prazo é de 10 dias, prorrogável por mais 10 dias em caso de extrema e comprovada necessidade.', 'O prazo é de 15 dias, prorrogável por mais 15 dias em caso de extrema e comprovada necessidade.', 'O prazo é de 30 dias, prorrogável por igual período em caso de extrema e comprovada necessidade.', 'O prazo é de 5 dias, prorrogável por mais 5 dias em caso de extrema e comprovada necessidade.'],
+        ans: 2,
+        exp: 'O art. 2º, §4º da Lei 8.072/1990 (Crimes Hediondos) estabelece prazo específico para a temporária em crimes hediondos e equiparados (tráfico, tortura, terrorismo): 30 dias, prorrogável por igual período (mais 30 dias) em caso de extrema e comprovada necessidade — totalizando até 60 dias. Para os crimes comuns (não hediondos), o prazo da Lei 7.960/90 é de 5 dias, prorrogável por mais 5 dias, totalizando até 10 dias. Essa é uma das distinções mais cobradas pela IBFC no tema de prisões cautelares.',
+        erros: ['ERRADA: 10+10 dias é o prazo máximo dos crimes COMUNS (5+5 da temporária comum). Crimes hediondos têm prazo maior.', 'ERRADA: 15+15 dias não existe na legislação de temporária. Os prazos são 5+5 (comuns) ou 30+30 (hediondos).', 'CORRETA — art. 2º, §4º Lei 8.072/90.', 'ERRADA: 5+5 dias é o prazo para crimes COMUNS (não hediondos) na Lei 7.960/90.'],
+        tip: 'TEMPORÁRIA: Crimes comuns = 5+5 dias (máx. 10). Crimes hediondos = 30+30 dias (máx. 60). A diferença é fundamental!',
+        tiptype: 'cm-gold'
+      },
+
+      // ─ NULIDADES ────────────────────────────────────────────────────────────
+      {
+        id: 'NU01', topic: 'NU', dif: 'm',
+        text: 'Acerca das nulidades no processo penal, o art. 563 do CPP consagra o princípio "pas de nullité sans grief". Assinale a alternativa que melhor explica esse princípio e sua aplicação:',
+        opts: ['Significa que qualquer irregularidade processual acarreta automaticamente nulidade do ato, independentemente de prejuízo.', 'Significa que nenhuma nulidade poderá ser declarada sem que a parte demonstre, ao menos em tese, o prejuízo concreto que sofreu.', 'Aplica-se apenas às nulidades absolutas, não às relativas, que prescindem de demonstração de prejuízo.', 'Veda qualquer questionamento de nulidade após a sentença de mérito, preservando a coisa julgada.'],
+        ans: 1,
+        exp: 'O art. 563 do CPP estabelece: "nenhum ato será declarado nulo, se da nulidade não resultar prejuízo para a acusação ou para a defesa." O princípio "pas de nullité sans grief" (sem prejuízo, não há nulidade) significa que a irregularidade processual, por si só, não gera nulidade automática — é necessário demonstrar o efetivo ou potencial prejuízo à parte. Nas nulidades RELATIVAS, o prejuízo deve ser sempre demonstrado. Nas nulidades ABSOLUTAS, em alguns casos o prejuízo é PRESUMIDO (como na ausência de defensor), mas há tendência jurisprudencial de exigir demonstração mesmo nas absolutas.',
+        erros: ['ERRADA: esse seria o sistema do formalismo puro, abandonado pelo CPP. A lei exige demonstração de prejuízo.', 'CORRETA.', 'ERRADA: é justamente o contrário — o princípio se aplica especialmente às nulidades relativas. Nas absolutas, o prejuízo pode ser presumido em determinados casos.', 'ERRADA: o princípio não tem relação com momento temporal (após a sentença). É sobre a demonstração de prejuízo para que a nulidade seja reconhecida.'],
+        tip: 'Pas de nullité sans grief: SEM PREJUÍZO = SEM NULIDADE. Irregularidade + sem prejuízo = ato válido. Sempre argua o prejuízo ao questionar nulidade.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'NU02', topic: 'NU', dif: 'm',
+        text: 'Diferenciando nulidade absoluta de nulidade relativa no processo penal, assinale a alternativa INCORRETA:',
+        opts: ['A nulidade absoluta pode ser reconhecida de ofício pelo juiz a qualquer tempo, enquanto a relativa depende de provocação da parte interessada.', 'A nulidade relativa deve ser arguida no momento processual oportuno, sob pena de preclusão e consequente sanação do vício.', 'Tanto a nulidade absoluta quanto a nulidade relativa podem ser sanadas pelo consentimento expresso das partes.', 'A nulidade absoluta não está sujeita à preclusão, podendo ser alegada em qualquer fase do processo ou grau de jurisdição.'],
+        ans: 2,
+        exp: 'A questão pede a alternativa INCORRETA. A assertiva que está errada é a "C": apenas a nulidade RELATIVA pode ser sanada — pelo consentimento das partes (via aquiescência ao ato viciado) ou pelo decurso do prazo sem arguição. A nulidade ABSOLUTA JAMAIS pode ser sanada pelo consentimento das partes ou pelo tempo — ela viola norma cogente que protege interesse público ou garantia constitucional fundamental. O juiz deve reconhecê-la de ofício a qualquer tempo, independentemente de manifestação das partes.',
+        erros: ['CORRETA — não é a incorreta. A nulidade absoluta pode ser reconhecida de ofício; a relativa depende de provocação.', 'CORRETA — não é a incorreta. A nulidade relativa preclude se não arguida no momento correto (art. 571 CPP).', 'INCORRETA — esta é a resposta certa da questão. A nulidade absoluta não sana por consentimento. Só a relativa sana.', 'CORRETA — não é a incorreta. A nulidade absoluta realmente não preclude.'],
+        tip: 'ABSOLUTA: não sana, não preclude, de ofício pelo juiz. RELATIVA: sana pelo tempo/consentimento, preclude, depende de provocação.',
+        tiptype: 'cm-red'
+      },
+
+      // ─ HABEAS CORPUS ────────────────────────────────────────────────────────
+      {
+        id: 'HC01', topic: 'HC', dif: 'l',
+        text: 'Sobre o habeas corpus, remédio constitucional previsto no art. 5º, LXVIII da Constituição Federal, assinale a alternativa CORRETA quanto à legitimidade ativa para sua impetração:',
+        opts: ['Apenas o próprio paciente pode impetrar habeas corpus em seu favor, pessoalmente ou por meio de advogado.', 'Apenas o advogado regularmente inscrito na OAB pode impetrar habeas corpus, pois é peça jurídica que exige capacidade postulatória.', 'Qualquer pessoa, nacional ou estrangeira, física ou jurídica, pode impetrar habeas corpus em favor próprio ou alheio, independentemente de ser advogado.', 'Apenas o Ministério Público e a Defensoria Pública têm legitimidade para impetrar habeas corpus.'],
+        ans: 2,
+        exp: 'O habeas corpus é o único remédio constitucional que dispensa a capacidade postulatória do impetrante — qualquer pessoa, independentemente de ser advogado, pode impetrá-lo. A CF (art. 5º, LXVIII) e o STF confirmam: pessoa física ou jurídica, nacional ou estrangeira, capaz ou incapaz (via representante), preso ou livre, pode impetrar HC. O próprio paciente pode impetrá-lo de próprio punho (denominado HC "pro se"). O MP também tem legitimidade. Inclusive, o juiz pode conceder HC de ofício (art. 654, §2º CPP).',
+        erros: ['ERRADA: não é necessário ser o próprio paciente — qualquer pessoa pode impetrar em favor de outrem.', 'ERRADA: o HC é a exceção ao princípio da capacidade postulatória — não exige advogado. Qualquer pessoa pode impetrá-lo.', 'CORRETA.', 'ERRADA: embora MP e Defensoria possam impetrar HC, a legitimidade é muito mais ampla — qualquer pessoa física ou jurídica pode fazê-lo.'],
+        tip: 'HC: QUALQUER PESSOA pode impetrar — sem advogado, sem capacidade postulatória exigida. É a única exceção à regra da representação por advogado.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'HC02', topic: 'HC', dif: 'm',
+        text: 'O habeas corpus é cabível quando:',
+        opts: ['Alguém sofre ameaça ou coação ilegal em sua liberdade de locomoção, por ilegalidade ou abuso de poder.', 'Alguém tem acesso negado a informações pessoais em registros de banco de dados governamentais.', 'Falta norma regulamentadora que impossibilita o exercício de direito constitucional.', 'Há necessidade de anulação de ato lesivo ao patrimônio público por agente estatal.'],
+        ans: 0,
+        exp: 'O art. 5º, LXVIII da CF é preciso: "conceder-se-á habeas corpus sempre que alguém sofrer ou se achar ameaçado de sofrer violência ou coação em sua liberdade de locomoção, por ilegalidade ou abuso de poder." O HC protege exclusivamente a liberdade de IR, VIR e PERMANECER (locomoção). Cabe tanto de forma preventiva (salvo-conduto) quanto repressiva (liberatório). Não protege outros direitos — para isso existem outros remédios: habeas data (acesso a dados pessoais), mandado de injunção (falta de norma), ação popular (atos lesivos ao patrimônio).',
+        erros: ['CORRETA — art. 5º, LXVIII CF.', 'ERRADA: acesso negado a dados pessoais em registros governamentais → HABEAS DATA (art. 5º, LXXII CF).', 'ERRADA: falta de norma regulamentadora que impede exercício de direito constitucional → MANDADO DE INJUNÇÃO (art. 5º, LXXI CF).', 'ERRADA: anulação de ato lesivo ao patrimônio público → AÇÃO POPULAR (art. 5º, LXXIII CF).'],
+        tip: 'HC = Liberdade de LOCOMOÇÃO. HD = Dados pessoais. MI = Norma faltante. MS = Direito líquido e certo. Ação Popular = Patrimônio público.',
+        tiptype: 'cm-gold'
+      },
+
+      // ─ TRIBUNAL DO JÚRI ─────────────────────────────────────────────────────
+      {
+        id: 'JR01', topic: 'JR', dif: 'm',
+        text: 'Na 1ª fase do procedimento do Tribunal do Júri (judicium accusationis), o juiz profere decisão de pronúncia quando:',
+        opts: ['Está convicto da culpa do acusado e acredita que o júri o condenará.', 'Se convence da inocência do acusado, mandando-o a julgamento para absolvição definitiva.', 'Há prova da materialidade do fato e indícios suficientes de autoria ou participação.', 'Há dúvida sobre a autoria, mas o acusado deve ser julgado pelo júri popular em razão da natureza do crime.'],
+        ans: 2,
+        exp: 'O art. 413 do CPP estabelece que "o juiz, fundamentadamente, pronunciará o acusado, se convencido da materialidade do fato e da existência de indícios suficientes de autoria ou de participação." O standard probatório para a pronúncia é diferente da sentença condenatória — não exige certeza, mas apenas indícios suficientes (fumus commissi delicti). O juiz não "condena" na pronúncia — ele apenas admite o julgamento pelo Tribunal do Júri. In dubio pro societate é o princípio: em caso de dúvida, pronuncia-se.',
+        erros: ['ERRADA: a pronúncia não exige convicção da culpa pelo juiz. Ele apenas encaminha ao júri quando há indícios suficientes — não precisa ter certeza.', 'ERRADA: se o juiz se convence da inocência, a decisão é ABSOLVIÇÃO SUMÁRIA (art. 415 CPP) — não pronúncia.', 'CORRETA — art. 413 CPP.', 'ERRADA: a dúvida sobre a autoria pode levar à IMPRONÚNCIA (art. 414 CPP) se não houver indícios suficientes, não à pronúncia.'],
+        tip: 'Pronúncia: materialidade + indícios suficientes de autoria. Não exige certeza — in dubio pro societate. A certeza da culpa é para a condenação final.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'JR02', topic: 'JR', dif: 'h',
+        text: 'Carlos é pronunciado pelo crime de homicídio qualificado (art. 121, §2º, I CP). Após a pronúncia, o Ministério Público sustenta a qualificadora "por motivo torpe" nos debates plenários. Os jurados, por 4 votos a 3, decidem: (1) que Carlos praticou o fato; (2) que houve homicídio doloso; (3) mas absolvem quanto à qualificadora. Sobre essa decisão, assinale a alternativa CORRETA:',
+        opts: ['Os jurados devem ser questionados novamente, pois o quórum mínimo para absolvição da qualificadora é 5 votos.', 'A decisão dos jurados é válida — Carlos responde pelo homicídio simples, absolvido da qualificadora por 4 votos a 3.', 'A decisão é inválida pois os jurados não podem absolver apenas da qualificadora — a votação é sobre o crime inteiro.', 'O promotor pode recorrer e o Tribunal pode reformar a decisão dos jurados quanto à qualificadora por maioria simples.'],
+        ans: 1,
+        exp: 'O Tribunal do Júri decide por maioria simples de 7 jurados (4 votos). A absolvição da qualificadora por 4 votos a 3 é válida — os jurados podem reconhecer o homicídio doloso mas afastar a qualificadora, resultando em condenação pelo homicídio simples (art. 121, caput CP). Isso é expressão da soberania dos veredictos e da íntima convicção dos jurados. O Tribunal não pode reformar o mérito do veredicto — pode apenas anular o julgamento por erro in procedendo (art. 593, III, d CPP). A votação é secreta e por maioria simples (4 de 7).',
+        erros: ['ERRADA: o quórum no júri é de maioria simples — 4 votos. 5 votos seria maioria qualificada, que não existe no sistema do júri brasileiro.', 'CORRETA.', 'ERRADA: os jurados podem votar separadamente sobre cada quesito (materialidade, autoria, qualificadoras, causas de diminuição, etc.). É perfeitamente cabível afastar apenas a qualificadora.', 'ERRADA: o Tribunal não pode reformar o mérito do veredicto dos jurados — isso violaria a soberania dos veredictos (art. 5º, XXXVIII, c CF). Só pode anular o julgamento em caso de erro de procedimento.'],
+        tip: 'Júri: decisão por MAIORIA SIMPLES (4 de 7). Veredicto é SOBERANO — o Tribunal não reforma o mérito, só pode anular em caso de error in procedendo.',
+        tiptype: 'cm-purple'
+      },
+
+      // ─ RECURSOS ─────────────────────────────────────────────────────────────
+      {
+        id: 'RC01', topic: 'RC', dif: 'm',
+        text: 'O Recurso em Sentido Estrito (RESE), previsto no art. 581 do CPP, é cabível em hipóteses TAXATIVAS. Assinale a alternativa que indica hipótese de cabimento do RESE:',
+        opts: ['Contra a sentença definitiva de mérito que absolve ou condena o réu.', 'Contra a decisão que não recebe a denúncia ou a queixa.', 'Contra o acórdão do Tribunal que mantém decisão do juiz singular.', 'Contra qualquer decisão interlocutória proferida pelo juiz criminal.'],
+        ans: 1,
+        exp: 'O art. 581, I do CPP prevê o RESE contra a decisão que "não receber a denúncia ou a queixa" — trata-se de decisão que rejeita o início da ação penal. O RESE é recurso contra decisões INTERLOCUTÓRIAS específicas, elencadas taxativamente no art. 581 CPP. Não é cabível contra sentença definitiva (essa é recorrida por APELAÇÃO) nem contra acórdão (que é recorrido por recurso especial ou extraordinário). O rol do art. 581 inclui ainda: decisão que conceder ou negar habeas corpus (I), que declarar extinta a punibilidade (VIII), que conceder fiança (IX), etc.',
+        erros: ['ERRADA: contra sentença definitiva de mérito (condenatória ou absolutória), o recurso cabível é a APELAÇÃO (art. 593 CPP), não o RESE.', 'CORRETA — art. 581, I CPP.', 'ERRADA: contra acórdão, os recursos cabíveis são o Recurso Especial (STJ) ou o Recurso Extraordinário (STF), dependendo da matéria.', 'ERRADA: o RESE não é recurso cabível contra "qualquer" decisão interlocutória — seu cabimento é TAXATIVO, limitado às hipóteses do art. 581 CPP.'],
+        tip: 'RESE: hipóteses TAXATIVAS (art. 581 CPP). Prazo: 5 dias. Contra rejeição da denúncia/queixa é exemplo clássico. Sentença → Apelação.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'RC02', topic: 'RC', dif: 'h',
+        text: 'A apelação no processo penal, conforme o art. 593 do CPP, apresenta prazo de interposição. Considerando que tanto o Ministério Público quanto o réu foram intimados da sentença condenatória, assinale a alternativa CORRETA sobre os prazos para interposição de apelação:',
+        opts: ['O prazo é de 15 dias úteis para ambos, contados da intimação pessoal.', 'O prazo é de 5 dias para ambos (MP e réu/defensor), contados da intimação.', 'O prazo é de 5 dias para o MP (intimação pessoal, contando da publicação) e de 10 dias para o réu.', 'O prazo é de 10 dias corridos para ambos, salvo para a Defensoria Pública que tem prazo em dobro.'],
+        ans: 1,
+        exp: 'O art. 593 do CPP estabelece que a apelação no processo penal tem prazo de 5 dias, contados da intimação da sentença. O prazo é IDÊNTICO para o Ministério Público e para o réu/defensor — 5 dias. Essa é uma das distinções fundamentais em relação ao CPC, onde o prazo de apelação é de 15 dias úteis. O CPP não faz distinção de prazos entre as partes nesse recurso, e o prazo é contado em dias corridos (o CPP não adota dias úteis como padrão, ao contrário do CPC). A Defensoria Pública tem prazo em dobro para recursos (art. 128, I da LC 80/94 e entendimento do STJ).',
+        erros: ['ERRADA: 15 dias é o prazo da apelação no PROCESSO CIVIL (CPC). No processo PENAL, o prazo é de 5 dias (CPP, art. 593).', 'CORRETA — art. 593 CPP.', 'ERRADA: o prazo de 5 dias é igual para ambos. Não há prazo de 10 dias para o réu na apelação penal.', 'ERRADA: o prazo é de 5 dias, não 10 dias. Quanto à Defensoria: ela realmente tem prazo em dobro (LC 80/94), o que resultaria em 10 dias — mas o prazo base é 5 dias para todos.'],
+        tip: 'Apelação PENAL: 5 dias (CPP, art. 593). Apelação CIVIL: 15 dias úteis (CPC). Não confunda! Prazo penal conta em dias corridos.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'RC03', topic: 'RC', dif: 'h',
+        text: 'Sobre o princípio da non reformatio in pejus (vedação à reformatio in pejus) no processo penal, assinale a alternativa CORRETA:',
+        opts: ['O Tribunal pode agravar a situação do réu quando apenas a defesa recorrer, se verificar erro na dosimetria da pena pelo juiz.', 'A reformatio in pejus é vedada quando apenas a defesa recorrer — o Tribunal não pode reformar a decisão para piorar a situação do réu.', 'A reformatio in pejus é vedada em qualquer hipótese, mesmo quando o Ministério Público recorrer para agravar a condenação.', 'A proibição de reformatio in pejus não se aplica ao processo penal, que admite revisão ampla pelo Tribunal em qualquer caso.'],
+        ans: 1,
+        exp: 'O princípio da non reformatio in pejus (art. 617 CPP) determina que o Tribunal, ao julgar recurso interposto apenas pela defesa (réu ou defensor), não pode agravar a situação do acusado. Isso inclui: aumentar a pena, alterar o regime de cumprimento para mais gravoso, adicionar penas acessórias, reconhecer qualificadoras etc. A ratio é garantir que a defesa possa recorrer sem o risco de piorar a situação. A vedação não se aplica quando o MP também recorre — nesse caso, o Tribunal pode agravar a situação do réu pois há recurso acusatório que amplia o objeto do julgamento.',
+        erros: ['ERRADA: quando apenas a defesa recorre, o Tribunal não pode agravar a situação — é a essência da non reformatio in pejus (art. 617 CPP).', 'CORRETA.', 'ERRADA: quando o MP recorre, a vedação não se aplica — o Tribunal pode agravar pois o próprio MP pediu o agravamento. A vedação é apenas quando só a defesa recorreu.', 'ERRADA: a proibição de reformatio in pejus está expressamente no CPP (art. 617) e é amplamente reconhecida na jurisprudência como garantia fundamental do sistema acusatório.'],
+        tip: 'Non reformatio in pejus: só a DEFESA recorreu → Tribunal NÃO pode piorar a situação. MP TAMBÉM recorreu → pode piorar (recurso acusatório autoriza).',
+        tiptype: 'cm-purple'
+      }
+    ];
+  </script>
+  <script src="../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

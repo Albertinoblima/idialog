@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Empresas Privadas - Soluções para otimizar atendimento e relacionamento com clientes">
+    <meta name="keywords" content="empresas privadas, CRM, chatbot, atendimento, clientes">
+    <meta name="author" content="iDialog">
+
+    <title>Empresas Privadas - iDialog</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="../../../public/icon/1 iDialog icone.ico">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../src/styles/main.css">
+    <link rel="stylesheet" href="../../../src/styles/responsive.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Footer Placeholder -->
+        <div id="footer-placeholder"></div>
+
+        <!-- JavaScript -->
+        <script src="../../../assets/js/main.js"></script>
+        <script src="../../../assets/js/components.js"></script>
+        <script>
+            // Torna todas as imagens com a classe 'clickable' interativas
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('img.clickable').forEach(function (img) {
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', function () {
+                        const link = img.getAttribute('data-link');
+                        if (link) window.location.href = link;
+                    });
+                });
+            });
+
+            // Carrega header e footer dinâmicos dos componentes
+            async function loadComponent(elementId, componentPath) {
+                try {
+                    const response = await fetch(componentPath);
+                    const html = await response.text();
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        element.innerHTML = html;
+                    }
+                } catch (error) {
+                    console.error(`Erro ao carregar componente ${componentPath}:`, error);
+                }
+            }
+            document.addEventListener('DOMContentLoaded', async () => {
+                await loadComponent('header-placeholder', '../../../components/header.html');
+                await loadComponent('footer-placeholder', '../../../components/footer.html');
+            });
+        </script>
+        <!-- Destaque institucional -->
+        <section class="privados-institutional">
+            <div class="container">
+                <div class="privados-institutional-content">
+                    <h2 class="privados-institutional-title">Portfólio de Empresas Privadas</h2>
+                    <p class="privados-institutional-desc">Veja exemplos reais de soluções implementadas para empresas
+                        privadas e resultados alcançados.</p>
+                    <div class="privados-institutional-links">
+                        <a href="../../../public/portfolio/iDialog Empresas Privadas.pdf" class="btn btn-primary"
+                            target="_blank">Ver Portfólio Completo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Page Header -->
+        <section class="page-header services-header privados-page-header">
+            <div class="container">
+                <div class="page-header-content privados-header-content">
+                    <h1 class="page-title privados-title">Empresas Privadas</h1>
+                    <p class="page-subtitle privados-subtitle">
+                        Tecnologias avançadas para otimizar o atendimento e relacionamento com clientes
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Overview -->
+        <section class="services-overview">
+            <div class="container">
+                <div class="services-intro privados-intro">
+                    <h2 class="privados-intro-title">Impulsionando Negócios com Tecnologia</h2>
+                    <p class="privados-intro-desc">
+                        Desenvolvemos soluções personalizadas para empresas que desejam melhorar seu relacionamento com
+                        clientes, otimizar processos de atendimento e aumentar a satisfação e fidelização. Nossas
+                        tecnologias proporcionam maior eficiência operacional e insights valiosos para tomada de
+                        decisões estratégicas.
+                    </p>
+                </div>
+                <div class="services-grid privados-services-grid">
+                    <!-- App Mobile Corporativo -->
+                    <div class="service-card card">
+                        <div class="service-icon">
+                            <img src="../../../public/portfolio/imagens portfolio/iDialog Empresas Privadas-pag11-img0.png"
+                                alt="App Mobile Corporativo" class="service-img clickable"
+                                data-link="../../../public/portfolio/iDialog Empresas Privadas.pdf">
+                        </div>
+                        <h3>App Mobile Corporativo</h3>
+                        <p>Aplicativo mobile para gestão de equipes e comunicação interna em empresas privadas.</p>
+                        <ul class="service-features">
+                            <li>Gestão de tarefas</li>
+                            <li>Comunicação instantânea</li>
+                            <li>Relatórios em tempo real</li>
+                        </ul>
+                        <div class="service-benefits">
+                            <h4>Benefícios:</h4>
+                            <ul>
+                                <li>Melhoria de processos</li>
+                                <li>Maior engajamento da equipe</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Chatbot Inteligente -->
+                    <div class="service-card card">
+                        <div class="service-icon">
+                            <img src="../../../public/portfolio/imagens portfolio/iDialog Empresas Privadas-pag09-img0.png"
+                                alt="Chatbot Inteligente" class="service-img clickable"
+                                data-link="../../../public/portfolio/iDialog Empresas Privadas.pdf">
+                        </div>
+                        <h3>Chatbot Inteligente</h3>
+                        <p>Atendimento automatizado e inteligente para clientes, disponível 24/7.</p>
+                        <ul class="service-features">
+                            <li>Respostas automáticas</li>
+                            <li>Integração com CRM</li>
+                            <li>Atendimento multicanal</li>
+                        </ul>
+                        <div class="service-benefits">
+                            <h4>Benefícios:</h4>
+                            <ul>
+                                <li>Redução de custos</li>
+                                <li>Agilidade no atendimento</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- CRM Avançado -->
+                    <div class="service-card featured card">
+                        <div class="service-icon">
+                            <img src="../../../public/portfolio/imagens portfolio/iDialog Empresas Privadas-pag01-img1.png"
+                                alt="CRM Avançado" class="service-img clickable"
+                                data-link="../../../public/portfolio/iDialog Empresas Privadas.pdf">
+                        </div>
+                        <h3>CRM Avançado</h3>
+                        <p>Sistema completo de gestão de relacionamento com clientes.</p>
+                        <ul class="service-features">
+                            <li>Gestão de leads e oportunidades</li>
+                            <li>Histórico completo de interações</li>
+                            <li>Automação de marketing</li>
+                            <li>Pipeline de vendas</li>
+                            <li>Relatórios de performance</li>
+                        </ul>
+                        <div class="service-benefits">
+                            <h4>Benefícios:</h4>
+                            <ul>
+                                <li>Aumento das vendas</li>
+                                <li>Melhoria no atendimento</li>
+                                <li>Maior retenção de clientes</li>
+                                <li>Otimização de processos</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Chatbots Inteligentes -->
+                    <div class="service-card featured">
+                        <div class="service-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Chatbots Inteligentes</h3>
+                        <p>Assistentes virtuais para atendimento automatizado 24/7.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Processamento de linguagem natural</li>
+                            <li><i class="fas fa-check"></i> Integração com sistemas</li>
+                            <li><i class="fas fa-check"></i> Aprendizado de máquina</li>
+                            <li><i class="fas fa-check"></i> Múltiplos canais de comunicação</li>
+                            <li><i class="fas fa-check"></i> Escalação inteligente</li>
+                        </ul>
+                        <div class="service-benefits">
+                            <h4>Benefícios:</h4>
+                            <ul>
+                                <li>Redução de custos operacionais</li>
+                                <li>Atendimento 24/7</li>
+                                <li>Resposta instantânea</li>
+                                <li>Maior satisfação do cliente</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Centro de Contato -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3>Centro de Contato</h3>
+                        <p>Plataforma unificada para gestão de todos os canais de atendimento.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Omnichannel</li>
+                            <li><i class="fas fa-check"></i> Distribuição inteligente</li>
+                            <li><i class="fas fa-check"></i> Gravação de chamadas</li>
+                            <li><i class="fas fa-check"></i> Monitoramento em tempo real</li>
+                        </ul>
+                    </div>
+
+                    <!-- Analytics e Relatórios -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3>Analytics e Relatórios</h3>
+                        <p>Business Intelligence para análise de dados e insights estratégicos.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Dashboards interativos</li>
+                            <li><i class="fas fa-check"></i> Relatórios customizados</li>
+                            <li><i class="fas fa-check"></i> Métricas de performance</li>
+                            <li><i class="fas fa-check"></i> Análise preditiva</li>
+                        </ul>
+                    </div>
+
+                    <!-- E-commerce Solutions -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>Soluções E-commerce</h3>
+                        <p>Plataformas completas para vendas online e gestão de loja virtual.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Catálogo de produtos</li>
+                            <li><i class="fas fa-check"></i> Gateway de pagamento</li>
+                            <li><i class="fas fa-check"></i> Gestão de estoque</li>
+                            <li><i class="fas fa-check"></i> Marketing digital integrado</li>
+                        </ul>
+                    </div>
+
+                    <!-- Automação de Marketing -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <h3>Automação de Marketing</h3>
+                        <p>Ferramentas para automatizar campanhas e nurturing de leads.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Email marketing</li>
+                            <li><i class="fas fa-check"></i> Segmentação avançada</li>
+                            <li><i class="fas fa-check"></i> Lead scoring</li>
+                            <li><i class="fas fa-check"></i> Jornada do cliente</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Industry Solutions -->
+        <section class="industry-solutions">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Soluções por Segmento</h2>
+                    <p class="section-subtitle">
+                        Adaptamos nossas tecnologias para diferentes setores da economia
+                    </p>
+                </div>
+                <div class="industry-grid">
+                    <div class="industry-item">
+                        <div class="industry-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h3>Varejo</h3>
+                        <p>Soluções para melhorar a experiência de compra e fidelização</p>
+                    </div>
+                    <div class="industry-item">
+                        <div class="industry-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3>Saúde</h3>
+                        <p>Plataformas para agendamento, telemedicina e gestão de pacientes</p>
+                    </div>
+                    <div class="industry-item">
+                        <div class="industry-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Educação</h3>
+                        <p>Sistemas para gestão acadêmica e comunicação institucional</p>
+                    </div>
+                    <div class="industry-item">
+                        <div class="industry-icon">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <h3>Indústria</h3>
+                        <p>Automação de processos e comunicação B2B</p>
+                    </div>
+                    <div class="industry-item">
+                        <div class="industry-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h3>Automotivo</h3>
+                        <p>CRM especializado e gestão de concessionárias</p>
+                    </div>
+                    <div class="industry-item">
+                        <div class="industry-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Alimentação</h3>
+                        <p>Delivery, cardápio digital e gestão de pedidos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Integration Section -->
+        <section class="integration-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Integrações Disponíveis</h2>
+                    <p class="section-subtitle">
+                        Conectamos suas ferramentas existentes para máxima eficiência
+                    </p>
+                </div>
+                <div class="integration-grid">
+                    <div class="integration-item">
+                        <i class="fab fa-salesforce"></i>
+                        <span>Salesforce</span>
+                    </div>
+                    <div class="integration-item">
+                        <i class="fab fa-hubspot"></i>
+                        <span>HubSpot</span>
+                    </div>
+                    <div class="integration-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp Business</span>
+                    </div>
+                    <div class="integration-item">
+                        <i class="fab fa-facebook-messenger"></i>
+                        <span>Facebook Messenger</span>
+                    </div>
+                    <div class="integration-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email Marketing</span>
+                    </div>
+                    <div class="integration-item">
+                        <i class="fab fa-google"></i>
+                        <span>Google Analytics</span>
+                    </div>
+                    <div class="integration-item">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Gateways de Pagamento</span>
+                    </div>
+                    <div class="integration-item">
+                        <i class="fas fa-database"></i>
+                        <span>ERPs</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Acelere o Crescimento do seu Negócio</h2>
+                    <p>Entre em contato conosco e descubra como nossas soluções podem potencializar seus resultados</p>
+                    <div class="cta-buttons">
+                        <a href="../../../pages/contato.html" class="btn btn-primary">Solicitar Demonstração</a>
+                        <a href="../../../pages/portfolio.html" class="btn btn-secondary">Ver Cases de Sucesso</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <!-- JavaScript -->
+    <script src="../../../assets/js/main.js"></script>
+    <script src="../../../assets/js/components.js"></script>
+    <script>
+        // Carrega header e footer dinâmicos dos componentes
+        async function loadComponent(elementId, componentPath) {
+            try {
+                const response = await fetch(componentPath);
+                const html = await response.text();
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.innerHTML = html;
+                }
+            } catch (error) {
+                console.error(`Erro ao carregar componente ${componentPath}:`, error);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadComponent('header-placeholder', '../../../components/header.html');
+            await loadComponent('footer-placeholder', '../../../components/footer.html');
+        });
+    </script>
+</body>
+
+</html>

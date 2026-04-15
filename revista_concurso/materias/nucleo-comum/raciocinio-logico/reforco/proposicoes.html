@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Lógica Sentencial — Proposições Lógicas · Técnico Judiciário TJPE · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Técnico · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Proposições Lógicas</em><br>12 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição
+      inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Definição de Proposição</span>
+      <span class="cv-tag">Negação</span>
+      <span class="cv-tag">Conectivos</span>
+      <span class="cv-tag">Condicional</span>
+      <span class="cv-tag">Equivalências</span>
+      <span class="cv-tag">Tautologia / Contradição</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      DP: 'Definição de Proposição',
+      NP: 'Negação de Proposições',
+      CJ: 'Conectivos Lógicos',
+      CD: 'Condicional',
+      DM: 'Equivalências Lógicas',
+      TC: 'Tautologia / Contradição'
+    };
+    const TOPIC_COLOR = {
+      DP: { bg: '#E6F1FB', c: '#0C447C' },
+      NP: { bg: '#FCEAEA', c: '#7A1515' },
+      CJ: { bg: '#E3F5EF', c: '#085041' },
+      CD: { bg: '#EDE8F8', c: '#3A246A' },
+      DM: { bg: '#FFF3DC', c: '#6A4800' },
+      TC: { bg: '#EAF3DE', c: '#173404' }
+    };
+
+    // ── 12 QUESTÕES DE LÓGICA SENTENCIAL ─────────────────────────────────────
+    const ALL = [
+      {
+        id: 'DP01', topic: 'DP', dif: 'l',
+        text: 'Na lógica sentencial, uma proposição é uma sentença declarativa que pode ser classificada como verdadeira ou falsa. Assinale a alternativa que apresenta uma proposição lógica:',
+        opts: ['Que dia maravilhoso!', 'X + 5 = 10.', 'O Tribunal de Justiça de Pernambuco fica em Recife.', 'Leia o edital com atenção.'],
+        ans: 2,
+        exp: 'Somente a alternativa C é uma sentença declarativa que pode ser julgada (V ou F). A (exclamativa), B (sentença aberta/incógnita) e D (imperativa/ordem) não são proposições.',
+        erros: ['Sentença exclamativa — não declarativa.', 'Sentença aberta (incógnita X) — não tem valor de verdade definido.', 'CORRETA.', 'Sentença imperativa (ordem) — não é proposição.'],
+        tip: 'Proposição precisa de Sujeito + Verbo + Sentido Completo (Declaração). Perguntas, ordens e exclamações estão fora.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'DP02', topic: 'DP', dif: 'm',
+        text: 'Analise as sentenças abaixo:<br>I. 12 é um número primo.<br>II. Onde está o processo?<br>III. Ele é um excelente magistrado.<br>São consideradas proposições lógicas:',
+        opts: ['I, apenas.', 'I e III, apenas.', 'II e III, apenas.', 'I, II e III.'],
+        ans: 0,
+        exp: 'I é uma proposição (falsa, mas é proposição). II é interrogativa. III é uma sentença aberta, pois o pronome "Ele" não identifica o sujeito, impedindo o julgamento de valor.',
+        erros: ['CORRETA.', 'I e III — III é sentença aberta.', 'II e III — II é interrogativa.', 'Inclui II e III, que não são proposições.'],
+        tip: 'Pronomes indefinidos (Ele, Aquele, Alguém) em frases isoladas geralmente tornam a sentença "aberta" (não proposição).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'NP01', topic: 'NP', dif: 'l',
+        text: 'A negação lógica da proposição "O técnico judiciário é organizado" é:',
+        opts: ['O técnico judiciário é desorganizado.', 'O técnico judiciário não é organizado.', 'Todo técnico judiciário é organizado.', 'Algum técnico judiciário não é organizado.'],
+        ans: 1,
+        exp: 'A negação clássica de uma proposição simples (P) é feita inserindo-se o modificador "não" (¬P) antes do verbo.',
+        erros: ['Troca o adjetivo pelo antônimo — erro clássico.', 'CORRETA.', 'Quantificador universal — não é negação.', 'Quantificador existencial — não é negação simples.'],
+        tip: 'Não troque o adjetivo pelo antônimo. A negação de "alto" é "não alto", e não "baixo".',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'NP02', topic: 'NP', dif: 'm',
+        text: 'Considere a proposição: "Não é verdade que o réu é culpado". Esta sentença é logicamente equivalente a:',
+        opts: ['O réu é inocente.', 'O réu não é culpado.', 'O réu é culpado.', 'É falso que o réu é inocente.'],
+        ans: 1,
+        exp: '"Não é verdade que P" é o mesmo que "Negar P". Logo, "O réu não é culpado".',
+        erros: ['"Inocente" não é sinônimo lógico de "não culpado" (pode haver dúvida).', 'CORRETA.', 'Afirma o oposto da negação.', 'Negação dupla que retorna à afirmação original.'],
+        tip: '"Não é verdade que", "É falso que" e "É mentira que" são comandos de negação.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'CJ01', topic: 'CJ', dif: 'l',
+        text: 'A proposição composta "O Sol é uma estrela E a Lua é um planeta" possui valor lógico falso porque:',
+        opts: ['A primeira proposição simples é falsa.', 'A segunda proposição simples é falsa.', 'Ambas as proposições simples são falsas.', 'O conectivo "E" exige que pelo menos uma seja falsa.'],
+        ans: 1,
+        exp: 'Na conjunção (P ∧ Q), o resultado só é verdadeiro se AMBAS forem verdadeiras. Como a Lua é um satélite (Q é falso), o conjunto é falso.',
+        erros: ['O Sol é uma estrela — P é verdadeiro.', 'CORRETA.', 'Apenas Q é falsa.', 'Conectivo "E" exige as duas verdadeiras.'],
+        tip: 'Conectivo "E" é exigente: tudo tem que ser verdade.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'CJ02', topic: 'CJ', dif: 'm',
+        text: 'Para que a proposição "Estudo para o TJPE OU vou ao cinema" seja considerada falsa, é necessário que:',
+        opts: ['O candidato estude para o TJPE e não vá ao cinema.', 'O candidato não estude para o TJPE e vá ao cinema.', 'O candidato estude para o TJPE e vá ao cinema.', 'O candidato não estude para o TJPE e não vá ao cinema.'],
+        ans: 3,
+        exp: 'Na disjunção inclusiva (P ∨ Q), o resultado só é falso se as duas partes forem falsas.',
+        erros: ['Uma é verdadeira — disjunção é V.', 'Uma é verdadeira — disjunção é V.', 'Ambas verdadeiras — disjunção é V.', 'CORRETA — ambas falsas.'],
+        tip: 'Conectivo "OU" é bonzinho: basta uma verdade para ele ser feliz (Verdade).',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'CD01', topic: 'CD', dif: 'l',
+        text: 'A tabela-verdade do conectivo condicional (P → Q) só apresenta valor lógico FALSO quando:',
+        opts: ['O antecedente é falso e o consequente é verdadeiro.', 'O antecedente é verdadeiro e o consequente é falso.', 'Ambas as proposições são falsas.', 'Ambas as proposições são verdadeiras.'],
+        ans: 1,
+        exp: 'É o famoso caso da "Vera Fischer": V → F = F. Em todos os outros casos, a condicional é verdadeira.',
+        erros: ['F → V = V.', 'CORRETA.', 'F → F = V.', 'V → V = V.'],
+        tip: 'Pense na promessa: "Se você passar (V), então te dou um carro (F)". Se eu não der o carro, eu menti (Falso).',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'CD02', topic: 'CD', dif: 'm',
+        text: 'Considere as proposições P: "Brasília é a capital do Brasil" (V) e Q: "2 + 2 = 5" (F). O valor lógico da condicional Q → P é:',
+        opts: ['Verdadeiro.', 'Falso.', 'Inconclusivo.', 'Contingente.'],
+        ans: 0,
+        exp: 'Se o antecedente é falso (F), a condicional é automaticamente verdadeira, independentemente do que venha depois. F → V = V.',
+        erros: ['CORRETA.', 'Falso seria apenas V → F.', 'Sempre tem valor definido.', 'É sempre verdadeira neste caso.'],
+        tip: 'Se o "Se" for mentira, o resultado final não importa; a frase não pode ser chamada de falsa.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'DM01', topic: 'DM', dif: 'l',
+        text: 'De acordo com as Leis de De Morgan, a negação da proposição "Sérgio é juiz e Paulo é promotor" é:',
+        opts: ['Sérgio não é juiz e Paulo não é promotor.', 'Sérgio não é juiz ou Paulo não é promotor.', 'Se Sérgio não é juiz, então Paulo não é promotor.', 'Sérgio é promotor ou Paulo é juiz.'],
+        ans: 1,
+        exp: 'Para negar o "E", negamos as duas partes e trocamos o "E" pelo "OU". ¬(P ∧ Q) ≡ ¬P ∨ ¬Q.',
+        erros: ['Negação errada (mantém "e").', 'CORRETA.', 'Condicional — não é negação.', 'Afirmação invertida.'],
+        tip: 'Negação do "E" vira "OU". Negação do "OU" vira "E".',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'DM02', topic: 'DM', dif: 'm',
+        text: 'A negação da sentença "Faz calor ou chove" é:',
+        opts: ['Não faz calor e não chove.', 'Não faz calor ou não chove.', 'Faz frio e está seco.', 'Se não faz calor, então chove.'],
+        ans: 0,
+        exp: 'Negamos as duas partes e trocamos o "OU" pelo "E". ¬(P ∨ Q) ≡ ¬P ∧ ¬Q.',
+        erros: ['CORRETA — 2ª Lei de De Morgan: ¬(P ∨ Q) ≡ ¬P ∧ ¬Q. Negamos cada proposição e trocamos "ou" por "e": "Não faz calor E não chove".', 'ERRADA: "Não faz calor OU não chove" (¬P ∨ ¬Q) mantém o "ou" — mas De Morgan exige trocar o conectivo. A negação do "ou" vira "e", e vice-versa. Essa alternativa seria correta para ¬(P ∧ Q), não ¬(P ∨ Q).', 'ERRADA: "Faz frio e está seco" usa antônimos, mas antônimos NÃO são negações lógicas. A negação lógica de "faz calor" é "NÃO faz calor" (e não "faz frio"). "Seco" como negação de "chove" é interpretação coloquial, não formal.', 'ERRADA: "Se não faz calor, então chove" é uma CONDICIONAL (¬P → Q). A negação de uma disjunção nunca gera uma condicional — gera uma conjunção de negações (¬P ∧ ¬Q). Condicional e disjunção são conectivos diferentes.'],
+        tip: 'Siga a regra: Nega, Nega e Troca o Conectivo.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'TC01', topic: 'TC', dif: 'l',
+        text: 'Uma proposição composta que é sempre verdadeira, independentemente dos valores lógicos das proposições simples que a compõem, é chamada de:',
+        opts: ['Contingência.', 'Contradição.', 'Tautologia.', 'Equivalência.'],
+        ans: 2,
+        exp: 'Tautologia é uma "verdade absoluta" lógica. Ex: P ∨ ¬P ("Ou chove ou não chove").',
+        erros: ['Oscila entre V e F.', 'Sempre falsa.', 'CORRETA.', 'Duas proposições equivalentes (não necessariamente sempre V).'],
+        tip: 'Tautologia = Tudo V.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'TC02', topic: 'TC', dif: 'm',
+        text: 'A proposição composta (P ∧ ¬P) é um exemplo clássico de:',
+        opts: ['Tautologia.', 'Contradição.', 'Contingência.', 'Paradoxo.'],
+        ans: 1,
+        exp: 'Uma proposição não pode ser verdadeira e falsa ao mesmo tempo. A conjunção de um termo com sua negação resulta sempre em Falso.',
+        erros: ['Sempre verdadeira.', 'CORRETA.', 'Oscila.', 'Paradoxo é diferente (autorreferente).'],
+        tip: 'Contradição = Tudo F. Se o resultado oscilar entre V e F conforme a entrada, chama-se Contingência.',
+        tiptype: 'cm-red'
+      }
+    ];
+
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

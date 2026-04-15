@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado Personalizado · Aprova Concursos</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/practice.css">
+</head>
+
+<body>
+
+    <!-- COVER -->
+    <div id="cover">
+        <div class="cv-issue" id="cv-issue-label">Simulado Personalizado</div>
+        <h1><em>Simulado</em><br><span id="cv-h1-sub">Combinado</span></h1>
+        <p class="cv-sub" id="cv-sub">Simulado adaptativo com questões de múltiplas matérias.</p>
+        <div class="cv-tags" id="cv-tags"></div>
+    </div>
+
+    <!-- CONTROLS BAR -->
+    <div id="controls">
+        <a class="ctrl" href="simulador.html">← Montar Simulado</a>
+        <a class="ctrl" href="index.html">📖 Revista</a>
+        <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+        <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+        <span class="ctrl-sep"></span>
+        <span id="round-info">Carregando...</span>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="app">
+        <div id="stats-bar">
+            <div class="stat-card">
+                <div class="stat-n stat-gold" id="s-total">0</div>
+                <div class="stat-l">Respondidas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-n stat-teal" id="s-ok">0</div>
+                <div class="stat-l">Corretas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-n stat-red" id="s-err">0</div>
+                <div class="stat-l">Erros</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-n stat-blue" id="s-pct">—</div>
+                <div class="stat-l">Aproveitamento</div>
+            </div>
+        </div>
+
+        <div class="prog-wrap">
+            <div class="prog-label">
+                <span id="prog-txt">Questão 1</span>
+                <span id="prog-pct">0%</span>
+            </div>
+            <div class="prog-bar">
+                <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+            </div>
+        </div>
+
+        <div id="q-map"></div>
+        <div id="question-area"></div>
+    </div>
+
+    <!-- SCORE -->
+    <div id="score-screen"></div>
+
+    <!-- Questoes data files (populate window.QR) -->
+    <script src="assets/js/questoes/dir-constitucional.js"></script>
+    <script src="assets/js/questoes/dir-administrativo.js"></script>
+    <script src="assets/js/questoes/dir-civil.js"></script>
+    <script src="assets/js/questoes/dir-processual-penal.js"></script>
+    <script src="assets/js/questoes/raciocinio-logico.js"></script>
+
+    <script>
+        // ── Globals esperados pelo practice-engine.js ─────────────────────────
+        var TOPICS = {};
+        var TOPIC_COLOR = {};
+        var ALL = [];
+
+        (function () {
+            var raw = localStorage.getItem('APROVA_SIMULADO_CONFIG');
+            if (!raw) {
+                document.getElementById('app').innerHTML =
+                    '<div style="padding:3rem 1.5rem;text-align:center">'
+                    + '<h2 style="font-family:\'Playfair Display\',serif;margin-bottom:1rem">Nenhum simulado configurado</h2>'
+                    + '<p style="margin-bottom:1.5rem;color:#6B7A92">Selecione as matérias antes de iniciar.</p>'
+                    + '<a href="simulador.html" style="display:inline-block;padding:.7rem 1.75rem;background:#0A1628;color:#FAF7F2;border-radius:8px;text-decoration:none;font-weight:600">← Montar Simulado</a>'
+                    + '</div>';
+                document.getElementById('cover').style.display = 'none';
+                return;
+            }
+
+            var cfg;
+            try { cfg = JSON.parse(raw); } catch (e) { cfg = {}; }
+
+            var ids = cfg.subjects || [];
+            var dif = cfg.dif || 'all';
+            var maxPer = cfg.maxPerSubject || 0;
+            var QR = window.QR || {};
+
+            ids.forEach(function (id) {
+                var subj = QR[id];
+                if (!subj) return;
+                Object.assign(TOPICS, subj.topics);
+                Object.assign(TOPIC_COLOR, subj.topicColors);
+                var qs = subj.questions.slice();
+                if (dif !== 'all') qs = qs.filter(function (q) { return q.dif === dif; });
+                qs.sort(function () { return Math.random() - 0.5; });
+                if (maxPer > 0) qs = qs.slice(0, maxPer);
+                ALL = ALL.concat(qs);
+            });
+
+            ALL.sort(function () { return Math.random() - 0.5; });
+
+            if (!ALL.length) {
+                document.getElementById('app').innerHTML =
+                    '<div style="padding:3rem 1.5rem;text-align:center">'
+                    + '<h2 style="font-family:\'Playfair Display\',serif;margin-bottom:1rem">Nenhuma questão encontrada</h2>'
+                    + '<p style="margin-bottom:1.5rem;color:#6B7A92">Verifique os filtros de dificuldade e tente novamente.</p>'
+                    + '<a href="simulador.html" style="display:inline-block;padding:.7rem 1.75rem;background:#0A1628;color:#FAF7F2;border-radius:8px;text-decoration:none;font-weight:600">← Montar Simulado</a>'
+                    + '</div>';
+                document.getElementById('cover').style.display = 'none';
+                return;
+            }
+
+            // Atualizar capa
+            var labels = ids.map(function (id) { return (QR[id] || {}).label || id; });
+            var difLabel = { all: 'Todas as dificuldades', l: 'Básico', m: 'Intermediário', h: 'Avançado' }[dif] || dif;
+            document.getElementById('cv-issue-label').textContent = 'Simulado Personalizado · ' + ids.length + ' matéria(s) · ' + difLabel;
+            document.getElementById('cv-h1-sub').textContent = labels.join(' · ');
+            document.getElementById('cv-sub').textContent = ALL.length + ' questões combinadas com gabarito comentado, narração em voz e modo adaptativo.';
+            var tagsEl = document.getElementById('cv-tags');
+            labels.forEach(function (l) {
+                var s = document.createElement('span');
+                s.className = 'cv-tag';
+                s.textContent = l;
+                tagsEl.appendChild(s);
+            });
+        })();
+
+        function toggleDark() {
+            var dark = document.body.hasAttribute('data-dark');
+            if (dark) {
+                document.body.removeAttribute('data-dark');
+                document.getElementById('dark-toggle').textContent = '🌙 Modo escuro';
+            } else {
+                document.body.setAttribute('data-dark', '');
+                document.getElementById('dark-toggle').textContent = '☀️ Modo claro';
+            }
+        }
+    </script>
+
+    <script src="assets/js/practice-engine.js"></script>
+    <script>
+        if (window.ALL && window.ALL.length) startRound();
+    </script>
+
+</body>
+
+</html>

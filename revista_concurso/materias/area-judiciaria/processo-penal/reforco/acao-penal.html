@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado de Reforço — Espécies de Ação Penal · Técnico Judiciário TJPE · Banca IBFC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado de Reforço · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Espécies de Ação Penal</em><br>12 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo de reforço com gabarito fundamentado, macetes, erros por alternativa e narração em voz. Foco total em Ação Penal Pública, Privada e Extinção da Punibilidade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Pública Incondicionada</span>
+      <span class="cv-tag">Pública Condicionada</span>
+      <span class="cv-tag">Privada Propriamente Dita</span>
+      <span class="cv-tag">Privada Subsidiária</span>
+      <span class="cv-tag">Privada Personalíssima</span>
+      <span class="cv-tag">Renúncia & Perdão</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      APIC: 'Pública Incondicionada',
+      APCR: 'Pública Condicionada',
+      APPP: 'Privada Propriamente Dita',
+      APSP: 'Privada Subsidiária',
+      APPE: 'Privada Personalíssima',
+      EPU: 'Extinção da Punibilidade'
+    };
+    const TOPIC_COLOR = {
+      APIC: { bg: '#E6F1FB', c: '#0C447C' },
+      APCR: { bg: '#FCEAEA', c: '#7A1515' },
+      APPP: { bg: '#E3F5EF', c: '#085041' },
+      APSP: { bg: '#EDE8F8', c: '#3A246A' },
+      APPE: { bg: '#FFF3DC', c: '#6A4800' },
+      EPU: { bg: '#F1EFE8', c: '#2C2C2A' }
+    };
+
+    // ── 12 QUESTÕES DE REFORÇO ───────────────────────────────────────────────────
+    const ALL = [
+      {
+        id: 'APIC01', topic: 'APIC', dif: 'l',
+        text: 'Nos crimes em que a lei não faz qualquer ressalva quanto à necessidade de representação ou requisição, a ação penal é pública incondicionada. Sobre ela, é correto afirmar:',
+        opts: ['O Ministério Público é o seu titular universal e pode desistir da ação já proposta.', 'É regida pelo princípio da disponibilidade, podendo o Ministério Público escolher não processar por conveniência.', 'O Ministério Público não poderá desistir da ação penal uma vez que esta tenha sido iniciada.', 'Depende de autorização do delegado de polícia para o oferecimento da denúncia.'],
+        ans: 2,
+        exp: 'Art. 42 do CPP. Pelo princípio da Indisponibilidade, o MP, após propor a ação, não pode mais recuar ou desistir dela. Dica: Incondicionada = Regra Geral. O MP "é obrigado" a processar se houver provas (Obrigatoriedade) e não pode desistir (Indisponibilidade).',
+        erros: ['ERRADA: o MP é titular universal, mas não pode desistir da ação pública (indisponibilidade).', 'ERRADA: a ação pública incondicionada é indisponível — o MP não escolhe por conveniência.', 'CORRETA.', 'ERRADA: o oferecimento da denúncia é ato exclusivo do MP, sem necessidade de autorização do delegado.'],
+        tip: 'Incondicionada = Regra Geral. O MP "é obrigado" a processar se houver provas (Obrigatoriedade) e não pode desistir (Indisponibilidade).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'APIC02', topic: 'APIC', dif: 'm',
+        text: 'A peça inaugural da ação penal pública incondicionada é a:',
+        opts: ['Queixa-crime, assinada pelo ofendido.', 'Denúncia, assinada pelo membro do Ministério Público.', 'Representação, encaminhada ao Juiz.', 'Portaria, lavrada pela autoridade policial.'],
+        ans: 1,
+        exp: 'Art. 24 do CPP. A denúncia é o instrumento exclusivo do titular da ação pública (MP).',
+        erros: ['ERRADA: queixa-crime é da ação privada.', 'CORRETA.', 'ERRADA: representação é condição de procedibilidade, não peça inaugural.', 'ERRADA: portaria é ato policial do inquérito.'],
+        tip: 'MP denuncia; Vítima queixa.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'APCR01', topic: 'APCR', dif: 'l',
+        text: 'O direito de representação, nos casos em que a lei o exige, deverá ser exercido pelo ofendido ou seu representante legal no prazo de:',
+        opts: ['3 meses, contado do dia em que veio a saber quem é o autor do crime.', '6 meses, contado do dia em que o crime foi consumado.', '6 meses, contado do dia em que veio a saber quem é o autor do crime.', '1 ano, contado da data do fato.'],
+        ans: 2,
+        exp: 'Art. 38 do CPP. O prazo é decadencial de 6 meses e conta-se do conhecimento da autoria (e não do fato).',
+        erros: ['ERRADA: prazo é 6 meses.', 'ERRADA: conta-se do conhecimento da autoria, não do fato.', 'CORRETA.', 'ERRADA: prazo é de 6 meses, não 1 ano.'],
+        tip: '"6 meses para saber quem foi". Se souber hoje, o relógio começa a correr amanhã.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'APCR02', topic: 'APCR', dif: 'm',
+        text: 'Sobre a retratação da representação, o Código de Processo Penal estabelece que:',
+        opts: ['A representação será irretratável depois de oferecida a denúncia.', 'A representação pode ser retirada a qualquer tempo, até a sentença final.', 'Uma vez feita a representação, o ofendido nunca poderá voltar atrás.', 'A retratação só é válida se homologada pelo delegado de polícia.'],
+        ans: 0,
+        exp: 'Art. 25 do CPP. O limite para o "arrependimento" da vítima é o oferecimento da denúncia pelo MP. (Atenção: na Lei Maria da Penha, o limite é o recebimento da denúncia em audiência específica).',
+        erros: ['CORRETA.', 'ERRADA: retratação só é possível até o oferecimento da denúncia.', 'ERRADA: retratação é possível até o oferecimento da denúncia.', 'ERRADA: retratação independe de homologação do delegado.'],
+        tip: 'Denúncia na mesa do juiz = Não tem mais volta.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'APPP01', topic: 'APPP', dif: 'l',
+        text: 'A ação penal privada é exercida mediante queixa-crime. Em caso de morte do ofendido, o direito de queixa ou de prosseguir na ação passará ao:',
+        opts: ['Estado, que a transformará em ação pública.', 'Cônjuge, ascendente, descendente ou irmão (CADI).', 'Advogado constituído, exclusivamente.', 'Inventariante do espólio.'],
+        ans: 1,
+        exp: 'Art. 31 do CPP. É a ordem de sucessão processual (CADI).',
+        erros: ['ERRADA: ação privada não se transforma em pública.', 'CORRETA.', 'ERRADA: advogado não tem legitimidade sucessória.', 'ERRADA: inventariante não tem legitimidade sucessória na ação privada.'],
+        tip: 'Mnemônico CADI: Cônjuge, Ascendente, Descendente, Irmão.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'APPP02', topic: 'APPP', dif: 'm',
+        text: 'O princípio que rege a ação penal privada, permitindo que a vítima escolha contra quais coautores irá propor a queixa, é o da:',
+        opts: ['Indivisibilidade.', 'Conveniência ou Oportunidade.', 'Obrigatoriedade.', 'Intransmissibilidade.'],
+        ans: 1,
+        exp: 'Diferente da ação pública (obrigatória), a privada é facultativa. A vítima processa se quiser (Oportunidade). Todavia, se processar um, deve processar todos (Indivisibilidade - Art. 48).',
+        erros: ['ERRADA: indivisibilidade exige que, se processar um, processe todos.', 'CORRETA.', 'ERRADA: obrigatoriedade é da ação pública.', 'ERRADA: intransmissibilidade não é o princípio aqui.'],
+        tip: 'A vítima decide "se" processa, mas se decidir que sim, o processo deve ser contra "todos" os autores conhecidos.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'APSP01', topic: 'APSP', dif: 'l',
+        text: 'A ação penal privada subsidiária da pública poderá ser exercida se:',
+        opts: ['O Ministério Público arquivar o inquérito policial.', 'O Ministério Público não oferecer a denúncia no prazo legal.', 'O Juiz entender que o Ministério Público está sendo negligente.', 'O crime for de menor potencial ofensivo.'],
+        ans: 1,
+        exp: 'Art. 5º, inciso LIX, da CF e Art. 29 do CPP. O gatilho é a inércia (omissão) do MP.',
+        erros: ['ERRADA: arquivamento não gera subsidiária.', 'CORRETA.', 'ERRADA: juiz não declara negligência para gerar subsidiária.', 'ERRADA: menor potencial ofensivo não altera a natureza da ação.'],
+        tip: 'Se o MP arquivou ou pediu diligências, ele NÃO foi inerte. A subsidiária só nasce se ele "ficar parado".',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'APSP02', topic: 'APSP', dif: 'm',
+        text: 'No caso de ação subsidiária da pública, o Ministério Público poderá:',
+        opts: ['Aditar a queixa, repudiá-la e oferecer denúncia substitutiva, intervir em todos os termos do processo e retomar a ação como parte principal.', 'Apenas observar o processo, sem possibilidade de intervenção.', 'Requerer a extinção do processo imediatamente por falta de legitimidade da vítima.', 'Impedir que o assistente de acusação arrole testemunhas.'],
+        ans: 0,
+        exp: 'Art. 29 do CPP. O MP não perde a titularidade; ele apenas "divide" o espaço por causa da sua omissão inicial, podendo retomar as rédeas a qualquer momento.',
+        erros: ['CORRETA.', 'ERRADA: MP pode intervir ativamente.', 'ERRADA: MP não extingue automaticamente.', 'ERRADA: MP não impede arrolamento de testemunhas.'],
+        tip: 'O MP é o "dono da bola" original. Ele pode retomar o controle se a vítima fizer um trabalho ruim.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'APPE01', topic: 'APPE', dif: 'l',
+        text: 'A ação penal privada personalíssima é aquela em que:',
+        opts: ['O direito de queixa é transmitido aos herdeiros em caso de morte.', 'Somente o ofendido pode exercer o direito de queixa, não se admitindo sucessão por morte.', 'O Ministério Público atua como assistente da acusação.', 'É utilizada apenas para crimes contra a honra.'],
+        ans: 1,
+        exp: 'No Brasil, o único caso é o do Art. 236 do CP (Induzimento a erro essencial ou ocultação de impedimento que torne nulo o casamento). Se a vítima morre, a ação morre com ela.',
+        erros: ['ERRADA: personalíssima não admite sucessão.', 'CORRETA.', 'ERRADA: MP não atua como assistente na privada.', 'ERRADA: não é exclusiva de crimes contra a honra.'],
+        tip: 'Personalíssima = Só a pessoa e mais ninguém. Sem CADI aqui.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'APPE02', topic: 'APPE', dif: 'm',
+        text: 'O prazo para o exercício da ação penal no crime de induzimento a erro essencial (Art. 236 CP) começa a contar:',
+        opts: ['Do dia do casamento.', 'Do dia em que o erro é descoberto.', 'Do trânsito em julgado da sentença que anula o casamento.', 'Da data da separação de fato.'],
+        ans: 2,
+        exp: 'Art. 236, Parágrafo único, do CP. É uma condição específica de procedibilidade.',
+        erros: ['ERRADA: depende de sentença civil anterior.', 'ERRADA: depende de sentença civil anterior.', 'CORRETA.', 'ERRADA: depende de sentença civil anterior.'],
+        tip: 'Diferente dos outros crimes, aqui precisa de uma sentença civil primeiro.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'EPU01', topic: 'EPU', dif: 'l',
+        text: 'A renúncia ao direito de queixa, na ação penal privada:',
+        opts: ['Pode ser expressa ou tácita e deve ocorrer antes do oferecimento da queixa.', 'Só pode ocorrer após o início do processo.', 'É um ato bilateral, dependendo da aceitação do réu.', 'Não produz efeito se houver mais de um autor do crime.'],
+        ans: 0,
+        exp: 'Art. 104 do CP. Renúncia é unilateral e ocorre antes da ação. Se a vítima aceita um favor do agressor, pode ser renúncia tácita.',
+        erros: ['CORRETA.', 'ERRADA: renúncia ocorre antes da ação.', 'ERRADA: renúncia é unilateral.', 'ERRADA: renúncia a um coautor se estende a todos (indivisibilidade).'],
+        tip: 'Renúncia = Antes da ação. Unilateral (vítima decide sozinha).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'EPU02', topic: 'EPU', dif: 'm',
+        text: 'O perdão do ofendido, concedido após o início da ação penal privada:',
+        opts: ['Extingue a punibilidade independentemente da vontade do réu.', 'Obsta o prosseguimento da ação apenas se o querelado (réu) o aceitar.', 'É admitido tanto na ação privada quanto na pública condicionada.', 'Deve ser obrigatoriamente aceito pelo Ministério Público.'],
+        ans: 1,
+        exp: 'Art. 106 do CP. O perdão é um ato bilateral. O réu pode querer ir até o fim para provar sua inocência e, por isso, pode recusar o perdão.',
+        erros: ['ERRADA: perdão é bilateral.', 'CORRETA.', 'ERRADA: perdão só existe na ação privada.', 'ERRADA: MP não participa do perdão.'],
+        tip: 'Perdão = Durante a ação. Bilateral (o réu tem que aceitar).',
+        tiptype: 'cm-red'
+      }
+    ];
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

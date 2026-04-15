@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Provas — Técnico Judiciário TJPE · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado de Reforço · Provas no Processo Penal · TJPE</div>
+    <h1><em>Provas no Processo Penal</em><br>12 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição
+      inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Disposições Gerais</span>
+      <span class="cv-tag">Provas Ilícitas</span>
+      <span class="cv-tag">Exame de Corpo de Delito</span>
+      <span class="cv-tag">Interrogatório</span>
+      <span class="cv-tag">Confissão</span>
+      <span class="cv-tag">Prova Testemunhal</span>
+      <span class="cv-tag">Busca e Apreensão</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      DG: 'Disposições Gerais', PI: 'Provas Ilícitas',
+      EC: 'Exame de Corpo de Delito', IA: 'Interrogatório',
+      CF: 'Confissão', PT: 'Prova Testemunhal',
+      BA: 'Busca e Apreensão'
+    };
+    const TOPIC_COLOR = {
+      DG: { bg: '#E6F1FB', c: '#0C447C' }, PI: { bg: '#FCEAEA', c: '#7A1515' },
+      EC: { bg: '#E3F5EF', c: '#085041' }, IA: { bg: '#EDE8F8', c: '#3A246A' },
+      CF: { bg: '#FFF3DC', c: '#6A4800' }, PT: { bg: '#FCEAEA', c: '#7A1515' },
+      BA: { bg: '#FAECE7', c: '#712B13' }
+    };
+
+    // ── 12 QUESTÕES DE REFORÇO ─────────────────────────────────────────────────
+    const ALL = [
+      {
+        id: 'PR01', topic: 'DG', dif: 'l',
+        text: 'Conforme o Código de Processo Penal, quanto à convicção do juiz e à natureza das provas:',
+        opts: ['O juiz formará sua convicção pela livre apreciação da prova produzida em contraditório judicial, não podendo fundamentar sua decisão exclusivamente nos elementos informativos colhidos na investigação.', 'No sistema brasileiro, vigora o sistema da prova tarifada, onde cada prova possui um valor absoluto fixado em lei.', 'As provas cautelares, não repetíveis e antecipadas não podem ser utilizadas para fundamentar a sentença.', 'O juiz está adstrito ao laudo pericial, não podendo rejeitá-lo em nenhuma hipótese.'],
+        ans: 0,
+        exp: 'O art. 155, caput, do CPP consagra o sistema do livre convencimento motivado (persuasão racional): o juiz aprecia as provas livremente, mas deve fundamentar sua decisão nos elementos produzidos em contraditório judicial. A ressalva crucial é: "não podendo fundamentar sua decisão exclusivamente nos elementos informativos colhidos na investigação". Ou seja, o Inquérito Policial pode COMPLEMENTAR a convicção, mas jamais ser a única base de uma condenação. A exceção: provas cautelares (produzidas com urgência), não repetíveis (que só podem ser feitas uma vez — ex.: exame de corpo de delito) e antecipadas (colhidas com contraditório prévio) podem ser usadas mesmo que produzidas antes do processo. Esse é o equilíbrio entre eficiência probatória e garantismo processual.',
+        erros: ['CORRETA — art. 155, caput, do CPP. O juiz forma convicção pela livre apreciação da prova produzida em contraditório judicial, impossibilitado de fundar a decisão exclusivamente no IP. A palavra-chave é "exclusivamente": o IP pode complementar, mas não ser a única fonte.', 'ERRADA: o Brasil adota o sistema do livre convencimento motivado (persuasão racional), em que o juiz aprecia livremente as provas desde que fundamente sua decisão. O sistema de prova tarifada (em que cada prova tem valor fixo por lei — ex.: "a confissão vale mais que testemunho") foi abandonado. No livre convencimento o juiz avalia as provas racionalmente, sem hierarquia pré-fixada.', 'ERRADA: as provas cautelares (produzidas com urgência — ex.: interceptação telefônica), não repetíveis (que só podem ocorrer uma vez — ex.: exame de corpo de delito) e antecipadas (produzidas com contraditório antecipado) PODEM sim fundamentar a sentença, conforme o próprio art. 155, caput, do CPP. São exceções ao princípio do contraditório judicial exatamente porque não podem ser reproduzidas na instrução.', 'ERRADA: o art. 182 do CPP é expresso: "o juiz não ficará adstrito ao laudo", podendo aceitá-lo ou rejeitá-lo, no todo ou em parte, desde que o faça motivadamente. O perito informa; o juiz decide. Essa é uma manifestação do livre convencimento motivado — nenhuma prova tem valor absoluto no processo penal brasileiro.'],
+        tip: 'MACETE: Livre convencimento motivado — IP não basta sozinho. “Exclusivamente” é chave.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PR02', topic: 'PI', dif: 'm',
+        text: 'Sobre as provas ilícitas e derivadas, assinale a alternativa correta:',
+        opts: ['São admissíveis as provas derivadas das ilícitas, mesmo quando não comprovado o nexo causal entre elas.', 'Considera-se ilícita a prova obtida com violação a normas de direito material ou processual.', 'A prova ilícita deve ser desentranhada do processo e, após o trânsito em julgado da decisão, será inutilizada por decisão judicial.', 'O juiz que tiver acesso à prova declarada ilícita não fica impedido de proferir a sentença.'],
+        ans: 2,
+        exp: 'O art. 157 do CPP regulamenta as provas ilícitas em três dimensões: (1) Prova ilícita originária — obtida com violação a normas constitucionais ou legais (art. 157, caput). Deve ser desentranhada do processo. (2) Provas derivadas — contaminadas pela ilicitude original (teoria dos frutos da árvore envenenada — art. 157, §1º), salvo quando não houver nexo causal ou existir fonte independente. (3) Destino da prova — após o trânsito em julgado da decisão que a declarou inadmissível, será inutilizada por decisão judicial (art. 157, §3º). Esse procedimento tríplice (desentranhamento → sigilo → inutilização) preserva a integridade do processo.',
+        erros: ['ERRADA: as provas derivadas das ilícitas são, em regra, inadmissíveis (teoria dos frutos da árvore envenenada — art. 157, §1º CPP). Só serão admitidas se não houver nexo causal entre a ilícita e a derivada, ou se a derivada puder ser obtida por fonte independente. A afirmativa inverte a regra: a inadmissibilidade é a regra, a admissibilidade é a exceção.', 'ERRADA: a alternativa define incorretamente o conceito de prova ilícita. O art. 157, caput, do CPP define como ilícitas as provas "obtidas em violação a normas constitucionais ou legais". A distinção clássica: prova ilícita = viola norma material (constitucional, penal, civil); prova ilegítima = viola norma processual. Na prática, o CPP pós-2008 não faz essa distinção — ambas são inadmissíveis.', 'CORRETA — art. 157, §3º do CPP: a prova declarada inadmissível deve ser desentranhada e, após o trânsito em julgado, inutilizada por decisão judicial, facultada às partes acompanhar o incidente.', 'ERRADA: o art. 157, §5º do CPP (inserido pelo Pacote Anticrime — Lei 13.964/2019) determina que o juiz que conhecer do conteúdo da prova declarada inadmissível NÃO poderá proferir a sentença ou acórdão. Ou seja, o juiz que teve acesso à prova ilícita fica IMPEDIDO de julgar o mérito, devendo ser substituído, para evitar a contaminação psicológica do julgador.'],
+        tip: 'Teoria dos Frutos da Árvore Envenenada: Se a raiz é ilícita, o fruto também é.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PR03', topic: 'EC', dif: 'l',
+        text: 'Quando a infração deixar vestígios, será indispensável o exame de corpo de delito, direto ou indireto:',
+        opts: ['Podendo a confissão do acusado suprir sua falta.', 'Não podendo a confissão do acusado suprir sua falta.', 'Sendo facultativo caso a autoridade policial tenha presenciado o crime.', 'Devendo ser realizado obrigatoriamente por três peritos oficiais.'],
+        ans: 1,
+        exp: 'O art. 158 do CPP é categórico: "quando a infração deixar vestígios, será indispensável o exame de corpo de delito, direto ou indireto, não podendo supri-lo a confissão do acusado." A razão é a soberania da prova técnica sobre a prova oral em crimes com vestígios materiais. Mesmo que o acusado confesse, se não houver exame de corpo de delito (ou prova testemunhal supletiva — art. 167), a prova é insuficiente. A confissão é falível (pode ser coagida, falsa ou parcial), enquanto o exame pericial tem base científica. O exame "direto" é feito sobre o próprio vestígio; o "indireto" é feito por outras provas quando os vestígios desapareceram (art. 167).',
+        erros: ['ERRADA: o art. 158 é expresso ao vedar que a confissão supra a falta do exame de corpo de delito. Essa vedação protege contra condenações baseadas apenas em confissão, que pode ser obtida sob coação ou ser falsa. A prova técnica é imprescindível porque oferece base objetiva e científica.', 'CORRETA — art. 158, caput, do CPP: o exame de corpo de delito é indispensável quando a infração deixa vestígios, e a confissão do acusado não pode supri-lo.', 'ERRADA: a presença de testemunha ocular (inclusive a autoridade policial) NÃO dispensa a perícia. O art. 158 é imperativo: "será indispensável". Somente quando os vestígios tiverem desaparecido é que a prova testemunhal pode suprir o exame (art. 167 CPP — exame de corpo de delito indireto). Isso não é faculdade — é exceção.', 'ERRADA: o art. 159, caput, do CPP, com a redação da Lei 11.690/2008, determina que o exame será realizado por perito oficial portador de diploma de curso superior. É suficiente UM perito oficial. Na falta de perito oficial, o exame será feito por duas pessoas idôneas com diploma superior (art. 159, §1º). A exigência de "três peritos" não existe.'],
+        tip: 'MACETE: Confissão NÃO supre falta de perícia em crimes com vestígios.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PR04', topic: 'EC', dif: 'm',
+        text: 'Sobre a prioridade na realização do exame de corpo de delito, o CPP estabelece prioridade quando o crime envolver:',
+        opts: ['Crimes contra a administração pública.', 'Violência doméstica e familiar contra mulher ou violência contra criança, adolescente, idoso ou pessoa com deficiência.', 'Crimes de tráfico de entorpecentes com grandes apreensões.', 'Réus presos preventivamente há mais de 90 dias.'],
+        ans: 1,
+        exp: 'O art. 158, parágrafo único, do CPP (inserido pela Lei 13.721/2018) estabelece: "dar-se-á prioridade à realização do exame de corpo de delito quando se tratar de crime que envolva: I – violência doméstica e familiar contra mulher; II – violência contra criança, adolescente, idoso ou pessoa com deficiência." A razão legislativa é a proteção de grupos vulneráveis: essas vítimas frequentemente dependem integralmente da prova técnica para comprovar a violência sofrida e os vestígios podem desaparecer rapidamente. A prioridade visa garantir que a prova pericial seja colhida com máxima urgência, preservando elementos essenciais à persecução penal e à proteção integral da vítima.',
+        erros: ['ERRADA: crimes contra a administração pública (peculato, corrupção, etc.) são crimes que, em regra, não deixam vestígios corporais — são de natureza documental ou contábil. A prioridade do art. 158, parágrafo único, refere-se ao exame de corpo de delito em crimes com violência contra grupos vulneráveis, não a crimes contra a administração pública.', 'CORRETA — art. 158, parágrafo único, CPP (Lei 13.721/2018): prioridade para violência doméstica contra mulher e violência contra criança, adolescente, idoso ou pessoa com deficiência.', 'ERRADA: crimes de tráfico de entorpecentes, mesmo com grandes apreensões, não estão no rol de prioridade do art. 158, parágrafo único. A perícia nesse caso é sobre a substância apreendida (laudo toxicológico), não sobre vestígios corporais de violência. A prioridade é específica para crimes que envolvem violência contra grupos vulneráveis.', 'ERRADA: a situação do réu (preso ou solto) não é critério para prioridade na realização do exame de corpo de delito. A prioridade é definida pela natureza da vítima (grupo vulnerável), não pela condição processual do investigado. O prazo de prisão é regulado pelo art. 10 do CPP, em contexto completamente distinto.'],
+        tip: 'Prioridade = Vítimas vulneráveis (Mulher/Maria da Penha, Criança, Idoso, PCD).',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'PR05', topic: 'IA', dif: 'l',
+        text: 'Sobre o direito ao silêncio durante o interrogatório, é correto afirmar:',
+        opts: ['O silêncio do acusado será interpretado em prejuízo da defesa.', 'O juiz deve informar ao réu seu direito de permanecer calado, e o silêncio não importará em confissão nem será interpretado em prejuízo da defesa.', 'O acusado é obrigado a responder sobre os fatos, mas pode calar-se sobre sua qualificação.', 'O silêncio constitui falta grave passível de sanção processual.'],
+        ans: 1,
+        exp: 'O art. 186 do CPP garante o direito ao silêncio do acusado durante o interrogatório: o juiz deve informar ao réu que ele pode permanecer calado, e o silêncio "não importará em confissão nem poderá ser interpretado em prejuízo da defesa" (parágrafo único). Esse dispositivo concretiza o princípio Nemo tenetur se detegere ("ninguém é obrigado a produzir prova contra si mesmo"), com raiz constitucional no art. 5º, LXIII, da CF/88 e na Convenção Americana de Direitos Humanos (Pacto de São José da Costa Rica), art. 8º, 2, g. O silêncio é um direito fundamental — não é falta de colaboração, não é indício de culpa, e o juiz não pode usá-lo como elemento desfavorável na sentença.',
+        erros: ['ERRADA: a CF/88 (art. 5º, LXIII) e o CPP (art. 186, parágrafo único) proíbem expressamente que o silêncio seja interpretado em prejuízo da defesa. Se o silêncio pudesse prejudicar o réu, o direito de calar seria ilusório — o acusado ficaria num dilema entre falar (e possivelmente se autoincriminar) ou calar (e ser prejudicado). A garantia constitucional impede esse dilema.', 'CORRETA — art. 186 e parágrafo único do CPP, combinado com art. 5º, LXIII, CF/88 e art. 8º, 2, g, do Pacto de São José da Costa Rica.', 'ERRADA: é exatamente o contrário. O acusado é obrigado a fornecer sua qualificação (nome, filiação, naturalidade) — sob pena de incorrer no crime do art. 68 da LCP (recusa de dados sobre identidade). Mas sobre os fatos, tem o direito de permanecer calado. A qualificação é dado objetivo de identificação, não autoincriminação.', 'ERRADA: o silêncio NÃO constitui falta grave nem é passível de qualquer sanção processual. É um direito fundamental constitucional (art. 5º, LXIII, CF). Sancionar o réu por exercer o silêncio seria violar diretamente a Constituição e a Convenção Americana de Direitos Humanos. O sistema acusatório proíbe qualquer forma de coerção para obter declaração do acusado.'],
+        tip: 'Silêncio é neutro. Não ajuda, mas não pode atrapalhar o réu.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PR06', topic: 'IA', dif: 'm',
+        text: 'O interrogatório será constituído de duas partes, sobre as quais:',
+        opts: ['O réu não pode ser interrogado por videoconferência em hipótese alguma.', 'O juiz é o único que pode formular perguntas, sendo vedada a intervenção das partes.', 'Versará sobre a pessoa do acusado e sobre os fatos.', 'Se o acusado confessar, o interrogatório será imediatamente encerrado.'],
+        ans: 2,
+        exp: 'O art. 187 do CPP estabelece que o interrogatório é dividido em duas partes: (1) Primeira parte — sobre a pessoa do acusado: vida pregressa, profissão, condições familiares, meios de subsistência, se já foi preso outras vezes e sobre os fatos (art. 187, § 1º); (2) Segunda parte — sobre os fatos: o acusado será perguntado sobre a imputação, circunstâncias, provas já colhidas, e poderá indicar provas (art. 187, § 2º). O interrogatório tem natureza mista: é meio de prova (fornece elementos ao juiz) e meio de defesa (autodefesa, onde o réu apresenta sua versão). Desde a Lei 10.792/2003, as partes podem formular perguntas ao final (art. 188 CPP). E a videoconferência é permitida excepcionalmente (art. 185, § 2º CPP): risco de segurança, doenças, influência sobre testemunhas ou se o réu participa de organização criminosa.',
+        erros: ['ERRADA: a videoconferência no interrogatório é prevista no art. 185, § 2º do CPP. A regra é o interrogatório presencial, mas há exceções: (I) prevenir risco à segurança pública (réus perigosos); (II) viabilizar a presença do réu — como doença; (III) impedir influência sobre testemunhas ou no julgamento; (IV) responder gravíssima questão de ordem pública. Então "em hipótese alguma" é categórico demais e torna a alternativa falsa.', 'ERRADA: as partes também podem formular perguntas ao acusado. O art. 188 do CPP (com redação da Lei 10.792/2003) permite que, após as perguntas do juiz, as partes possam formular reperguntas. Isso reflete o sistema acusatório do processo penal, garantindo contraditório e ampla defesa.', 'CORRETA — art. 187 do CPP: primeira parte = sobre a pessoa do acusado (qualificação ampla); segunda parte = sobre os fatos da imputação.', 'ERRADA: a confissão do acusado durante o interrogatório NÃO encerra o ato. O juiz deve continuar a fazer perguntas para apurar todos os detalhes (art. 190 CPP). A confissão é retratável e divisível (art. 200 CPP), então é fundamental que se esgotem os questionamentos. Encerrar prematuramente prejudicaria a ampla defesa e a busca da verdade real.'],
+        tip: 'Interrogatório = meio de prova E meio de defesa (autodefesa).',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'PR07', topic: 'CF', dif: 'l',
+        text: 'No processo penal, a confissão é caracterizada por ser:',
+        opts: ['Indivisível e irretratável.', 'Divisível e retratável, sem prejuízo do livre convencimento do juiz.', 'Prova absoluta que encerra a instrução criminal.', 'Válida apenas se feita perante a autoridade policial.'],
+        ans: 1,
+        exp: 'O art. 200 do CPP estabelece duas características fundamentais da confissão no processo penal: divisibilidade e retratabilidade. (1) Divisível: o juiz pode aceitar uma parte da confissão e rejeitar outra. Ex.: o réu confessa ter subtraído o objeto, mas nega uso de arma — o juiz pode acolher a confissão do furto e desconsiderar a negativa do uso de arma, se houver outras provas. (2) Retratável: o réu pode voltar atrás e negar o que confessou anteriormente. Mas a retratação não apaga a confissão — o juiz avaliará ambas pelo livre convencimento motivado (art. 197 CPP). A confissão no processo penal não é prova absoluta, diferente do antigo sistema em que era a "rainha das provas".',
+        erros: ['ERRADA: a confissão no processo penal é exatamente o contrário — divisível (o juiz pode aceitar uma parte e rejeitar outra) e retratável (o réu pode voltar atrás). A indivisibilidade e irretratabilidade eram marcas de sistemas antigos e inquisitoriais. O CPP brasileiro garantiu ao réu a possibilidade de se retratar e ao juiz a liberdade de cindir a confissão, preservando o sistema acusatório.', 'CORRETA — art. 200 do CPP: a confissão é divisível e retratável, sem prejuízo do livre convencimento do juiz.', 'ERRADA: a confissão nunca é prova absoluta que encerra a instrução criminal. No sistema do livre convencimento motivado (art. 155 CPP), nenhuma prova possui valor definitivo. A confissão é apenas mais um elemento que será analisado junto com as demais provas (art. 197 CPP). Em crimes com vestígios, a confissão sequer supre a falta do exame de corpo de delito (art. 158 CPP).', 'ERRADA: a confissão pode ser feita perante qualquer autoridade — não apenas a policial. Pode ser judicial (perante o juiz, durante o interrogatório) ou extrajudicial (perante o delegado, no IP). A confissão extrajudicial tem menor força probatória, mas não é inválida. O que o CPP exige é que qualquer confissão seja confrontada com as demais provas (art. 197).'],
+        tip: 'No Direito Penal, nada é absoluto. O réu pode mudar a versão.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PR08', topic: 'CF', dif: 'm',
+        text: 'Para aferir o valor da confissão, o juiz deverá:',
+        opts: ['Confrontá-la com as demais provas do processo, verificando se entre elas há concordância.', 'Aceitá-la como verdade plena, independentemente de outros elementos.', 'Presumir a culpa se o réu confessar apenas na fase policial.', 'Desconsiderá-la se o réu for reincidente.'],
+        ans: 0,
+        exp: 'O art. 197 do CPP disciplina a valoração da confissão: "o valor da confissão se aferirá pelos critérios adotados para os outros elementos de prova, e para a sua apreciação o juiz deverá confrontá-la com as demais provas do processo, verificando se entre ela e estas existe compatibilidade ou concordância." A confissão tem valor relativo (não absoluto) e deve ser analisada no conjunto probatório. O juiz verifica: (1) se é espontânea; (2) se há concordância com as demais provas (testemunhos, perícias, documentos); (3) se há circunstâncias que a tornem inverossímil. Esse é o sistema do livre convencimento motivado: a confissão sozinha não condena nem absolve.',
+        erros: ['CORRETA — art. 197 do CPP: o juiz deve confrontar a confissão com as demais provas, verificando se há compatibilidade e concordância entre elas.', 'ERRADA: a confissão nunca é "verdade plena" (prova absoluta) no processo penal brasileiro. O sistema do livre convencimento motivado (art. 155 CPP) impede que qualquer prova tenha valor definitivo. A confissão pode ser falsa (obtida por coação, erro, ou para proteger terceiro) — por isso deve ser sempre confrontada com as demais provas. Aceitar a confissão como verdade plena seria retornar ao sistema medieval da "rainha das provas".', 'ERRADA: não existe no processo penal brasileiro "presunção de culpa" baseada na confissão policial. A confissão feita no inquérito policial (extrajudicial) tem valor reduzido e deve ser confirmada judicialmente. O princípio da presunção de inocência (art. 5º, LVII, CF) proíbe qualquer presunção de culpa. O juiz analisa a confissão confrontando-a com as demais provas, independentemente da fase em que foi feita.', 'ERRADA: a reincidência do réu não é motivo para desconsiderar a confissão. A confissão é meio de prova — sua validade não depende dos antecedentes criminais do confitente. O juiz avalia a confissão pelos critérios do art. 197 CPP (concordância com as demais provas), independentemente de o réu ser primário ou reincidente. A reincidência é agravante da pena (art. 61, I, CP), não critério de valoração probatória.'],
+        tip: 'Confissão é uma prova como qualquer outra; o juiz checa se “bate” com o resto.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'PR09', topic: 'PT', dif: 'l',
+        text: 'Sobre o dever de depor como testemunha:',
+        opts: ['Toda pessoa poderá ser testemunha, mas os doentes mentais são proibidos de depor.', 'Toda pessoa poderá ser testemunha, e a testemunha não poderá eximir-se da obrigação de depor, salvo exceções legais.', 'O ascendente ou descendente do réu é obrigado a depor em qualquer circunstância.', 'A testemunha que morar em outra comarca não será obrigada a depor.'],
+        ans: 1,
+        exp: 'O art. 202 do CPP consagra a universalidade do dever de depor: "toda pessoa poderá ser testemunha". Não há restrição de idade, condição mental ou social. O art. 206 complementa: a testemunha não poderá eximir-se da obrigação de depor, salvo exceções legais. As exceções: (1) Parentes próximos do réu — ascendentes, descendentes, cônjuge/companheiro e irmãos (art. 206) podem se recusar, a menos que não seja possível obter a prova de outro modo; (2) Sigilo profissional — advogados, médicos, padres (art. 207 CPP). Doentes mentais podem depor — o juiz avaliará o valor de seus depoimentos (art. 208). O descumprimento injustificado do dever pode configurar crime de desobediência ou falso testemunho.',
+        erros: ['ERRADA: embora toda pessoa possa ser testemunha (art. 202 CPP), os doentes mentais NÃO são proibidos de depor. O art. 208 do CPP permite que sejam ouvidos — o juiz apenas apreciará seus depoimentos com o devido cuidado, levando em conta o discernimento do depoente. Proibição total de depor não existe no sistema processual penal brasileiro.', 'CORRETA — arts. 202 e 206 do CPP: toda pessoa poderá ser testemunha e não poderá se eximir do dever de depor, salvo exceções legais.', 'ERRADA: parentes próximos do réu (ascendentes, descendentes, cônjuge/companheiro e irmãos) podem se recusar a depor, mas essa recusa NÃO é absoluta. Se não for possível obter a prova de outro modo, essas pessoas serão obrigadas a depor (art. 206, parte final). Além disso, quando depõem, não prestam compromisso de dizer a verdade (art. 208 CPP). A afirmação de "em qualquer circunstância" é falsa.', 'ERRADA: a testemunha que morar em outra comarca é obrigada a depor — será ouvida por carta precatória (art. 222 CPP). A distância geográfica não dispensa o dever de depor; apenas muda o meio pelo qual o depoimento será colhido. A recusa injustificada pode configurar desobediência.'],
+        tip: 'Parentes próximos podem recusar, desde que não seja possível obter a prova de outro modo.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PR10', topic: 'PT', dif: 'm',
+        text: 'As testemunhas serão inquiridas pelas partes diretamente (sistema cross-examination):',
+        opts: ['Devendo as perguntas passar primeiro pelo juiz, que as repetirá à testemunha.', 'Não podendo o juiz formular perguntas complementares.', 'Sendo as perguntas formuladas pelas partes diretamente à testemunha, podendo o juiz indeferir as que puderem induzir a resposta.', 'Somente o Ministério Público pode perguntar diretamente.'],
+        ans: 2,
+        exp: 'O art. 212 do CPP (com redação da Lei 11.690/2008) adotou o sistema do exame direto e cruzado (cross-examination): as perguntas são formuladas pelas partes diretamente às testemunhas, sem intermediação do juiz. Antes da reforma de 2008, o sistema era presidencial — o juiz recebia as perguntas das partes, filtrava e reformulava à testemunha. Agora: (1) A parte que arrolou a testemunha pergunta primeiro (exame direto); (2) A parte contrária faz perguntas em seguida (exame cruzado); (3) O juiz pode complementar com perguntas sobre pontos não esclarecidos (art. 212, parágrafo único). O juiz também pode indeferir perguntas que possam induzir a resposta, que não tenham relação com o processo ou que sejam vexatórias (arts. 212 e 217 CPP). Esse sistema fortalece o princípio acusatório ao dar protagonismo às partes na produção da prova oral.',
+        erros: ['ERRADA: esse era o sistema antigo (presidencial), vigente antes da reforma de 2008. No sistema presidencial, as perguntas das partes passavam pelo juiz, que as reformulava e dirigia à testemunha. A Lei 11.690/2008 alterou o art. 212 do CPP e adotou o exame direto — as partes perguntam diretamente. O juiz só complementa ao final (art. 212, parágrafo único). A inversão do procedimento é causa de nulidade relativa, conforme jurisprudência do STJ.', 'ERRADA: o juiz PODE formular perguntas complementares. O art. 212, parágrafo único, do CPP é claro: "sobre os pontos não esclarecidos, o juiz poderá complementar a inquirição." Ou seja, o papel do juiz não é conduzir a inquirição (como no sistema antigo), mas sim complementar lacunas ao final. Negar ao juiz qualquer poder de perguntar seria transformá-lo em mero espectador, o que não condiz com a busca da verdade real no processo penal.', 'CORRETA — art. 212, caput, do CPP: as perguntas são formuladas pelas partes diretamente à testemunha, podendo o juiz indeferir as que puderem induzir a resposta, não tiverem relação com a causa ou importarem repetição.', 'ERRADA: o sistema do exame direto (cross-examination) permite que AMBAS as partes — Ministério Público E defesa — formulem perguntas diretamente. A parte que arrolou a testemunha pergunta primeiro, depois a parte contrária realiza o exame cruzado. Restringir apenas ao MP violaria o princípio da paridade de armas e a ampla defesa (art. 5º, LV, CF).'],
+        tip: 'Partes perguntam direto. Juiz atua como filtro e complementa ao final.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'PR11', topic: 'BA', dif: 'l',
+        text: 'A busca domiciliar deverá ser executada:',
+        opts: ['A qualquer hora do dia ou da noite, desde que com mandado judicial.', 'Durante o dia, salvo se o morador consentir que se realize à noite.', 'Apenas pelo delegado de polícia, pessoalmente.', 'Durante a noite em casos de crimes hediondos.'],
+        ans: 1,
+        exp: 'A inviolabilidade do domicílio é garantia constitucional (art. 5º, XI, CF/88): "a casa é asilo inviolável do indivíduo, ninguém nela podendo penetrar sem consentimento do morador, salvo em caso de flagrante delito ou desastre, ou para prestar socorro, ou, durante o dia, por determinação judicial." O art. 245 do CPP regulamenta: a busca domiciliar será executada durante o dia (entre 6h e 18h, conforme entendimento doutrinário/jurisprudencial), salvo se o morador consentir que se realize à noite. Sem consentimento do morador, a busca só pode ocorrer de dia e com mandado judicial. À noite, apenas com consentimento ou em caso de flagrante, desastre ou socorro. O conceito de "casa" é amplo (art. 150, § 4º CP): inclui quarto de hotel, escritório, consultório e até barraca de camping.',
+        erros: ['ERRADA: a busca domiciliar NÃO pode ser feita a qualquer hora da noite apenas com mandado judicial. A CF/88 (art. 5º, XI) é categórica: sem consentimento do morador, a entrada judicial só pode ocorrer DURANTE O DIA. À noite, mandado judicial não é suficiente — é necessário o consentimento do morador ou situação de flagrante/desastre/socorro. Essa é uma garantia constitucional inabalável: nem o juiz pode autorizar busca domiciliar noturna sem consentimento.', 'CORRETA — art. 5º, XI, CF/88 e art. 245 CPP: a busca domiciliar ocorre durante o dia, salvo se o morador consentir que se realize à noite.', 'ERRADA: a busca domiciliar NÃO precisa ser executada pessoalmente pelo delegado de polícia. O art. 245 do CPP permite que a busca seja cumprida por oficiais de justiça, policiais militares ou civis, desde que munidos de mandado judicial. O delegado pode coordenar a operação, mas não há exigência legal de que ele pessoalmente a execute. Na prática, buscas complexas são conduzidas por equipes.', 'ERRADA: não existe no ordenamento jurídico brasileiro exceção à inviolabilidade domiciliar noturna baseada na natureza do crime (hediondo ou não). A CF/88 (art. 5º, XI) não faz distinção — crimes hediondos, tráfico ou qualquer outro: sem consentimento do morador, busca domiciliar é SOMENTE durante o dia. A Lei 8.072/1990 (Lei dos Crimes Hediondos) traz restrições como vedação de liberdade provisória e progressão diferenciada, mas NÃO altera a garantia constitucional de inviolabilidade do domicílio noturno.'],
+        tip: 'Dia = nascer ao pôr do sol (ou 06h-18h). Consentimento = qualquer hora.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PR12', topic: 'BA', dif: 'm',
+        text: 'A busca pessoal (revista) independerá de mandado judicial:',
+        opts: ['Sempre que a autoridade policial suspeitar de qualquer pessoa.', 'No caso de prisão ou quando houver fundada suspeita de que a pessoa oculte armas ou objetos ilícitos.', 'Apenas se a pessoa for abordada dentro de um veículo.', 'Nunca; a busca pessoal sempre exige mandado específico.'],
+        ans: 1,
+        exp: 'O art. 244 do CPP estabelece que a busca pessoal (revista) independerá de mandado nos seguintes casos: (1) No caso de prisão — quando alguém é preso, a revista é consequência natural da custódia, para segurança de todos; (2) Quando houver fundada suspeita de que a pessoa esteja na posse de arma proibida, ou de objetos ou papéis que constituam corpo de delito, ou quando a medida for determinada durante busca domiciliar. "Fundada suspeita" é conceito jurídico indeterminado — exige elementos concretos e objetivos (atitude suspeita, informação prévia, contexto do flagrante), não mera intuição subjetiva. A doutrina e o STF reforçam que a abordagem baseada em perfil racial, aparência ou local de moradia não constitui fundada suspeita. Sem esses requisitos, a busca pessoal será ilegal e as provas obtidas serão inadmissíveis (frutos da árvore envenenada, art. 5º, LVI, CF). A busca pessoal em mulher deve ser feita por outra mulher, se não importar retardamento (art. 249 CPP).',
+        erros: ['ERRADA: "sempre que suspeitar de qualquer pessoa" — a mera suspeita subjetiva NÃO autoriza busca pessoal. O art. 244 do CPP exige "fundada suspeita", ou seja, suspeita baseada em elementos concretos e objetivos: atitude incompatível com a normalidade, informação de terceiros, contexto de flagrância, etc. Suspeição genérica baseada apenas na aparência, raça, condição social ou local onde a pessoa se encontra é arbitrária e ilegal. O STF já decidiu que a busca pessoal baseada em perfil racial é inconstitucional.', 'CORRETA — art. 244 do CPP: a busca pessoal independe de mandado no caso de prisão ou quando houver fundada suspeita de porte de arma proibida ou objetos que constituam corpo de delito.', 'ERRADA: o art. 244 do CPP não restringe a busca pessoal sem mandado apenas a abordagens dentro de veículos. A fundada suspeita pode justificar a revista pessoal em qualquer contexto — na rua, em locais públicos, em estabelecimentos, etc. A busca veicular é uma situação possível, mas não exclusiva. Na verdade, veículos NÃO são considerados domicílio para fins de proteção constitucional, mas a busca em seu interior igualmente exige fundada suspeita para ser legítima.', 'ERRADA: a busca pessoal NEM SEMPRE exige mandado. Essa é a regra geral (art. 240 CPP), mas o art. 244 traz exceções claras: prisão em flagrante, fundada suspeita e cumprimento de busca domiciliar. Exigir mandado em TODA busca pessoal tornaria inviável a atividade policial de segurança pública. A exceção existe justamente para situações urgentes e concretas que não permitem a espera de autorização judicial.'],
+        tip: 'Prisão efetuada ou Suspeita Real = Revista na hora, sem mandado.',
+        tiptype: 'cm-red'
+      }
+    ];
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

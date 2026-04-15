@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Lógica Sentencial — Contagem, Combinatória e Probabilidade · Técnico Judiciário TJPE · Banca IBFC
+  </title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Técnico · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Contagem, Combinatória e Probabilidade</em><br>12 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição
+      inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Princípio Fundamental da Contagem</span>
+      <span class="cv-tag">Permutações</span>
+      <span class="cv-tag">Combinações</span>
+      <span class="cv-tag">Arranjos</span>
+      <span class="cv-tag">Probabilidade Simples</span>
+      <span class="cv-tag">Eventos Independentes</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      PFC: 'Princípio Fundamental da Contagem',
+      PER: 'Permutações',
+      COM: 'Combinações',
+      ARR: 'Arranjos',
+      PS: 'Probabilidade Simples',
+      EI: 'Eventos Independentes'
+    };
+    const TOPIC_COLOR = {
+      PFC: { bg: '#E6F1FB', c: '#0C447C' },
+      PER: { bg: '#FCEAEA', c: '#7A1515' },
+      COM: { bg: '#E3F5EF', c: '#085041' },
+      ARR: { bg: '#EDE8F8', c: '#3A246A' },
+      PS: { bg: '#FFF3DC', c: '#6A4800' },
+      EI: { bg: '#EAF3DE', c: '#173404' }
+    };
+
+    // ── 12 QUESTÕES DE CONTAGEM, COMBINATÓRIA E PROBABILIDADE ─────────────────
+    const ALL = [
+      {
+        id: 'PFC01', topic: 'PFC', dif: 'l',
+        text: 'Um oficial de justiça possui 5 processos criminais e 4 processos cíveis para distribuir em duas prateleiras distintas. Se ele deve escolher um processo de cada natureza para levar a uma audiência, de quantas maneiras diferentes ele pode fazer essa escolha?',
+        opts: ['9', '20', '40', '10'],
+        ans: 1,
+        exp: 'Pelo PFC, multiplicamos as opções de cada etapa independente. 5 × 4 = 20.',
+        erros: ['ERRADA: 9 = 5 + 4. Você SOMOU as opções, mas somar é para o conectivo "OU" (escolha entre uma coisa ou outra). Aqui o problema pede um processo criminal E um cível — o conectivo "E" exige MULTIPLICAÇÃO. Pelo PFC: 5 × 4 = 20. Regra: "e" = multiplica, "ou" = soma.', 'CORRETA — pelo Princípio Fundamental da Contagem: 5 opções de criminal × 4 opções de cível = 20 maneiras diferentes.', 'ERRADA: 40 = 5 × 8. De onde veio o 8? Há apenas 4 processos cíveis, não 8. Releia o enunciado: 5 criminais e 4 cíveis. A multiplicação correta é 5 × 4 = 20.', 'ERRADA: 10 = 20 ÷ 2 — você dividiu o resultado por 2, como se a ordem não importasse. Mas aqui a ordem é irrelevante desde o início (não se trata de combinação) — simplesmente são duas escolhas independentes. Basta multiplicar: 5 × 4 = 20.'],
+        tip: 'O conectivo "E" na contagem sinaliza multiplicação.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PFC02', topic: 'PFC', dif: 'm',
+        text: 'Para acessar um sistema do tribunal, um servidor deve criar uma senha de 3 caracteres, sendo que o primeiro deve ser uma vogal e os dois seguintes devem ser algarismos de 0 a 9. Quantas senhas diferentes podem ser criadas?',
+        opts: ['15', '50', '250', '500'],
+        ans: 3,
+        exp: 'Vogais (5 opções) × Algarismo (10 opções) × Algarismo (10 opções). 5 × 10 × 10 = 500.',
+        erros: ['ERRADA: 15 = 5 × 3. Você multiplicou 5 vogais × 3 (posições?), mas o correto é multiplicar as opções de cada posição: 5 vogais × 10 algarismos × 10 algarismos. Cada posição é independente.', 'ERRADA: 50 = 5 × 10. Faltou considerar o TERCEIRO caractere! A senha tem 3 posições: vogal (5) × algarismo (10) × algarismo (10) = 500. Você parou na segunda posição.', 'ERRADA: 250 = 5 × 50 ou 5 × 5 × 10. Houve erro na contagem dos algarismos ou das vogais. O último caractere também tem 10 opções (0-9), não 5. A conta correta: 5 × 10 × 10 = 500.', 'CORRETA — 1ª posição: 5 vogais (a,e,i,o,u) × 2ª posição: 10 algarismos (0-9) × 3ª posição: 10 algarismos (0-9) = 500. Repare: pode repetir algarismo, pois o enunciado não proíbe.'],
+        tip: 'Se a questão não disser "distintos", você pode repetir os números.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PER01', topic: 'PER', dif: 'l',
+        text: 'De quantas formas distintas 5 pessoas podem ser organizadas em uma fila de atendimento no fórum?',
+        opts: ['25', '60', '120', '240'],
+        ans: 2,
+        exp: 'Permutação simples de 5 elementos (P₅). 5! = 5 × 4 × 3 × 2 × 1 = 120.',
+        erros: ['ERRADA: 25 = 5² = 5 × 5. Isso seria correto se houvesse 2 posições com 5 opções cada (como senhas). Mas fila é PERMUTAÇÃO: a 1ª posição tem 5 opções, a 2ª tem 4, a 3ª tem 3, e assim por diante. 5! = 120, não 5².', 'ERRADA: 60 = 5 × 4 × 3. Isso é um arranjo de 5 tomados 3 a 3 (A₅,₃), ou seja, filas de apenas 3 pessoas. Mas o enunciado pede fila com TODAS as 5 pessoas, logo usamos 5! = 120.', 'CORRETA — fila com 5 pessoas = P₅ = 5! = 5 × 4 × 3 × 2 × 1 = 120. A 1ª posição tem 5 opções, a 2ª tem 4 (sobrou 4), a 3ª tem 3, etc.', 'ERRADA: 240 = 5 × 4 × 3 × 2 × 2. O último fator deveria ser 1 (sobrou apenas 1 pessoa para a última posição), não 2. O cálculo correto: 5 × 4 × 3 × 2 × 1 = 120.'],
+        tip: 'Fila, estante, anagramas sem repetição = Fatorial pura.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PER02', topic: 'PER', dif: 'm',
+        text: 'Quantos são os anagramas da palavra "JUIZ"?',
+        opts: ['12', '24', '48', '4'],
+        ans: 1,
+        exp: 'A palavra possui 4 letras distintas. P₄ = 4! = 4 × 3 × 2 × 1 = 24.',
+        erros: ['ERRADA: 12 = 24 ÷ 2. Você dividiu por 2, como se houvesse letras repetidas. Mas "JUIZ" tem 4 letras DISTINTAS (J, U, I, Z) — nenhuma se repete. A divisão por fatorial só é necessária quando há letras repetidas (ex.: "CASA" → 4!/2! porque o "A" aparece 2 vezes).', 'CORRETA — JUIZ tem 4 letras distintas. Total de anagramas = P₄ = 4! = 4 × 3 × 2 × 1 = 24.', 'ERRADA: 48 — não corresponde a nenhum fatorial válido. Se a palavra tivesse 5 letras sem repetição, seria 5! = 120. Mas "JUIZ" tem apenas 4 letras distinct, portanto 4! = 24.', 'ERRADA: 4 é apenas o NÚMERO de letras, não a quantidade de anagramas. O número de anagramas é o fatorial da quantidade de letras (quando não há repetição): 4! = 24. Cada letra pode ocupar qualquer posição.'],
+        tip: 'Se houvesse letras repetidas, teríamos que dividir pelo fatorial das repetições.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'COM01', topic: 'COM', dif: 'l',
+        text: 'Uma comissão de 3 técnicos judiciários deve ser formada a partir de um grupo de 7 servidores disponíveis. Quantas comissões diferentes podem ser constituídas?',
+        opts: ['21', '35', '210', '42'],
+        ans: 1,
+        exp: 'Em comissões, a ordem dos membros não altera o grupo, logo usamos Combinação: C₇,₃ = 7! / (3!(7-3)!) = (7×6×5)/(3×2×1) = 35.',
+        erros: ['ERRADA: 21 não é C(7,3). Se você fez 7 × 3 = 21, usou multiplicação direta em vez da fórmula de combinação. C(7,3) = 7! / (3! × 4!) = (7×6×5) / (3×2×1) = 210/6 = 35. Cuidado: não multiplique n × k diretamente.', 'CORRETA — C(7,3) = 7! / (3! × 4!) = 35 comissões. Em "comissão", a ordem dos membros não importa (Ana-Bob-Carlos = Carlos-Bob-Ana), então usamos COMBINAÇÃO, não arranjo.', 'ERRADA: 210 = (7×6×5) — você calculou apenas o numerador da combinação, sem dividir por 3!. Isso seria um ARRANJO A(7,3) = 210, que conta a ordem (presidente/vice/secretário). Como comissão não tem hierarquia, divide-se por 3! = 6: 210/6 = 35.', 'ERRADA: 42 — provavelmente C(7,2) × 2 ou outro cálculo incorreto. São 3 membros na comissão, não 2. C(7,2) = 21 daria comissões de 2 pessoas. Releia: comissão de 3, grupo de 7 → C(7,3) = 35.'],
+        tip: '"Grupo", "Comissão", "Equipe" = Combinação.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'COM02', topic: 'COM', dif: 'm',
+        text: 'Em uma sala há 6 advogados. Se todos apertarem as mãos entre si uma única vez, quantos apertos de mão ocorrerão no total?',
+        opts: ['12', '15', '30', '36'],
+        ans: 1,
+        exp: 'Um aperto de mão envolve 2 pessoas e a ordem (A com B ou B com A) é a mesma. C₆,₂ = (6×5)/(2×1) = 15.',
+        erros: ['ERRADA: 12 = 6 × 2. Essa conta não faz sentido no contexto — multiplicar 6 advogados por 2 (mãos?) não é a abordagem correta. Aperto de mão envolve PARES, e a ordem não importa (A aperta a mão de B = B aperta a mão de A). Use C(6,2) = (6×5)/(2×1) = 15.', 'CORRETA — C(6,2) = 15. Cada aperto envolve 2 pessoas, sem repetição e sem importar a ordem. É o problema clássico de combinação 2 a 2.', 'ERRADA: 30 = P(6,2) = 6 × 5 = 30. Isso é um ARRANJO, que conta a ordem: "A aperta B" e "B aperta A" como eventos distintos. Mas um aperto de mão é ÚNICO entre duas pessoas — use combinação, dividindo por 2!: 30/2 = 15.', 'ERRADA: 36 = 6² = 6 × 6. Isso contaria pares com repetição (A apertando a própria mão). Ninguém aperta a mão de si mesmo, e cada par conta uma vez só. Potência não se aplica aqui — use C(6,2) = 15.'],
+        tip: 'Apertos de mão e jogos de campeonato (turno único) são sempre Combinações de n elementos tomados 2 a 2.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'ARR01', topic: 'ARR', dif: 'l',
+        text: 'Em um concurso com 10 candidatos, de quantas formas podem ser preenchidas as vagas de 1º e 2º lugar?',
+        opts: ['90', '45', '100', '20'],
+        ans: 0,
+        exp: 'Como os cargos são diferentes (hierarquia), a ordem importa. Arranjo de 10 tomados 2 a 2: A₁₀,₂ = 10 × 9 = 90.',
+        erros: ['CORRETA — A(10,2) = 10 × 9 = 90. A ordem importa: 1º lugar e 2º lugar são posições diferentes. "Ana em 1º e Beto em 2º" ≠ "Beto em 1º e Ana em 2º".', 'ERRADA: 45 = C(10,2) = (10×9)/2 = 45. Isso seria uma COMBINAÇÃO — usada quando a ordem NÃO importa (ex.: escolher 2 pessoas para um grupo). Aqui a ordem importa (1º ≠ 2º lugar), então não dividimos por 2!. Use arranjo: 10 × 9 = 90.', 'ERRADA: 100 = 10² = 10 × 10. Potência significaria que a mesma pessoa poderia ocupar os dois lugares simultaneamente. Mas se alguém fica em 1º, não pode ficar em 2º também — são pessoas distintas. Para o 1º lugar: 10 opções; para o 2º: 9 (sobram 9). 10 × 9 = 90.', 'ERRADA: 20 não corresponde a nenhum cálculo válido neste contexto. Não é P(10,1) = 10, nem A(10,2) = 90. Possivelmente confundi com 10 × 2 = 20, mas o segundo fator não é 2 — é 9 (candidatos restantes).'],
+        tip: 'Se a ordem mudar o resultado (Presidente/Vice, 1º/2º), use Arranjo ou PFC.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'ARR02', topic: 'ARR', dif: 'm',
+        text: 'Uma empresa possui 5 diretores. De quantas maneiras podem ser escolhidos um Diretor-Geral e um Diretor-Financeiro?',
+        opts: ['10', '20', '25', '5'],
+        ans: 1,
+        exp: 'A₅,₂ = 5 × 4 = 20.',
+        erros: ['ERRADA: 10 = C(5,2) = (5×4)/2 = 10. Isso é COMBINAÇÃO — útil se a ordem não importasse (ex.: "escolher 2 diretores para viagem"). Mas aqui há cargos distintos (Diretor-Geral ≠ Diretor-Financeiro), então a ordem importa. Não divida por 2!.', 'CORRETA — A(5,2) = 5 × 4 = 20. Cargos diferentes = ordem importa. Se Ana é DG e Beto é DF, é diferente de Beto ser DG e Ana ser DF.', 'ERRADA: 25 = 5² = 5 × 5. Isso permitiria que a mesma pessoa ocupasse AMBOS os cargos (5 opções para DG × 5 para DF, incluindo a mesma pessoa). Uma pessoa não pode ser DG e DF ao mesmo tempo. Para DG: 5 opções; para DF: 4 restantes. 5 × 4 = 20.', 'ERRADA: P(5,1) = 5, que é apenas a escolha de 1 cargo. Mas temos 2 cargos a preencher, não 1. O cálculo correto envolve preenchimento sequencial: 5 para o 1º cargo × 4 para o 2º = 20.'],
+        tip: 'Diferencie: "Escolher 2 diretores para uma viagem" (Combinação) vs "Escolher 2 diretores para cargos específicos" (Arranjo).',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'PS01', topic: 'PS', dif: 'l',
+        text: 'Uma urna contém 12 bolas numeradas de 1 a 12. Retirando-se uma bola ao acaso, qual a probabilidade de o número ser um múltiplo de 3?',
+        opts: ['1/2', '1/3', '1/4', '1/6'],
+        ans: 1,
+        exp: 'Múltiplos de 3 entre 1 e 12: {3, 6, 9, 12} (4 casos favoráveis). Total: 12. P = 4/12 = 1/3.',
+        erros: ['ERRADA: 1/2 = 6/12. Isso significaria que 6 bolas são múltiplos de 3, o que é falso. Os múltiplos de 3 entre 1 e 12 são: 3, 6, 9, 12 = apenas 4 números. Talvez você tenha confundido com múltiplos de 2 (pares: 2,4,6,8,10,12 = 6 números).', 'CORRETA — múltiplos de 3 entre 1 e 12: {3, 6, 9, 12} = 4 casos favoráveis. P = 4/12 = 1/3. Dica: para listar múltiplos, conte de 3 em 3.', 'ERRADA: 1/4 = 3/12. Isso corresponderia a 3 casos favoráveis, mas há 4 múltiplos de 3 (não se esqueça do 12! 12 = 3×4, é múltiplo de 3). A contagem correta: 3, 6, 9, 12.', 'ERRADA: 1/6 = 2/12. Isso corresponderia a apenas 2 casos favoráveis. Mas existem 4 múltiplos de 3 entre 1 e 12: {3, 6, 9, 12}. Recontagem rápida: 3×1=3, 3×2=6, 3×3=9, 3×4=12 = 4 múltiplos.'],
+        tip: 'P = Quero / Tenho.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'PS02', topic: 'PS', dif: 'm',
+        text: 'Em um grupo de 20 servidores, 8 são fumantes. Escolhendo um servidor ao acaso, qual a probabilidade de ele NÃO ser fumante?',
+        opts: ['40%', '50%', '60%', '80%'],
+        ans: 2,
+        exp: 'Se 8 fumam, 12 não fumam. P = 12/20 = 0,6 ou 60%.',
+        erros: ['ERRADA: 40% = 8/20 — essa é a probabilidade de SER fumante, não de NÃO ser! A questão pede o complemento. Se 8 são fumantes, 20-8 = 12 NÃO são fumantes. P(não fumante) = 12/20 = 60%. Regra: P(não A) = 1 - P(A).', 'ERRADA: 50% = 10/20. Não há razão para dividir por 2 — o grupo não está dividido ao meio. São 8 fumantes e 12 não fumantes (não 10 e 10).', 'CORRETA — não fumantes = 20 - 8 = 12. P = 12/20 = 3/5 = 0,60 = 60%.', 'ERRADA: 80% = 16/20. De onde vieram 16? O total de não fumantes é 20-8 = 12, não 16. Talvez tenha calculado 20-4 = 16 ou dobrado algum valor incorretamente.'],
+        tip: 'Probabilidade do "Não" = 1 - P(Sim).',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'EI01', topic: 'EI', dif: 'l',
+        text: 'Dois dados honestos são lançados simultaneamente. Qual a probabilidade de sair o número 6 em ambos os dados?',
+        opts: ['1/6', '1/12', '1/36', '1/18'],
+        ans: 2,
+        exp: 'Os lançamentos são independentes. P = (1/6) × (1/6) = 1/36.',
+        erros: ['ERRADA: 1/6 é a probabilidade de sair 6 em UM único dado. Mas a questão pede 6 em AMBOS os dados. Como são eventos independentes, multiplicamos: P = (1/6) × (1/6) = 1/36. Regra-chave: "E" (ambos) = multiplicação de probabilidades.', 'ERRADA: 1/12 = 1/6 + 1/6? Não! Somar probabilidades é para o "OU" (um dado OU o outro), não para o "E" (um dado E o outro). Além disso, 1/6 + 1/6 = 2/6 = 1/3, não 1/12. Para eventos simultâneos independentes, MULTIPLIQUE: (1/6) × (1/6) = 1/36.', 'CORRETA — P(6 no 1º dado E 6 no 2º dado) = (1/6) × (1/6) = 1/36. O espaço amostral total com 2 dados é 6 × 6 = 36 combinações, e só uma é (6,6).', 'ERRADA: 1/18 = 2/36. Para obter 2 casos favoráveis, você provavelmente contou (6,6) duas vezes ou incluiu outro resultado. Só existe UMA combinação (6,6) em 36 possíveis. A resposta é 1/36.'],
+        tip: 'Eventos sucessivos ("e") = Multiplique as probabilidades.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'EI02', topic: 'EI', dif: 'm',
+        text: 'Uma moeda é lançada 3 vezes. Qual a probabilidade de saírem 3 caras?',
+        opts: ['1/2', '1/4', '1/6', '1/8'],
+        ans: 3,
+        exp: 'P = (1/2) × (1/2) × (1/2) = 1/8.',
+        erros: ['ERRADA: 1/2 é a probabilidade de cara em UM único lançamento. Mas queremos cara em TODOS os 3 lançamentos. Como são independentes, multiplicamos: (1/2) × (1/2) × (1/2) = 1/8. O espaço amostral tem 2³ = 8 sequências possíveis.', 'ERRADA: 1/4 = (1/2)² = 1/4. Isso corresponde a apenas 2 lançamentos (cara-cara). Mas são 3 lançamentos, então precisamos de (1/2)³ = 1/8. Faltou multiplicar pelo terceiro lançamento.', 'ERRADA: 1/6 não é potência de 1/2. Em moedas, o denominador é sempre 2ⁿ (2, 4, 8, 16...). 6 não é potência de 2 — possivelmente você confundiu com dados (onde o denominador é 6). Para 3 moedas: 2³ = 8 no denominador.', 'CORRETA — P(3 caras) = (1/2)³ = 1/8. Espaço amostral: {CCC, CCK, CKC, CKK, KCC, KCK, KKC, KKK} = 8 sequências. Só 1 é CCC.'],
+        tip: 'Para moedas, o espaço amostral total é 2ⁿ (onde n é o número de lançamentos).',
+        tiptype: 'cm-gold'
+      }
+    ];
+
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

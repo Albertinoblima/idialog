@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Lógica Sentencial — Quantificadores e Diagramas Lógicos · Técnico Judiciário TJPE · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Técnico · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Quantificadores e Diagramas Lógicos</em><br>12 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Universal Afirmativo (Todo)</span>
+      <span class="cv-tag">Universal Negativo (Nenhum)</span>
+      <span class="cv-tag">Particular Afirmativo (Algum)</span>
+      <span class="cv-tag">Particular Negativo (Algum não)</span>
+      <span class="cv-tag">Diagramas e Silogismos</span>
+      <span class="cv-tag">Equivalências Quantificadores</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      UA: 'Universal Afirmativo (Todo)',
+      UN: 'Universal Negativo (Nenhum)',
+      PA: 'Particular Afirmativo (Algum)',
+      PN: 'Particular Negativo (Algum não)',
+      CD: 'Diagramas e Silogismos',
+      EQ: 'Equivalências Quantificadores'
+    };
+    const TOPIC_COLOR = {
+      UA: { bg: '#E6F1FB', c: '#0C447C' },
+      UN: { bg: '#FCEAEA', c: '#7A1515' },
+      PA: { bg: '#E3F5EF', c: '#085041' },
+      PN: { bg: '#EDE8F8', c: '#3A246A' },
+      CD: { bg: '#FFF3DC', c: '#6A4800' },
+      EQ: { bg: '#EAF3DE', c: '#173404' }
+    };
+
+    // ── 12 QUESTÕES DE QUANTIFICADORES E DIAGRAMAS LÓGICOS ───────────────────
+    const ALL = [
+      {
+        id: 'UA01', topic: 'UA', dif: 'l',
+        text: 'A proposição "Todo magistrado é formado em Direito" implica logicamente que:',
+        opts: ['Se uma pessoa é formada em Direito, ela é obrigatoriamente magistrada.', 'O conjunto dos magistrados está contido no conjunto dos formados em Direito.', 'Existe pelo menos um magistrado que não é formado em Direito.', 'Não existem pessoas formadas em Direito que não sejam magistradas.'],
+        ans: 1,
+        exp: 'A sentença "Todo A é B" estabelece uma relação de inclusão total: o conjunto A (Magistrados) é um subconjunto de B (Formados em Direito).',
+        erros: ['Afirma a recíproca (falsa).', 'CORRETA.', 'Negação do universal.', 'Afirmação contrária ao universal.'],
+        tip: 'Desenhe um círculo pequeno (A) dentro de um círculo grande (B). A recíproca não é verdadeira (nem todo B é A).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'UA02', topic: 'UA', dif: 'm',
+        text: 'Se "Todo técnico judiciário gosta de informática", pode-se concluir corretamente que:',
+        opts: ['Se João não gosta de informática, ele não é técnico judiciário.', 'Se Maria gosta de informática, ela é técnica judiciária.', 'Se Pedro é técnico judiciário, ele pode não gostar de informática.', 'O conjunto dos que gostam de informática está contido no conjunto dos técnicos.'],
+        ans: 0,
+        exp: 'É a aplicação da contrapositiva no quantificador: "Todo A é B" equivale a "Se não é B, não é A". Se ele não gosta (não B), não pode ser técnico (não A).',
+        erros: ['CORRETA.', 'Afirma a conversa (falsa).', 'Negação do universal.', 'Afirma a recíproca (falsa).'],
+        tip: 'No diagrama, se você está fora do círculo maior, obrigatoriamente está fora do círculo menor.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'UN01', topic: 'UN', dif: 'l',
+        text: 'A proposição "Nenhum servidor público é corrupto" é logicamente equivalente a:',
+        opts: ['Todo servidor público não é corrupto.', 'Algum servidor público não é corrupto.', 'Pelo menos um corrupto é servidor público.', 'Todo corrupto é servidor público.'],
+        ans: 0,
+        exp: '"Nenhum A é B" significa que os conjuntos são disjuntos (não possuem intersecção). Isso equivale a dizer que a totalidade do conjunto A possui a característica de "não ser B".',
+        erros: ['CORRETA.', 'Particular negativa.', 'Afirmação contrária.', 'Universal afirmativa contrária.'],
+        tip: 'Desenhe dois círculos separados, sem qualquer contato entre eles.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'UN02', topic: 'UN', dif: 'm',
+        text: 'Se "Nenhum planeta é quadrado", então:',
+        opts: ['Pelo menos um quadrado é planeta.', 'Se algo é quadrado, então não é planeta.', 'Algum planeta pode ser quadrado.', 'Todos os quadrados são planetas.'],
+        ans: 1,
+        exp: 'Como os conjuntos são totalmente separados, se um elemento pertence ao conjunto dos "quadrados", ele não pode, sob hipótese alguma, estar no conjunto dos "planetas".',
+        erros: ['Afirmação contrária.', 'CORRETA.', 'Negação do universal.', 'Universal afirmativa contrária.'],
+        tip: 'A relação "Nenhum A é B" é simétrica: também significa que "Nenhum B é A".',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PA01', topic: 'PA', dif: 'l',
+        text: 'A proposição "Algum advogado é músico" indica que:',
+        opts: ['Todos os advogados são músicos.', 'O conjunto dos advogados e o dos músicos possuem pelo menos um elemento em comum.', 'Nenhum advogado é músico.', 'Todos os músicos são advogados.'],
+        ans: 1,
+        exp: 'O quantificador "Algum" (existencial) indica a existência de uma intersecção entre dois conjuntos. Não garante a totalidade, apenas a existência de "pelo menos um".',
+        erros: ['Universal afirmativa.', 'CORRETA.', 'Universal negativa.', 'Conversa falsa.'],
+        tip: 'Desenhe dois círculos que se cruzam. A região central é o "Algum".',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'PA02', topic: 'PA', dif: 'm',
+        text: 'Se "Pelo menos um estudante de Direito é estagiário", é correto afirmar que:',
+        opts: ['Se alguém é estagiário, é estudante de Direito.', 'Não existe estudante de Direito que não seja estagiário.', 'O conjunto dos estudantes de Direito não é disjunto do conjunto dos estagiários.', 'Todos os estagiários são estudantes de Direito.'],
+        ans: 2,
+        exp: '"Não ser disjunto" significa que existe intersecção, o que é a definição lógica de "Algum".',
+        erros: ['Conversa falsa.', 'Universal afirmativa falsa.', 'CORRETA.', 'Conversa falsa.'],
+        tip: '"Algum", "Existe", "Pelo menos um" e "Há" são sinônimos lógicos.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'PN01', topic: 'PN', dif: 'l',
+        text: 'A proposição "Algum processo não é urgente" significa que:',
+        opts: ['Nenhum processo é urgente.', 'Existe pelo menos um elemento no conjunto dos processos que não pertence ao conjunto das coisas urgentes.', 'Todos os processos não são urgentes.', 'Todos os processos são urgentes.'],
+        ans: 1,
+        exp: 'O "Algum não" foca nos elementos do primeiro conjunto que estão fora da intersecção com o segundo conjunto.',
+        erros: ['Universal negativa.', 'CORRETA.', 'Universal negativa.', 'Universal afirmativa.'],
+        tip: 'No diagrama de dois círculos cruzados (A e B), o "Algum A não é B" é a "lua" que sobra do lado esquerdo.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'PN02', topic: 'PN', dif: 'm',
+        text: 'A negação da sentença "Todos os crimes são afiançáveis" é:',
+        opts: ['Nenhum crime é afiançável.', 'Algum crime não é afiançável.', 'Todos os crimes não são afiançáveis.', 'Pelo menos um crime é afiançável.'],
+        ans: 1,
+        exp: 'Como visto no bloco anterior, a negação do "Todo" é o "Algum não". Se a afirmação universal falha em apenas um ponto, ela deixa de ser verdadeira.',
+        erros: ['Universal negativa.', 'CORRETA.', 'Universal negativa (errada).', 'Afirmação contrária.'],
+        tip: 'Lembre-se: Para quebrar o "Todo", basta um exemplo contrário ("Algum não").',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'CD01', topic: 'CD', dif: 'l',
+        text: 'Considere as premissas: "Todo político é brasileiro" e "Algum brasileiro é honesto". A conclusão logicamente necessária é:',
+        opts: ['Algum político é honesto.', 'Nenhum político é honesto.', 'Todo político é honesto.', 'Nada se pode concluir sobre a relação entre políticos e honestos.'],
+        ans: 3,
+        exp: 'O "honesto" pode estar na parte do círculo "brasileiro" que não toca no círculo "político". Como não há intersecção obrigatória entre o primeiro e o terceiro termo, não há conclusão válida.',
+        erros: ['Conclusão inválida.', 'Conclusão inválida.', 'Conclusão inválida.', 'CORRETA.'],
+        tip: 'Desenhe o círculo dos Políticos dentro dos Brasileiros. O círculo dos Honestos pode tocar apenas nos Brasileiros, sem encostar nos Políticos.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'CD02', topic: 'CD', dif: 'm',
+        text: 'Dadas as premissas: "Todo concurseiro é persistente" e "Nenhum persistente é desanimado", conclui-se que:',
+        opts: ['Algum concurseiro é desanimado.', 'Nenhum concurseiro é desanimado.', 'Todo desanimado é concurseiro.', 'Algum persistente é concurseiro.'],
+        ans: 1,
+        exp: 'Se todos os concurseiros estão dentro do grupo dos persistentes, e os persistentes não têm contato com os desanimados, logo os concurseiros também não podem ter contato com os desanimados.',
+        erros: ['Conclusão contrária.', 'CORRETA.', 'Conversa falsa.', 'Conclusão inválida.'],
+        tip: 'Se A está dentro de B e B está longe de C, A obrigatoriamente está longe de C.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'EQ01', topic: 'EQ', dif: 'l',
+        text: 'A frase "Não é verdade que algum juiz é infalível" equivale a:',
+        opts: ['Todo juiz é infalível.', 'Nenhum juiz é infalível.', 'Pelo menos um juiz é infalível.', 'Alguns juízes não são infalíveis.'],
+        ans: 1,
+        exp: 'Negar que existe pelo menos um (Algum) é o mesmo que afirmar que não existe nenhum (Nenhum).',
+        erros: ['Universal afirmativa.', 'CORRETA.', 'Afirmação contrária.', 'Particular negativa.'],
+        tip: '¬(Algum) ≡ Nenhum.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'EQ02', topic: 'EQ', dif: 'm',
+        text: 'A sentença "Não é verdade que nenhum paraibano é poeta" é equivalente a:',
+        opts: ['Todos os paraibanos são poetas.', 'Algum paraibano é poeta.', 'Nenhum paraibano é poeta.', 'Pelo menos um paraibano não é poeta.'],
+        ans: 1,
+        exp: 'Negar o "Nenhum" (que diz que os conjuntos são separados) é afirmar que eles possuem, no mínimo, um ponto de contato (Algum).',
+        erros: ['Universal afirmativa.', 'CORRETA.', 'Afirmação original.', 'Particular negativa.'],
+        tip: 'Negar o "Nenhum" equivale a afirmar "Algum".',
+        tiptype: 'cm-gold'
+      }
+    ];
+
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

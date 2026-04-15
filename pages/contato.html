@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contato - Entre em contato com a iDialog">
+    <meta name="keywords" content="contato, telefone, email, endereço, orçamento">
+    <meta name="author" content="iDialog">
+
+    <title>Contato - iDialog</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="../public/icon/1 iDialog icone.ico">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../src/styles/main.css">
+    <link rel="stylesheet" href="../src/styles/responsive.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Footer Placeholder -->
+        <div id="footer-placeholder"></div>
+
+        <!-- JavaScript -->
+        <script src="../assets/js/main.js"></script>
+        <script src="../assets/js/components.js"></script>
+        <script>
+            // Torna todas as imagens com a classe 'clickable' interativas
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('img.clickable').forEach(function (img) {
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', function () {
+                        const link = img.getAttribute('data-link');
+                        if (link) window.location.href = link;
+                    });
+                });
+            });
+
+            // Carrega header e footer dinâmicos dos componentes
+            async function loadComponent(elementId, componentPath) {
+                try {
+                    const response = await fetch(componentPath);
+                    const html = await response.text();
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        element.innerHTML = html;
+                    }
+                } catch (error) {
+                    console.error(`Erro ao carregar componente ${componentPath}:`, error);
+                }
+            }
+            document.addEventListener('DOMContentLoaded', async () => {
+                await loadComponent('header-placeholder', '../components/header.html');
+                await loadComponent('footer-placeholder', '../components/footer.html');
+            });
+        </script>
+        <!-- Destaque institucional -->
+        <section class="contato-institutional">
+            <div class="container">
+                <div class="contato-institutional-content">
+                    <h2 class="contato-institutional-title">Atendimento institucional</h2>
+                    <p class="contato-institutional-desc">Entre em contato para orçamentos, parcerias e dúvidas
+                        institucionais. Nossa equipe está pronta para atender você com agilidade e transparência.</p>
+                    <div class="contato-institutional-links">
+                        <a href="mailto:contato@idialog.com.br" class="btn btn-primary">Enviar Email</a>
+                        <a href="tel:+551199999999" class="btn btn-secondary">Ligar</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Page Header -->
+        <section class="page-header contato-page-header">
+            <div class="container">
+                <div class="page-header-content contato-header-content">
+                    <h1 class="page-title contato-title">Entre em Contato</h1>
+                    <p class="page-subtitle contato-subtitle">
+                        Estamos prontos para transformar suas ideias em realidade
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-content contato-content">
+                    <!-- Contact Info -->
+                    <div class="contact-info card">
+                        <h2 class="contato-info-title">Fale Conosco</h2>
+                        <p class="contato-info-desc">
+                            Nossa equipe está sempre disponível para esclarecer dúvidas, discutir projetos e apresentar
+                            nossas soluções. Entre em contato através dos canais abaixo.
+                        </p>
+                        <div class="contact-methods">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <img src="../public/images/logo 3.3.png" alt="Email iDialog"
+                                        class="contact-img clickable" data-link="mailto:contato@idialog.com.br">
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Email</h4>
+                                    <p>contato@idialog.com.br</p>
+                                    <p class="contact-note">Resposta em até 24h</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <img src="../public/portfolio/imagens portfolio/iDialog Empresas Privadas-pag11-img0.png"
+                                        alt="Telefone iDialog" class="contact-img clickable"
+                                        data-link="tel:+551199999999">
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Telefone</h4>
+                                    <p>(11) 9999-9999</p>
+                                    <p class="contact-note">Seg à Sex, 9h às 18h</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fab fa-whatsapp"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>WhatsApp</h4>
+                                    <p>(11) 9999-9999</p>
+                                    <p class="contact-note">Atendimento rápido</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Localização</h4>
+                                    <p>São Paulo, SP - Brasil</p>
+                                    <p class="contact-note">Atendimento remoto e presencial</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="business-hours">
+                            <h3>Horário de Atendimento</h3>
+                            <div class="hours-grid">
+                                <div class="hours-item">
+                                    <span class="day">Segunda a Sexta</span>
+                                    <span class="time">9h às 18h</span>
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day">Sábado</span>
+                                    <span class="time">9h às 12h</span>
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day">Domingo</span>
+                                    <span class="time">Fechado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="contact-form-section">
+                        <h2>Solicite um Orçamento</h2>
+                        <p>Preencha o formulário abaixo e entraremos em contato com você em breve.</p>
+
+                        <form class="contact-form" id="contactForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="name">Nome Completo *</label>
+                                    <input type="text" id="name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone">Telefone</label>
+                                    <input type="tel" id="phone" name="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="company">Empresa/Organização</label>
+                                    <input type="text" id="company" name="company">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="service">Tipo de Serviço *</label>
+                                <select id="service" name="service" required>
+                                    <option value="">Selecione um serviço</option>
+                                    <option value="servicos-publicos">Serviços Públicos</option>
+                                    <option value="empresas-privadas">Empresas Privadas</option>
+                                    <option value="desenvolvimento-web">Desenvolvimento Web</option>
+                                    <option value="desenvolvimento-mobile">Desenvolvimento Mobile</option>
+                                    <option value="crm">Sistema CRM</option>
+                                    <option value="chatbot">Chatbot Inteligente</option>
+                                    <option value="ecommerce">E-commerce</option>
+                                    <option value="consultoria">Consultoria</option>
+                                    <option value="outros">Outros</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="budget">Orçamento Estimado</label>
+                                <select id="budget" name="budget">
+                                    <option value="">Selecione uma faixa</option>
+                                    <option value="ate-10k">Até R$ 10.000</option>
+                                    <option value="10k-25k">R$ 10.000 - R$ 25.000</option>
+                                    <option value="25k-50k">R$ 25.000 - R$ 50.000</option>
+                                    <option value="50k-100k">R$ 50.000 - R$ 100.000</option>
+                                    <option value="acima-100k">Acima de R$ 100.000</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="timeline">Prazo Desejado</label>
+                                <select id="timeline" name="timeline">
+                                    <option value="">Selecione um prazo</option>
+                                    <option value="urgente">Urgente (até 1 mês)</option>
+                                    <option value="rapido">Rápido (1-3 meses)</option>
+                                    <option value="normal">Normal (3-6 meses)</option>
+                                    <option value="flexivel">Flexível (6+ meses)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject">Assunto *</label>
+                                <input type="text" id="subject" name="subject" required
+                                    placeholder="Descreva brevemente seu projeto">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">Mensagem *</label>
+                                <textarea id="message" name="message" rows="6" required
+                                    placeholder="Descreva detalhadamente seu projeto, objetivos e expectativas..."></textarea>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="newsletter" name="newsletter">
+                                    <span class="checkbox-custom"></span>
+                                    Quero receber novidades e atualizações da iDialog
+                                </label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="terms" name="terms" required>
+                                    <span class="checkbox-custom"></span>
+                                    Concordo com os <a href="#">termos de uso</a> e <a href="#">política de
+                                        privacidade</a> *
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary submit-btn">
+                                <i class="fas fa-paper-plane"></i>
+                                Enviar Mensagem
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Perguntas Frequentes</h2>
+                    <p class="section-subtitle">
+                        Respostas para as dúvidas mais comuns
+                    </p>
+                </div>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Qual o prazo médio para desenvolvimento?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>O prazo varia conforme a complexidade do projeto. Projetos simples podem levar de 2-4
+                                semanas, enquanto soluções mais complexas podem levar de 3-6 meses. Sempre fornecemos um
+                                cronograma detalhado na proposta.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Vocês oferecem suporte pós-entrega?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Sim! Oferecemos suporte técnico e manutenção contínua. Todos os projetos incluem garantia
+                                e temos planos de suporte personalizados para atender às necessidades específicas de
+                                cada cliente.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Como é definido o orçamento do projeto?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>O orçamento é baseado no escopo do projeto, tecnologias utilizadas, prazo de entrega e
+                                recursos necessários. Fornecemos propostas detalhadas e transparentes sem custos
+                                ocultos.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Trabalham com clientes de outros estados?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Sim! Atendemos clientes em todo o Brasil. Trabalhamos remotamente e, quando necessário,
+                                podemos realizar reuniões presenciais ou por videoconferência.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Pronto para começar seu projeto?</h2>
+                    <p>Nossa equipe está ansiosa para conhecer suas ideias e transformá-las em soluções incríveis</p>
+                    <div class="cta-buttons">
+                        <a href="tel:+5511999999999" class="btn btn-primary">
+                            <i class="fas fa-phone"></i>
+                            Ligar Agora
+                        </a>
+                        <a href="https://wa.me/5511999999999" class="btn btn-secondary" target="_blank" rel="noopener">
+                            <i class="fab fa-whatsapp"></i>
+                            WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <!-- JavaScript -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/components.js"></script>
+    <script>
+        // FAQ Accordion
+        document.addEventListener('DOMContentLoaded', function () {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                const icon = question.querySelector('i');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    faqItems.forEach(faq => {
+                        faq.classList.remove('active');
+                        faq.querySelector('.faq-answer').style.maxHeight = null;
+                        faq.querySelector('.faq-question i').style.transform = 'rotate(0deg)';
+                    });
+                    if (!isActive) {
+                        item.classList.add('active');
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            // Form submission
+            const contactForm = document.getElementById('contactForm');
+            contactForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+                contactForm.reset();
+            });
+        });
+
+        // Carrega header e footer dinâmicos dos componentes
+        async function loadComponent(elementId, componentPath) {
+            try {
+                const response = await fetch(componentPath);
+                const html = await response.text();
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.innerHTML = html;
+                }
+            } catch (error) {
+                console.error(`Erro ao carregar componente ${componentPath}:`, error);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadComponent('header-placeholder', '../components/header.html');
+            await loadComponent('footer-placeholder', '../components/footer.html');
+        });
+    </script>
+</body>
+
+</html>

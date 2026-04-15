@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Lógica Sentencial — Equivalências Lógicas · Técnico Judiciário TJPE · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Técnico · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Equivalências Lógicas</em><br>12 Questões Comentadas (Padrão IBFC)</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição
+      inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Equivalência Condicional</span>
+      <span class="cv-tag">Contrapositiva</span>
+      <span class="cv-tag">Bicondicional</span>
+      <span class="cv-tag">Dupla Negação</span>
+      <span class="cv-tag">De Morgan Equivalências</span>
+      <span class="cv-tag">Verificação por Tabela</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      EC: 'Equivalência Condicional',
+      CP: 'Contrapositiva',
+      BI: 'Bicondicional',
+      DN: 'Dupla Negação',
+      DM: 'De Morgan Equivalências',
+      TV: 'Verificação por Tabela'
+    };
+    const TOPIC_COLOR = {
+      EC: { bg: '#E6F1FB', c: '#0C447C' },
+      CP: { bg: '#FCEAEA', c: '#7A1515' },
+      BI: { bg: '#E3F5EF', c: '#085041' },
+      DN: { bg: '#EDE8F8', c: '#3A246A' },
+      DM: { bg: '#FFF3DC', c: '#6A4800' },
+      TV: { bg: '#EAF3DE', c: '#173404' }
+    };
+
+    // ── 12 QUESTÕES DE EQUIVALÊNCIAS LÓGICAS (REFORÇO RLM — PADRÃO IBFC) ─────
+    const ALL = [
+      {
+        id: 'EC01', topic: 'EC', dif: 'l',
+        text: 'A proposição "Se eu estudar, então passarei no TJPE" é logicamente equivalente a:',
+        opts: ['Eu não estudo ou passarei no TJPE.', 'Eu estudo e passarei no TJPE.', 'Se eu não estudar, então não passarei no TJPE.', 'Eu estudo ou passarei no TJPE.'],
+        ans: 0,
+        exp: 'P → Q ≡ ¬P ∨ Q (equivalência fundamental da condicional). A alternativa A é a forma disjuntiva equivalente.',
+        erros: ['CORRETA — P → Q ≡ ¬P ∨ Q. Leia: "não estudo OU passo". É a equivalência fundamental da condicional: negue o antecedente e faça disjunção com o consequente.', 'ERRADA: P ∧ Q ("eu estudo E passo") é uma CONJUNÇÃO, não uma equivalência da condicional. A conjunção exige que ambas sejam verdadeiras simultaneamente, enquanto a condicional só é falsa no caso V → F. As tabelas-verdade são completamente diferentes.', 'ERRADA: "Se NÃO estudo, NÃO passo" é a INVERSA da original (¬P → ¬Q), que NÃO é equivalente a P → Q. Cuidado: a inversa é diferente da contrapositiva! A CONTRAPOSITIVA seria ¬Q → ¬P ("Se NÃO passo, NÃO estudo") — essa sim é equivalente, mas não é o que a alternativa diz.', 'ERRADA: "Eu estudo OU passo" (P ∨ Q) é uma disjunção das afirmações originais, sem negar nenhuma. A equivalência correta exige a NEGAÇÃO do antecedente: ¬P ∨ Q ("NÃO estudo OU passo"). Sem o "não" na primeira parte, a tabela-verdade difere.'],
+        tip: 'MACETE: Condicional vira "NÃO primeira OU segunda".',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'EC02', topic: 'EC', dif: 'm',
+        text: 'Sabendo que P é verdadeiro e Q é falso, qual proposição tem o mesmo valor lógico que P → Q?',
+        opts: ['P ∧ Q.', '¬P ∨ Q.', 'P ∨ ¬Q.', '¬P ∧ ¬Q.'],
+        ans: 1,
+        exp: 'P → Q = V → F = F. ¬P ∨ Q = F ∨ F = F. Ambas falsas → equivalentes.',
+        erros: ['ERRADA: P ∧ Q = V ∧ F = F. Embora o resultado seja F (igual a P → Q), isso sozinho não prova equivalência. Você precisa verificar TODAS as combinações, não só uma. E a conjunção NÃO é equivalente à condicional — compare: quando P=F e Q=V, a condicional dá V mas a conjunção dá F.', 'CORRETA — P → Q = V → F = F. ¬P ∨ Q = ¬V ∨ F = F ∨ F = F. Neste caso, ambas são F. E em TODAS as combinações de V/F, os valores coincidem. Por isso são equivalentes.', 'ERRADA: P ∨ ¬Q = V ∨ ¬F = V ∨ V = V. Mas P → Q = V → F = F. Resultados diferentes (V ≠ F), portanto NÃO são equivalentes. Compare sempre os resultados com os mesmos valores de P e Q.', 'ERRADA: ¬P ∧ ¬Q = F ∧ V = F. Embora aqui dê F (igual a P → Q), testando P=F e Q=F: ¬P ∧ ¬Q = V ∧ V = V, enquanto P → Q = F → F = V. Coincide neste caso, mas em P=F e Q=V: ¬P ∧ ¬Q = V ∧ F = F, enquanto P → Q = F → V = V. Diferem! Não são equivalentes.'],
+        tip: 'IBFC cobra: verifique com valores concretos para confirmar equivalência.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'CP01', topic: 'CP', dif: 'l',
+        text: 'A contrapositiva da proposição "Se o réu é culpado, então há prova" é:',
+        opts: ['Se há prova, então o réu é culpado.', 'Se o réu não é culpado, então não há prova.', 'Se não há prova, então o réu não é culpado.', 'O réu é culpado ou não há prova.'],
+        ans: 2,
+        exp: 'P → Q ≡ ¬Q → ¬P. Negando o consequente e o antecedente invertidos.',
+        erros: ['ERRADA: "Se há prova, então o réu é culpado" é a CONVERSA (Q → P). A conversa NÃO é equivalente à original! Ex.: P=V, Q=F → original: V→F = F; conversa: F→V = V. Valores diferentes! A conversa inverte a ordem sem negar. A contrapositiva inverte E nega.', 'ERRADA: "Se o réu NÃO é culpado, NÃO há prova" é a INVERSA (¬P → ¬Q). A inversa NÃO é equivalente à original. É na verdade equivalente à CONVERSA. Cuidado: inversa ≠ contrapositiva. A inversa nega ambas na MESMA ordem. A contrapositiva nega ambas e INVERTE a ordem.', 'CORRETA — a contrapositiva de P → Q é ¬Q → ¬P: "Se NÃO há prova, então o réu NÃO é culpado". Negação do consequente implica negação do antecedente. É SEMPRE equivalente à original.', 'ERRADA: "O réu é culpado OU não há prova" é P ∨ ¬Q. A equivalência disjuntiva CORRETA da condicional seria ¬P ∨ Q ("o réu NÃO é culpado OU há prova"). Você inverteu as negações: negou o consequente em vez do antecedente.'],
+        tip: 'MACETE: Contrapositiva = troque e negue as duas partes.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'CP02', topic: 'CP', dif: 'm',
+        text: 'Qual das alternativas abaixo é logicamente equivalente à contrapositiva de "Se chover, levo guarda-chuva"?',
+        opts: ['Se não chover, não levo guarda-chuva.', 'Se eu levo guarda-chuva, então chove.', 'Se não levo guarda-chuva, então não chove.', 'Não chove ou levo guarda-chuva.'],
+        ans: 2,
+        exp: 'Contrapositiva de P → Q é ¬Q → ¬P → "Se não levo guarda-chuva, então não chove".',
+        erros: ['ERRADA: "Se não chover, não levo guarda-chuva" é a INVERSA (¬P → ¬Q), não a contrapositiva. A inversa nega ambas mas mantém a ordem original; a contrapositiva nega E inverte. Resumo: Inversa é falsa equivalência — NÃO tem o mesmo valor lógico.', 'ERRADA: "Se levo guarda-chuva, então chove" é a CONVERSA (Q → P): inverte a ordem sem negar. A conversa NÃO é equivalente à original (e nem à contrapositiva). Uma fácil de lembrar: "Se sou motorista, tenho carteira" → conversa: "Se tenho carteira, sou motorista" — não é verdade!', 'CORRETA — contrapositiva de "Se chove, levo guarda-chuva" (P → Q) é ¬Q → ¬P: "Se NÃO levo guarda-chuva, NÃO chove." Inverte a ordem e nega ambas as partes. É sempre equivalente à original.', 'ERRADA: "¬P ∨ Q" (ão chove OU levo guarda-chuva) é a forma disjuntiva equivalente à condicional ORIGINAL, não à contrapositiva. Embora ambas (original e contrapositiva) sejam equivalentes entre si, a questão pede a contrapositiva, que é escrita na forma condicional (¬Q → ¬P), não na forma disjuntiva.'],
+        tip: 'A contrapositiva mantém a mesma verdade que a original.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'BI01', topic: 'BI', dif: 'l',
+        text: 'A proposição "P se e somente se Q" é logicamente equivalente a:',
+        opts: ['(P → Q) ∧ (Q → P).', '¬P ∨ Q.', 'P ∧ Q.', '¬P ∧ ¬Q.'],
+        ans: 0,
+        exp: 'P ↔ Q ≡ (P → Q) ∧ (Q → P). Bicondicional = duas condicionais mútuas.',
+        erros: ['CORRETA — P ↔ Q ≡ (P → Q) ∧ (Q → P). O bicondicional é verdadeiro quando AMBAS as condicionais são verdadeiras: "se P então Q" E "se Q então P". É a ida E a volta.', 'ERRADA: ¬P ∨ Q é a forma disjuntiva equivalente à CONDICIONAL (P → Q), não ao BICONDICIONAL (P ↔ Q). O bicondicional exige DUAS condicionais juntas (ida e volta). ¬P ∨ Q só cobre a "ida" (P → Q).', 'ERRADA: P ∧ Q é a CONJUNÇÃO simples. Ela é V apenas quando ambas são V, mas o bicondicional TAMBÉM é V quando ambas são F (F ↔ F = V). Na conjunção, F ∧ F = F. Portanto as tabelas diferem e não são equivalentes.', 'ERRADA: ¬P ∧ ¬Q é a conjunção das negações. Essa proposição só é V quando P=F e Q=F. Mas o bicondicional é V tanto quando ambas são V (V ↔ V = V) quanto quando ambas são F (F ↔ F = V). A conjunção das negações é muito restritiva — cobre só metade dos casos.'],
+        tip: 'MACETE: Bicondicional = duas setas opostas (ida e volta).',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'BI02', topic: 'BI', dif: 'm',
+        text: 'Qual sentença é equivalente a "O processo é digital se e somente se a internet está funcionando"?',
+        opts: ['Se o processo é digital, a internet funciona.', 'O processo é digital ou a internet não funciona.', 'Se o processo não é digital, a internet não funciona.', '(Processo digital → internet funciona) ∧ (internet funciona → processo digital).'],
+        ans: 3,
+        exp: 'Bicondicional é exatamente a conjunção das duas condicionais.',
+        erros: ['ERRADA: esta é apenas UMA das condicionais ("ida": processo digital → internet funciona). O bicondicional exige a IDA E a VOLTA. Falta a condicional "se internet funciona, então processo é digital" (a "volta"). Uma condicional simples é mais fraca que o bicondicional.', 'ERRADA: "processo digital OU internet não funciona" (P ∨ ¬Q) não é equivalente ao bicondicional. Essa é uma disjunção com uma negação parcial. Para equivaler ao bicondicional, precisaríamos de (P → Q) ∧ (Q → P), que é bem diferente de uma disjunção simples.', 'ERRADA: "Se processo NÃO é digital, internet NÃO funciona" (¬P → ¬Q) é a INVERSA da original (P → Q). A inversa não é equivalente à original, e também não é equivalente ao bicondicional. O bicondicional requer (P → Q) ∧ (Q → P), não uma única condicional invertida.', 'CORRETA — P ↔ Q ≡ (P → Q) ∧ (Q → P). O bicondicional "se e somente se" é a conjunção de duas condicionais recíprocas: ida ("se p digital, internet funciona") E volta ("se internet funciona, p digital").'],
+        tip: 'IBFC adora testar a forma expandida do bicondicional.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'DN01', topic: 'DN', dif: 'l',
+        text: 'A dupla negação ¬¬P é logicamente equivalente a:',
+        opts: ['¬P.', 'P.', 'P → P.', 'P ∧ ¬P.'],
+        ans: 1,
+        exp: 'Lei da dupla negação: ¬¬P ≡ P (eliminação de duas negações retorna à proposição original).',
+        erros: ['ERRADA: ¬P é a NEGAÇÃO simples de P — uma única negação. Se P = V, ¬P = F. Mas ¬¬P traz DUAS negações que se cancelam: ¬¬V = ¬F = V = P. Negação simples (¬P) e dupla negação (¬¬P) têm resultados opostos.', 'CORRETA — Lei da Dupla Negação: ¬¬P ≡ P. Duas negações consecutivas cancelam-se mutuamente, retornando ao valor original. Ex.: "é falso que João não é culpado" = "João é culpado".', 'ERRADA: P → P é uma TAUTOLOGIA (sempre V: V→V=V, F→F=V). Já ¬¬P NÃO é tautologia — seu valor depende de P. Se P=V, ¬¬P=V. Se P=F, ¬¬P=F. A dupla negação simplesmente devolve o valor de P, sem ser "sempre verdadeira".', 'ERRADA: P ∧ ¬P é uma CONTRADIÇÃO (sempre F: V∧F=F, F∧V=F). Uma proposição e sua negação nunca podem ser verdadeiras ao mesmo tempo. Isso não tem relação com a dupla negação, que simplesmente retorna ao valor original de P.'],
+        tip: 'MACETE: Duas negações se cancelam.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'DN02', topic: 'DN', dif: 'm',
+        text: 'Qual alternativa tem o mesmo valor lógico que ¬¬(P ∧ Q)?',
+        opts: ['P ∧ Q.', '¬P ∨ ¬Q.', 'P ∨ Q.', '¬(P ∨ Q).'],
+        ans: 0,
+        exp: '¬¬(P ∧ Q) ≡ P ∧ Q (dupla negação remove as duas negações).',
+        erros: ['CORRETA — ¬¬(P ∧ Q) ≡ P ∧ Q. A dupla negação se cancela, não importa o que esteja dentro dos parênteses. As duas negações "saem" e sobra a expressão original intacta.', 'ERRADA: ¬P ∨ ¬Q é o resultado de aplicar a Lei de DE MORGAN a ¬(P ∧ Q) — que tem apenas UMA negação. Mas ¬¬(P ∧ Q) tem DUAS negações, que se cancelam. Não se aplica De Morgan aqui — simplesmente elimine as duas negações: ¬¬(P ∧ Q) = P ∧ Q.', 'ERRADA: P ∨ Q (disjunção) é diferente de P ∧ Q (conjunção). A dupla negação remove as negações sem alterar o conectivo interno. Se era ∧ (conjunção), continua sendo ∧. O conectivo só muda quando aplicamos De Morgan (com UMA negação).', 'ERRADA: ¬(P ∨ Q) equivale a ¬P ∧ ¬Q (De Morgan da disjunção), não a ¬¬(P ∧ Q). Aqui temos dupla negação de uma conjunção, não negação de uma disjunção. O resultado é simplesmente P ∧ Q.'],
+        tip: 'Sempre que aparecer dupla negação, ela pode ser eliminada.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'DM01', topic: 'DM', dif: 'l',
+        text: 'De acordo com as Leis de De Morgan, ¬(P ∧ Q) é equivalente a:',
+        opts: ['¬P ∨ ¬Q.', '¬P ∧ ¬Q.', 'P ∨ Q.', 'P ∧ ¬Q.'],
+        ans: 0,
+        exp: 'Primeira Lei de De Morgan: negação da conjunção vira disjunção das negações.',
+        erros: ['CORRETA — 1ª Lei de De Morgan: ¬(P ∧ Q) ≡ ¬P ∨ ¬Q. A negação da conjunção distribui a negação para cada componente E troca o conectivo ∧ por ∨. Macete: nega, nega e troca.', 'ERRADA: ¬P ∧ ¬Q é a negação da DISJUNÇÃO, não da conjunção. ¬(P ∨ Q) ≡ ¬P ∧ ¬Q (2ª Lei de De Morgan). Você negou as partes mas ESQUECEU de trocar o conectivo. Na 1ª Lei (¬ da conjunção), tem que trocar ∧ por ∨.', 'ERRADA: P ∨ Q não tem nenhuma negação — é apenas uma disjunção das proposições originais. A negação de P ∧ Q precisa negar cada componente (¬P e ¬Q), não manter as afirmações originais. Sem negar, você não está aplicando De Morgan.', 'ERRADA: P ∧ ¬Q mantém P afirmado e só nega Q. De Morgan exige que AMBAS as proposições sejam negadas. Além disso, mantém a conjunção (∧), quando deveria trocar para disjunção (∨). A aplicação correta: nega tudo e troca o conectivo.'],
+        tip: 'Nega, nega e troca "E" por "OU".',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'DM02', topic: 'DM', dif: 'm',
+        text: 'A negação de "O réu é culpado e a testemunha mentiu" é equivalente a:',
+        opts: ['O réu não é culpado e a testemunha não mentiu.', 'O réu não é culpado ou a testemunha não mentiu.', 'Se o réu não é culpado, a testemunha não mentiu.', 'O réu é culpado ou a testemunha não mentiu.'],
+        ans: 1,
+        exp: '¬(P ∧ Q) ≡ ¬P ∨ ¬Q.',
+        erros: ['ERRADA: esta alternativa mantém a CONJUNÇÃO (∧ / "e") — "não é culpado E não mentiu" = ¬P ∧ ¬Q. Isso é a 2ª Lei de De Morgan (¬(P ∨ Q)), não a 1ª. Na negação do "E", o conectivo deve trocar para "OU". Nega, nega e TROCA o conectivo.', 'CORRETA — ¬(P ∧ Q) ≡ ¬P ∨ ¬Q. "O réu NÃO é culpado OU a testemunha NÃO mentiu." Negou cada parte e trocou "E" por "OU" (1ª Lei de De Morgan).', 'ERRADA: a condicional (¬P → ¬Q) não é resultado de De Morgan. De Morgan transforma conjunção/disjunção, não gera condicional. A negação de "P E Q" nunca resulta em "Se...então". sempre resulta em "nãoP OU nãoQ".', 'ERRADA: "O réu é culpado OU a testemunha não mentiu" = P ∨ ¬Q. Aqui, você só negou Q (testemunha) mas manteve P (réu) afirmado. De Morgan exige negar AMBAS as proposições: ¬P ∨ ¬Q, não P ∨ ¬Q.'],
+        tip: 'De Morgan é uma das equivalências mais cobradas pela IBFC.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'TV01', topic: 'TV', dif: 'l',
+        text: 'Duas proposições são logicamente equivalentes quando:',
+        opts: ['Têm a mesma tabela-verdade.', 'Uma é negação da outra.', 'Uma implica a outra.', 'São tautologias.'],
+        ans: 0,
+        exp: 'Equivalência lógica existe quando as duas proposições têm exatamente o mesmo valor lógico em todas as linhas da tabela-verdade.',
+        erros: ['CORRETA — duas proposições são logicamente equivalentes quando produzem os mesmos resultados (V ou F) em TODAS as linhas da tabela-verdade. Se houver qualquer linha em que os valores diferem, não são equivalentes.', 'ERRADA: se uma é a negação da outra, elas têm valores OPOSTOS em todas as linhas (quando uma é V, a outra é F). Isso é o contrário de equivalência! A negação de P é ¬P — seus valores são sempre opostos, nunca iguais.', 'ERRADA: "uma implicar a outra" (P → Q) é IMPLICAÇÃO, não equivalência. Implicação é unidirecional (só a "ida"). Para equivalência, precisaríamos de P → Q E Q → P (ida e volta) com mesmos valores em todas as linhas.', 'ERRADA: tautologias são proposições SEMPRE verdadeiras (em todas as linhas). Equivalência não exige que sejam tautologias — exige que tenham os MESMOS valores. Ex.: P e ¬¬P são equivalentes, mas nenhuma é tautologia (dependem do valor de P).'],
+        tip: 'Para confirmar equivalência: compare as colunas finais das tabelas.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'TV02', topic: 'TV', dif: 'm',
+        text: 'Qual das alternativas abaixo é equivalente a P → Q por tabela-verdade?',
+        opts: ['¬P ∨ Q.', 'P ∧ Q.', '¬P ∧ ¬Q.', 'P ∨ ¬Q.'],
+        ans: 0,
+        exp: 'A tabela-verdade de P → Q é idêntica à de ¬P ∨ Q (ambas falsas apenas quando P=V e Q=F).',
+        erros: ['CORRETA — P → Q ≡ ¬P ∨ Q. Tabela-verdade: ambas são F somente quando P=V e Q=F; ambas são V nos demais 3 casos. As colunas finais são idênticas, confirmando a equivalência.', 'ERRADA: P ∧ Q (conjunção) é V apenas quando ambas são V. P → Q é V em 3 dos 4 casos (só é F quando V→F). As tabelas diferem nos casos F→V e F→F — onde a condicional dá V, mas a conjunção dá F.', 'ERRADA: ¬P ∧ ¬Q é V apenas quando P=F e Q=F. Mas P → Q é V também quando P=V, Q=V e quando P=F, Q=V. As tabelas são bem diferentes — ¬P ∧ ¬Q é muito restritiva (só 1 caso V).', 'ERRADA: P ∨ ¬Q é equivalente à condicional Q → P (a CONVERSA), não a P → Q. Compare: P=F, Q=V → P ∨ ¬Q = F ∨ F = F; P → Q = F → V = V. Valores diferentes! O erro clássico: inverter a ordem das letras na forma disjuntiva.'],
+        tip: 'A forma disjuntiva é a equivalência mais clássica da condicional.',
+        tiptype: 'cm-blue'
+      }
+    ];
+
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

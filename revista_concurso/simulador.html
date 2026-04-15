@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montar Simulado · Aprova Concursos</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ── Reset / Base ─────────────────────────────────────────────────────── */
+        :root {
+            --navy: #0A1628;
+            --navy2: #132238;
+            --navy3: #1E3250;
+            --gold: #C9982A;
+            --gold-l: #E8C55A;
+            --cream: #FAF7F2;
+            --paper: #F3EDE4;
+            --paper2: #E9E1D6;
+            --text: #0A1628;
+            --text2: #3A4558;
+            --text3: #6B7A92;
+            --font-h: 'Playfair Display', Georgia, serif;
+            --font-b: 'DM Sans', system-ui, sans-serif;
+            --r: 10px;
+        }
+
+        [data-dark] {
+            --navy: #E8E0D5;
+            --cream: #0A1628;
+            --paper: #111D2E;
+            --paper2: #1A2A40;
+            --text: #E8E0D5;
+            --text2: #B8C5D6;
+            --text3: #7A90A8;
+            --gold: #E8C55A;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-b);
+            background: var(--cream);
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.6;
+            transition: background .3s, color .3s;
+            padding-bottom: 6rem;
+        }
+
+        /* ── COVER ─────────────────────────────────────────────────────────────── */
+        #cover {
+            background: var(--navy);
+            color: var(--cream);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            border-bottom: 4px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #cover::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201, 152, 42, .05) 40px, rgba(201, 152, 42, .05) 41px);
+            pointer-events: none;
+        }
+
+        .cv-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .22em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: .6rem;
+        }
+
+        #cover h1 {
+            font-family: var(--font-h);
+            font-size: clamp(1.6rem, 4vw, 2.6rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: .5rem;
+        }
+
+        #cover h1 em {
+            color: var(--gold-l);
+            font-style: italic;
+        }
+
+        .cv-desc {
+            font-size: .9rem;
+            color: #A8BDD0;
+            max-width: 520px;
+            margin: .5rem auto 0;
+        }
+
+        /* ── CONTROLS BAR ──────────────────────────────────────────────────────── */
+        #controls {
+            background: var(--paper);
+            border-bottom: 1px solid var(--paper2);
+            padding: .6rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .ctrl {
+            font-size: 12.5px;
+            padding: 5px 13px;
+            border: 1px solid var(--paper2);
+            border-radius: 99px;
+            background: var(--cream);
+            cursor: pointer;
+            color: var(--text2);
+            font-family: var(--font-b);
+            transition: background .15s;
+            text-decoration: none;
+        }
+
+        .ctrl:hover {
+            background: var(--paper2);
+        }
+
+        /* ── BODY ──────────────────────────────────────────────────────────────── */
+        #sim-body {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 2rem 1.25rem;
+        }
+
+        /* ── AREA BLOCK ────────────────────────────────────────────────────────── */
+        .area-block {
+            margin-bottom: 2.25rem;
+        }
+
+        .area-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: .9rem;
+            padding-bottom: .5rem;
+            border-bottom: 1px solid var(--paper2);
+        }
+
+        /* ── SUBJECTS GRID ─────────────────────────────────────────────────────── */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: .85rem;
+        }
+
+        /* ── SUBJECT CARD ──────────────────────────────────────────────────────── */
+        .subject-card {
+            position: relative;
+            border: 2px solid var(--paper2);
+            border-radius: var(--r);
+            background: var(--paper);
+            padding: 1rem 1rem 1rem 3.25rem;
+            cursor: pointer;
+            transition: border-color .18s, box-shadow .18s, background .18s;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .subject-card:hover:not(.disabled) {
+            border-color: var(--color, #0A1628);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+        }
+
+        .subject-card.selected {
+            border-color: var(--color, #0A1628);
+            background: var(--color-pale, var(--paper));
+            box-shadow: 0 0 0 3px rgba(var(--color-rgb, 10, 22, 40), .1);
+        }
+
+        .subject-card.disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            filter: grayscale(.5);
+        }
+
+        /* Checkbox */
+        .sc-check {
+            position: absolute;
+            left: .9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--paper2);
+            border-radius: 5px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: white;
+            transition: background .15s, border-color .15s;
+        }
+
+        .subject-card.selected .sc-check {
+            background: var(--color, #0A1628);
+            border-color: var(--color, #0A1628);
+        }
+
+        .subject-card.selected .sc-check::after {
+            content: '✓';
+        }
+
+        .sc-icon {
+            font-size: 1.15rem;
+            margin-bottom: .2rem;
+        }
+
+        .sc-label {
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .sc-meta {
+            font-size: .75rem;
+            color: var(--text3);
+            margin-top: .2rem;
+        }
+
+        .sc-soon {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            background: var(--paper2);
+            color: var(--text3);
+            border-radius: 99px;
+            padding: 2px 8px;
+            margin-top: .25rem;
+            text-transform: uppercase;
+        }
+
+        /* ── OPTIONS PANEL ─────────────────────────────────────────────────────── */
+        #options-panel {
+            background: var(--paper);
+            border: 1px solid var(--paper2);
+            border-radius: var(--r);
+            padding: 1.25rem 1.5rem;
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 540px) {
+            #options-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .opt-group-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: .65rem;
+        }
+
+        .radio-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+        }
+
+        .radio-pill input {
+            display: none;
+        }
+
+        .radio-pill label {
+            display: inline-block;
+            padding: 5px 14px;
+            border: 1.5px solid var(--paper2);
+            border-radius: 99px;
+            font-size: 12.5px;
+            cursor: pointer;
+            transition: background .15s, border-color .15s, color .15s;
+            color: var(--text2);
+        }
+
+        .radio-pill input:checked+label {
+            background: var(--navy);
+            color: white;
+            border-color: var(--navy);
+        }
+
+        [data-dark] .radio-pill input:checked+label {
+            background: #C9982A;
+            color: #0A1628;
+            border-color: #C9982A;
+        }
+
+        /* ── ACTION BAR ────────────────────────────────────────────────────────── */
+        #action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--navy);
+            border-top: 3px solid var(--gold);
+            padding: .75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        #action-summary {
+            font-size: .85rem;
+            color: #A8BDD0;
+        }
+
+        #action-summary strong {
+            color: var(--gold-l);
+        }
+
+        #btn-montar {
+            font-family: var(--font-b);
+            font-size: .9rem;
+            font-weight: 600;
+            padding: .65rem 1.75rem;
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background .15s, transform .1s;
+            white-space: nowrap;
+        }
+
+        #btn-montar:hover:not(:disabled) {
+            background: var(--gold-l);
+            transform: translateY(-1px);
+        }
+
+        #btn-montar:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- COVER -->
+    <div id="cover">
+        <div class="cv-label">Aprova Concursos</div>
+        <h1><em>Montar</em> Simulado</h1>
+        <p class="cv-desc">Selecione as matérias, o nível de dificuldade e a quantidade de questões por disciplina.</p>
+    </div>
+
+    <!-- CONTROLS BAR -->
+    <div id="controls">
+        <a class="ctrl" href="index.html">← Revista</a>
+        <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    </div>
+
+    <!-- BODY -->
+    <div id="sim-body">
+
+        <!-- ÁREA: NÚCLEO COMUM -->
+        <div class="area-block">
+            <div class="area-title">📚 &nbsp;Núcleo Comum</div>
+            <div class="subjects-grid" id="grid-nucleo"></div>
+        </div>
+
+        <!-- ÁREA: JUDICIÁRIA -->
+        <div class="area-block">
+            <div class="area-title">⚖️ &nbsp;Área Judiciária</div>
+            <div class="subjects-grid" id="grid-judiciaria"></div>
+        </div>
+
+        <!-- ÁREA: FISCAL E DE CONTROLE -->
+        <div class="area-block">
+            <div class="area-title">💰 &nbsp;Área Fiscal e de Controle</div>
+            <div class="subjects-grid" id="grid-fiscal"></div>
+        </div>
+
+        <!-- ÁREA: ADMINISTRATIVA -->
+        <div class="area-block">
+            <div class="area-title">🏛️ &nbsp;Área Administrativa</div>
+            <div class="subjects-grid" id="grid-administrativa"></div>
+        </div>
+
+        <!-- ÁREA: SEGURANÇA PÚBLICA -->
+        <div class="area-block">
+            <div class="area-title">🛡️ &nbsp;Segurança Pública</div>
+            <div class="subjects-grid" id="grid-seguranca"></div>
+        </div>
+
+        <!-- ÁREA: BANCÁRIA -->
+        <div class="area-block">
+            <div class="area-title">🏦 &nbsp;Área Bancária</div>
+            <div class="subjects-grid" id="grid-bancaria"></div>
+        </div>
+
+        <!-- OPÇÕES -->
+        <div id="options-panel">
+            <div>
+                <div class="opt-group-title">Dificuldade</div>
+                <div class="radio-row">
+                    <div class="radio-pill"><input type="radio" name="dif" id="dif-all" value="all" checked><label
+                            for="dif-all">Todas</label></div>
+                    <div class="radio-pill"><input type="radio" name="dif" id="dif-l" value="l"><label
+                            for="dif-l">Básico</label></div>
+                    <div class="radio-pill"><input type="radio" name="dif" id="dif-m" value="m"><label
+                            for="dif-m">Intermediário</label></div>
+                    <div class="radio-pill"><input type="radio" name="dif" id="dif-h" value="h"><label
+                            for="dif-h">Avançado</label></div>
+                </div>
+            </div>
+            <div>
+                <div class="opt-group-title">Questões por matéria</div>
+                <div class="radio-row">
+                    <div class="radio-pill"><input type="radio" name="maxPer" id="mp-5" value="5"><label
+                            for="mp-5">5</label></div>
+                    <div class="radio-pill"><input type="radio" name="maxPer" id="mp-10" value="10" checked><label
+                            for="mp-10">10</label></div>
+                    <div class="radio-pill"><input type="radio" name="maxPer" id="mp-15" value="15"><label
+                            for="mp-15">15</label></div>
+                    <div class="radio-pill"><input type="radio" name="maxPer" id="mp-20" value="20"><label
+                            for="mp-20">20</label></div>
+                    <div class="radio-pill"><input type="radio" name="maxPer" id="mp-0" value="0"><label
+                            for="mp-0">Todas</label></div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /#sim-body -->
+
+    <!-- ACTION BAR -->
+    <div id="action-bar">
+        <span id="action-summary">Nenhuma matéria selecionada</span>
+        <button id="btn-montar" onclick="montarSimulado()" disabled>Montar Simulado →</button>
+    </div>
+
+    <script>
+        // ── Dados dos subjects ─────────────────────────────────────────────────
+        var SUBJECTS = [
+            // Núcleo Comum
+            { id: 'dir-constitucional', label: 'Direito Constitucional', area: 'nucleo', color: '#1A5CA8', colorPale: '#E8F0FA', colorRgb: '26,92,168', icon: '⚖️', count: 30 },
+            { id: 'dir-administrativo', label: 'Direito Administrativo', area: 'nucleo', color: '#085041', colorPale: '#E3F5EF', colorRgb: '8,80,65', icon: '🏛️', count: 25 },
+            { id: 'raciocinio-logico', label: 'Raciocínio Lógico', area: 'nucleo', color: '#3A246A', colorPale: '#EDE8F8', colorRgb: '58,36,106', icon: '🔢', count: 30 },
+            { id: 'portugues', label: 'Língua Portuguesa', area: 'nucleo', color: '#1A4A2E', colorPale: '#E8F5EE', colorRgb: '26,74,46', icon: '📝', count: 0, disabled: true },
+            { id: 'informatica', label: 'Informática', area: 'nucleo', color: '#1A2E4A', colorPale: '#E8EEF5', colorRgb: '26,46,74', icon: '💻', count: 0, disabled: true },
+            // Área Judiciária
+            { id: 'dir-civil', label: 'Direito Civil', area: 'judiciaria', color: '#3A246A', colorPale: '#EDE8F8', colorRgb: '58,36,106', icon: '📜', count: 30 },
+            { id: 'dir-processual-penal', label: 'Dir. Processual Penal', area: 'judiciaria', color: '#712B13', colorPale: '#FAECE7', colorRgb: '113,43,19', icon: '⚙️', count: 33 },
+            { id: 'dir-penal', label: 'Direito Penal', area: 'judiciaria', color: '#4A1A1A', colorPale: '#F5E8E8', colorRgb: '74,26,26', icon: '⚔️', count: 0, disabled: true },
+            { id: 'processo-civil', label: 'Processo Civil', area: 'judiciaria', color: '#2A3A6A', colorPale: '#E8ECF8', colorRgb: '42,58,106', icon: '⚖️', count: 0, disabled: true },
+            { id: 'dir-eleitoral', label: 'Direito Eleitoral', area: 'judiciaria', color: '#3A1A4A', colorPale: '#EEE8F5', colorRgb: '58,26,74', icon: '🗳️', count: 0, disabled: true },
+            { id: 'dir-trabalho', label: 'Direito do Trabalho', area: 'judiciaria', color: '#2E4A1A', colorPale: '#EEF5E8', colorRgb: '46,74,26', icon: '🤝', count: 0, disabled: true },
+            // Área Fiscal e de Controle
+            { id: 'dir-tributario', label: 'Direito Tributário', area: 'fiscal', color: '#1A3A1A', colorPale: '#E8F5E8', colorRgb: '26,58,26', icon: '💰', count: 0, disabled: true },
+            { id: 'contabilidade-geral', label: 'Contabilidade Geral', area: 'fiscal', color: '#1A3A2A', colorPale: '#E8F5EF', colorRgb: '26,58,42', icon: '📊', count: 0, disabled: true },
+            { id: 'auditoria', label: 'Auditoria', area: 'fiscal', color: '#3A2A1A', colorPale: '#F5EFE8', colorRgb: '58,42,26', icon: '🔍', count: 0, disabled: true },
+            { id: 'afo', label: 'AFO / Orçamento', area: 'fiscal', color: '#1A2A3A', colorPale: '#E8EFF5', colorRgb: '26,42,58', icon: '📋', count: 0, disabled: true },
+            { id: 'economia', label: 'Economia', area: 'fiscal', color: '#2A3A1A', colorPale: '#EFF5E8', colorRgb: '42,58,26', icon: '📈', count: 0, disabled: true },
+            // Área Administrativa
+            { id: 'adm-geral', label: 'Administração Geral', area: 'administrativa', color: '#1A1A3A', colorPale: '#E8E8F5', colorRgb: '26,26,58', icon: '🗂️', count: 0, disabled: true },
+            { id: 'adm-publica', label: 'Adm. Pública', area: 'administrativa', color: '#3A1A3A', colorPale: '#F5E8F5', colorRgb: '58,26,58', icon: '🏢', count: 0, disabled: true },
+            { id: 'gestao-pessoas', label: 'Gestão de Pessoas', area: 'administrativa', color: '#1A3A3A', colorPale: '#E8F5F5', colorRgb: '26,58,58', icon: '👥', count: 0, disabled: true },
+            { id: 'recursos-materiais', label: 'Recursos Materiais', area: 'administrativa', color: '#2A1A3A', colorPale: '#EFE8F5', colorRgb: '42,26,58', icon: '📦', count: 0, disabled: true },
+            { id: 'arquivologia', label: 'Arquivologia', area: 'administrativa', color: '#3A3A1A', colorPale: '#F5F5E8', colorRgb: '58,58,26', icon: '🗃️', count: 0, disabled: true },
+            // Segurança Pública
+            { id: 'leg-extravagante', label: 'Leg. Extravagante', area: 'seguranca', color: '#3A1A1A', colorPale: '#F5E8E8', colorRgb: '58,26,26', icon: '📜', count: 0, disabled: true },
+            { id: 'direitos-humanos', label: 'Direitos Humanos', area: 'seguranca', color: '#1A3A1A', colorPale: '#E8F5E8', colorRgb: '26,58,26', icon: '🤲', count: 0, disabled: true },
+            { id: 'criminologia', label: 'Criminologia', area: 'seguranca', color: '#2A1A3A', colorPale: '#EFE8F5', colorRgb: '42,26,58', icon: '🔎', count: 0, disabled: true },
+            { id: 'medicina-legal', label: 'Medicina Legal', area: 'seguranca', color: '#1A2A3A', colorPale: '#E8EFF5', colorRgb: '26,42,58', icon: '⚕️', count: 0, disabled: true },
+            // Área Bancária
+            { id: 'conh-bancarios', label: 'Conhec. Bancários', area: 'bancaria', color: '#1A3A2A', colorPale: '#E8F5EF', colorRgb: '26,58,42', icon: '🏦', count: 0, disabled: true },
+            { id: 'mercado-financeiro', label: 'Mercado Financeiro', area: 'bancaria', color: '#2A3A1A', colorPale: '#EFF5E8', colorRgb: '42,58,26', icon: '📉', count: 0, disabled: true },
+            { id: 'mat-financeira', label: 'Matemática Financeira', area: 'bancaria', color: '#3A2A1A', colorPale: '#F5EFE8', colorRgb: '58,42,26', icon: '🔢', count: 0, disabled: true }
+        ];
+
+        var selected = new Set();
+
+        // ── Renderizar cards ───────────────────────────────────────────────────
+        function renderCards() {
+            var grids = {
+                nucleo: document.getElementById('grid-nucleo'),
+                judiciaria: document.getElementById('grid-judiciaria'),
+                fiscal: document.getElementById('grid-fiscal'),
+                administrativa: document.getElementById('grid-administrativa'),
+                seguranca: document.getElementById('grid-seguranca'),
+                bancaria: document.getElementById('grid-bancaria')
+            };
+            SUBJECTS.forEach(function (s) {
+                var grid = grids[s.area];
+                if (!grid) return;
+                var card = document.createElement('div');
+                card.className = 'subject-card' + (s.disabled ? ' disabled' : '');
+                card.dataset.id = s.id;
+                card.style.setProperty('--color', s.color);
+                card.style.setProperty('--color-pale', s.colorPale);
+                card.style.setProperty('--color-rgb', s.colorRgb);
+                var countText = s.disabled ? '' : s.count + ' questões';
+                var soonBadge = s.disabled ? '<span class="sc-soon">Em breve</span>' : '';
+                card.innerHTML =
+                    '<div class="sc-check"></div>'
+                    + '<div class="sc-icon">' + s.icon + '</div>'
+                    + '<div class="sc-label">' + s.label + '</div>'
+                    + '<div class="sc-meta">' + countText + '</div>'
+                    + soonBadge;
+                if (!s.disabled) {
+                    card.addEventListener('click', function () { toggleCard(s.id); });
+                }
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleCard(id) {
+            if (selected.has(id)) selected.delete(id);
+            else selected.add(id);
+            document.querySelector('[data-id="' + id + '"]').classList.toggle('selected', selected.has(id));
+            updateSummary();
+        }
+
+        // ── Atualizar resumo ───────────────────────────────────────────────────
+        function updateSummary() {
+            var dif = document.querySelector('input[name="dif"]:checked').value;
+            var maxPer = parseInt(document.querySelector('input[name="maxPer"]:checked').value, 10);
+            var total = 0;
+            selected.forEach(function (id) {
+                var s = SUBJECTS.find(function (x) { return x.id === id; });
+                if (!s) return;
+                var count = dif === 'all' ? s.count : Math.ceil(s.count * (dif === 'l' ? .35 : dif === 'm' ? .5 : .15));
+                total += (maxPer > 0 ? Math.min(count, maxPer) : count);
+            });
+            var n = selected.size;
+            var btn = document.getElementById('btn-montar');
+            btn.disabled = n === 0 || total === 0;
+            var sumEl = document.getElementById('action-summary');
+            if (n === 0) {
+                sumEl.innerHTML = 'Nenhuma matéria selecionada';
+            } else {
+                var labels = Array.from(selected).map(function (id) {
+                    return (SUBJECTS.find(function (x) { return x.id === id; }) || {}).label || id;
+                });
+                sumEl.innerHTML = '<strong>' + n + '</strong> matéria(s) · <strong>~' + total + '</strong> questões';
+            }
+        }
+
+        // ── Montar e navegar ───────────────────────────────────────────────────
+        function montarSimulado() {
+            var dif = document.querySelector('input[name="dif"]:checked').value;
+            var maxPer = parseInt(document.querySelector('input[name="maxPer"]:checked').value, 10);
+            var cfg = {
+                subjects: Array.from(selected),
+                dif: dif,
+                maxPerSubject: maxPer
+            };
+            localStorage.setItem('APROVA_SIMULADO_CONFIG', JSON.stringify(cfg));
+            window.location.href = 'simulado-combinado.html';
+        }
+
+        // ── Dark mode ──────────────────────────────────────────────────────────
+        function toggleDark() {
+            var dark = document.body.hasAttribute('data-dark');
+            if (dark) {
+                document.body.removeAttribute('data-dark');
+                document.getElementById('dark-toggle').textContent = '🌙 Modo escuro';
+            } else {
+                document.body.setAttribute('data-dark', '');
+                document.getElementById('dark-toggle').textContent = '☀️ Modo claro';
+            }
+        }
+
+        // ── Listeners para recalcular ao mudar opções ──────────────────────────
+        document.querySelectorAll('input[name="dif"], input[name="maxPer"]').forEach(function (el) {
+            el.addEventListener('change', updateSummary);
+        });
+
+        // ── Init ───────────────────────────────────────────────────────────────
+        renderCards();
+        updateSummary();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Lógica Sentencial — Negações Lógicas (Padrão IBFC) · Técnico Judiciário TJPE · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Técnico · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Negações Lógicas</em><br>12 Questões Comentadas (Padrão IBFC)</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Negação Categórica</span>
+      <span class="cv-tag">Negação da Conjunção</span>
+      <span class="cv-tag">Negação da Disjunção</span>
+      <span class="cv-tag">Negação da Condicional</span>
+      <span class="cv-tag">Negação da Bicondicional</span>
+      <span class="cv-tag">Negação da Exclusiva</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      NC: 'Negação Categórica',
+      CJ: 'Negação da Conjunção',
+      DJ: 'Negação da Disjunção',
+      CD: 'Negação da Condicional',
+      BC: 'Negação da Bicondicional',
+      DE: 'Negação da Disjunção Exclusiva'
+    };
+    const TOPIC_COLOR = {
+      NC: { bg: '#E6F1FB', c: '#0C447C' },
+      CJ: { bg: '#FCEAEA', c: '#7A1515' },
+      DJ: { bg: '#E3F5EF', c: '#085041' },
+      CD: { bg: '#EDE8F8', c: '#3A246A' },
+      BC: { bg: '#FFF3DC', c: '#6A4800' },
+      DE: { bg: '#EAF3DE', c: '#173404' }
+    };
+
+    // ── 12 QUESTÕES DE NEGAÇÕES LÓGICAS (PADRÃO IBFC) ────────────────────────
+    const ALL = [
+      {
+        id: 'NC01', topic: 'NC', dif: 'l',
+        text: 'A negação lógica da proposição "Todo técnico judiciário gosta de ler" é:',
+        opts: ['Nenhum técnico judiciário gosta de ler.', 'Algum técnico judiciário não gosta de ler.', 'Todos os técnicos judiciários não gostam de ler.', 'Algum técnico judiciário gosta de ler.'],
+        ans: 1,
+        exp: 'Para negar o "Todo", usamos o mnemônico PEA + NÃO (Pelo menos um, Existe um, Algum + negação). Nunca se nega "Todo" com "Nenhum".',
+        erros: ['Negação errada de universal afirmativa.', 'CORRETA.', 'Negação errada (mantém universal).', 'Afirmação, não negação.'],
+        tip: 'Todo A é B → Algum A não é B.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'NC02', topic: 'NC', dif: 'm',
+        text: '"Nenhum desembargador é injusto". A negação dessa frase é:',
+        opts: ['Todos os desembargadores são injustos.', 'Pelo menos um desembargador é injusto.', 'Algum desembargador não é injusto.', 'Todos os desembargadores são justos.'],
+        ans: 1,
+        exp: 'A negação de "Nenhum" (Universal Negativa) é feita com o PEA (Particular Afirmativa).',
+        erros: ['Negação errada de universal negativa.', 'CORRETA.', 'Mantém negação.', 'Afirmação, não negação.'],
+        tip: 'Nenhum A é B → Algum A é B.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'CJ01', topic: 'CJ', dif: 'l',
+        text: 'A negação da proposição "O edital foi publicado e a prova será em maio" é:',
+        opts: ['O edital não foi publicado e a prova não será em maio.', 'O edital não foi publicado ou a prova não será em maio.', 'Se o edital não foi publicado, então a prova não será em maio.', 'O edital foi publicado ou a prova será em maio.'],
+        ans: 1,
+        exp: 'Primeira Lei de De Morgan: ¬(P ∧ Q) ⇔ ¬P ∨ ¬Q. Nega-se ambas e troca-se o "e" pelo "ou".',
+        erros: ['Negação errada (mantém "e").', 'CORRETA.', 'Condicional — não é negação.', 'Afirmação invertida.'],
+        tip: 'Nega, nega e troca por "OU".',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'CJ02', topic: 'CJ', dif: 'm',
+        text: 'É falso que "O réu é culpado e a testemunha mentiu". Isso equivale a dizer que:',
+        opts: ['O réu não é culpado ou a testemunha não mentiu.', 'O réu não é culpado e a testemunha não mentiu.', 'Se o réu é culpado, a testemunha não mentiu.', 'O réu é inocente e a testemunha disse a verdade.'],
+        ans: 0,
+        exp: '"É falso que..." indica negação. Aplicando De Morgan no "e", temos "não P ou não Q".',
+        erros: ['CORRETA.', 'Mantém "e" — erro.', 'Condicional — não é negação.', 'Afirmação, não negação.'],
+        tip: 'A IBFC costuma usar "É falso que" para introduzir a questão.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'DJ01', topic: 'DJ', dif: 'l',
+        text: '"Estudo Direito Civil ou estudo Direito Penal". A negação dessa sentença é:',
+        opts: ['Não estudo Direito Civil ou não estudo Direito Penal.', 'Se não estudo Direito Civil, estudo Direito Penal.', 'Não estudo Direito Civil e não estudo Direito Penal.', 'Estudo Direito Civil e estudo Direito Penal.'],
+        ans: 2,
+        exp: 'Segunda Lei de De Morgan: ¬(P ∨ Q) ⇔ ¬P ∧ ¬Q. Nega-se ambas e troca-se o "ou" pelo "e".',
+        erros: ['Mantém "ou" — erro.', 'Condicional — não é negação.', 'CORRETA.', 'Afirmação invertida.'],
+        tip: 'Nega, nega e troca por "E".',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'DJ02', topic: 'DJ', dif: 'm',
+        text: 'Qual a negação de "Vou ao Tribunal ou fico em casa"?',
+        opts: ['Não vou ao Tribunal ou não fico em casa.', 'Não vou ao Tribunal e não fico em casa.', 'Se vou ao Tribunal, não fico em casa.', 'Vou ao Tribunal e fico em casa.'],
+        ans: 1,
+        exp: 'Aplicação direta da regra de negação do conectivo disjuntivo.',
+        erros: ['Mantém "ou" — erro.', 'CORRETA.', 'Condicional — não é negação.', 'Afirmação invertida.'],
+        tip: 'O "OU" vira "E" na negação.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'CD01', topic: 'CD', dif: 'l',
+        text: 'A negação lógica de "Se eu estudar, então passarei no TJPE" é:',
+        opts: ['Se eu não estudar, então não passarei no TJPE.', 'Eu estudo e não passo no TJPE.', 'Eu não estudo e passo no TJPE.', 'Se eu passar no TJPE, então estudei.'],
+        ans: 1,
+        exp: 'Regra do MANÉ (MAntém a primeira E NEga a segunda). ¬(P → Q) ⇔ P ∧ ¬Q.',
+        erros: ['Condicional invertida — não é negação.', 'CORRETA.', 'Negação errada.', 'Condicional — não é negação.'],
+        tip: 'Nunca negue um "Se... então" com outro "Se... então". O conectivo da negação da condicional é sempre o "E".',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'CD02', topic: 'CD', dif: 'm',
+        text: 'Negar a frase "Se o crime é hediondo, então não há fiança" resulta em:',
+        opts: ['O crime é hediondo e há fiança.', 'O crime não é hediondo ou não há fiança.', 'Se o crime não é hediondo, há fiança.', 'O crime é hediondo ou há fiança.'],
+        ans: 0,
+        exp: 'Mantém-se a primeira (O crime é hediondo), troca-se o conectivo por "E", e nega-se a segunda (negar "não há" vira "há").',
+        erros: ['CORRETA.', 'Negação errada (mantém "ou").', 'Condicional — não é negação.', 'Disjunção — não é negação.'],
+        tip: '"MA-NÉ": MAntém a 1ª (P) E NEga a 2ª (¬Q).',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'BC01', topic: 'BC', dif: 'l',
+        text: 'A negação de "O processo é físico se e somente se a internet caiu" é:',
+        opts: ['Ou o processo é físico ou a internet caiu.', 'Se o processo é físico, a internet não caiu.', 'O processo não é físico se e somente se a internet não caiu.', 'O processo é físico e a internet não caiu.'],
+        ans: 0,
+        exp: 'A negação da bicondicional (↔) é a disjunção exclusiva (⊻).',
+        erros: ['CORRETA.', 'Condicional — não é negação.', 'Bicondicional invertida — não é negação.', 'Conjunção — não é negação.'],
+        tip: 'Negação de ↔ é Ou... Ou.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'BC02', topic: 'BC', dif: 'm',
+        text: 'Dizer que a sentença "P ↔ Q" é falsa é o mesmo que afirmar que:',
+        opts: ['P → Q é verdadeira.', 'P ⊻ Q é verdadeira.', '¬P ↔ ¬Q.', 'P ∧ ¬Q.'],
+        ans: 1,
+        exp: 'Se a bicondicional é falsa, sua negação é verdadeira. A negação de P ↔ Q é P ⊻ Q.',
+        erros: ['Não equivale.', 'CORRETA.', 'Equivalência errada.', 'Conjunção — não é negação.'],
+        tip: 'Pense na tabela-verdade: onde um é falso, o outro é verdadeiro.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'DE01', topic: 'DE', dif: 'l',
+        text: 'A negação da proposição "Ou viajo para Olinda ou viajo para Caruaru" é:',
+        opts: ['Não viajo para Olinda e não viajo para Caruaru.', 'Viajo para Olinda se e somente se viajo para Caruaru.', 'Viajo para Olinda ou viajo para Caruaru.', 'Se viajo para Olinda, viajo para Caruaru.'],
+        ans: 1,
+        exp: 'A negação do "Ou exclusivo" (⊻) é a bicondicional (↔).',
+        erros: ['Negação errada (mantém "e").', 'CORRETA.', 'Afirmação original.', 'Condicional — não é negação.'],
+        tip: '⊻ negado vira ↔.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'DE02', topic: 'DE', dif: 'm',
+        text: 'Qual proposição nega "Ou o réu é solto ou a justiça é feita"?',
+        opts: ['O réu é solto se e somente se a justiça é feita.', 'O réu não é solto e a justiça não é feita.', 'Se o réu é solto, a justiça é feita.', 'O réu não é solto ou a justiça não é feita.'],
+        ans: 0,
+        exp: 'Troca-se o conectivo "Ou... ou" pelo "Se e somente se", mantendo as proposições.',
+        erros: ['CORRETA.', 'Negação errada (mantém "e").', 'Condicional — não é negação.', 'Disjunção — não é negação.'],
+        tip: 'Negação do exclusivo vira bicondicional.',
+        tiptype: 'cm-gold'
+      }
+    ];
+
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

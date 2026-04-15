@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Lógica Sentencial — Sequências, PA, PG e Porcentagem · Técnico Judiciário TJPE · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Técnico · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Sequências, PA, PG e Porcentagem</em><br>10 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição
+      inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Sequências Lógicas</span>
+      <span class="cv-tag">Progressão Aritmética</span>
+      <span class="cv-tag">Progressão Geométrica</span>
+      <span class="cv-tag">Porcentagem</span>
+      <span class="cv-tag">Porcentagem Inversa</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 10 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 10</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      SEQ: 'Sequências Lógicas',
+      PA: 'Progressão Aritmética',
+      PG: 'Progressão Geométrica',
+      POR: 'Porcentagem',
+      PIN: 'Porcentagem Inversa'
+    };
+    const TOPIC_COLOR = {
+      SEQ: { bg: '#E6F1FB', c: '#0C447C' },
+      PA: { bg: '#FCEAEA', c: '#7A1515' },
+      PG: { bg: '#E3F5EF', c: '#085041' },
+      POR: { bg: '#EDE8F8', c: '#3A246A' },
+      PIN: { bg: '#FFF3DC', c: '#6A4800' }
+    };
+
+    // ── 10 QUESTÕES DE SEQUÊNCIAS, PA, PG E PORCENTAGEM ──────────────────────
+    const ALL = [
+      {
+        id: 'SEQ01', topic: 'SEQ', dif: 'l',
+        text: 'Determine o próximo termo da sequência: $2, 5, 10, 17, 26, \\dots$',
+        opts: ['35', '37', '40', '42'],
+        ans: 1,
+        exp: 'A diferença entre os termos aumenta em números ímpares sucessivos: +3, +5, +7, +9. O próximo salto deve ser +11. 26 + 11 = 37.',
+        erros: ['ERRADA: 35 = 26 + 9. Você repetiu o salto anterior (+9) em vez de incrementar. As diferenças crescem em ímpares: +3, +5, +7, +9. O próximo salto é +11 (não +9 de novo). 26 + 11 = 37.', 'CORRETA — as diferenças entre termos consecutivos são 3, 5, 7, 9 (ímpares crescentes). O próximo salto é +11: 26 + 11 = 37. Padrão alternativo: n² + 1 → 6² + 1 = 37.', 'ERRADA: 40 = 26 + 14. Não há base lógica para um salto de +14 nesta sequência. As diferenças crescem de 2 em 2 (ímpares): 3, 5, 7, 9, 11... O salto deveria ser +11, resultando em 37.', 'ERRADA: 42 = 26 + 16. Se você somou +16, dobrou o salto anterior (+9 → +16?). A regra é adicionar 2 a cada diferença (não dobrar). 9 + 2 = 11. 26 + 11 = 37.'],
+        tip: 'SUPER DICA: Identifique se os números estão próximos de quadrados perfeitos. Note que: $1^2+1=2$, $2^2+1=5$, $3^2+1=10$, $4^2+1=17$, $5^2+1=26$. O próximo é $6^2+1 = 37$.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'SEQ02', topic: 'SEQ', dif: 'm',
+        text: 'Qual o próximo termo da sequência: $1, 1, 2, 3, 5, 8, 13, \\dots$',
+        opts: ['18', '21', '24', '26'],
+        ans: 1,
+        exp: 'Sequência de Fibonacci. Cada termo é a soma dos dois anteriores. 8 + 13 = 21.',
+        erros: ['ERRADA: 18 = 13 + 5. Você somou 13 com o termo três posições atrás (5), não com o anterior (8). Na Fibonacci, cada termo é a soma dos DOIS IMEDIATAMENTE ANTERIORES: 8 + 13 = 21.', 'CORRETA — Sequência de Fibonacci: cada termo = soma dos dois anteriores. 8 + 13 = 21. Sequência: 1, 1, 2, 3, 5, 8, 13, 21...', 'ERRADA: 24 não corresponde à soma dos dois últimos termos. A regra é simples: some os dois últimos: 8 + 13 = 21. Se você pensou em 13 + 11 = 24, observe que 11 não faz parte da sequência.', 'ERRADA: 26 = 13 × 2. Multiplicar por 2 não é a operação da Fibonacci — é SOMAR os dois últimos. 8 + 13 = 21. Multiplicar só funcionaria se fosse uma PG de razão 2.'],
+        tip: 'SUPER DICA: Em sequências que crescem devagar e depois aceleram, teste sempre a soma dos anteriores ou a multiplicação por uma constante.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PA01', topic: 'PA', dif: 'l',
+        text: 'Em uma PA onde o primeiro termo é $7$ e a razão é $4$, qual é o valor do $20º$ termo?',
+        opts: ['77', '80', '83', '87'],
+        ans: 2,
+        exp: '$a_{20} = a_1 + (n-1)r \\rightarrow a_{20} = 7 + (19 \\cdot 4) = 7 + 76 = 83$.',
+        erros: ['ERRADA: 77 = 7 + 70 = 7 + (17,5 × 4)? Não bate com nenhum cálculo inteiro. Possível erro: usar n = 18,5. Lembre: do 1º ao 20º termo, há 19 intervalos: a₂₀ = 7 + 19×4 = 83.', 'ERRADA: 80 = 4 × 20 = 80. Você multiplicou razão × n, mas esqueceu de somar a₁ e de subtrair 1 de n. A fórmula é a₁ + (n−1)×r, não n×r. Correto: 7 + 19×4 = 83.', 'CORRETA — a₂₀ = a₁ + (n−1)×r = 7 + 19×4 = 7 + 76 = 83. São 19 "pulos" de razão 4.', 'ERRADA: 87 = 7 + 80 = 7 + (20×4). Você usou n = 20 em vez de (n−1) = 19. A fórmula é aₙ = a₁ + (n−1)×r — o primeiro termo já "conta", então são 19 intervalos, não 20.'],
+        tip: 'SUPER DICA: Para achar o $n$-ésimo termo, pense: "Do $1º$ para o $20º$ eu preciso dar $19$ "pulos" (razões)". $19 \\times 4 = 76$. Somo ao valor inicial: $7 + 76 = 83$.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PA02', topic: 'PA', dif: 'm',
+        text: 'Qual a soma dos 10 primeiros termos da PA $(2, 5, 8, \\dots)$?',
+        opts: ['155', '160', '170', '175'],
+        ans: 0,
+        exp: 'Primeiro achamos $a_{10} = 2 + (9 \\cdot 3) = 29$. A soma é $S_n = \\frac{(a_1 + a_n)n}{2} \\rightarrow S_{10} = \\frac{(2 + 29) \\cdot 10}{2} = 31 \\cdot 5 = 155$.',
+        erros: ['CORRETA — a₁₀ = 2 + 9×3 = 29. S₁₀ = (2+29)×10/2 = 31×5 = 155. Método alternativo: média dos extremos (15,5) × 10 = 155.', 'ERRADA: 160 poderia vir de usar a₁₀ = 30 (errado). Confira: a₁₀ = 2 + 9×3 = 29. S = (2+29)×10/2 = 155, não 160. Outro erro possível: (2+30)×10/2 = 160 — mas a₁₀ é 29, não 30.', 'ERRADA: 170 pode surgir de usar n = 11 ou a₁₀ errado. Ex.: (2+32)×10/2 = 170 (a₁₀ = 32 seria com razão 3,33...). Com razão 3 exata: a₁₀ = 29. S₁₀ = 155.', 'ERRADA: 175 pode resultar de a₁ = 5 (errado) ou a₁₀ = 30. Ex.: (5+30)×10/2 = 175. Mas a₁ = 2 (não 5) e a₁₀ = 29 (não 30). Releia o enunciado.'],
+        tip: 'SUPER DICA: A soma de uma PA é sempre o Termo Central multiplicado pela quantidade de termos. Se o número de termos é par, faça a média dos dois centrais (ou do primeiro e último) e multiplique pelo total. Aqui: média entre $2$ e $29$ é $15,5$. $15,5 \\times 10 = 155$.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PG01', topic: 'PG', dif: 'l',
+        text: 'O $5º$ termo da PG $(3, 6, 12, \\dots)$ é:',
+        opts: ['24', '36', '48', '60'],
+        ans: 2,
+        exp: 'A razão $q$ é $2$. $a_5 = a_1 \\cdot q^{n-1} \\rightarrow a_5 = 3 \\cdot 2^4 = 3 \\cdot 16 = 48$.',
+        erros: ['ERRADA: 24 é o 4º termo, não o 5º. Você parou uma posição antes: 3→6→12→24. Falta mais uma multiplicação por 2: 24×2 = 48. Pela fórmula: a₅ = 3×2⁴ = 48.', 'ERRADA: 36 = 3×12. Não existe cálculo válido que resulte em 36 com a₁=3 e q=2. Conferindo manualmente: 3→6→12→24→48. O 5º termo é 48.', 'CORRETA — a₅ = a₁ × qⁿ⁻¹ = 3 × 2⁴ = 3 × 16 = 48. Ou manualmente: 3→6→12→24→48.', 'ERRADA: 60 = 3×20. De onde veio 20? Na PG, cada termo = anterior × q (multiplicação). Você pode ter somado termos em vez de multiplicar. Cada passo: ×2: 3→6→12→24→48.'],
+        tip: 'SUPER DICA: Em PGs pequenas, é mais rápido dobrar (ou triplicar) manualmente do que aplicar a fórmula: $3 \\rightarrow 6 \\rightarrow 12 \\rightarrow 24 \\rightarrow 48$.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'PG02', topic: 'PG', dif: 'm',
+        text: 'Em uma PG de razão $q=3$ e $a_1=5$, qual o valor de $a_4$?',
+        opts: ['45', '135', '150', '405'],
+        ans: 1,
+        exp: '$a_4 = 5 \\cdot 3^3 = 5 \\cdot 27 = 135$.',
+        erros: ['ERRADA: 45 = 5×9 = 5×3². Isso seria a₃ (terceiro termo), não a₄. Você usou expoente 2 em vez de 3. A fórmula é aₙ = a₁ × qⁿ⁻¹. Para n=4: a₄ = 5×3³ = 5×27 = 135.', 'CORRETA — a₄ = 5 × 3³ = 5 × 27 = 135. Manualmente: 5→15→45→135 (multiplicando por 3 a cada passo).', 'ERRADA: 150 = 5×30. Não existe potência de 3 que dê 30. As potências de 3: 3¹=3, 3²=9, 3³=27, 3⁴=81. O correto: 5×27 = 135.', 'ERRADA: 405 = 5×81 = 5×3⁴. Isso seria a₅ (quinto termo), não a₄. Você usou expoente 4 em vez de 3. Lembre: aₙ = a₁ × qⁿ⁻¹. Para a₄: expoente = 4−1 = 3, não 4.'],
+        tip: 'SUPER DICA: Lembre-se das potências de $3$ ($3, 9, 27, 81, 243$). A IBFC adora usá-las como razão ou termos.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'POR01', topic: 'POR', dif: 'l',
+        text: 'Um produto de $R\\$ 200,00$ sofre um aumento de $20\\%$ e, em seguida, um desconto de $20\\%$. O valor final é:',
+        opts: ['$R\\$ 200,00$', '$R\\$ 192,00$', '$R\\$ 180,00$', '$R\\$ 204,00$'],
+        ans: 1,
+        exp: '$200 \\cdot 1,2 = 240$. Depois, $240 \\cdot 0,8 = 192$.',
+        erros: ['ERRADA: R$200 seria se aumento e desconto de mesma porcentagem se cancelassem — mas NÃO se cancelam! 20% de aumento sobre R$200 = +R$40 (dá R$240). 20% de desconto sobre R$240 = −R$48 (não −R$40!). O desconto incide sobre o valor AUMENTADO (240), que é maior. Resultado: R$192.', 'CORRETA — 200 × 1,2 = 240 (com aumento). 240 × 0,8 = 192 (com desconto). Ou: fator global = 1,2 × 0,8 = 0,96 → 4% de queda. 200 × 0,96 = 192.', 'ERRADA: R$180 = 200 − 20 (10%?). Não há base lógica para chegar a 180. O cálculo correto: 200→240→192. Se você fez 200×0,9 = 180 (desconto de 10%), errou a porcentagem — são 20%, não 10%.', 'ERRADA: R$204 = 200 + 4. Talvez tenha feito 200 + 20% − 20% = 200 + 0 e depois ajustado incorretamente. O ponto crucial: o desconto de 20% incide sobre 240 (não sobre 200), gerando −48, não −40. 240−48 = 192.'],
+        tip: 'SUPER DICA: Aumentos e descontos sucessivos iguais nunca voltam ao valor original. O resultado é sempre um prejuízo igual ao quadrado da taxa. Ex: $20\\% \\rightarrow 0,2^2 = 0,04$ ($4\\%$ de queda). $4\\%$ de $200$ é $8$. $200 - 8 = 192$.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'POR02', topic: 'POR', dif: 'm',
+        text: '$30\\%$ de $40\\%$ de $R\\$ 500,00$ equivale a:',
+        opts: ['$R\\$ 60,00$', '$R\\$ 70,00$', '$R\\$ 150,00$', '$R\\$ 200,00$'],
+        ans: 0,
+        exp: '$0,3 \\cdot 0,4 \\cdot 500 = 0,12 \\cdot 500 = 60$.',
+        erros: ['CORRETA — 0,3 × 0,4 × 500 = 0,12 × 500 = 60. Atalho: 30% × 40% = 12% → 12% de 500 = 60.', 'ERRADA: 70 = 500 × 0,14? Não há base para 14%. O cálculo: 30% × 40% = 12% (multiplique os fatores). 12% de 500 = 60. Se você somou 30% + 40% = 70%, isso é errado — "de" implica multiplicação, não soma.', 'ERRADA: 150 = 30% de 500 = 0,3 × 500. Você calculou 30% de 500 e ignorou o "40%" intermediário. A questão pede 30% DE 40% (composição de porcentagens). Primeiro: 40% de 500 = 200. Depois: 30% de 200 = 60.', 'ERRADA: 200 = 40% de 500 = 0,4 × 500. Você calculou apenas 40% de 500 e ignorou o "30%". A questão pede 30% de (40% de 500). Falta a última operação: 30% de 200 = 60.'],
+        tip: 'SUPER DICA: No cálculo de porcentagem, cada "%" cancela dois zeros. $3\\underline{0}\\% \\times 4\\underline{0}\\% \\times 5\\underline{00} \\rightarrow 3 \\times 4 \\times 5 = 60$.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'PIN01', topic: 'PIN', dif: 'l',
+        text: 'Se $20\\%$ de um número é $12$, qual é esse número?',
+        opts: ['48', '60', '72', '100'],
+        ans: 1,
+        exp: '$0,2x = 12 \\rightarrow x = 12 / 0,2 = 60$.',
+        erros: ['ERRADA: 48 = 12 × 4. Voc dividiu 100% por 25% (=4) em vez de 20% (=5). Se 20% = 12, o total (100%) é 12 ÷ 0,2 = 12 × 5 = 60. Dividir por 0,2 = multiplicar por 5.', 'CORRETA — 0,2x = 12 → x = 12/0,2 = 60. Atalho: 20% = 1/5. Se 1/5 do número é 12, o número inteiro é 12 × 5 = 60.', 'ERRADA: 72 = 12 × 6. Você multiplicou por 6 em vez de 5. Se 20% = 1/5, o total é 12 × 5 = 60. O fator 6 corresponderia a 100÷16,67% — sem relação com o enunciado.', 'ERRADA: 100 → se 20% de 100 = 20, não 12. Verificação rápida: 20% de 100 = 20 ≠ 12. O número deve ser menor que 100. 20% de 60 = 12 ✓.'],
+        tip: 'SUPER DICA: Para achar o total ($100\\%$) a partir de uma parte: divida pelo decimal. Dividir por $0,2$ é o mesmo que multiplicar por $5$.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'PIN02', topic: 'PIN', dif: 'm',
+        text: 'Após um desconto de $15\\%$, um livro passou a custar $R\\$ 68,00$. Qual era o preço original?',
+        opts: ['$R\\$ 75,00$', '$R\\$ 80,00$', '$R\\$ 85,00$', '$R\\$ 90,00$'],
+        ans: 1,
+        exp: '$85\\%$ do valor $= 68 \\rightarrow 0,85x = 68 \\rightarrow x = 68 / 0,85 = 80$.',
+        erros: ['ERRADA: se o original fosse R$75, o desconto de 15% seria 75×0,15 = R$11,25. Preço final: 75 − 11,25 = R$63,75 ≠ R$68. Não bate.', 'CORRETA — 0,85x = 68 → x = 68/0,85 = 80. Verificação: 15% de 80 = 12. 80 − 12 = 68 ✓. Na prova, teste as alternativas mentalmente!', 'ERRADA: se o original fosse R$85, o desconto de 15% seria 85×0,15 = R$12,75. Preço final: 85 − 12,75 = R$72,25 ≠ R$68. Possivelmente você somou 68 + 15 = 83 e arredondou para 85 — mas desconto não funciona assim.', 'ERRADA: se o original fosse R$90, o desconto de 15% seria 90×0,15 = R$13,50. Preço final: 90 − 13,50 = R$76,50 ≠ R$68. O valor correto é R$80, pois 80 × 0,85 = 68.'],
+        tip: 'SUPER DICA: Se o valor caiu $15\\%$, ele vale $85\\%$. No dia da prova, teste as alternativas: $10\\%$ de $80$ é $8$, metade ($5\\%$) é $4$. $8+4=12$. $80-12=68$. Bateu!',
+        tiptype: 'cm-purple'
+      }
+    ];
+
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

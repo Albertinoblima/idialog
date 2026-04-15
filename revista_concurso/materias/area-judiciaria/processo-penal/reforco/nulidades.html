@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado de Reforço — Nulidades no Processo Penal · Técnico Judiciário TJPE · Banca IBFC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado de Reforço · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Nulidades no Processo Penal</em><br>12 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Pas de nullité sans grief</span>
+      <span class="cv-tag">Absoluta x Relativa</span>
+      <span class="cv-tag">Art. 564 CPP</span>
+      <span class="cv-tag">Sanabilidade</span>
+      <span class="cv-tag">Prazos de Arguição</span>
+      <span class="cv-tag">Contaminação</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      NU: 'Nulidades no Processo Penal'
+    };
+    const TOPIC_COLOR = {
+      NU: { bg: '#F1EFE8', c: '#2C2C2A' }
+    };
+
+    // ── 12 QUESTÕES DE REFORÇO ─────────────────────────────────────────────────
+    const ALL = [
+      {
+        id: 'NU01',
+        topic: 'NU',
+        dif: 'l',
+        text: 'No sistema das nulidades do processo penal brasileiro, nenhum ato será declarado nulo se da nulidade não resultar prejuízo para a acusação ou para a defesa. Este enunciado refere-se ao princípio do(a):',
+        opts: ['Instrumentalidade das formas.', 'Pas de nullité sans grief.', 'Interesse.', 'Causalidade.'],
+        ans: 1,
+        exp: 'Art. 563 do CPP. É o pilar fundamental: sem demonstração de prejuízo, não há reconhecimento de nulidade.',
+        erros: ['ERRADA: Instrumentalidade das formas é princípio correlato (art. 566), mas o enunciado cita exatamente o pas de nullité sans grief.', 'CORRETA.', 'ERRADA: Princípio do interesse não é o nome técnico do art. 563.', 'ERRADA: Causalidade refere-se à contaminação dos atos subsequentes (art. 573).'],
+        tip: '"Sem prejuízo, sem nulidade". Mesmo que a forma tenha sido errada, se o objetivo foi atingido sem dano às partes, o ato é válido.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'NU02',
+        topic: 'NU',
+        dif: 'm',
+        text: 'O princípio que estabelece que a nulidade de um ato não será declarada quando não houver influído na apuração da verdade substancial ou na decisão da causa é o da:',
+        opts: ['Tipicidade das formas.', 'Eventualidade.', 'Instrumentalidade das formas (ou Prejuízo).', 'Inércia.'],
+        ans: 2,
+        exp: 'Art. 566 do CPP. Reforça que erros irrelevantes para o desfecho ou para a verdade dos fatos não anulam o processo.',
+        erros: ['ERRADA: Tipicidade das formas não existe como princípio autônomo.', 'ERRADA: Eventualidade não é o nome do princípio.', 'CORRETA.', 'ERRADA: Inércia não se relaciona com nulidades.'],
+        tip: 'Se o erro não mudou o "placar do jogo" nem a "regra", o juiz não anula.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'NU03',
+        topic: 'NU',
+        dif: 'l',
+        text: 'As nulidades absolutas no processo penal caracterizam-se por:',
+        opts: ['Exigirem sempre a prova do prejuízo pela parte prejudicada.', 'Poderem ser reconhecidas de ofício pelo juiz, a qualquer tempo e grau de jurisdição.', 'Precluírem se não forem arguidas na primeira oportunidade.', 'Serem sanáveis pela concordância expressa das partes.'],
+        ans: 1,
+        exp: 'A nulidade absoluta viola norma de ordem pública (interesse coletivo). Por isso, não preclui e o prejuízo é presumido.',
+        erros: ['ERRADA: Nas absolutas o prejuízo é presumido.', 'CORRETA.', 'ERRADA: Preclusão é característica das relativas.', 'ERRADA: Absolutas não se sanam por concordância das partes.'],
+        tip: 'Absoluta = Grave, Ordem Pública, Não prescreve/preclui dentro do processo.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'NU04',
+        topic: 'NU',
+        dif: 'm',
+        text: 'Diferente da nulidade absoluta, a nulidade relativa:',
+        opts: ['Independe de demonstração de prejuízo.', 'Deve ser arguida no momento oportuno, sob pena de preclusão (convalescença).', 'Não admite sanabilidade.', 'Pode ser declarada de ofício pelo juiz mesmo após o trânsito em julgado.'],
+        ans: 1,
+        exp: 'A nulidade relativa visa proteger interesse das partes. Se a parte não reclamar no prazo legal, entende-se que aceitou o ato (convalescença por omissão).',
+        erros: ['ERRADA: Relativa exige prova de prejuízo.', 'CORRETA.', 'ERRADA: Relativa admite sanabilidade.', 'ERRADA: Absoluta pode ser de ofício; relativa não após preclusão.'],
+        tip: 'Relativa = Interesse da Parte, Precisa de Prova de Prejuízo, Tem Prazo (Preclui).',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'NU05',
+        topic: 'NU',
+        dif: 'l',
+        text: 'Ocorrerá nulidade no processo penal por incompetência, suspeição ou suborno do juiz. Caso o juiz seja reconhecido como incompetente:',
+        opts: ['Todos os atos processuais, inclusive os decisórios, são automaticamente válidos.', 'A nulidade ocorrerá apenas quanto aos atos decisórios, devendo os autos ser remetidos ao juiz competente.', 'O processo deve ser extinto sem resolução de mérito.', 'A nulidade é relativa e depende de arguição do Ministério Público.'],
+        ans: 1,
+        exp: 'Art. 564, I, c/c Art. 567 do CPP. A incompetência do juízo anula somente os atos decisórios.',
+        erros: ['ERRADA: Atos decisórios são nulos.', 'CORRETA.', 'ERRADA: Não há extinção do processo.', 'ERRADA: Incompetência absoluta é reconhecida de ofício.'],
+        tip: '"Incompetência anula a decisão, mas pode salvar o resto" (atos instrutórios podem ser ratificados em alguns casos, mas a regra literal é a anulação dos decisórios).',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'NU06',
+        topic: 'NU',
+        dif: 'm',
+        text: 'A falta de concessão de prazos à acusação e à defesa, bem como a falta de intimação do réu para o julgamento perante o Tribunal do Júri, gera nulidade por:',
+        opts: ['Ilegitimidade de parte.', 'Omissão de formalidade que constitua elemento essencial do ato.', 'Deficiência de defesa técnica.', 'Incompetência do juízo.'],
+        ans: 1,
+        exp: 'Art. 564, III, "e" e "f" do CPP. São formalidades essenciais que garantem o contraditório e a ampla defesa.',
+        erros: ['ERRADA: Ilegitimidade é outra hipótese.', 'CORRETA.', 'ERRADA: Deficiência de defesa técnica é hipótese distinta.', 'ERRADA: Incompetência é outro inciso.'],
+        tip: 'Falta de citação, falta de interrogatório e falta de prazo são erros "clássicos" do Art. 564.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'NU07',
+        topic: 'NU',
+        dif: 'l',
+        text: 'As nulidades serão consideradas sanadas se:',
+        opts: ['O juiz de segundo grau assim o declarar, mesmo sem pedido das partes.', 'Não forem arguidas em tempo oportuno.', 'O Ministério Público não se manifestar em 48 horas.', 'O réu for reincidente.'],
+        ans: 1,
+        exp: 'Art. 572, I do CPP. É a convalescença pelo silêncio. Aplica-se às nulidades do Art. 564, III, d, e, g, h, entre outras (relativas).',
+        erros: ['ERRADA: Não cabe ao juiz de ofício sanar relativas.', 'CORRETA.', 'ERRADA: Não existe esse prazo automático.', 'ERRADA: Reincidência não sana nulidade.'],
+        tip: 'Quem cala, consente (no caso das nulidades relativas).',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'NU08',
+        topic: 'NU',
+        dif: 'm',
+        text: 'Se o ato, praticado de outra forma, tiver atingido o seu fim, a nulidade considerar-se-á:',
+        opts: ['Absoluta.', 'Inexistente.', 'Sanada.', 'Irrelevante juridicamente.'],
+        ans: 2,
+        exp: 'Art. 572, II do CPP. Se o objetivo foi cumprido, a forma passa a ser secundária.',
+        erros: ['ERRADA: Não se torna absoluta.', 'ERRADA: O ato existiu, apenas é sanado.', 'CORRETA.', 'ERRADA: Não é irrelevante juridicamente, mas sanado pela finalidade.'],
+        tip: 'É a vitória da finalidade sobre a forma.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'NU09',
+        topic: 'NU',
+        dif: 'l',
+        text: 'As nulidades da instrução criminal dos processos de competência do juiz singular deverão ser arguidas:',
+        opts: ['No momento das alegações finais.', 'Logo após a pronúncia.', 'Logo depois de aberta a audiência e apregoadas as partes.', 'Até 24 horas após o trânsito em julgado.'],
+        ans: 0,
+        exp: 'Art. 571, II do CPP. No procedimento comum, o momento crítico para "limpar" as nulidades da instrução são as alegações finais.',
+        erros: ['CORRETA.', 'ERRADA: Pronúncia é fase do Júri.', 'ERRADA: Esse momento é para o Júri.', 'ERRADA: Após trânsito em julgado não cabe arguição de nulidade relativa.'],
+        tip: 'Instrução comum = Alegações finais. Perdeu o prazo? Precluiu.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'NU10',
+        topic: 'NU',
+        dif: 'm',
+        text: 'As nulidades ocorridas após a pronúncia, no procedimento do Tribunal do Júri, devem ser arguidas:',
+        opts: ['Somente em sede de apelação.', 'Logo depois de anunciado o julgamento e apregoadas as partes.', 'Durante o interrogatório do réu em plenário.', 'Após a leitura da sentença pelo juiz presidente.'],
+        ans: 1,
+        exp: 'Art. 571, V do CPP. No Júri, as nulidades intermediárias (pós-pronúncia) devem ser ditas "no pregão".',
+        erros: ['ERRADA: Apelação não é o momento correto.', 'CORRETA.', 'ERRADA: Interrogatório em plenário não é o momento.', 'ERRADA: Sentença já foi proferida.'],
+        tip: 'Júri tem rito próprio. Se algo errado ocorreu entre a pronúncia e o dia do julgamento, reclame logo no início da sessão.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'NU11',
+        topic: 'NU',
+        dif: 'l',
+        text: 'Declarada a nulidade de um ato, esta causará:',
+        opts: ['A nulidade de todos os atos subsequentes, independentemente de conexão.', 'Apenas a nulidade do próprio ato, sem afetar os demais.', 'A nulidade de todos os atos que dele diretamente dependam ou sejam consequência.', 'A extinção imediata da punibilidade.'],
+        ans: 2,
+        exp: 'Art. 573, § 1º do CPP. É a regra da causalidade ou contaminação.',
+        erros: ['ERRADA: Só os atos dependentes.', 'ERRADA: Atos dependentes também são nulos.', 'CORRETA.', 'ERRADA: Nulidade não extingue punibilidade automaticamente.'],
+        tip: 'Imagine um dominó. Se a peça que caiu é a "mãe" das outras, as outras caem. Se as outras são independentes, elas ficam de pé.',
+        tiptype: 'cm-amber'
+      },
+      {
+        id: 'NU12',
+        topic: 'NU',
+        dif: 'm',
+        text: 'A nulidade de uma parte de um ato:',
+        opts: ['Prejudica o ato inteiro obrigatoriamente.', 'Não prejudicará as outras que dela sejam independentes.', 'Exige que todo o processo seja refeito.', 'Só pode ser declarada pelo Tribunal de Justiça.'],
+        ans: 1,
+        exp: 'Art. 573, § 2º do CPP. O juiz deve salvar o que é independente.',
+        erros: ['ERRADA: Só a parte dependente.', 'CORRETA.', 'ERRADA: Apenas o que está contaminado.', 'ERRADA: Juiz singular também declara nulidades.'],
+        tip: 'Princípio da Conservação dos Atos Processuais. Só anula o que está "contaminado".',
+        tiptype: 'cm-amber'
+      }
+    ];
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

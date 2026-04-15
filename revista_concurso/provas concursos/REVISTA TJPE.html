@@ -1,0 +1,3683 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Albertino Bezerra Lima">
+  <title>Revista de Estudos TJPE · Técnico Judiciário · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0A1628;
+      --navy2: #132238;
+      --navy3: #1E3250;
+      --gold: #C9982A;
+      --gold-light: #E8C55A;
+      --gold-pale: #FBF3DC;
+      --cream: #FAF7F2;
+      --paper: #F3EDE4;
+      --paper2: #E9E1D6;
+      --red: #B83232;
+      --red-pale: #FCEAEA;
+      --red-border: #DDA0A0;
+      --teal: #0D7A5C;
+      --teal-pale: #E3F5EF;
+      --teal-border: #7ECAB3;
+      --purple: #5B3FA0;
+      --purple-pale: #EDE8F8;
+      --purple-border: #BAA8E8;
+      --amber: #A06B10;
+      --amber-pale: #FFF3DC;
+      --amber-border: #E8C97A;
+      --blue: #1A5CA8;
+      --blue-pale: #E8F0FA;
+      --blue-border: #8CB4E8;
+      --text: #0A1628;
+      --text2: #3A4558;
+      --text3: #6B7A92;
+      --font-h: 'Playfair Display', Georgia, serif;
+      --font-b: 'DM Sans', system-ui, sans-serif;
+      --font-m: 'Fira Mono', monospace;
+      --sidebar-w: 260px;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --shadow: 0 2px 8px rgba(10, 22, 40, 0.10);
+      --shadow-lg: 0 6px 24px rgba(10, 22, 40, 0.15);
+    }
+
+    [data-theme="dark"] {
+      --navy: #F3EDE4;
+      --cream: #0A1628;
+      --paper: #111D2E;
+      --paper2: #1A2A40;
+      --text: #E8E0D5;
+      --text2: #B8C5D6;
+      --text3: #7A90A8;
+      --gold-pale: #1A2030;
+      --red-pale: #2A1515;
+      --teal-pale: #0D2420;
+      --purple-pale: #1A1530;
+      --amber-pale: #2A1E0A;
+      --blue-pale: #0D1E35;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 6px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-b);
+      background: var(--cream);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+      transition: background .3s, color .3s;
+    }
+
+    /* ── COVER ── */
+    #cover {
+      background: var(--navy);
+      color: var(--cream);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 4px solid var(--gold);
+    }
+
+    #cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201, 152, 42, .04) 40px, rgba(201, 152, 42, .04) 41px);
+      pointer-events: none;
+    }
+
+    .cover-issue {
+      font-size: 11px;
+      font-family: var(--font-b);
+      font-weight: 600;
+      letter-spacing: .2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .cover-author {
+      font-size: 12px;
+      font-family: var(--font-b);
+      color: #A8BDD0;
+      margin-bottom: 1.2rem;
+      line-height: 1.6;
+      letter-spacing: .02em;
+    }
+
+    .cover-author strong {
+      font-size: 14px;
+      color: var(--gold-light);
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .cover-author a {
+      color: #A8BDD0;
+      text-decoration: none;
+      border-bottom: 1px dotted rgba(168, 189, 208, .4);
+      transition: color .15s;
+    }
+
+    .cover-author a:hover {
+      color: var(--gold-light);
+    }
+
+    #cover h1 {
+      font-family: var(--font-h);
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      line-height: 1.15;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+
+    #cover h1 em {
+      color: var(--gold-light);
+      font-style: italic;
+    }
+
+    .cover-sub {
+      font-size: 1rem;
+      color: #A8BDD0;
+      max-width: 520px;
+      margin: 1rem auto 0;
+      line-height: 1.6;
+    }
+
+    .cover-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+
+    .cbadge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 99px;
+      background: rgba(201, 152, 42, .18);
+      color: var(--gold-light);
+      letter-spacing: .06em;
+      border: 1px solid rgba(201, 152, 42, .3);
+    }
+
+    /* ── LAYOUT ── */
+    #shell {
+      display: flex;
+      min-height: 100vh;
+      align-items: flex-start;
+    }
+
+    /* ── SIDEBAR ── */
+    #sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: var(--paper);
+      border-right: 1px solid var(--paper2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 3.5rem .75rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transform: translateX(0);
+      transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    #sidebar.collapsed {
+      transform: translateX(-100%);
+    }
+
+    .sb-section-title {
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: .15em;
+      color: var(--text3);
+      text-transform: uppercase;
+      padding: .75rem .5rem .3rem;
+      border-top: 1px solid var(--paper2);
+      margin-top: .5rem;
+    }
+
+    .sb-section-title:first-child {
+      border-top: none;
+      margin-top: 0;
+    }
+
+    .sb-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text2);
+      transition: all .15s;
+      text-decoration: none;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .sb-item:hover {
+      background: var(--paper2);
+      color: var(--text);
+    }
+
+    .sb-item.active {
+      background: var(--navy);
+      color: var(--cream);
+    }
+
+    .sb-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .sb-sub {
+      padding-left: 26px;
+      font-size: 12px;
+      color: var(--text3);
+      font-weight: 400;
+      cursor: pointer;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .sb-sub:hover {
+      color: var(--text);
+      background: var(--paper2);
+    }
+
+    .sb-controls {
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid var(--paper2);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ctrl-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text2);
+      background: none;
+      border: none;
+      width: 100%;
+      transition: background .15s;
+      font-family: var(--font-b);
+    }
+
+    .ctrl-btn:hover {
+      background: var(--paper2);
+    }
+
+    /* ── MAIN CONTENT ── */
+    #main {
+      flex: 1;
+      min-width: 0;
+      padding: 2rem 2.5rem 4rem;
+      margin-left: var(--sidebar-w);
+      transition: margin-left .3s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    body.sidebar-collapsed #main {
+      margin-left: 0;
+    }
+
+    /* ── CHAPTERS ── */
+    .chapter {
+      margin-bottom: 4rem;
+      display: none;
+    }
+
+    .chapter.visible {
+      display: block;
+    }
+
+    .chapter-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--paper2);
+    }
+
+    .chapter-num {
+      font-family: var(--font-h);
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--paper2);
+      flex-shrink: 0;
+      width: 56px;
+      text-align: right;
+    }
+
+    .chapter-meta {
+      flex: 1;
+    }
+
+    .chapter-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: .3rem;
+    }
+
+    .chapter-title {
+      font-family: var(--font-h);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .chapter-desc {
+      font-size: 14px;
+      color: var(--text2);
+      margin-top: .5rem;
+      max-width: 600px;
+      line-height: 1.65;
+    }
+
+    /* ── ARTICLES ── */
+    .article {
+      margin-bottom: 2.5rem;
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--paper2);
+      overflow: hidden;
+      transition: box-shadow .2s;
+    }
+
+    .article:hover {
+      box-shadow: var(--shadow);
+    }
+
+    .art-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      gap: 1rem;
+    }
+
+    .art-title {
+      font-family: var(--font-h);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .art-badges {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: .04em;
+    }
+
+    .badge-hot {
+      background: var(--red-pale);
+      color: var(--red);
+      border: 1px solid var(--red-border);
+    }
+
+    .badge-med {
+      background: var(--amber-pale);
+      color: var(--amber);
+      border: 1px solid var(--amber-border);
+    }
+
+    .badge-ok {
+      background: var(--teal-pale);
+      color: var(--teal);
+      border: 1px solid var(--teal-border);
+    }
+
+    .art-toggle {
+      font-size: 1.2rem;
+      color: var(--text3);
+      transition: transform .25s;
+    }
+
+    .art-toggle.open {
+      transform: rotate(180deg);
+    }
+
+    .art-body {
+      display: none;
+      padding: 0 1.25rem 1.5rem;
+      border-top: 1px solid var(--paper2);
+    }
+
+    .art-body.open {
+      display: block;
+    }
+
+    .art-intro {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.75;
+      padding: 1rem 0 .75rem;
+      border-bottom: 1px dashed var(--paper2);
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    /* ── CONTENT BLOCKS ── */
+    .block-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin: .9rem 0 .5rem;
+    }
+
+    .points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .45rem;
+      margin-bottom: 1rem;
+    }
+
+    .point {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+
+    .point-marker {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .pm-red {
+      background: var(--red-pale);
+      color: var(--red);
+    }
+
+    .pm-teal {
+      background: var(--teal-pale);
+      color: var(--teal);
+    }
+
+    .pm-blue {
+      background: var(--blue-pale);
+      color: var(--blue);
+    }
+
+    .pm-amber {
+      background: var(--amber-pale);
+      color: var(--amber);
+    }
+
+    .pm-purple {
+      background: var(--purple-pale);
+      color: var(--purple);
+    }
+
+    /* ── CALLOUT BOXES ── */
+    .callout {
+      border-radius: var(--radius);
+      padding: .85rem 1rem;
+      font-size: 13.5px;
+      line-height: 1.65;
+      margin: .75rem 0;
+      border-left: 4px solid;
+    }
+
+    .callout strong {
+      font-weight: 600;
+    }
+
+    .c-alert {
+      background: var(--red-pale);
+      border-color: var(--red);
+      color: #6A1515;
+    }
+
+    .c-tip {
+      background: var(--teal-pale);
+      border-color: var(--teal);
+      color: #0A4A38;
+    }
+
+    .c-example {
+      background: var(--purple-pale);
+      border-color: var(--purple);
+      color: #3A246A;
+    }
+
+    .c-note {
+      background: var(--blue-pale);
+      border-color: var(--blue);
+      color: #0D3A70;
+    }
+
+    .c-gold {
+      background: var(--gold-pale);
+      border-color: var(--gold);
+      color: #6A4800;
+    }
+
+    [data-theme="dark"] .c-alert {
+      color: #F4A0A0;
+    }
+
+    [data-theme="dark"] .c-tip {
+      color: #7FD9BC;
+    }
+
+    [data-theme="dark"] .c-example {
+      color: #C4AEFF;
+    }
+
+    [data-theme="dark"] .c-note {
+      color: #90C4FF;
+    }
+
+    [data-theme="dark"] .c-gold {
+      color: #F0CC70;
+    }
+
+    /* ── COMPARISON TABLE ── */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: .75rem 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--paper2);
+    }
+
+    .comp-table th {
+      background: var(--navy);
+      color: var(--cream);
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .06em;
+    }
+
+    .comp-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--paper2);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    .comp-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comp-table tr:nth-child(even) td {
+      background: rgba(0, 0, 0, .025);
+    }
+
+    [data-theme="dark"] .comp-table tr:nth-child(even) td {
+      background: rgba(255, 255, 255, .025);
+    }
+
+    /* ── SCHEMA (visual diagrams) ── */
+    .schema {
+      background: var(--cream);
+      border: 1px solid var(--paper2);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin: .75rem 0;
+      overflow-x: auto;
+    }
+
+    [data-theme="dark"] .schema {
+      background: var(--navy2);
+    }
+
+    .schema-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+      text-align: center;
+    }
+
+    .schema-row {
+      display: flex;
+      gap: .5rem;
+      align-items: stretch;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: .4rem;
+    }
+
+    .schema-box {
+      border-radius: var(--radius);
+      padding: .6rem .9rem;
+      font-size: 12.5px;
+      text-align: center;
+      min-width: 100px;
+      flex: 1;
+      border: 1px solid;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      line-height: 1.4;
+    }
+
+    .schema-box strong {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .sb-navy {
+      background: var(--navy);
+      color: var(--cream);
+      border-color: var(--navy);
+    }
+
+    .sb-gold {
+      background: var(--gold-pale);
+      color: var(--amber);
+      border-color: var(--gold);
+    }
+
+    .sb-red {
+      background: var(--red-pale);
+      color: var(--red);
+      border-color: var(--red-border);
+    }
+
+    .sb-teal {
+      background: var(--teal-pale);
+      color: var(--teal);
+      border-color: var(--teal-border);
+    }
+
+    .sb-purple {
+      background: var(--purple-pale);
+      color: var(--purple);
+      border-color: var(--purple-border);
+    }
+
+    .sb-blue {
+      background: var(--blue-pale);
+      color: var(--blue);
+      border-color: var(--blue-border);
+    }
+
+    .sb-amber {
+      background: var(--amber-pale);
+      color: var(--amber);
+      border-color: var(--amber-border);
+    }
+
+    .schema-arrow {
+      font-size: 1rem;
+      color: var(--text3);
+      align-self: center;
+      padding: 0 .1rem;
+    }
+
+    .schema-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--paper2);
+      margin: .5rem 0;
+    }
+
+    .truth-table {
+      font-family: var(--font-m);
+      font-size: 12px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .truth-table th,
+    .truth-table td {
+      padding: 5px 12px;
+      text-align: center;
+      border: 1px solid var(--paper2);
+    }
+
+    .truth-table th {
+      background: var(--navy);
+      color: var(--cream);
+    }
+
+    .tt-v {
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    .tt-f {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    /* ── FLASHCARDS ── */
+    .fc-deck {
+      margin: 1.25rem 0 .5rem;
+    }
+
+    .fc-deck-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .fc-deck-title::before,
+    .fc-deck-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--paper2);
+    }
+
+    .fc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: .75rem;
+    }
+
+    .fc-card {
+      height: 180px;
+      cursor: pointer;
+      perspective: 800px;
+    }
+
+    .fc-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform .45s cubic-bezier(.4, 0, .2, 1);
+      transform-style: preserve-3d;
+    }
+
+    .fc-card.flipped .fc-inner {
+      transform: rotateY(180deg);
+    }
+
+    .fc-front,
+    .fc-back {
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border: 1px solid var(--paper2);
+    }
+
+    .fc-front {
+      background: var(--navy);
+      color: var(--cream);
+    }
+
+    .fc-back {
+      background: var(--paper);
+      transform: rotateY(180deg);
+    }
+
+    .fc-front .fc-kw {
+      font-family: var(--font-h);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+      line-height: 1.2;
+    }
+
+    .fc-front .fc-hint {
+      font-size: 11px;
+      color: #A8BDD0;
+      margin-top: .4rem;
+    }
+
+    .fc-back .fc-ans {
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    .fc-back .fc-ans strong {
+      color: var(--navy);
+    }
+
+    [data-theme="dark"] .fc-back .fc-ans strong {
+      color: var(--gold-light);
+    }
+
+    .fc-tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 99px;
+      margin-bottom: .4rem;
+      font-weight: 600;
+    }
+
+    .fc-flip-hint {
+      font-size: 10px;
+      color: #A8BDD0;
+      margin-top: .75rem;
+      opacity: .7;
+    }
+
+    /* ── VOICE BUTTON ── */
+    .voice-row {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-top: .75rem;
+      padding-top: .75rem;
+      border-top: 1px dashed var(--paper2);
+    }
+
+    .voice-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: 12px;
+      padding: 5px 12px;
+      border: 1px solid var(--paper2);
+      border-radius: 99px;
+      background: none;
+      cursor: pointer;
+      color: var(--text2);
+      font-family: var(--font-b);
+      transition: all .15s;
+    }
+
+    .voice-btn:hover {
+      background: var(--paper2);
+    }
+
+    .voice-btn.playing {
+      background: var(--teal-pale);
+      border-color: var(--teal-border);
+      color: var(--teal);
+    }
+
+    .practice-btn {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: 12px;
+      padding: 5px 14px;
+      border: 1px solid var(--paper2);
+      border-radius: 99px;
+      background: var(--navy);
+      color: var(--cream);
+      cursor: pointer;
+      font-family: var(--font-b);
+      transition: background .15s;
+    }
+
+    .practice-btn:hover {
+      background: var(--navy3);
+    }
+
+    /* ── FORMULA CARD ── */
+    .formula {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--navy);
+      color: var(--cream);
+      border-radius: var(--radius);
+      padding: .6rem 1.2rem;
+      font-family: var(--font-m);
+      font-size: 1.1rem;
+      margin: .3rem .2rem;
+      font-weight: 500;
+    }
+
+    .formula small {
+      font-size: 10px;
+      color: #A8BDD0;
+      font-family: var(--font-b);
+      margin-top: 3px;
+      font-weight: 400;
+    }
+
+    /* ── QUICK REVIEW STRIP ── */
+    .review-strip {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin: .75rem 0;
+    }
+
+    .r-pill {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      background: var(--paper2);
+      color: var(--text);
+      cursor: default;
+      border: 1px solid transparent;
+    }
+
+    .r-pill.danger {
+      background: var(--red-pale);
+      color: var(--red);
+      border-color: var(--red-border);
+    }
+
+    .r-pill.safe {
+      background: var(--teal-pale);
+      color: var(--teal);
+      border-color: var(--teal-border);
+    }
+
+    .r-pill.info {
+      background: var(--blue-pale);
+      color: var(--blue);
+      border-color: var(--blue-border);
+    }
+
+    /* ── RULE CARD (De Morgan style) ── */
+    .rule-card {
+      background: var(--navy);
+      color: var(--cream);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: .4rem 0;
+      font-family: var(--font-m);
+    }
+
+    .rule-card .rule-name {
+      font-family: var(--font-b);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold-light);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+
+    .rule-card .rule-eq {
+      font-size: 1rem;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
+    .rule-card .rule-eq .comment {
+      font-family: var(--font-b);
+      font-size: 11.5px;
+      color: #A8BDD0;
+      font-weight: 400;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ── QUADRADO OPOSIÇÕES ── */
+    .square-diagram {
+      max-width: 380px;
+      margin: .75rem auto;
+    }
+
+    .sq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem;
+    }
+
+    .sq-cell {
+      border-radius: var(--radius);
+      padding: .75rem;
+      text-align: center;
+      border: 1px solid;
+    }
+
+    .sq-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: .25rem;
+    }
+
+    .sq-formula {
+      font-family: var(--font-m);
+      font-size: 12px;
+      margin-bottom: .25rem;
+      font-weight: 500;
+    }
+
+    .sq-desc {
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+
+    .sq-connectors {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: .25rem 1rem;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      letter-spacing: .06em;
+    }
+
+    /* ── VENN / COMPETENCIA ── */
+    .competencias-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .5rem;
+      margin: .5rem 0;
+    }
+
+    .comp-cell {
+      border-radius: var(--radius);
+      padding: .75rem .5rem;
+      text-align: center;
+      border: 1px solid;
+    }
+
+    .comp-cell .cc-title {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: .4rem;
+    }
+
+    .comp-cell ul {
+      list-style: none;
+      font-size: 11.5px;
+      line-height: 1.7;
+      text-align: left;
+      padding-left: .2rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px) {
+      #main {
+        padding: 3.5rem 1rem 3rem;
+        margin-left: 0 !important;
+      }
+
+      .fc-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .competencias-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #cover {
+        padding: 2.5rem 1rem 2rem;
+      }
+    }
+
+    @media(max-width:480px) {
+      .fc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .schema-row {
+        flex-direction: column;
+      }
+    }
+
+    /* ── MOBILE BOTTOM NAV ── */
+    #mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--paper);
+      border-top: 1px solid var(--paper2);
+      padding: .5rem;
+      z-index: 100;
+    }
+
+    @media(max-width:768px) {
+      #mobile-nav {
+        display: flex;
+        gap: .25rem;
+      }
+    }
+
+    /* ── PROGRESS BAR ── */
+    .prog-bar {
+      height: 3px;
+      background: var(--paper2);
+      border-radius: 2px;
+      margin: .3rem 0 .75rem;
+      overflow: hidden;
+    }
+
+    .prog-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 2px;
+      transition: width .3s;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .chapter.visible {
+      animation: fadeIn .3s ease both;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+
+      #sidebar,
+      #mobile-nav,
+      .ctrl-btn,
+      .voice-btn,
+      .practice-btn,
+      .fc-deck,
+      .hamburger,
+      .sidebar-overlay {
+        display: none !important;
+      }
+
+      .art-body {
+        display: block !important;
+      }
+
+      .chapter {
+        display: block !important;
+      }
+
+      #main {
+        margin-left: 0 !important;
+      }
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--paper2);
+      border-radius: 3px;
+    }
+
+    /* ── HAMBURGER MENU ── */
+    .hamburger {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 1100;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(10, 22, 40, .88);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0;
+      transition: background .2s;
+      box-shadow: 0 2px 10px rgba(10, 22, 40, .25);
+      border: 1px solid rgba(201, 152, 42, .3);
+    }
+
+    .hamburger:hover {
+      background: var(--navy3);
+    }
+
+    .hamburger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--cream);
+      border-radius: 2px;
+      transition: all .3s ease;
+      transform-origin: center;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    [data-theme="dark"] .hamburger {
+      background: rgba(19, 34, 56, .92);
+      border-color: rgba(201, 152, 42, .4);
+    }
+
+    /* ── SIDEBAR OVERLAY ── */
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 22, 40, .45);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(2px);
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── FONT BOOST (sidebar collapsed) ── */
+    body.sidebar-collapsed {
+      font-size: 16.5px;
+      line-height: 1.75;
+    }
+
+    body.sidebar-collapsed .art-title {
+      font-size: 1.35rem;
+    }
+
+    body.sidebar-collapsed .chapter-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+    }
+
+    body.sidebar-collapsed .chapter-desc {
+      font-size: 15px;
+    }
+
+    body.sidebar-collapsed .art-intro {
+      font-size: 15.5px;
+    }
+
+    body.sidebar-collapsed .point {
+      font-size: 14.5px;
+    }
+
+    body.sidebar-collapsed .callout {
+      font-size: 14.5px;
+    }
+
+    body.sidebar-collapsed .comp-table td {
+      font-size: 14px;
+    }
+
+    body.sidebar-collapsed .fc-front .fc-kw {
+      font-size: 1.3rem;
+    }
+
+    body.sidebar-collapsed .fc-back .fc-ans {
+      font-size: 13.5px;
+    }
+
+    body.sidebar-collapsed .schema-box {
+      font-size: 13.5px;
+    }
+
+    body.sidebar-collapsed .block-title {
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HAMBURGER -->
+  <button id="hamburger" class="hamburger" onclick="toggleSidebar()" aria-label="Menu lateral">
+    <span></span><span></span><span></span>
+  </button>
+  <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cover-author">
+      <strong>Albertino Bezerra Lima</strong><br>
+      <a href="mailto:albertinoblima@gmail.com">albertinoblima@gmail.com</a> ·
+      <a href="https://wa.me/5587988568605">WhatsApp: +55 87 9 8856-8605</a>
+    </div>
+    <div class="cover-issue">Edição Especial · IBFC · Edital 01/2025</div>
+    <h1><em>Revista de Estudos</em><br>TJPE — Técnico Judiciário</h1>
+    <p class="cover-sub">O guia completo para o cargo de <strong>Técnico Judiciário — Área Judiciária</strong>. Conteúdo
+      aprofundado, esquemas visuais, cartões de memorização e exemplos práticos de prova.</p>
+    <div class="cover-badges">
+      <span class="cbadge">D. Processual Penal</span>
+      <span class="cbadge">Raciocínio Lógico</span>
+      <span class="cbadge">D. Administrativo</span>
+      <span class="cbadge">D. Constitucional</span>
+      <span class="cbadge">Direito Civil</span>
+    </div>
+  </div>
+
+  <!-- SHELL -->
+  <div id="shell">
+
+    <!-- SIDEBAR -->
+    <nav id="sidebar">
+      <div class="sb-section-title">Disciplinas</div>
+      <button class="sb-item active" onclick="showChapter('dpp')" id="nav-dpp">
+        <span class="sb-dot" style="background:#C0392B"></span>D. Processual Penal
+      </button>
+      <button class="sb-item" onclick="showChapter('rl')" id="nav-rl">
+        <span class="sb-dot" style="background:#534AB7"></span>Raciocínio Lógico
+      </button>
+      <button class="sb-item" onclick="showChapter('da')" id="nav-da">
+        <span class="sb-dot" style="background:#0D7A5C"></span>D. Administrativo
+      </button>
+      <button class="sb-item" onclick="showChapter('dc')" id="nav-dc">
+        <span class="sb-dot" style="background:#1A5CA8"></span>D. Constitucional
+      </button>
+      <button class="sb-item" onclick="showChapter('dcv')" id="nav-dcv">
+        <span class="sb-dot" style="background:#993C1D"></span>Direito Civil
+      </button>
+
+      <div class="sb-section-title">Ferramentas</div>
+      <div class="sb-controls">
+        <button class="ctrl-btn" onclick="toggleTheme()">🌙 Modo escuro</button>
+        <button class="ctrl-btn" onclick="stopVoice()">⏹ Parar narração</button>
+        <button class="ctrl-btn" onclick="window.print()">🖨 Imprimir</button>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main id="main">
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!-- CAPÍTULO 1 — DIREITO PROCESSUAL PENAL              -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <section class="chapter visible" id="ch-dpp">
+        <div class="chapter-header">
+          <div class="chapter-num">01</div>
+          <div class="chapter-meta">
+            <div class="chapter-label">Direito Processual Penal</div>
+            <div class="chapter-title">Do Inquérito à Ação Penal</div>
+            <div class="chapter-desc">Ramo do direito público que disciplina a persecução penal estatal, desde a fase
+              investigatória até o trânsito em julgado da sentença. A banca IBFC prioriza: inquérito policial, espécies
+              de flagrante, provas, prisões cautelares e nulidades.</div>
+          </div>
+        </div>
+
+        <!-- INQUÉRITO POLICIAL -->
+        <div class="article" id="art-ip">
+          <div class="art-header" onclick="toggleArt('ip')">
+            <div class="art-title">Inquérito Policial</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-ip">▾</span>
+            </div>
+          </div>
+          <div class="art-body open" id="body-ip">
+            <p class="art-intro">O inquérito policial (IP) é o conjunto de diligências realizadas pela polícia
+              judiciária para apuração de infração penal e de sua autoria, preparando a ação penal.</p>
+
+            <div class="block-title">Características essenciais</div>
+            <ul class="points">
+              <li class="point"><span class="point-marker pm-red">!</span><span><strong>Inquisitorial:</strong> não há
+                  contraditório ou ampla defesa na fase do IP (investigação). A CF garante esses direitos no processo,
+                  não na investigação.</span></li>
+              <li class="point"><span class="point-marker pm-red">!</span><span><strong>Dispensável:</strong> o MP pode
+                  oferecer denúncia sem o IP, desde que disponha de elementos suficientes de autoria e materialidade
+                  (art. 39, §5º CPP).</span></li>
+              <li class="point"><span class="point-marker pm-teal">✓</span><span><strong>Escrito:</strong> todas as
+                  peças são reduzidas a escrito ou datilografadas/digitadas (art. 9º CPP).</span></li>
+              <li class="point"><span class="point-marker pm-blue">i</span><span><strong>Sigiloso:</strong> o sigilo é
+                  em relação ao público em geral; o advogado tem direito de acesso às diligências já documentadas nos
+                  autos (Súmula Vinculante 14 STF).</span></li>
+              <li class="point"><span class="point-marker pm-amber">★</span><span><strong>Indiciamento:</strong> ato
+                  formal e PRIVATIVO do Delegado de Polícia (Lei 12.830/2013). Nem o juiz, nem o MP podem determinar o
+                  indiciamento. IBFC adora esse ponto!</span></li>
+            </ul>
+
+            <div class="block-title">Prazos do inquérito</div>
+            <div class="schema">
+              <div class="schema-title">Prazos para conclusão do IP</div>
+              <div class="schema-row">
+                <div class="schema-box sb-red"><strong>Réu preso</strong><small>10 dias</small><small>(art. 10
+                    CPP)</small></div>
+                <div class="schema-box sb-teal"><strong>Réu solto</strong><small>30
+                    dias</small><small>(prorrogável)</small></div>
+                <div class="schema-box sb-blue"><strong>Crimes federais</strong><small>15 dias (preso)<br>30 dias
+                    (solto)</small></div>
+                <div class="schema-box sb-purple"><strong>Lei de Drogas</strong><small>30 dias (preso)<br>90 dias
+                    (solto)</small></div>
+              </div>
+            </div>
+
+            <div class="callout c-alert"><strong>Atenção IBFC:</strong> O arquivamento do IP não faz coisa julgada
+              material. É possível reabrir as investigações mediante novas provas (art. 18 CPP). Diferentemente, a
+              absolvição por insuficiência de provas produz coisa julgada material e impede nova ação sobre os mesmos
+              fatos.</div>
+
+            <div class="callout c-example"><strong>Exemplo de questão (estilo IBFC):</strong> "O delegado de polícia, ao
+              concluir o inquérito policial, verificou que havia elementos suficientes para indiciar o suspeito. Nessa
+              situação, o indiciamento é ato privativo do delegado, não podendo ser determinado pelo Ministério
+              Público." → <strong>VERDADEIRO.</strong> (Lei 12.830/2013, art. 2º, §6º)</div>
+
+            <div class="callout c-tip"><strong>Dica de memorização:</strong> IP = I nquisitorial, Prescindível
+              (dispensável), A utoria, R ealizado pela polícia judiciária. O MP pode ajuizar ação sem o IP se tiver
+              provas suficientes.</div>
+
+            <div class="fc-deck">
+              <div class="fc-deck-title">Cartões de memorização</div>
+              <div class="fc-grid">
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front">
+                      <span class="fc-tag" style="background:rgba(192,57,43,.3);color:#FFAAAA">Natureza Jurídica</span>
+                      <div class="fc-kw">Inquérito Policial</div>
+                      <div class="fc-hint">O que é e quais são suas características?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>Procedimento administrativo</strong> pré-processual, inquisitório,
+                        sigiloso, escrito e <strong>dispensável</strong>. Conduzido pela polícia judiciária. O advogado
+                        acessa atos já documentados (SV 14 STF). Indiciamento = ato privativo do delegado.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front">
+                      <span class="fc-tag" style="background:rgba(192,57,43,.3);color:#FFAAAA">Prazos</span>
+                      <div class="fc-kw">Réu Preso × Solto</div>
+                      <div class="fc-hint">Qual o prazo para conclusão do IP?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>Preso:</strong> 10 dias (improrrogável se
+                        preso).<br><strong>Solto:</strong> 30 dias (prorrogável).<br><strong>Federal:</strong> 15
+                        (preso) / 30 (solto).<br><strong>Lei de Drogas:</strong> 30 (preso) / 90 (solto).</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front">
+                      <span class="fc-tag" style="background:rgba(192,57,43,.3);color:#FFAAAA">Arquivamento</span>
+                      <div class="fc-kw">Coisa Julgada?</div>
+                      <div class="fc-hint">O arquivamento do IP impede nova investigação?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>NÃO</strong> faz coisa julgada material. Pode ser reaberto com
+                        <strong>novas provas</strong> (art. 18 CPP). Diferente da <strong>absolvição por
+                          insuficiência</strong> de provas, que produz coisa julgada material.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('ip')">▶ Narrar seção</button>
+              <button class="practice-btn" onclick="askPractice('Inquérito Policial CPP')">Praticar questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FLAGRANTE -->
+        <div class="article" id="art-fl">
+          <div class="art-header" onclick="toggleArt('fl')">
+            <div class="art-title">Prisão em Flagrante — Espécies</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-fl">▾</span>
+            </div>
+          </div>
+          <div class="art-body open" id="body-fl">
+            <p class="art-intro">A prisão em flagrante é a que ocorre no momento ou imediatamente após a prática do
+              crime. O art. 302 do CPP define quatro situações de flagrância. É crucial distingui-las, pois a IBFC cobra
+              exaustivamente suas diferenças.</p>
+
+            <table class="comp-table">
+              <tr>
+                <th>Espécie</th>
+                <th>Situação</th>
+                <th>Fundamento</th>
+                <th>Validade</th>
+              </tr>
+              <tr>
+                <td><strong>Próprio / real</strong></td>
+                <td>Agente preso cometendo a infração ou logo após cometê-la</td>
+                <td>Art. 302, I e II</td>
+                <td style="color:var(--teal)">✔ Legal</td>
+              </tr>
+              <tr>
+                <td><strong>Impróprio / irreal</strong></td>
+                <td>Agente perseguido logo após o crime com objetos que indiquem autoria</td>
+                <td>Art. 302, III</td>
+                <td style="color:var(--teal)">✔ Legal</td>
+              </tr>
+              <tr>
+                <td><strong>Presumido / ficto</strong></td>
+                <td>Encontrado logo depois com instrumentos, armas, objetos ou papéis do crime</td>
+                <td>Art. 302, IV</td>
+                <td style="color:var(--teal)">✔ Legal</td>
+              </tr>
+              <tr>
+                <td><strong>Preparado / provocado</strong></td>
+                <td>Autoridade ou particular induz o agente a praticar o crime para prendê-lo</td>
+                <td>Súmula 145 STF</td>
+                <td style="color:var(--red)">✘ Ilegal (crime impossível)</td>
+              </tr>
+              <tr>
+                <td><strong>Esperado</strong></td>
+                <td>Autoridade apenas aguarda que o crime aconteça para prender</td>
+                <td>Doutrina</td>
+                <td style="color:var(--teal)">✔ Legal</td>
+              </tr>
+              <tr>
+                <td><strong>Forjado</strong></td>
+                <td>Alguém coloca objetos ilícitos no suspeito para incriminá-lo</td>
+                <td>Doutrina</td>
+                <td style="color:var(--red)">✘ Ilegal + crime da autoridade</td>
+              </tr>
+            </table>
+
+            <div class="callout c-alert"><strong>Pegadinha clássica:</strong> "Preparado" ≠ "Esperado". No flagrante
+              preparado há INDUÇÃO ao crime (ilegal). No esperado, a autoridade apenas aguarda — o sujeito agiria de
+              qualquer forma (legal). A Súmula 145 STF diz: "Não há crime quando a preparação do flagrante pela polícia
+              torna impossível sua consumação."</div>
+
+            <div class="block-title">Quem pode prender em flagrante?</div>
+            <div class="schema">
+              <div class="schema-row">
+                <div class="schema-box sb-navy"><strong>Autoridade policial</strong><small>OBRIGAÇÃO de prender (art.
+                    301)</small></div>
+                <div class="schema-arrow">×</div>
+                <div class="schema-box sb-teal"><strong>Qualquer pessoa</strong><small>FACULDADE de prender (art.
+                    301)</small></div>
+              </div>
+            </div>
+
+            <div class="block-title">Audiência de custódia</div>
+            <ul class="points">
+              <li class="point"><span class="point-marker pm-red">!</span><span>Obrigatória em <strong>até 24
+                    horas</strong> após a prisão em flagrante (CNJ — Res. 213/2015, confirmada pelo STF).</span></li>
+              <li class="point"><span class="point-marker pm-teal">✓</span><span>O juiz analisa: (1) legalidade da
+                  prisão; (2) conversão em preventiva; (3) relaxamento; (4) liberdade provisória com ou sem
+                  fiança.</span></li>
+              <li class="point"><span class="point-marker pm-blue">i</span><span>Finalidade: combater tortura e
+                  maus-tratos durante a prisão em flagrante.</span></li>
+            </ul>
+
+            <div class="fc-deck">
+              <div class="fc-deck-title">Cartões de memorização — Flagrante</div>
+              <div class="fc-grid">
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#8B1A1A;">
+                      <span class="fc-tag" style="background:rgba(255,100,100,.25);color:#FFB0B0">Súmula 145 STF</span>
+                      <div class="fc-kw">Flagrante Preparado</div>
+                      <div class="fc-hint">Por que é ilegal?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans">O agente é <strong>induzido</strong> pela autoridade/terceiro a praticar o
+                        crime. Configura <strong>crime impossível</strong> — a consumação era impedida desde o início.
+                        Resultado: <strong>prisão ilegal + absolvição do agente</strong>. (Súmula 145 STF)</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#0D4A38;">
+                      <span class="fc-tag" style="background:rgba(100,220,180,.2);color:#90FFD8">Diferenciação</span>
+                      <div class="fc-kw">Impróprio × Presumido</div>
+                      <div class="fc-hint">Qual a diferença entre os dois?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>Impróprio (302, III):</strong> agente está sendo <em>perseguido</em>
+                        logo após o crime com objetos.<br><br><strong>Presumido (302, IV):</strong> agente é
+                        <em>encontrado</em> logo depois, com objetos que o vinculam ao crime. Não há perseguição.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('fl')">▶ Narrar seção</button>
+              <button class="practice-btn" onclick="askPractice('Flagrante delito CPP espécies')">Praticar questões
+                ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROVAS -->
+        <div class="article" id="art-pv">
+          <div class="art-header" onclick="toggleArt('pv')">
+            <div class="art-title">Provas — Teoria Geral</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-pv">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-pv">
+            <p class="art-intro">O direito à prova é manifestação do contraditório e da ampla defesa. O sistema
+              processual penal brasileiro adota o princípio do livre convencimento motivado: o juiz aprecia livremente
+              as provas, mas deve fundamentar sua decisão.</p>
+
+            <div class="block-title">Prova ilícita e teoria dos frutos da árvore envenenada</div>
+            <ul class="points">
+              <li class="point"><span class="point-marker pm-red">!</span><span><strong>Regra:</strong> Provas obtidas
+                  por meios ilícitos são inadmissíveis no processo (art. 5º, LVI CF). Incluindo as derivadas — "fruits
+                  of the poisonous tree" (art. 157, §1º CPP).</span></li>
+              <li class="point"><span class="point-marker pm-teal">✓</span><span><strong>Exceção 1:</strong> ausência de
+                  nexo causal entre a prova ilícita originária e a derivada.</span></li>
+              <li class="point"><span class="point-marker pm-teal">✓</span><span><strong>Exceção 2:</strong> fonte
+                  independente — a prova derivada poderia ter sido obtida por outros meios lícitos.</span></li>
+              <li class="point"><span class="point-marker pm-blue">i</span><span>A prova ilícita é inadmissível mesmo
+                  quando favorável ao acusado — há corrente doutrinária que permite, mas a letra da lei proíbe.</span>
+              </li>
+            </ul>
+
+            <div class="block-title">Interceptação telefônica (Lei 9.296/1996)</div>
+            <div class="schema">
+              <div class="schema-title">Requisitos cumulativos para interceptação telefônica</div>
+              <div class="schema-row">
+                <div class="schema-box sb-red"><strong>1. Ordem judicial</strong><small>Decisão fundamentada do
+                    juiz</small></div>
+                <div class="schema-box sb-gold"><strong>2. Crime com pena de reclusão</strong><small>Crimes apenados com
+                    detenção: vedado</small></div>
+                <div class="schema-box sb-teal"><strong>3. Indícios razoáveis de autoria</strong><small>Deve haver base
+                    investigatória</small></div>
+                <div class="schema-box sb-blue"><strong>4. Outros meios insuficientes</strong><small>Subsidiariedade da
+                    medida</small></div>
+              </div>
+              <div class="schema-divider"></div>
+              <div class="schema-row">
+                <div class="schema-box sb-purple"><strong>Prazo:</strong> 15 dias<br><small>Renovável por igual período
+                    (sem limite de renovações)</small></div>
+              </div>
+            </div>
+
+            <div class="callout c-alert"><strong>Prova emprestada:</strong> Admitida no CPP, desde que produzida
+              originalmente com observância do contraditório. O juiz lhe atribui o valor que considerar adequado (art.
+              372 CPC c/c art. 3º CPP). Questão recorrente em prova!</div>
+
+            <div class="callout c-example"><strong>Exemplo prático:</strong> Uma escuta telefônica foi realizada sem
+              ordem judicial em crime de detenção. As gravações são ILÍCITAS e inadmissíveis. Eventuais provas obtidas a
+              partir dessa escuta também são ilícitas (derivadas), salvo se puderem ser obtidas por fonte independente.
+            </div>
+
+            <div class="fc-deck">
+              <div class="fc-deck-title">Cartões — Provas</div>
+              <div class="fc-grid">
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#2C1654;">
+                      <span class="fc-tag" style="background:rgba(180,150,255,.2);color:#D0BFFF">Teoria</span>
+                      <div class="fc-kw">Frutos da Árvore Envenenada</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans">A prova ilícita <strong>contamina</strong> as derivadas (art. 157, §1º CPP).
+                        Exceções: <strong>(1)</strong> sem nexo causal; <strong>(2)</strong> fonte independente. Mesmo
+                        favorável ao réu, a prova ilícita é vedada pelo texto legal.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#1A4A2C;">
+                      <span class="fc-tag" style="background:rgba(100,220,160,.2);color:#90FFB8">Lei 9.296/96</span>
+                      <div class="fc-kw">Interceptação Telefônica</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans">Requisitos: <strong>ordem judicial + crime de reclusão + indícios + outros
+                          meios insuficientes</strong>. Prazo: 15 dias renovável. Vedada em crimes de
+                        <strong>detenção</strong>. O juiz pode decretar de ofício ou mediante requerimento do
+                        MP/delegado.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('pv')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Provas processo penal prova ilicita interceptacao telefonica')">Praticar questões
+                ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRISÕES CAUTELARES -->
+        <div class="article" id="art-pc">
+          <div class="art-header" onclick="toggleArt('pc')">
+            <div class="art-title">Prisões Cautelares</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-pc">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-pc">
+            <p class="art-intro">As prisões cautelares são medidas restritivas da liberdade decretadas antes do trânsito
+              em julgado da condenação. Visam garantir a efetividade do processo, não punir antecipadamente. Exigem
+              fundamentação concreta — não abstrata.</p>
+
+            <table class="comp-table">
+              <tr>
+                <th>Prisão</th>
+                <th>Decreto</th>
+                <th>Prazo</th>
+                <th>Fundamento legal</th>
+              </tr>
+              <tr>
+                <td><strong>Preventiva</strong></td>
+                <td>Juiz (de ofício no processo; no IP só a requerimento)</td>
+                <td>Sem prazo fixo — revisão periódica obrigatória</td>
+                <td>Arts. 311-316 CPP</td>
+              </tr>
+              <tr>
+                <td><strong>Temporária</strong></td>
+                <td>Juiz (apenas mediante requerimento do MP ou delegado)</td>
+                <td>5 dias + 5 dias (crime comum) / 30 dias + 30 dias (hediondos)</td>
+                <td>Lei 7.960/1990</td>
+              </tr>
+              <tr>
+                <td><strong>Domiciliar</strong></td>
+                <td>Juiz — substitui a preventiva em casos específicos</td>
+                <td>Mesma da preventiva</td>
+                <td>Arts. 317-318 CPP</td>
+              </tr>
+            </table>
+
+            <div class="block-title">Fundamentos da prisão preventiva (art. 312 CPP)</div>
+            <div class="schema">
+              <div class="schema-row">
+                <div class="schema-box sb-red"><strong>Garantia da ordem pública</strong><small>Evitar reiteração
+                    criminosa</small></div>
+                <div class="schema-box sb-gold"><strong>Garantia da ordem econômica</strong><small>Crimes que afetam o
+                    sistema financeiro</small></div>
+                <div class="schema-box sb-teal"><strong>Conveniência da instrução criminal</strong><small>Risco de
+                    destruir provas</small></div>
+                <div class="schema-box sb-blue"><strong>Assegurar a aplicação da lei penal</strong><small>Risco de
+                    fuga</small></div>
+              </div>
+            </div>
+
+            <div class="callout c-alert"><strong>Vedação absoluta (STF/STJ):</strong> "Gravidade abstrata do crime",
+              "clamor público" e "repercussão social do fato" NÃO são fundamentos idôneos para a prisão preventiva. A
+              fundamentação deve ser concreta, baseada em elementos específicos do caso.</div>
+
+            <div class="callout c-tip"><strong>Distinção importante:</strong> Prisão temporária → só nas fases de
+              <em>investigação</em> (IP). Não pode ser decretada na fase processual (após o recebimento da denúncia).
+              Prisão preventiva → pode ser decretada em qualquer fase (IP ou processo).
+            </div>
+
+            <div class="callout c-example"><strong>Exemplo (questão IBFC):</strong> "Na fase do inquérito policial, o
+              juiz pode decretar a prisão preventiva de ofício para resguardar as investigações." →
+              <strong>FALSO.</strong> No IP, o juiz só pode decretar a preventiva mediante requerimento do MP, do
+              querelante ou representação da autoridade policial. A decretação de ofício pelo juiz só é permitida
+              durante a fase processual (art. 311 CPP, após a reforma da Lei 13.964/2019).
+            </div>
+
+            <div class="fc-deck">
+              <div class="fc-deck-title">Cartões — Prisões Cautelares</div>
+              <div class="fc-grid">
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#1A3048;">
+                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Temporária</span>
+                      <div class="fc-kw">Prazo Máximo</div>
+                      <div class="fc-hint">Qual o prazo da prisão temporária em crimes hediondos?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>Crimes comuns:</strong> 5 + 5 dias = 10 dias máximo.<br><strong>Crimes
+                          hediondos:</strong> 30 + 30 dias = 60 dias máximo.<br>Só cabe no <strong>IP</strong>.
+                        Decretada apenas a <strong>requerimento</strong> do MP ou delegado.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#3A1A1A;">
+                      <span class="fc-tag" style="background:rgba(255,120,120,.2);color:#FFAAAA">Preventiva</span>
+                      <div class="fc-kw">Pode ser de ofício?</div>
+                      <div class="fc-hint">O juiz pode decretar preventiva sem provocação?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans">Após a Lei 13.964/2019 (Pacote Anticrime):<br><strong>No IP:</strong> NÃO — só
+                        mediante requerimento.<br><strong>No processo:</strong> SIM — pode de ofício.<br>Fundamentos
+                        precisam ser <strong>concretos</strong>, nunca abstratos.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('pc')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Prisões cautelares preventiva temporária CPP')">Praticar questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- NULIDADES -->
+        <div class="article" id="art-nl">
+          <div class="art-header" onclick="toggleArt('nl')">
+            <div class="art-title">Nulidades Processuais Penais</div>
+            <div class="art-badges">
+              <span class="badge badge-med">Cobrado</span>
+              <span class="art-toggle" id="tog-nl">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-nl">
+            <p class="art-intro">Nulidade é a sanção que priva o ato processual defeituoso de seus efeitos normais. O
+              CPP distingue nulidades absolutas e relativas com regimes jurídicos distintos.</p>
+
+            <table class="comp-table">
+              <tr>
+                <th>Critério</th>
+                <th>Nulidade Absoluta</th>
+                <th>Nulidade Relativa</th>
+              </tr>
+              <tr>
+                <td>Natureza</td>
+                <td>Viola norma cogente / garantia constitucional</td>
+                <td>Viola norma processual ordinária</td>
+              </tr>
+              <tr>
+                <td>Reconhecimento</td>
+                <td>De ofício pelo juiz, a qualquer tempo</td>
+                <td>Só por provocação da parte prejudicada</td>
+              </tr>
+              <tr>
+                <td>Preclusão</td>
+                <td>Não preclude (pode ser arguida a qualquer grau)</td>
+                <td>Sujeita à preclusão (art. 571 CPP)</td>
+              </tr>
+              <tr>
+                <td>Sanação</td>
+                <td>Não sana pelo tempo ou pelo consentimento</td>
+                <td>Sana com o decurso do prazo sem arguição</td>
+              </tr>
+              <tr>
+                <td>Prejuízo</td>
+                <td>Em regra, presumido (mas STF exige em alguns casos)</td>
+                <td>Deve ser demonstrado pela parte</td>
+              </tr>
+              <tr>
+                <td>Exemplos</td>
+                <td>Ausência de defensor, falta de citação, incompetência absoluta</td>
+                <td>Irregularidade de intimação, ausência de testemunha sem protesto</td>
+              </tr>
+            </table>
+
+            <div class="callout c-gold"><strong>Princípio fundamental (art. 563 CPP):</strong> "Pas de nullité sans
+              grief" — sem prejuízo demonstrado, não há nulidade. Aplica-se principalmente às nulidades relativas. A
+              parte deve provar o prejuízo concreto sofrido.</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('nl')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Nulidades processo penal absoluta relativa CPP')">Praticar questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AÇÃO PENAL -->
+        <div class="article" id="art-ap">
+          <div class="art-header" onclick="toggleArt('ap')">
+            <div class="art-title">Ação Penal — Espécies</div>
+            <div class="art-badges">
+              <span class="badge badge-med">Cobrado</span>
+              <span class="art-toggle" id="tog-ap">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-ap">
+            <p class="art-intro">A ação penal é o instrumento pelo qual se pede ao Estado-juiz a aplicação do direito
+              penal ao caso concreto. A distinção entre as espécies define quem tem legitimidade para iniciar a
+              persecução penal.</p>
+
+            <table class="comp-table">
+              <tr>
+                <th>Espécie</th>
+                <th>Quem propõe</th>
+                <th>Exemplos</th>
+                <th>Prazo de decadência</th>
+              </tr>
+              <tr>
+                <td><strong>Pública incondicionada</strong></td>
+                <td>MP (de ofício)</td>
+                <td>Homicídio, roubo, tráfico</td>
+                <td>Não há</td>
+              </tr>
+              <tr>
+                <td><strong>Pública condicionada</strong></td>
+                <td>MP (após representação do ofendido ou requisição do Min. Justiça)</td>
+                <td>Ameaça, lesão leve (art. 88 L9099)</td>
+                <td>6 meses para representar</td>
+              </tr>
+              <tr>
+                <td><strong>Privada exclusiva</strong></td>
+                <td>Ofendido (queixa-crime)</td>
+                <td>Injúria racial, calúnia, difamação</td>
+                <td>6 meses (art. 38 CPP)</td>
+              </tr>
+              <tr>
+                <td><strong>Privada subsidiária</strong></td>
+                <td>Ofendido (se MP inerte no prazo)</td>
+                <td>Qualquer crime público após inércia do MP</td>
+                <td>6 meses após inércia do MP</td>
+              </tr>
+              <tr>
+                <td><strong>Privada personalíssima</strong></td>
+                <td>Só o ofendido (intransferível)</td>
+                <td>Induzimento a erro essencial (art. 236 CP)</td>
+                <td>6 meses</td>
+              </tr>
+            </table>
+
+            <div class="callout c-alert"><strong>Princípio da indivisibilidade:</strong> Na ação penal privada, a
+              renúncia ao direito de queixa feita em favor de um dos coautores se estende a todos (art. 49 CPP). O
+              querelante não pode escolher quem processar entre os coautores.</div>
+
+            <div class="callout c-tip"><strong>Lesão corporal leve:</strong> Após a Lei 9.099/95, passou a ser de ação
+              pública condicionada à representação. Mas atenção: no contexto de violência doméstica (Lei Maria da
+              Penha), a ação penal é PÚBLICA INCONDICIONADA — o STF pacificou isso em 2012 (ADI 4424).</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('ap')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Ação penal espécies pública privada condicionada subsidiária CPP')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!-- CAPÍTULO 2 — RACIOCÍNIO LÓGICO                    -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <section class="chapter" id="ch-rl">
+        <div class="chapter-header">
+          <div class="chapter-num">02</div>
+          <div class="chapter-meta">
+            <div class="chapter-label">Raciocínio Lógico e Matemático</div>
+            <div class="chapter-title">Lógica, Contagem e Probabilidade</div>
+            <div class="chapter-desc">A IBFC cobra sistematicamente lógica proposicional (tabelas-verdade,
+              equivalências, De Morgan), quantificadores, sequências numéricas, probabilidade e porcentagem. Questões
+              objetivas com uma resposta correta — treine muito com exemplos numéricos.</div>
+          </div>
+        </div>
+
+        <!-- PROPOSIÇÕES -->
+        <div class="article" id="art-prop">
+          <div class="art-header" onclick="toggleArt('prop')">
+            <div class="art-title">Proposições, Conectivos e Tabelas-Verdade</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-prop">▾</span>
+            </div>
+          </div>
+          <div class="art-body open" id="body-prop">
+            <p class="art-intro">Proposição é uma sentença declarativa que pode ser classificada como verdadeira (V) ou
+              falsa (F). Frases interrogativas, imperativas e exclamativas NÃO são proposições. Dominar os conectivos e
+              suas tabelas-verdade é essencial.</p>
+
+            <table class="comp-table">
+              <tr>
+                <th>Conectivo</th>
+                <th>Símbolo</th>
+                <th>Leitura</th>
+                <th>Quando é FALSO?</th>
+              </tr>
+              <tr>
+                <td><strong>Negação</strong></td>
+                <td>¬p</td>
+                <td>"não p"</td>
+                <td>Quando p é V</td>
+              </tr>
+              <tr>
+                <td><strong>Conjunção</strong></td>
+                <td>p ∧ q</td>
+                <td>"p e q"</td>
+                <td>Quando pelo menos um é F</td>
+              </tr>
+              <tr>
+                <td><strong>Disjunção inclusiva</strong></td>
+                <td>p ∨ q</td>
+                <td>"p ou q"</td>
+                <td>Somente quando ambos são F</td>
+              </tr>
+              <tr>
+                <td><strong>Condicional</strong></td>
+                <td>p → q</td>
+                <td>"se p então q"</td>
+                <td>Somente quando p=V e q=F</td>
+              </tr>
+              <tr>
+                <td><strong>Bicondicional</strong></td>
+                <td>p ↔ q</td>
+                <td>"p se e somente se q"</td>
+                <td>Quando p e q têm valores DIFERENTES</td>
+              </tr>
+            </table>
+
+            <div class="block-title">Tabela-verdade completa do condicional</div>
+            <div class="schema">
+              <table class="truth-table">
+                <tr>
+                  <th>p</th>
+                  <th>q</th>
+                  <th>p→q</th>
+                  <th>Regra mnemônica</th>
+                </tr>
+                <tr>
+                  <td class="tt-v">V</td>
+                  <td class="tt-v">V</td>
+                  <td class="tt-v">V</td>
+                  <td style="font-size:11px;color:var(--text2)">V → V = V ✓</td>
+                </tr>
+                <tr>
+                  <td class="tt-v">V</td>
+                  <td class="tt-f">F</td>
+                  <td class="tt-f">F</td>
+                  <td style="font-size:11px;color:var(--red)">V → F = F ← único caso falso!</td>
+                </tr>
+                <tr>
+                  <td class="tt-f">F</td>
+                  <td class="tt-v">V</td>
+                  <td class="tt-v">V</td>
+                  <td style="font-size:11px;color:var(--text2)">F → V = V (promessa de mentiroso)</td>
+                </tr>
+                <tr>
+                  <td class="tt-f">F</td>
+                  <td class="tt-f">F</td>
+                  <td class="tt-v">V</td>
+                  <td style="font-size:11px;color:var(--text2)">F → F = V (promessa de mentiroso)</td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="callout c-tip"><strong>Macete do condicional:</strong> "Se prometo levar você ao cinema (p)
+              então levo (q)". A promessa só é quebrada (FALSA) quando faço a promessa (V) e não a cumpro (F). Se nunca
+              prometi (F), não importa o que acontece — não quebrei a promessa.</div>
+
+            <div class="fc-deck">
+              <div class="fc-deck-title">Cartões — Proposições</div>
+              <div class="fc-grid">
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#26215C;">
+                      <span class="fc-tag" style="background:rgba(180,160,255,.2);color:#C8B8FF">Conectivo</span>
+                      <div class="fc-kw">p → q</div>
+                      <div class="fc-hint">Em que caso o condicional é FALSO?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>Único caso falso:</strong> quando a hipótese é
+                        <strong>verdadeira</strong> (p = V) e a conclusão é <strong>falsa</strong> (q = F).<br><br>"Se
+                        chover (V) não vou à praia (F)" — promessa quebrada = FALSO.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#26215C;">
+                      <span class="fc-tag" style="background:rgba(180,160,255,.2);color:#C8B8FF">Bicondicional</span>
+                      <div class="fc-kw">p ↔ q</div>
+                      <div class="fc-hint">Quando é verdadeiro?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>Verdadeiro</strong> quando p e q têm o <strong>mesmo valor</strong>
+                        (V↔V ou F↔F).<br><strong>Falso</strong> quando têm valores <strong>diferentes</strong> (V↔F ou
+                        F↔V).<br><br>É equivalente a (p→q) ∧ (q→p).</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('prop')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Proposições lógicas conectivos tabela verdade condicional bicondicional')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DE MORGAN -->
+        <div class="article" id="art-dm">
+          <div class="art-header" onclick="toggleArt('dm')">
+            <div class="art-title">Equivalências e Leis de De Morgan</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-dm">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-dm">
+            <p class="art-intro">As equivalências lógicas permitem transformar proposições em formas equivalentes. As
+              leis de De Morgan e a equivalência do condicional são as mais cobradas pela IBFC.</p>
+
+            <div class="block-title">Leis de De Morgan e equivalências principais</div>
+            <div class="rule-card">
+              <div class="rule-name">De Morgan 1</div>
+              <div class="rule-eq">¬(p ∧ q) ≡ ¬p ∨ ¬q
+                <span class="comment">"Negar uma conjunção → disjunção das negações"</span>
+                <span class="comment">Ex: "Não é verdade que João é alto E Maria é médica" ≡ "João não é alto OU Maria
+                  não é médica"</span>
+              </div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-name">De Morgan 2</div>
+              <div class="rule-eq">¬(p ∨ q) ≡ ¬p ∧ ¬q
+                <span class="comment">"Negar uma disjunção → conjunção das negações"</span>
+                <span class="comment">Ex: "Não é verdade que João é alto OU Maria é médica" ≡ "João não é alto E Maria
+                  não é médica"</span>
+              </div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-name">Equivalências do condicional</div>
+              <div class="rule-eq">p → q ≡ ¬p ∨ q ≡ ¬q → ¬p (contrapositiva)
+                <span class="comment">A contrapositiva é a única forma equivalente ao condicional!</span>
+                <span class="comment">A inversa (¬p→¬q) e a recíproca (q→p) NÃO são equivalentes.</span>
+              </div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-name">Negação do condicional</div>
+              <div class="rule-eq">¬(p → q) ≡ p ∧ ¬q
+                <span class="comment">"Para negar 'se p então q': p é verdadeiro E q é falso"</span>
+                <span class="comment">Ex: "Não é verdade que se chover irei à praia" ≡ "Vai chover E não irei à
+                  praia"</span>
+              </div>
+            </div>
+
+            <div class="callout c-alert"><strong>Armadilha frequente:</strong> "Se não aprovado no concurso, então não
+              assumi o cargo" é a INVERSA de "Se aprovado, então assumo o cargo". A inversa NÃO é equivalente ao
+              condicional original! Somente a contrapositiva é equivalente.</div>
+
+            <div class="callout c-example"><strong>Exercício típico IBFC:</strong> "A proposição ¬(p ∧ ¬q) é logicamente
+              equivalente a:" → Aplicando De Morgan: ¬p ∨ q. Que é exatamente p → q (eliminação do condicional).
+              Resposta: <strong>p → q</strong>.</div>
+
+            <div class="fc-deck">
+              <div class="fc-deck-title">Cartões — De Morgan</div>
+              <div class="fc-grid">
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#26215C;">
+                      <span class="fc-tag" style="background:rgba(200,180,255,.2);color:#D0C0FF">De Morgan</span>
+                      <div class="fc-kw">¬(p ∧ q) = ?</div>
+                      <div class="fc-hint">Como se nega uma conjunção?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans">¬(p ∧ q) ≡ <strong>¬p ∨ ¬q</strong><br><br>Regra: ao negar conjunção (E),
+                        troca-se pelo conectivo <strong>OU</strong> e negam-se ambas as partes.<br><br>Análogo: ¬(p ∨ q)
+                        ≡ ¬p ∧ ¬q</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#26215C;">
+                      <span class="fc-tag" style="background:rgba(200,180,255,.2);color:#D0C0FF">Contrapositiva</span>
+                      <div class="fc-kw">p → q equivale a?</div>
+                      <div class="fc-hint">Qual é a equivalente do condicional?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans">p → q ≡ <strong>¬q → ¬p</strong> (contrapositiva)<br>p → q ≡ <strong>¬p ∨
+                          q</strong><br><br>A <strong>inversa</strong> (¬p→¬q) e a <strong>recíproca</strong> (q→p) NÃO
+                        são equivalentes — pegadinha clássica!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('dm')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Leis De Morgan equivalências lógicas contrapositiva condicional')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUADRADO OPOSIÇÕES -->
+        <div class="article" id="art-qo">
+          <div class="art-header" onclick="toggleArt('qo')">
+            <div class="art-title">Quantificadores e Quadrado de Oposições</div>
+            <div class="art-badges">
+              <span class="badge badge-med">Cobrado</span>
+              <span class="art-toggle" id="tog-qo">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-qo">
+            <p class="art-intro">Os quantificadores "todo", "nenhum", "algum" e "algum não" definem o escopo das
+              proposições. O Quadrado de Oposições de Aristóteles organiza as relações entre essas proposições.</p>
+
+            <div class="square-diagram">
+              <div class="sq-grid">
+                <div class="sq-cell sb-navy">
+                  <div class="sq-label">Tipo A</div>
+                  <div class="sq-formula">∀x: P(x)</div>
+                  <div class="sq-desc">Todo S é P</div>
+                </div>
+                <div class="sq-cell sb-red">
+                  <div class="sq-label">Tipo E</div>
+                  <div class="sq-formula">∀x: ¬P(x)</div>
+                  <div class="sq-desc">Nenhum S é P</div>
+                </div>
+                <div class="sq-cell sb-teal">
+                  <div class="sq-label">Tipo I</div>
+                  <div class="sq-formula">∃x: P(x)</div>
+                  <div class="sq-desc">Algum S é P</div>
+                </div>
+                <div class="sq-cell sb-amber">
+                  <div class="sq-label">Tipo O</div>
+                  <div class="sq-formula">∃x: ¬P(x)</div>
+                  <div class="sq-desc">Algum S não é P</div>
+                </div>
+              </div>
+              <div class="sq-connectors">
+                <span>A × O = <strong>Contraditórias</strong></span>
+                <span style="margin:0 1rem;">|</span>
+                <span>E × I = <strong>Contraditórias</strong></span>
+              </div>
+              <div class="sq-connectors" style="font-size:10.5px;">
+                <span>A × E = Contrárias (não ambas V)</span>
+                <span style="margin:0 1rem;">|</span>
+                <span>I × O = Subcontrárias (não ambas F)</span>
+              </div>
+            </div>
+
+            <div class="block-title">Como negar proposições com quantificadores</div>
+            <table class="comp-table">
+              <tr>
+                <th>Proposição original</th>
+                <th>Negação correta</th>
+              </tr>
+              <tr>
+                <td>Todo S é P</td>
+                <td>Algum S não é P</td>
+              </tr>
+              <tr>
+                <td>Nenhum S é P</td>
+                <td>Algum S é P</td>
+              </tr>
+              <tr>
+                <td>Algum S é P</td>
+                <td>Nenhum S é P</td>
+              </tr>
+              <tr>
+                <td>Algum S não é P</td>
+                <td>Todo S é P</td>
+              </tr>
+            </table>
+
+            <div class="callout c-tip"><strong>Macete:</strong> Para negar, troque "Todo" por "Algum...não" e "Nenhum"
+              por "Algum". A negação de "Todo servidor é eficiente" não é "Nenhum servidor é eficiente" — é "Algum
+              servidor não é eficiente".</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('qo')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Quantificadores lógica quadrado de oposições todo algum nenhum')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTAGEM E PROBABILIDADE -->
+        <div class="article" id="art-cp">
+          <div class="art-header" onclick="toggleArt('cp')">
+            <div class="art-title">Contagem, Combinatória e Probabilidade</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-cp">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-cp">
+            <p class="art-intro">Combinatória e probabilidade têm presença constante nas provas da IBFC. O segredo está
+              em identificar se a ordem importa (arranjo/permutação) ou não (combinação), e calcular corretamente o
+              espaço amostral.</p>
+
+            <div class="block-title">Fórmulas fundamentais</div>
+            <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 1rem;">
+              <div class="formula">n!<small>Permutação simples de n</small></div>
+              <div class="formula">P(n,k) = n!/(n-k)!<small>Arranjo (ordem importa)</small></div>
+              <div class="formula">C(n,k) = n!/[k!(n-k)!]<small>Combinação (ordem não importa)</small></div>
+              <div class="formula">P(A) = Fav/Total<small>Probabilidade clássica</small></div>
+              <div class="formula">P(A∪B) = P(A)+P(B)−P(A∩B)<small>Adição de probabilidades</small></div>
+            </div>
+
+            <div class="block-title">Quando usar cada fórmula</div>
+            <div class="schema">
+              <div class="schema-row">
+                <div class="schema-box sb-red"><strong>Permutação</strong><small>Todos os elementos são usados. A ordem
+                    importa.</small><small>Exemplo: quantos anagramas tem "DIREITO"?</small></div>
+                <div class="schema-box sb-teal"><strong>Arranjo</strong><small>Usa-se k de n elementos. A ordem
+                    importa.</small><small>Exemplo: pódio (1º, 2º, 3º) de 10 atletas</small></div>
+                <div class="schema-box sb-blue"><strong>Combinação</strong><small>Usa-se k de n elementos. Ordem NÃO
+                    importa.</small><small>Exemplo: comissão de 3 entre 10 servidores</small></div>
+              </div>
+            </div>
+
+            <div class="callout c-example"><strong>Exemplo IBFC clássico:</strong> "Uma comissão de 3 servidores será
+              formada entre 8 candidatos. De quantas formas distintas isso pode ocorrer?"<br>C(8,3) = 8!/(3!·5!) =
+              (8×7×6)/(3×2×1) = 336/6 = <strong>56 formas</strong>.<br>→ Comissão = conjunto sem ordem = combinação.
+            </div>
+
+            <div class="callout c-example"><strong>Exemplo de probabilidade:</strong> "Em uma urna com 4 bolas vermelhas
+              e 6 azuis, qual a probabilidade de tirar 2 vermelhas seguidas SEM reposição?"<br>P = (4/10) × (3/9) =
+              12/90 = <strong>2/15 ≈ 13,3%</strong></div>
+
+            <div class="callout c-tip"><strong>Princípio multiplicativo:</strong> Se cada etapa de um processo tem
+              escolhas independentes, multiplique o número de opções. Ex: senha de 4 dígitos distintos entre 0-9:
+              10×9×8×7 = 5.040 senhas possíveis.</div>
+
+            <div class="fc-deck">
+              <div class="fc-deck-title">Cartões — Contagem e Probabilidade</div>
+              <div class="fc-grid">
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#0A3A28;">
+                      <span class="fc-tag" style="background:rgba(100,220,160,.2);color:#90FFB8">Combinatória</span>
+                      <div class="fc-kw">Combinação × Arranjo</div>
+                      <div class="fc-hint">Como diferenciar os dois?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>A ordem importa?</strong><br>SIM → Arranjo P(n,k) = n!/(n-k)!<br>NÃO →
+                        Combinação C(n,k) = n!/[k!(n-k)!]<br><br>Comissões, grupos, times = <strong>Combinação</strong>.
+                        Senhas, pódios, ranking = <strong>Arranjo</strong>.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#0D2E50;">
+                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Probabilidade</span>
+                      <div class="fc-kw">P(A∪B)</div>
+                      <div class="fc-hint">Como calcular a probabilidade de A ou B ocorrer?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans">P(A∪B) = P(A) + P(B) <strong>− P(A∩B)</strong><br><br>Se mutuamente exclusivos
+                        (não podem ocorrer juntos): P(A∩B) = 0, então P(A∪B) = P(A) + P(B).<br><br>Complementar: P(Aᶜ) =
+                        1 − P(A)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('cp')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Contagem combinatória combinação arranjo probabilidade')">Praticar questões
+                ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEQUÊNCIAS E PORCENTAGEM -->
+        <div class="article" id="art-sp">
+          <div class="art-header" onclick="toggleArt('sp')">
+            <div class="art-title">Sequências, PA, PG e Porcentagem</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-sp">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-sp">
+            <p class="art-intro">Progressões e porcentagem são presença garantida nas provas IBFC. Saiba identificar o
+              padrão das sequências e aplicar os fatores de porcentagem diretamente para economizar tempo.</p>
+
+            <div class="block-title">Progressão Aritmética (PA)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0;">
+              <div class="formula">aₙ = a₁ + (n−1)·r<small>Termo geral</small></div>
+              <div class="formula">Sₙ = n·(a₁+aₙ)/2<small>Soma dos termos</small></div>
+              <div class="formula">r = a₂ − a₁<small>Razão da PA</small></div>
+            </div>
+            <div class="callout c-example"><strong>Ex:</strong> PA (3, 7, 11, 15...). r=4. Qual o 10º termo? a₁₀ = 3 +
+              (10−1)×4 = 3+36 = <strong>39</strong>. Soma dos 10 primeiros: S₁₀ = 10×(3+39)/2 = <strong>210</strong>.
+            </div>
+
+            <div class="block-title">Progressão Geométrica (PG)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0;">
+              <div class="formula">aₙ = a₁ · q^(n−1)<small>Termo geral</small></div>
+              <div class="formula">Sₙ = a₁·(qⁿ−1)/(q−1)<small>Soma finita (q≠1)</small></div>
+              <div class="formula">q = a₂ / a₁<small>Razão da PG</small></div>
+            </div>
+
+            <div class="block-title">Porcentagem com fatores multiplicativos</div>
+            <table class="comp-table">
+              <tr>
+                <th>Operação</th>
+                <th>Fator</th>
+                <th>Exemplo</th>
+              </tr>
+              <tr>
+                <td>Aumento de 20%</td>
+                <td>× 1,20</td>
+                <td>R$100 → R$120</td>
+              </tr>
+              <tr>
+                <td>Desconto de 20%</td>
+                <td>× 0,80</td>
+                <td>R$100 → R$80</td>
+              </tr>
+              <tr>
+                <td>Aumento 20% + desconto 20%</td>
+                <td>× 1,20 × 0,80 = × 0,96</td>
+                <td>R$100 → R$96 (não volta!)</td>
+              </tr>
+              <tr>
+                <td>Trabalho conjunto A (n dias) + B (m dias)</td>
+                <td>Tempo = nm/(n+m)</td>
+                <td>A em 4d, B em 6d → juntos em 2,4d</td>
+              </tr>
+            </table>
+
+            <div class="callout c-alert"><strong>Armadilha clássica:</strong> "Aumentou 30% e depois teve desconto de
+              30%" ≠ volta ao valor original. 1,30 × 0,70 = 0,91 → houve redução de 9% no final! A IBFC ama essa
+              questão.</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('sp')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Progressão aritmética geométrica porcentagem raciocínio matemático')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!-- CAPÍTULO 3 — DIREITO ADMINISTRATIVO               -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <section class="chapter" id="ch-da">
+        <div class="chapter-header">
+          <div class="chapter-num">03</div>
+          <div class="chapter-meta">
+            <div class="chapter-label">Direito Administrativo</div>
+            <div class="chapter-title">Estado, Administração e Controle</div>
+            <div class="chapter-desc">Ramo do direito público que disciplina a função administrativa do Estado. A IBFC
+              foca em: princípios constitucionais, atos administrativos e seus atributos, poderes administrativos,
+              responsabilidade civil do Estado e licitações pela Lei 14.133/2021.</div>
+          </div>
+        </div>
+
+        <!-- PRINCÍPIOS -->
+        <div class="article" id="art-pr">
+          <div class="art-header" onclick="toggleArt('pr')">
+            <div class="art-title">Princípios — LIMPE e outros</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-pr">▾</span>
+            </div>
+          </div>
+          <div class="art-body open" id="body-pr">
+            <p class="art-intro">O art. 37, caput da CF/88 consagra cinco princípios expressos. A doutrina e a
+              jurisprudência acrescentam outros implícitos. O concurso cobra tanto a identificação dos princípios quanto
+              sua aplicação em casos concretos.</p>
+
+            <div class="block-title">O acrônimo LIMPE</div>
+            <div class="schema">
+              <div class="schema-row">
+                <div class="schema-box sb-navy"><strong>L</strong>egalidade<small>Adm. só faz o que a lei
+                    autoriza</small></div>
+                <div class="schema-box sb-red"><strong>I</strong>mpessoalidade<small>Proibição de favoritismos e
+                    perseguições</small></div>
+                <div class="schema-box sb-teal"><strong>M</strong>oralidade<small>Probidade, lealdade, boa-fé</small>
+                </div>
+                <div class="schema-box sb-blue"><strong>P</strong>ublicidade<small>Transparência dos atos
+                    públicos</small></div>
+                <div class="schema-box sb-amber"><strong>E</strong>ficiência<small>Presteza e rendimento
+                    funcional</small></div>
+              </div>
+            </div>
+
+            <div class="block-title">Pontos críticos por princípio</div>
+            <ul class="points">
+              <li class="point"><span class="point-marker pm-red">!</span><span><strong>Legalidade administrativa ×
+                    civil:</strong> O particular pode fazer tudo o que a lei não proíbe. O administrador só pode fazer o
+                  que a lei expressamente autoriza.</span></li>
+              <li class="point"><span class="point-marker pm-red">!</span><span><strong>Publicidade:</strong> não se
+                  confunde com publicação. A regra é transparência; o sigilo é exceção (segurança nacional, intimidade,
+                  processo investigatório).</span></li>
+              <li class="point"><span class="point-marker pm-teal">✓</span><span><strong>Eficiência</strong> foi
+                  acrescentado pela EC 19/1998. É a base para a avaliação periódica de desempenho e para a perda do
+                  cargo do servidor estável.</span></li>
+              <li class="point"><span class="point-marker pm-blue">i</span><span><strong>Princípios implícitos:</strong>
+                  razoabilidade, proporcionalidade, segurança jurídica, motivação, supremacia do interesse público,
+                  indisponibilidade do interesse público.</span></li>
+            </ul>
+
+            <div class="callout c-example"><strong>Caso prático:</strong> Um prefeito nomeia seu filho para cargo de
+              assessor. Viola quais princípios? <strong>Moralidade</strong> (nepotismo — Súmula Vinculante 13 STF),
+              <strong>Impessoalidade</strong> (favorecimento por laços pessoais) e, eventualmente,
+              <strong>Legalidade</strong> se houver vedação expressa.
+            </div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('pr')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Princípios Administração Pública LIMPE CF 88 artigo 37')">Praticar questões
+                ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ATOS ADMINISTRATIVOS -->
+        <div class="article" id="art-at">
+          <div class="art-header" onclick="toggleArt('at')">
+            <div class="art-title">Atos Administrativos — Atributos e Elementos</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-at">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-at">
+            <p class="art-intro">Ato administrativo é a manifestação unilateral de vontade da Administração que produz
+              efeitos jurídicos. Seus atributos o diferenciam dos atos privados. A IBFC frequentemente questiona quais
+              atributos são universais.</p>
+
+            <table class="comp-table">
+              <tr>
+                <th>Atributo</th>
+                <th>Conceito</th>
+                <th>É universal?</th>
+                <th>Detalhe IBFC</th>
+              </tr>
+              <tr>
+                <td><strong>Presunção de legitimidade</strong></td>
+                <td>Presume-se válido e verdadeiro até prova em contrário</td>
+                <td>Sim (todos os atos)</td>
+                <td>É RELATIVA (juris tantum) — admite prova em contrário</td>
+              </tr>
+              <tr>
+                <td><strong>Imperatividade</strong></td>
+                <td>Impõe-se a terceiros independentemente de concordância</td>
+                <td>Não</td>
+                <td>Atos enunciativos e os que ampliam direitos não têm imperatividade</td>
+              </tr>
+              <tr>
+                <td><strong>Autoexecutoriedade</strong></td>
+                <td>Executa-se sem prévia autorização judicial</td>
+                <td>Não</td>
+                <td>Multa NÃO é autoexecutória (precisa de processo judicial para cobrança)</td>
+              </tr>
+              <tr>
+                <td><strong>Tipicidade</strong></td>
+                <td>Ato deve corresponder a tipo legal previsto</td>
+                <td>Sim</td>
+                <td>Veda atos inominados contrários ao interesse público</td>
+              </tr>
+            </table>
+
+            <div class="block-title">Elementos (requisitos de validade)</div>
+            <div class="schema">
+              <div class="schema-title">Teoria Clássica dos Elementos do Ato (art. 2º Lei 4.717/65)</div>
+              <div class="schema-row">
+                <div class="schema-box sb-red"><strong>Competência</strong><small>Quem pode praticar o ato
+                    (agente)</small></div>
+                <div class="schema-box sb-gold"><strong>Finalidade</strong><small>O resultado almejado (interesse
+                    público)</small></div>
+                <div class="schema-box sb-teal"><strong>Forma</strong><small>Modo de exteriorização</small></div>
+                <div class="schema-box sb-blue"><strong>Motivo</strong><small>Situação fática e jurídica que
+                    justifica</small></div>
+                <div class="schema-box sb-purple"><strong>Objeto</strong><small>Efeito jurídico produzido</small></div>
+              </div>
+            </div>
+
+            <div class="callout c-alert"><strong>Desvio de poder (desvio de finalidade):</strong> Vício no elemento
+              FINALIDADE. O agente usa sua competência para atingir fim diverso do interesse público ou do fim
+              específico da norma. É vício de nulidade.</div>
+
+            <div class="callout c-tip"><strong>Revogação × Anulação:</strong> Revogação = discricionariedade +
+              conveniência/oportunidade (mérito) → efeitos ex nunc (futuros). Anulação = ilegalidade → efeitos ex tunc
+              (retroativos). Só a Administração revoga; o Judiciário e a Administração anulam.</div>
+
+            <div class="fc-deck">
+              <div class="fc-deck-title">Cartões — Atos Administrativos</div>
+              <div class="fc-grid">
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#0A3A28;">
+                      <span class="fc-tag" style="background:rgba(100,220,160,.2);color:#90FFB8">Atributo</span>
+                      <div class="fc-kw">Autoexecutoriedade</div>
+                      <div class="fc-hint">A multa administrativa é autoexecutória?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>NÃO.</strong> A multa é aplicada pela Administração (autoexecutória no
+                        lançamento), mas para COBRAR o pagamento precisa de inscrição em dívida ativa e execução fiscal.
+                        A autoexecutoriedade NÃO é atributo universal.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#3A1010;">
+                      <span class="fc-tag" style="background:rgba(255,120,120,.2);color:#FFAAAA">Invalidade</span>
+                      <div class="fc-kw">Revogação × Anulação</div>
+                      <div class="fc-hint">Qual a diferença entre revogar e anular?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>Revogação:</strong> Ato válido, retirado por conveniência. Efeitos
+                        <strong>ex nunc</strong>. Só a Adm. revoga.<br><br><strong>Anulação:</strong> Ato inválido
+                        (ilegal), retirado por vício. Efeitos <strong>ex tunc</strong>. Adm. e Judiciário anulam.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('at')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Atos administrativos atributos elementos revogação anulação')">Praticar questões
+                ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESPONSABILIDADE CIVIL DO ESTADO -->
+        <div class="article" id="art-re">
+          <div class="art-header" onclick="toggleArt('re')">
+            <div class="art-title">Responsabilidade Civil do Estado</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-re">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-re">
+            <p class="art-intro">A responsabilidade civil extracontratual do Estado por danos causados a particulares é
+              regida pelo art. 37, §6º da CF/88. O Brasil adota a teoria do risco administrativo.</p>
+
+            <div class="schema">
+              <div class="schema-title">Fluxo de responsabilidade do Estado (risco administrativo)</div>
+              <div class="schema-row">
+                <div class="schema-box sb-navy"><strong>Ato do agente</strong><small>Comissivo ou omissivo</small></div>
+                <div class="schema-arrow">+</div>
+                <div class="schema-box sb-navy"><strong>Dano</strong><small>Concreto e anormal</small></div>
+                <div class="schema-arrow">+</div>
+                <div class="schema-box sb-navy"><strong>Nexo causal</strong><small>Relação de causa e efeito</small>
+                </div>
+                <div class="schema-arrow">→</div>
+                <div class="schema-box sb-teal"><strong>Indenização</strong><small>Independe de culpa (objetiva)</small>
+                </div>
+              </div>
+              <div class="schema-divider"></div>
+              <div class="schema-row">
+                <div class="schema-box sb-red"><strong>Excludentes admitidas</strong><small>Culpa exclusiva da
+                    vítima</small></div>
+                <div class="schema-box sb-red"><strong>Caso fortuito / força maior</strong><small>Evento externo
+                    imprevisível</small></div>
+                <div class="schema-box sb-amber"><strong>Culpa concorrente</strong><small>Reduz (não elimina)
+                    indenização</small></div>
+              </div>
+            </div>
+
+            <table class="comp-table">
+              <tr>
+                <th>Teoria</th>
+                <th>Culpa?</th>
+                <th>Excludentes?</th>
+                <th>Quando se aplica no BR?</th>
+              </tr>
+              <tr>
+                <td><strong>Risco administrativo</strong></td>
+                <td>Não (objetiva)</td>
+                <td>Sim</td>
+                <td>Regra — art. 37, §6º CF</td>
+              </tr>
+              <tr>
+                <td><strong>Risco integral</strong></td>
+                <td>Não (objetiva)</td>
+                <td>Não</td>
+                <td>Casos específicos: dano nuclear, atos terroristas em aeronaves</td>
+              </tr>
+              <tr>
+                <td><strong>Falta do serviço (faute du service)</strong></td>
+                <td>Sim (subjetiva)</td>
+                <td>Sim</td>
+                <td>Atos omissivos em geral (serviço não funcionou, funcionou mal ou tarde)</td>
+              </tr>
+            </table>
+
+            <div class="callout c-alert"><strong>Omissão do Estado:</strong> A responsabilidade por atos OMISSIVOS é, em
+              regra, <strong>subjetiva</strong> — exige demonstração de culpa anônima do serviço (falta do serviço). O
+              STF, porém, tem admitido a responsabilidade objetiva por omissão em situações de risco criado pelo próprio
+              Estado (ex.: presídio).</div>
+
+            <div class="callout c-note"><strong>Ação regressiva:</strong> O Estado indeniza o particular e depois pode
+              buscar reembolso do agente causador do dano, desde que provado <strong>dolo ou culpa</strong> do servidor
+              (art. 37, §6º CF in fine). A ação regressiva é imprescritível para o Estado (entendimento do STF).</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('re')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Responsabilidade civil Estado risco administrativo objetivo subjetivo')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LICITAÇÕES -->
+        <div class="article" id="art-lic">
+          <div class="art-header" onclick="toggleArt('lic')">
+            <div class="art-title">Licitações — Lei 14.133/2021</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-lic">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-lic">
+            <p class="art-intro">A Lei 14.133/2021 (Nova Lei de Licitações) revogou a Lei 8.666/93 e o RDC. É o marco
+              legal vigente e o mais cobrado para concursos realizados a partir de 2022. Atenção às modalidades e
+              hipóteses de dispensa/inexigibilidade.</p>
+
+            <table class="comp-table">
+              <tr>
+                <th>Modalidade</th>
+                <th>Uso principal</th>
+                <th>Exigência específica</th>
+              </tr>
+              <tr>
+                <td><strong>Pregão</strong></td>
+                <td>Bens e serviços comuns (obrigatório)</td>
+                <td>Critério = menor preço ou maior desconto. Forma preferencial: eletrônica.</td>
+              </tr>
+              <tr>
+                <td><strong>Concorrência</strong></td>
+                <td>Contratos de grande complexidade ou alto valor</td>
+                <td>Qualquer critério de julgamento</td>
+              </tr>
+              <tr>
+                <td><strong>Concurso</strong></td>
+                <td>Trabalho técnico, científico ou artístico</td>
+                <td>Premiação ou remuneração ao vencedor</td>
+              </tr>
+              <tr>
+                <td><strong>Leilão</strong></td>
+                <td>Alienação de bens inservíveis ou apreendidos; concessões</td>
+                <td>Critério = maior lance</td>
+              </tr>
+              <tr>
+                <td><strong>Diálogo competitivo</strong></td>
+                <td>Soluções inovadoras de mercado desconhecidas pela Adm.</td>
+                <td>Diálogo com licitantes antes do edital definitivo</td>
+              </tr>
+            </table>
+
+            <div class="block-title">Dispensa × Inexigibilidade</div>
+            <div class="schema">
+              <div class="schema-row">
+                <div class="schema-box sb-teal"><strong>Dispensa</strong><small>Competição VIÁVEL, mas a lei autoriza
+                    não licitar</small><small>Ex: obras ≤ R$100k; notória especialização do contratado;
+                    emergência</small></div>
+                <div class="schema-arrow">≠</div>
+                <div class="schema-box sb-red"><strong>Inexigibilidade</strong><small>Competição INVIÁVEL
+                    materialmente</small><small>Ex: fornecedor exclusivo; artista consagrado; profissional
+                    notório</small></div>
+              </div>
+            </div>
+
+            <div class="callout c-alert"><strong>Sanções (art. 156 Lei 14.133/2021):</strong> Advertência → Multa →
+              Impedimento (1 a 3 anos) → Declaração de inidoneidade (3 a 6 anos). Na nova lei, a declaração de
+              inidoneidade tem efeitos perante toda a Adm. Pública, não apenas o ente que a aplicou.</div>
+
+            <div class="callout c-tip"><strong>Registro de preços:</strong> Vigência de até 1 ano, prorrogável por igual
+              período. A existência de preços registrados NÃO obriga a Administração a contratar — é faculdade. O
+              licitante pode oferecer proposta inferior à demanda máxima do edital.</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('lic')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Licitações Lei 14133 2021 modalidades pregão dispensa inexigibilidade')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!-- CAPÍTULO 4 — DIREITO CONSTITUCIONAL               -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <section class="chapter" id="ch-dc">
+        <div class="chapter-header">
+          <div class="chapter-num">04</div>
+          <div class="chapter-meta">
+            <div class="chapter-label">Direito Constitucional</div>
+            <div class="chapter-title">A Lei Maior e seus Institutos</div>
+            <div class="chapter-desc">Fundamento de todo o ordenamento jurídico. A IBFC cobra: remédios constitucionais
+              do art. 5º, organização dos poderes (especialmente o Judiciário), repartição de competências e direitos
+              sociais. Exige leitura atenta do texto constitucional.</div>
+          </div>
+        </div>
+
+        <!-- REMÉDIOS CONSTITUCIONAIS -->
+        <div class="article" id="art-rc">
+          <div class="art-header" onclick="toggleArt('rc')">
+            <div class="art-title">Remédios Constitucionais — Art. 5º CF</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-rc">▾</span>
+            </div>
+          </div>
+          <div class="art-body open" id="body-rc">
+            <p class="art-intro">Os remédios constitucionais são instrumentos processuais previstos no art. 5º da CF/88
+              para proteger direitos fundamentais quando violados ou ameaçados. Cada um tem campo de aplicação
+              específico.</p>
+
+            <table class="comp-table">
+              <tr>
+                <th>Remédio</th>
+                <th>Protege</th>
+                <th>Legitimado</th>
+                <th>Prazo</th>
+              </tr>
+              <tr>
+                <td><strong>Habeas Corpus (LXVIII)</strong></td>
+                <td>Liberdade de locomoção (ir, vir, permanecer)</td>
+                <td>Qualquer pessoa (inclusive o próprio paciente)</td>
+                <td>Sem prazo</td>
+              </tr>
+              <tr>
+                <td><strong>Habeas Data (LXXII)</strong></td>
+                <td>Acesso a dados pessoais em registros públicos ou de caráter público</td>
+                <td>Pessoa física ou jurídica titular dos dados</td>
+                <td>Após negativa administrativa</td>
+              </tr>
+              <tr>
+                <td><strong>Mandado de Segurança (LXIX)</strong></td>
+                <td>Direito líquido e certo não amparado por HC ou HD</td>
+                <td>Pessoa física ou jurídica contra ato de autoridade pública</td>
+                <td>120 dias do ato</td>
+              </tr>
+              <tr>
+                <td><strong>MS Coletivo (LXX)</strong></td>
+                <td>Direito de grupo, categoria ou coletividade</td>
+                <td>Partido político (CN), org. sindical, entidade de classe, associação (+1 ano)</td>
+                <td>120 dias</td>
+              </tr>
+              <tr>
+                <td><strong>Mandado de Injunção (LXXI)</strong></td>
+                <td>Direito/liberdade constitucional inviabilizado por falta de norma regulamentadora</td>
+                <td>Titular do direito prejudicado</td>
+                <td>Sem prazo</td>
+              </tr>
+              <tr>
+                <td><strong>Ação Popular (LXXIII)</strong></td>
+                <td>Anulação de ato lesivo ao patrimônio público, moralidade, meio ambiente ou patrimônio histórico</td>
+                <td>Qualquer cidadão (brasileiro, no pleno gozo dos direitos políticos)</td>
+                <td>5 anos (prescrição)</td>
+              </tr>
+            </table>
+
+            <div class="callout c-alert"><strong>Habeas Data exige prova de negativa prévia:</strong> O STF exige que o
+              impetrante demonstre ter tentado obter a informação administrativamente e foi negado. Sem a recusa, há
+              falta de interesse processual.</div>
+
+            <div class="callout c-example"><strong>Exemplo clássico (IBFC):</strong> João teve acesso negado à sua ficha
+              funcional pela repartição pública. Qual remédio constitucional deve usar? → <strong>Habeas Data</strong>
+              (LXXII) — pois quer acessar informações sobre si mesmo em banco de dados de entidade governamental.</div>
+
+            <div class="fc-deck">
+              <div class="fc-deck-title">Cartões — Remédios Constitucionais</div>
+              <div class="fc-grid">
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#0D2D50;">
+                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Art. 5º, LXIX</span>
+                      <div class="fc-kw">Mandado de Segurança</div>
+                      <div class="fc-hint">O que é "direito líquido e certo"?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans">Direito que pode ser demonstrado <strong>de plano</strong>, sem necessidade de
+                        dilação probatória. As provas devem ser pré-constituídas (documentais) — o MS não admite fase
+                        instrutória ampla.<br><br>Prazo: <strong>120 dias</strong> do ato coator. É decadencial (não
+                        suspende nem interrompe).</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#2A1A0A;">
+                      <span class="fc-tag" style="background:rgba(255,200,100,.2);color:#FFD880">Art. 5º, LXXI</span>
+                      <div class="fc-kw">Mandado de Injunção</div>
+                      <div class="fc-hint">HD × MI — como diferenciar?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>HD:</strong> acesso a <em>dados pessoais</em> em registros públicos →
+                        informação já existe, foi negada.<br><br><strong>MI:</strong> falta de <em>norma
+                          regulamentadora</em> que torna inviável exercer um direito constitucional → direito existe,
+                        mas não pode ser exercido por omissão do legislador.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#0A2A1A;">
+                      <span class="fc-tag" style="background:rgba(100,220,160,.2);color:#90FFB8">Art. 5º, LXXIII</span>
+                      <div class="fc-kw">Ação Popular</div>
+                      <div class="fc-hint">Quem pode ajuizar ação popular?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans">Qualquer <strong>cidadão</strong> brasileiro em pleno gozo dos direitos
+                        políticos. Estrangeiros, pessoas jurídicas e aqueles com direitos políticos suspensos NÃO podem.
+                        Protege: patrimônio público, moralidade administrativa, meio ambiente e patrimônio
+                        histórico-cultural. O autor é isento de custas e ônus salvo má-fé.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('rc')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Remédios constitucionais habeas corpus habeas data mandado segurança injunção ação popular CF 88')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PODER JUDICIÁRIO -->
+        <div class="article" id="art-pj">
+          <div class="art-header" onclick="toggleArt('pj')">
+            <div class="art-title">Poder Judiciário — Estrutura e Competências</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-pj">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-pj">
+            <p class="art-intro">O Poder Judiciário tem estrutura hierarquizada. Para o TJPE, é fundamental conhecer a
+              posição do STF, STJ, CNJ e os Tribunais de Justiça dos Estados, bem como as competências de cada órgão.
+            </p>
+
+            <div class="schema">
+              <div class="schema-title">Estrutura simplificada do Poder Judiciário</div>
+              <div class="schema-row">
+                <div class="schema-box sb-navy"><strong>STF</strong><small>11 Ministros · Guarda da CF · Cúpula
+                    máxima</small></div>
+              </div>
+              <div class="schema-row">
+                <div class="schema-box sb-blue"><strong>STJ</strong><small>33 Ministros · Unificação da lei federal
+                    infraconstitucional</small></div>
+                <div class="schema-box sb-blue"><strong>TST</strong><small>Cúpula da Justiça do Trabalho</small></div>
+                <div class="schema-box sb-blue"><strong>TSE</strong><small>Cúpula da Justiça Eleitoral</small></div>
+                <div class="schema-box sb-blue"><strong>STM</strong><small>Cúpula da Justiça Militar</small></div>
+              </div>
+              <div class="schema-row">
+                <div class="schema-box sb-teal"><strong>TRFs</strong><small>5 Regiões · Justiça Federal 2ª
+                    instância</small></div>
+                <div class="schema-box sb-teal"><strong>TJs</strong><small>Um por Estado · Justiça Estadual 2ª
+                    instância</small></div>
+                <div class="schema-box sb-teal"><strong>TRTs / TREs</strong><small>2ª instância
+                    Trabalho/Eleitoral</small></div>
+              </div>
+            </div>
+
+            <table class="comp-table">
+              <tr>
+                <th>Tribunal</th>
+                <th>Composição</th>
+                <th>Nomeação</th>
+                <th>Requisito de idade</th>
+              </tr>
+              <tr>
+                <td>STF</td>
+                <td>11 ministros</td>
+                <td>Presidente + aprovação Senado (maioria absoluta)</td>
+                <td>35 a 65 anos</td>
+              </tr>
+              <tr>
+                <td>STJ</td>
+                <td>33 ministros (1/3 juízes federais, 1/3 desemp. estaduais, 1/3 adv./MP)</td>
+                <td>Presidente + aprovação Senado</td>
+                <td>35 a 65 anos</td>
+              </tr>
+              <tr>
+                <td>TJs</td>
+                <td>Mínimo 7 desembargadores</td>
+                <td>Governador (lista tríplice)</td>
+                <td>30 anos mínimo</td>
+              </tr>
+            </table>
+
+            <div class="callout c-note"><strong>CNJ — Conselho Nacional de Justiça:</strong> Criado pela EC 45/2004. É
+              órgão de <strong>controle administrativo e financeiro</strong> do Judiciário — NÃO tem competência
+              jurisdicional. Composto por 15 membros (9 magistrados, 2 do MP, 2 advogados, 2 cidadãos indicados pelo
+              Congresso). Presidente: Presidente do STF.</div>
+
+            <div class="callout c-tip"><strong>Quinto constitucional:</strong> 1/5 das vagas dos TJs, TRFs, TRTs e TRE
+              estaduais é reservada a advogados e membros do MP. O processo: lista sêxtupla elaborada pelos órgãos de
+              classe → reduzida a lista tríplice pelo tribunal → nomeação pelo Chefe do Executivo.</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('pj')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Poder Judiciário estrutura STF STJ CNJ TJ competências CF 88')">Praticar questões
+                ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPETÊNCIAS -->
+        <div class="article" id="art-comp">
+          <div class="art-header" onclick="toggleArt('comp')">
+            <div class="art-title">Repartição de Competências Legislativas</div>
+            <div class="art-badges">
+              <span class="badge badge-med">Cobrado</span>
+              <span class="art-toggle" id="tog-comp">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-comp">
+            <p class="art-intro">A CF/88 distribui competências entre União, Estados, DF e Municípios. O modelo adotado
+              é o de competências enumeradas para a União com poderes reservados aos Estados.</p>
+
+            <div class="competencias-grid">
+              <div class="comp-cell sb-navy" style="border-color:#0A1628">
+                <div class="cc-title">Privativa da União (art. 22)</div>
+                <ul>
+                  <li>Direito civil, penal, processual</li>
+                  <li>Eleitoral, trabalhista, comercial</li>
+                  <li>Trânsito e transporte</li>
+                  <li>Energia, telecomunicações</li>
+                  <li>Seguridade social</li>
+                  <li>LC pode delegar aos Estados</li>
+                </ul>
+              </div>
+              <div class="comp-cell sb-blue" style="border-color:#185FA5">
+                <div class="cc-title">Concorrente (art. 24) União + Estados + DF</div>
+                <ul>
+                  <li>Direito tributário, financeiro</li>
+                  <li>Urbanístico, econômico</li>
+                  <li>Educação, saúde, assistência</li>
+                  <li>União = normas gerais</li>
+                  <li>Estado = normas suplementares</li>
+                  <li>Sem lei federal: Estado tem competência plena</li>
+                </ul>
+              </div>
+              <div class="comp-cell sb-teal" style="border-color:#0D7A5C">
+                <div class="cc-title">Exclusiva dos Municípios (art. 30)</div>
+                <ul>
+                  <li>Assuntos de interesse local</li>
+                  <li>Suplementar federal/estadual</li>
+                  <li>Criar e arrecadar tributos locais</li>
+                  <li>Transportes coletivos locais</li>
+                  <li>Ordenação e uso do solo</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="callout c-alert"><strong>Superveniência de lei federal (art. 24, §4º):</strong> A lei estadual
+              editada no exercício de competência plena (quando não havia lei federal) tem sua <strong>eficácia
+                SUSPENSA</strong> — não é revogada — naquilo que for contrária à lei federal superveniência. Se a lei
+              federal for revogada, a lei estadual volta a ter eficácia.</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('comp')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Repartição competências CF 88 artigo 22 24 30 União Estados Municípios')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════ -->
+      <!-- CAPÍTULO 5 — DIREITO CIVIL                        -->
+      <!-- ══════════════════════════════════════════════════ -->
+      <section class="chapter" id="ch-dcv">
+        <div class="chapter-header">
+          <div class="chapter-num">05</div>
+          <div class="chapter-meta">
+            <div class="chapter-label">Direito Civil</div>
+            <div class="chapter-title">Pessoa, Bens e Obrigações</div>
+            <div class="chapter-desc">O Código Civil de 2002 disciplina as relações jurídicas privadas. Para o TJPE, as
+              prioridades são: teoria das capacidades (com as alterações da Lei 13.146/2015), negócios jurídicos e seus
+              vícios, prescrição e decadência, e responsabilidade civil.</div>
+          </div>
+        </div>
+
+        <!-- CAPACIDADE -->
+        <div class="article" id="art-cap">
+          <div class="art-header" onclick="toggleArt('cap')">
+            <div class="art-title">Pessoa Natural e Capacidade</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-cap">▾</span>
+            </div>
+          </div>
+          <div class="art-body open" id="body-cap">
+            <p class="art-intro">A personalidade jurídica é a aptidão genérica para adquirir direitos e contrair
+              obrigações. Capacidade é a medida da personalidade — pode ser de direito (todo ser humano tem) ou de fato
+              (exercício pessoal dos atos da vida civil).</p>
+
+            <div class="block-title">Incapazes após a Lei 13.146/2015 (EPD)</div>
+            <table class="comp-table">
+              <tr>
+                <th>Tipo</th>
+                <th>Quem são (art. 3º e 4º CC)</th>
+                <th>Ato praticado</th>
+              </tr>
+              <tr>
+                <td><strong>Absolutamente incapazes</strong></td>
+                <td>Apenas menores de 16 anos</td>
+                <td>Nulo — representado pelos pais/tutor</td>
+              </tr>
+              <tr>
+                <td><strong>Relativamente incapazes</strong></td>
+                <td>Maiores de 16 e menores de 18; ébrios habituais; pródigos; quem não pode exprimir vontade por causa
+                  transitória</td>
+                <td>Anulável — assistido pelo representante</td>
+              </tr>
+            </table>
+
+            <div class="callout c-alert"><strong>Mudança do EPD (Lei 13.146/2015):</strong> Pessoas com deficiência são
+              plenamente CAPAZES. Não entram mais no rol de absolutamente nem relativamente incapazes. A curatela e a
+              tomada de decisão apoiada passaram a ser medidas de apoio, não causas de incapacidade.</div>
+
+            <div class="block-title">Emancipação — hipóteses legais (art. 5º CC)</div>
+            <ul class="points">
+              <li class="point"><span class="point-marker pm-blue">1</span><span><strong>Voluntária:</strong> Concedida
+                  pelos pais em conjunto (ou apenas um, se o outro faleceu). O menor deve ter 16 anos completos. Por
+                  escritura pública.</span></li>
+              <li class="point"><span class="point-marker pm-blue">2</span><span><strong>Judicial:</strong> Requerida
+                  pelo menor com 16 anos, quando houver discordância dos pais ou tutela.</span></li>
+              <li class="point"><span class="point-marker pm-teal">3</span><span><strong>Legal pelo casamento:</strong>
+                  O casamento emancipa, mesmo que seja dissolvido depois (divórcio ou viuvez não desfaz a
+                  emancipação).</span></li>
+              <li class="point"><span class="point-marker pm-teal">4</span><span><strong>Legal pelo emprego público
+                    efetivo.</strong></span></li>
+              <li class="point"><span class="point-marker pm-teal">5</span><span><strong>Legal pela colação de grau em
+                    ensino superior.</strong></span></li>
+              <li class="point"><span class="point-marker pm-teal">6</span><span><strong>Legal pelo estabelecimento
+                    civil/comercial</strong> ou existência de relação de emprego com economia própria.</span></li>
+            </ul>
+
+            <div class="callout c-tip"><strong>Emancipação e responsabilidade civil:</strong> O menor emancipado
+              voluntariamente por seus pais pode responsabilizá-los solidariamente por seus atos ilícitos? Sim, segundo
+              entendimento jurisprudencial — a emancipação voluntária não afasta a responsabilidade dos pais enquanto o
+              filho não atingir 18 anos.</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('cap')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Capacidade civil incapacidade absoluta relativa emancipação Código Civil EPD')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEGÓCIO JURÍDICO E VÍCIOS -->
+        <div class="article" id="art-nj">
+          <div class="art-header" onclick="toggleArt('nj')">
+            <div class="art-title">Negócio Jurídico — Validade e Vícios</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-nj">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-nj">
+            <p class="art-intro">O negócio jurídico (NJ) é a manifestação de vontade destinada a produzir efeitos
+              jurídicos desejados pelos agentes. Para ser válido, requer: agente capaz, objeto
+              lícito/possível/determinável e forma prescrita ou não defesa em lei (art. 104 CC).</p>
+
+            <div class="block-title">Vícios que anulam o NJ (arts. 138-165 CC)</div>
+            <table class="comp-table">
+              <tr>
+                <th>Vício</th>
+                <th>Conceito</th>
+                <th>Consequência</th>
+              </tr>
+              <tr>
+                <td><strong>Erro substancial</strong></td>
+                <td>Falsa representação da realidade; deve ser escusável (art. 138 CC)</td>
+                <td>Anulável (art. 171 CC)</td>
+              </tr>
+              <tr>
+                <td><strong>Dolo essencial</strong></td>
+                <td>Artifício malicioso que induz o contratante ao negócio</td>
+                <td>Anulável</td>
+              </tr>
+              <tr>
+                <td><strong>Dolo acidental</strong></td>
+                <td>O negócio seria realizado mesmo sem o dolo, mas em condições diferentes</td>
+                <td>Válido — apenas perdas e danos</td>
+              </tr>
+              <tr>
+                <td><strong>Coação moral</strong> (vis compulsiva)</td>
+                <td>Ameaça que vicia a vontade</td>
+                <td>Anulável</td>
+              </tr>
+              <tr>
+                <td><strong>Estado de perigo</strong></td>
+                <td>Obrigação excessivamente onerosa assumida para salvar-se de dano grave (art. 156)</td>
+                <td>Anulável</td>
+              </tr>
+              <tr>
+                <td><strong>Lesão</strong></td>
+                <td>Premente necessidade ou inexperiência; prestação desproporcional (art. 157)</td>
+                <td>Anulável</td>
+              </tr>
+              <tr>
+                <td><strong>Fraude contra credores</strong></td>
+                <td>Diminuição patrimonial em prejuízo de credores já existentes (art. 158)</td>
+                <td>Anulável (ação pauliana)</td>
+              </tr>
+            </table>
+
+            <div class="callout c-alert"><strong>Simulação → NULIDADE (não anulabilidade):</strong> O negócio simulado
+              (art. 167 CC) é NULO. Já o negócio dissimulado (ocultado atrás da simulação) pode ser válido se tiver
+              substância e forma lícitas. Nulidade ≠ anulabilidade: nulidade não sana, não prescreve e pode ser
+              reconhecida de ofício.</div>
+
+            <div class="fc-deck">
+              <div class="fc-deck-title">Cartões — Negócio Jurídico</div>
+              <div class="fc-grid">
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#3A0A0A;">
+                      <span class="fc-tag" style="background:rgba(255,100,100,.2);color:#FFAAAA">Distinção</span>
+                      <div class="fc-kw">Nulo × Anulável</div>
+                      <div class="fc-hint">Qual a diferença prática?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>Nulo:</strong> não produz efeitos; não sana pelo tempo; pode ser
+                        reconhecido de ofício; jamais confirmado. (Simulação, objeto ilícito, agente absolutamente
+                        incapaz)<br><br><strong>Anulável:</strong> produz efeitos até ser anulado; sana pelo prazo; só
+                        por provocação. (Erro, dolo, coação, estado de perigo, lesão)</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="fc-card" onclick="this.classList.toggle('flipped')">
+                  <div class="fc-inner">
+                    <div class="fc-front" style="background:#2A1A0A;">
+                      <span class="fc-tag" style="background:rgba(255,200,100,.2);color:#FFD880">Vício</span>
+                      <div class="fc-kw">Estado de Perigo × Lesão</div>
+                      <div class="fc-hint">Como diferenciar os dois vícios?</div>
+                      <div class="fc-flip-hint">toque para ver a resposta</div>
+                    </div>
+                    <div class="fc-back">
+                      <div class="fc-ans"><strong>Estado de perigo (art. 156):</strong> necessidade de
+                        <em>salvar-se</em> de grave dano (vida, saúde) — foco no <strong>perigo
+                          pessoal</strong>.<br><br><strong>Lesão (art. 157):</strong> <em>necessidade econômica
+                          premente</em> ou inexperiência → prestação desproporcional — foco no <strong>desequilíbrio
+                          patrimonial</strong>.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('nj')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Negócio jurídico vícios erro dolo coação estado de perigo lesão simulação Código Civil')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRESCRIÇÃO E DECADÊNCIA -->
+        <div class="article" id="art-pd">
+          <div class="art-header" onclick="toggleArt('pd')">
+            <div class="art-title">Prescrição e Decadência</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-pd">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-pd">
+            <p class="art-intro">A distinção entre prescrição e decadência é fundamental no Código Civil e é cobrada
+              constantemente pela IBFC. Saiba identificar o tipo de prazo pelo tipo de direito envolvido.</p>
+
+            <table class="comp-table">
+              <tr>
+                <th>Critério</th>
+                <th>Prescrição</th>
+                <th>Decadência</th>
+              </tr>
+              <tr>
+                <td>O que extingue</td>
+                <td>A <strong>pretensão</strong> (direito de ação para exigir cumprimento)</td>
+                <td>O próprio <strong>direito</strong> (potestativo)</td>
+              </tr>
+              <tr>
+                <td>Tipo de direito</td>
+                <td>Direito subjetivo a uma prestação (crédito, obrigação)</td>
+                <td>Direito potestativo (anular, revogar, reclamar)</td>
+              </tr>
+              <tr>
+                <td>Reconhecimento de ofício</td>
+                <td>Pode ser reconhecida de ofício pelo juiz</td>
+                <td>Legal: sim. Convencional: não (art. 211)</td>
+              </tr>
+              <tr>
+                <td>Renúncia</td>
+                <td>Pode ser renunciada após a consumação (art. 191)</td>
+                <td>Legal: irrenunciável (art. 209). Convencional: pode ser renunciada</td>
+              </tr>
+              <tr>
+                <td>Suspensão e interrupção</td>
+                <td>Admite (arts. 197-204)</td>
+                <td>Não admite (salvo disposição legal expressa)</td>
+              </tr>
+              <tr>
+                <td>Prazo geral</td>
+                <td>10 anos (art. 205)</td>
+                <td>Varia conforme o direito (2 anos para anular NJ — art. 179)</td>
+              </tr>
+            </table>
+
+            <div class="callout c-gold"><strong>Regra prática:</strong> Se o prazo está no art. 206 CC (especificado) =
+              prescrição. Se o prazo está relacionado ao exercício de um direito de anular, resolver ou modificar =
+              decadência. Se a lei fala em "pretensão" = prescrição. Se fala em "direito" = decadência.</div>
+
+            <div class="callout c-example"><strong>Exemplo IBFC:</strong> "João tem 2 anos para anular negócio jurídico
+              por erro, dolo ou coação." → <strong>Decadência</strong> (art. 179 CC — direito potestativo de anular).
+              "João tem 3 anos para pedir reparação civil." → <strong>Prescrição</strong> (art. 206, §3º, V CC —
+              pretensão de exigir prestação).</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('pd')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Prescrição decadência diferenças Código Civil pretensão direito potestativo')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESPONSABILIDADE CIVIL -->
+        <div class="article" id="art-rcc">
+          <div class="art-header" onclick="toggleArt('rcc')">
+            <div class="art-title">Responsabilidade Civil (CC)</div>
+            <div class="art-badges">
+              <span class="badge badge-hot">Muito cobrado</span>
+              <span class="art-toggle" id="tog-rcc">▾</span>
+            </div>
+          </div>
+          <div class="art-body" id="body-rcc">
+            <p class="art-intro">A responsabilidade civil obriga o causador do dano a reparar o prejuízo causado a
+              outrem. O Código Civil adota como regra a responsabilidade subjetiva, com exceções objetivas expressamente
+              previstas.</p>
+
+            <div class="schema">
+              <div class="schema-title">Elementos da responsabilidade subjetiva (regra CC)</div>
+              <div class="schema-row">
+                <div class="schema-box sb-red"><strong>Conduta</strong><small>Ação ou omissão do agente</small></div>
+                <div class="schema-arrow">+</div>
+                <div class="schema-box sb-gold"><strong>Culpa / Dolo</strong><small>Negligência, imprudência, imperícia
+                    ou intenção</small></div>
+                <div class="schema-arrow">+</div>
+                <div class="schema-box sb-navy"><strong>Dano</strong><small>Material ou moral</small></div>
+                <div class="schema-arrow">+</div>
+                <div class="schema-box sb-teal"><strong>Nexo Causal</strong><small>Relação causa-efeito</small></div>
+              </div>
+            </div>
+
+            <table class="comp-table">
+              <tr>
+                <th>Tipo</th>
+                <th>Fundamento</th>
+                <th>Quando se aplica no CC</th>
+              </tr>
+              <tr>
+                <td><strong>Subjetiva</strong></td>
+                <td>Ato ilícito + culpa provada</td>
+                <td>Regra geral (arts. 186, 927 CC)</td>
+              </tr>
+              <tr>
+                <td><strong>Objetiva por atividade de risco</strong></td>
+                <td>Ato + dano + nexo (sem prova de culpa)</td>
+                <td>Art. 927, § único: "atividade que por sua natureza implique risco"</td>
+              </tr>
+              <tr>
+                <td><strong>Objetiva específica</strong></td>
+                <td>Prevista em lei especial</td>
+                <td>CDC (fornecedor), Lei de Danos Nucleares, Código Aeronáutico</td>
+              </tr>
+            </table>
+
+            <div class="callout c-tip"><strong>Dano moral in re ipsa:</strong> Em certas situações, o dano moral é
+              presumido — não exige prova do sofrimento. Ex.: negativação indevida em cadastro de inadimplentes, perda
+              de filho, violação de dados pessoais. O STJ consolidou esse entendimento.</div>
+
+            <div class="callout c-example"><strong>Caso prático:</strong> Empresa de táxi aéreo causa acidente e mata
+              passageiro. A responsabilidade é OBJETIVA (Código Aeronáutico + art. 37, §6º para Estado). Se a empresa é
+              privada: CC art. 927, §único (atividade de risco intrínseco). Independe de culpa — basta conduta + dano +
+              nexo.</div>
+
+            <div class="voice-row">
+              <button class="voice-btn" onclick="readSection('rcc')">▶ Narrar seção</button>
+              <button class="practice-btn"
+                onclick="askPractice('Responsabilidade civil subjetiva objetiva dano moral nexo causal Código Civil')">Praticar
+                questões ↗</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- MOBILE NAV -->
+      <div id="mobile-nav">
+        <button class="sb-item" onclick="showChapter('dpp')" id="mnav-dpp"
+          style="flex:1;justify-content:center;font-size:11px">Proc.Penal</button>
+        <button class="sb-item" onclick="showChapter('rl')" id="mnav-rl"
+          style="flex:1;justify-content:center;font-size:11px">Lógico</button>
+        <button class="sb-item" onclick="showChapter('da')" id="mnav-da"
+          style="flex:1;justify-content:center;font-size:11px">Adm</button>
+        <button class="sb-item" onclick="showChapter('dc')" id="mnav-dc"
+          style="flex:1;justify-content:center;font-size:11px">Const</button>
+        <button class="sb-item active" onclick="showChapter('dcv')" id="mnav-dcv"
+          style="flex:1;justify-content:center;font-size:11px">Civil</button>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    const CHAPS = ['dpp', 'rl', 'da', 'dc', 'dcv'];
+    let synth = window.speechSynthesis;
+    let currentUtt = null;
+
+    function showChapter(id) {
+      CHAPS.forEach(c => {
+        const el = document.getElementById('ch-' + c);
+        if (el) el.classList.toggle('visible', c === id);
+        const nb = document.getElementById('nav-' + c);
+        if (nb) nb.classList.toggle('active', c === id);
+        const mb = document.getElementById('mnav-' + c);
+        if (mb) mb.classList.toggle('active', c === id);
+      });
+      stopVoice();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleArt(id) {
+      const body = document.getElementById('body-' + id);
+      const tog = document.getElementById('tog-' + id);
+      if (!body) return;
+      const open = body.classList.toggle('open');
+      if (tog) tog.classList.toggle('open', open);
+    }
+
+    function stopVoice() {
+      if (synth) { synth.cancel(); }
+      currentUtt = null;
+      document.querySelectorAll('.voice-btn').forEach(b => {
+        b.textContent = '▶ Narrar seção';
+        b.classList.remove('playing');
+      });
+    }
+
+    function readSection(id) {
+      const body = document.getElementById('body-' + id);
+      if (!body) return;
+      if (!window.speechSynthesis) return;
+
+      const activeBtns = document.querySelectorAll('.voice-btn.playing');
+      if (activeBtns.length > 0) { stopVoice(); return; }
+
+      let text = '';
+      const intro = body.querySelector('.art-intro');
+      if (intro) text += intro.textContent + ' ';
+      body.querySelectorAll('.point span:last-child').forEach(p => { text += p.textContent + '. '; });
+      body.querySelectorAll('.comp-table tr').forEach((r, i) => {
+        if (i === 0) return;
+        text += r.querySelectorAll('td')[0]?.textContent + ': ' + r.querySelectorAll('td')[1]?.textContent + '. ';
+      });
+      body.querySelectorAll('.callout').forEach(c => { text += c.textContent + '. '; });
+      text = text.replace(/\s+/g, ' ').trim().substring(0, 3000);
+
+      currentUtt = new SpeechSynthesisUtterance(text);
+      currentUtt.lang = 'pt-BR'; currentUtt.rate = 0.88; currentUtt.pitch = 1;
+      const btn = body.querySelector('.voice-btn');
+      currentUtt.onstart = () => { if (btn) { btn.textContent = '⏹ Parar narração'; btn.classList.add('playing'); } };
+      currentUtt.onend = () => { if (btn) { btn.textContent = '▶ Narrar seção'; btn.classList.remove('playing'); } };
+      currentUtt.onerror = () => { if (btn) { btn.textContent = '▶ Narrar seção'; btn.classList.remove('playing'); } };
+      synth.speak(currentUtt);
+    }
+
+    function askPractice(topic) {
+      const msg = `Crie 10 questões no estilo IBFC com 4 alternativas (a, b, c, d) e gabarito comentado sobre: ${topic} — para o concurso de Técnico Judiciário do TJPE (Edital 01/2025). Após cada questão, indique a resposta correta e explique o erro de cada alternativa incorreta.`;
+      if (window.parent && window.parent.postMessage) {
+        window.parent.postMessage({ type: 'sendPrompt', text: msg }, '*');
+      } else {
+        alert('Copie o tema e peça questões no chat:\n\n' + topic);
+      }
+    }
+
+    function toggleTheme() {
+      const d = document.documentElement;
+      const dark = d.getAttribute('data-theme') === 'dark';
+      d.setAttribute('data-theme', dark ? '' : 'dark');
+      const btn = document.querySelector('.ctrl-btn');
+      if (btn) btn.textContent = dark ? '🌙 Modo escuro' : '☀️ Modo claro';
+    }
+
+    document.querySelectorAll('.fc-card').forEach(card => {
+      card.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') card.classList.toggle('flipped'); });
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', 'Cartão de memorização — clique para virar');
+    });
+
+    /* ── SIDEBAR COLAPSÁVEL ── */
+    let sidebarOpen = window.innerWidth > 768;
+
+    function initSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const hamburger = document.getElementById('hamburger');
+      if (!sidebarOpen) {
+        sidebar.classList.add('collapsed');
+        document.body.classList.add('sidebar-collapsed');
+      } else {
+        hamburger.classList.add('active');
+      }
+    }
+
+    function toggleSidebar() {
+      sidebarOpen = !sidebarOpen;
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      const hamburger = document.getElementById('hamburger');
+      sidebar.classList.toggle('collapsed', !sidebarOpen);
+      hamburger.classList.toggle('active', sidebarOpen);
+      document.body.classList.toggle('sidebar-collapsed', !sidebarOpen);
+      if (window.innerWidth <= 768) {
+        overlay.classList.toggle('active', sidebarOpen);
+      }
+    }
+
+    initSidebar();
+
+    /* Fechar sidebar ao escolher capítulo no mobile */
+    const origShowChapter = showChapter;
+    showChapter = function (id) {
+      origShowChapter(id);
+      if (window.innerWidth <= 768 && sidebarOpen) {
+        toggleSidebar();
+      }
+    };
+  </script>
+</body>
+
+</html>

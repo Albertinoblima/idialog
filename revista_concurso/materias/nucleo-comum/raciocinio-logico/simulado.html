@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado · Raciocinio Logico · Aprova Concursos</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Comentado</div>
+    <h1><em>Raciocínio Lógico Matemático</em><br>30 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição
+      inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Negação Lógica</span>
+      <span class="cv-tag">Equivalências</span>
+      <span class="cv-tag">Quantificadores</span>
+      <span class="cv-tag">Diagramas Lógicos</span>
+      <span class="cv-tag">Probabilidade</span>
+      <span class="cv-tag">Sequências</span>
+      <span class="cv-tag">Tabelas-Verdade</span>
+      <span class="cv-tag">Argumentação</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../index.html">← Revista</a>
+    <a class="ctrl" href="../../../simulador.html">🔀 Montar Simulado</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 30 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 30</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      NL: 'Negação Lógica',
+      EQ: 'Equivalências Lógicas',
+      QT: 'Quantificadores',
+      TV: 'Tabela-Verdade',
+      CJ: 'Conjuntos',
+      SQ: 'Sequências Lógicas',
+      DL: 'Diagramas Lógicos',
+      AL: 'Argumentação Lógica',
+      PB: 'Probabilidade'
+    };
+    const TOPIC_COLOR = {
+      NL: { bg: '#E6F1FB', c: '#0C447C' }, EQ: { bg: '#FCEAEA', c: '#7A1515' },
+      QT: { bg: '#E3F5EF', c: '#085041' }, TV: { bg: '#EDE8F8', c: '#3A246A' },
+      CJ: { bg: '#FFF3DC', c: '#6A4800' }, SQ: { bg: '#FCEAEA', c: '#7A1515' },
+      DL: { bg: '#FAECE7', c: '#712B13' }, AL: { bg: '#F1EFE8', c: '#2C2C2A' },
+      PB: { bg: '#EAF3DE', c: '#173404' }
+    };
+
+    // ── 30 QUESTÕES DE RACIOCÍNIO LÓGICO (IBFC concurso) ─────────────────────────────
+    const ALL = [
+      // NEGACAO LOGICA
+      {
+        id: 'NL01', topic: 'NL', dif: 'l',
+        text: 'Dada a proposição: "O réu é culpado e o processo é lento", sua negação lógica é:',
+        opts: ['O réu não é culpado e o processo não é lento.', 'O réu não é culpado ou o processo não é lento.', 'Se o réu não é culpado, então o processo não é lento.', 'O réu é culpado ou o processo não é lento.'],
+        ans: 1,
+        exp: 'Lei de De Morgan: ¬(A ∧ B) = ¬A ∨ ¬B. Troca-se o "E" pelo "OU" e negam-se ambas as partes.',
+        erros: ['ERRADA: esta seria a negação de uma disjunção.', 'CORRETA.', 'ERRADA: esta é uma condicional, não negação.', 'ERRADA: mantém a primeira parte positiva.'],
+        tip: 'MACETE: Negação do "E" = "OU" + "Não em tudo".',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'NL02', topic: 'NL', dif: 'm',
+        text: 'Qual a negação de: "Fui ao fórum e protocolei a petição"?',
+        opts: ['Não fui ao fórum e não protocolei a petição.', 'Fui ao fórum ou não protocolei a petição.', 'Não fui ao fórum ou não protocolei a petição.', 'Se não fui ao fórum, não protocolei a petição.'],
+        ans: 2,
+        exp: 'Repete o padrão: nega a primeira, nega a segunda e troca o conectivo para "OU".',
+        erros: ['ERRADA: esta é a negação de disjunção.', 'ERRADA: mantém a primeira positiva.', 'CORRETA.', 'ERRADA: transforma em condicional.'],
+        tip: 'No RLM, o oposto de "E" é sempre "OU" (e vice-versa).',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'NL03', topic: 'NL', dif: 'l',
+        text: 'A negação lógica da frase: "Estudo Direito ou toco violão" é:',
+        opts: ['Não estudo Direito e não toco violão.', 'Não estudo Direito ou não toco violão.', 'Se estudo Direito, então não toco violão.', 'Estudo Direito e não toco violão.'],
+        ans: 0,
+        exp: 'Segunda Lei de De Morgan: ¬(A ∨ B) = ¬A ∧ ¬B. Troca-se o "OU" pelo "E" e negam-se ambas.',
+        erros: ['CORRETA.', 'ERRADA: esta é a negação de conjunção.', 'ERRADA: condicional.', 'ERRADA: mantém uma parte positiva.'],
+        tip: 'MACETE: Negação do "OU" = "E" + "Não em tudo".',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'NL04', topic: 'NL', dif: 'm',
+        text: '"O crime foi doloso ou o réu é primário". A negação é:',
+        opts: ['O crime não foi doloso ou o réu não é primário.', 'O crime foi culposo e o réu é reincidente.', 'O crime não foi doloso e o réu não é primário.', 'Se o crime foi doloso, o réu não é primário.'],
+        ans: 2,
+        exp: 'Mantém-se o rigor: ¬A ∧ ¬B. (Nota: tecnicamente "culposo" e "reincidente" são antônimos jurídicos, mas na lógica formal usamos apenas o "não").',
+        erros: ['ERRADA: negação de conjunção.', 'ERRADA: usa antônimos sem base formal.', 'CORRETA.', 'ERRADA: condicional.'],
+        tip: 'Não tente interpretar o sentido, apenas aplique a regra do conectivo.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'NL05', topic: 'NL', dif: 'm',
+        text: 'A negação de: "Se eu ganhar dinheiro, então não gasto com supérfluos" é:',
+        opts: ['Se eu não ganhar dinheiro, então gasto com supérfluos.', 'Eu ganho dinheiro e gasto com supérfluos.', 'Se eu ganhar dinheiro, então gasto com supérfluos.', 'Eu não ganho dinheiro ou gasto com supérfluos.'],
+        ans: 1,
+        exp: 'Regra do "MANÉ": Mantém a primeira (A) E (∧) Nega a segunda (¬B). ¬(A → B) = A ∧ ¬B.',
+        erros: ['ERRADA: contrapositiva.', 'CORRETA.', 'ERRADA: mantém consequente.', 'ERRADA: disjunção.'],
+        tip: '"MANÉ" = MAntém a primeira E NEga a segunda. O "Se" desaparece!',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'NL06', topic: 'NL', dif: 'm',
+        text: 'Negação de: "Se o servidor é eficiente, o cidadão fica satisfeito":',
+        opts: ['O servidor é eficiente e o cidadão não fica satisfeito.', 'O servidor não é eficiente e o cidadão não fica satisfeito.', 'Se o cidadão não fica satisfeito, o servidor não é eficiente.', 'O servidor é eficiente ou o cidadão não fica satisfeito.'],
+        ans: 0,
+        exp: 'Aplicação direta do MANÉ. A primeira parte fica igual, troca-se a seta pelo "E" e nega-se o final.',
+        erros: ['CORRETA.', 'ERRADA: nega as duas.', 'ERRADA: contrapositiva.', 'ERRADA: disjunção.'],
+        tip: 'A IBFC adora trocar a negação pela equivalência para te confundir. Cuidado!',
+        tiptype: 'cm-red'
+      },
+      // EQUIVALENCIAS
+      {
+        id: 'EQ01', topic: 'EQ', dif: 'l',
+        text: 'Uma frase logicamente equivalente a: "Se sou formado em Direito, então sou criterioso" é:',
+        opts: ['Se não sou formado em Direito, então não sou criterioso.', 'Se sou criterioso, então sou formado em Direito.', 'Se não sou criterioso, então não sou formado em Direito.', 'Sou formado em Direito ou sou criterioso.'],
+        ans: 2,
+        exp: 'Contrapositiva: (A → B) ≡ (¬B → ¬A). Inverte as partes e nega ambas.',
+        erros: ['ERRADA: inversa.', 'ERRADA: recíproca.', 'CORRETA.', 'ERRADA: disjunção.'],
+        tip: '"Inverte negando". É a equivalência preferida da IBFC.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'EQ02', topic: 'EQ', dif: 'm',
+        text: 'Outra forma de equivalência para: "Se estudo RLM, então passo no concurso" é:',
+        opts: ['Estudo RLM e passo no concurso.', 'Não estudo RLM ou passo no concurso.', 'Estudo RLM ou não passo no concurso.', 'Se não estudo RLM, não passo no concurso.'],
+        ans: 1,
+        exp: 'Regra do "NEYMAR": NEga a primeira (¬A) OU (∨) MAntém a segunda (B). (A → B) ≡ ¬A ∨ B.',
+        erros: ['ERRADA: conjunção.', 'CORRETA.', 'ERRADA: disjunção invertida.', 'ERRADA: contrapositiva.'],
+        tip: 'NEYMAR = NEga a primeira, OU MAntém a segunda.',
+        tiptype: 'cm-purple'
+      },
+      // QUANTIFICADORES
+      {
+        id: 'QT01', topic: 'QT', dif: 'l',
+        text: 'A negação de: "Todo político é corrupto" é:',
+        opts: ['Nenhum político é corrupto.', 'Algum político não é corrupto.', 'Todos os políticos não são corruptos.', 'Algum político é corrupto.'],
+        ans: 1,
+        exp: 'Para negar o "TODO", basta que UM não seja (PEA + NÃO: Pelo menos um, Existe um, Algum).',
+        erros: ['ERRADA: negação forte.', 'CORRETA.', 'ERRADA: todos não.', 'ERRADA: afirma positivo.'],
+        tip: 'Negação de TODO nunca é NENHUM. É "Algum... não".',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'QT02', topic: 'QT', dif: 'm',
+        text: 'A negação de: "Algum programador não gosta de eletrônica" é:',
+        opts: ['Nenhum programador gosta de eletrônica.', 'Pelo menos um programador gosta de eletrônica.', 'Todo programador gosta de eletrônica.', 'Todos os programadores não gostam de eletrônica.'],
+        ans: 2,
+        exp: 'A negação de "Algum não" é o "Todo".',
+        erros: ['ERRADA: nenhum.', 'ERRADA: algum positivo.', 'CORRETA.', 'ERRADA: todos não.'],
+        tip: 'Todo <---> Algum não | Nenhum <---> Algum. (Cruze os opostos).',
+        tiptype: 'cm-red'
+      },
+      // TABELA-VERDADE
+      {
+        id: 'TV01', topic: 'TV', dif: 'm',
+        text: 'Considere P verdadeira e Q falsa. O valor lógico de (P ∧ ¬Q) ∨ Q é:',
+        opts: ['Verdadeiro.', 'Falso.', 'Inconclusivo.', 'Uma contradição.'],
+        ans: 0,
+        exp: '¬Q é V. (V ∧ V) resulta em V. V ∨ F resulta em V.',
+        erros: ['CORRETA.', 'ERRADA: ignora ¬Q.', 'ERRADA: sempre conclusivo.', 'ERRADA: não é contradição.'],
+        tip: '"E" só é V se tudo for V. "OU" só é F se tudo for F.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'TV02', topic: 'TV', dif: 'm',
+        text: 'Se P é falsa e Q é falsa, qual o valor lógico de P → Q?',
+        opts: ['Falso.', 'Verdadeiro.', 'Nulo.', 'Indeterminado.'],
+        ans: 1,
+        exp: 'Na condicional (→), o único caso Falso é V → F (Vera Fischer é Falsa). F → F é Verdadeiro.',
+        erros: ['ERRADA: só V→F é falso.', 'CORRETA.', 'ERRADA: nunca nulo.', 'ERRADA: sempre determinado.'],
+        tip: '"Se Falso, então qualquer coisa" é sempre Verdadeiro.',
+        tiptype: 'cm-teal'
+      },
+      // CONJUNTOS
+      {
+        id: 'CJ01', topic: 'CJ', dif: 'l',
+        text: 'Em um grupo de 100 consultores, 60 gostam de IA e 50 gostam de Eletrônica. Se 20 gostam dos dois, quantos não gostam de nenhum?',
+        opts: ['10.', '20.', '30.', '0.'],
+        ans: 0,
+        exp: '(60-20) + (50-20) + 20 = 40 + 30 + 20 = 90. 100 - 90 = 10.',
+        erros: ['CORRETA.', 'ERRADA: esquece interseção.', 'ERRADA: cálculo errado.', 'ERRADA: ignora sobreposição.'],
+        tip: 'Sempre comece pela interseção no diagrama de Venn!',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'CJ02', topic: 'CJ', dif: 'm',
+        text: 'No mesmo grupo anterior (60 IA, 50 Eletrônica, 20 ambos), quantos gostam APENAS de IA?',
+        opts: ['60.', '40.', '30.', '20.'],
+        ans: 1,
+        exp: 'IA (60) - Ambos (20) = 40.',
+        erros: ['ERRADA: inclui interseção.', 'CORRETA.', 'ERRADA: subtrai errado.', 'ERRADA: interseção sozinha.'],
+        tip: 'A palavra "APENAS" ou "SOMENTE" exige que você subtraia a interseção.',
+        tiptype: 'cm-red'
+      },
+      // SEQUENCIAS
+      {
+        id: 'SQ01', topic: 'SQ', dif: 'l',
+        text: 'Qual o próximo número da sequência: 2, 4, 8, 16, 32, ...?',
+        opts: ['40.', '48.', '64.', '128.'],
+        ans: 2,
+        exp: 'Progressão Geométrica de razão 2 ($2^n$).',
+        erros: ['ERRADA: aritmética.', 'ERRADA: soma errada.', 'CORRETA.', 'ERRADA: dobra extra.'],
+        tip: 'IBFC gosta de potências de 2, 3 e números primos.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'SQ02', topic: 'SQ', dif: 'm',
+        text: 'Qual a próxima letra: A, C, E, G, ...?',
+        opts: ['H.', 'I.', 'J.', 'K.'],
+        ans: 1,
+        exp: 'Pula-se uma letra do alfabeto (A - b - C - d - E - f - G - h - I).',
+        erros: ['ERRADA: sequência consecutiva.', 'CORRETA.', 'ERRADA: pula duas.', 'ERRADA: pula uma mas erra.'],
+        tip: 'Escreva o alfabeto e numere-o de 1 a 26 no canto da prova.',
+        tiptype: 'cm-blue'
+      },
+      // DIAGRAMAS
+      {
+        id: 'DL01', topic: 'DL', dif: 'm',
+        text: 'Considere as premissas: "Todo programador é lógico" e "Algum lógico é músico". A partir dessas afirmações, é correto concluir que:',
+        opts: ['Todo programador é músico.', 'Algum programador é músico.', 'Nenhum programador é músico.', 'É possível que nenhum programador seja músico.'],
+        ans: 3,
+        exp: 'O fato de "Algum lógico ser músico" não garante que esse "algum" esteja dentro do conjunto dos "programadores". Não há intersecção obrigatória entre programadores e músicos.',
+        erros: ['ERRADA: conclusão forte.', 'ERRADA: conclusão forte.', 'ERRADA: negação forte.', 'CORRETA.'],
+        tip: 'Desenhe dois círculos dentro de um maior. Se os círculos menores não forem forçados a se tocar, a conclusão "Algum" é falsa.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'DL02', topic: 'DL', dif: 'h',
+        text: 'Se "Nenhum advogado é desatento" e "Todo magistrado é advogado", conclui-se logicamente que:',
+        opts: ['Todo magistrado é desatento.', 'Algum magistrado é desatento.', 'Nenhum magistrado é desatento.', 'Alguns advogados são magistrados e desatentos.'],
+        ans: 2,
+        exp: 'Se o conjunto dos magistrados está totalmente contido no de advogados, e o de advogados não tem intersecção com o de desatentos, magistrados e desatentos são conjuntos disjuntos.',
+        erros: ['ERRADA: inverso.', 'ERRADA: algum.', 'CORRETA.', 'ERRADA: contradição.'],
+        tip: 'Se o "Pai" (Advogado) não fala com alguém, o "Filho" (Magistrado) também não fala.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'DL03', topic: 'DL', dif: 'h',
+        text: 'Em um tribunal, todos os técnicos que usam Linux também usam Python. Alguns técnicos que usam Python também usam Java. Com base nisso:',
+        opts: ['Todos os que usam Linux usam Java.', 'Alguns que usam Linux usam Java.', 'Pode haver técnicos que usam Linux e não usam Java.', 'Nenhum técnico usa as três ferramentas.'],
+        ans: 2,
+        exp: 'O conjunto Linux está dentro de Python. O conjunto Java toca o de Python, mas não temos informações para afirmar que ele toca o de Linux. Portanto, a coexistência é apenas uma possibilidade, não uma certeza.',
+        erros: ['ERRADA: conclusão forte.', 'ERRADA: conclusão forte.', 'CORRETA.', 'ERRADA: negação forte.'],
+        tip: '"Algum" é uma intersecção que pode ou não atingir subconjuntos internos.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'DL04', topic: 'DL', dif: 'm',
+        text: '"Todos os processos são digitais. Alguns processos são urgentes. Nenhum documento físico é digital." Logo:',
+        opts: ['Alguns documentos físicos são urgentes.', 'Nenhum processo é documento físico.', 'Todos os processos urgentes são documentos físicos.', 'Alguns documentos físicos são processos.'],
+        ans: 1,
+        exp: 'Se todo processo é digital e nenhum digital é físico, é impossível um processo ser físico.',
+        erros: ['ERRADA: conclusão sem base.', 'CORRETA.', 'ERRADA: inverso.', 'ERRADA: contradição.'],
+        tip: 'Se os conjuntos são "Inimigos" (Disjuntos), qualquer elemento de um está proibido no outro.',
+        tiptype: 'cm-red'
+      },
+      // ARGUMENTACAO
+      {
+        id: 'AL01', topic: 'AL', dif: 'l',
+        text: 'Considere o argumento: "Se o parecer é favorável, o projeto é aprovado. O parecer foi favorável." A conclusão logicamente válida é:',
+        opts: ['O projeto foi aprovado.', 'O projeto não foi aprovado.', 'O parecer não foi favorável.', 'O projeto pode ser aprovado ou não.'],
+        ans: 0,
+        exp: 'Regra do Modus Ponens: $P \\rightarrow Q$; $P$; portanto $Q$. Se a condição acontece, o resultado é obrigatório.',
+        erros: ['CORRETA.', 'ERRADA: negação.', 'ERRADA: negação.', 'ERRADA: dúvida.'],
+        tip: 'Afirmou o "Se", confirma o "Então".',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'AL02', topic: 'AL', dif: 'm',
+        text: '"Se a luz está acesa, há alguém na sala. Não há ninguém na sala." Conclui-se que:',
+        opts: ['A luz está acesa.', 'A luz não está acesa.', 'A luz pode estar acesa.', 'Alguém apagou a luz agora.'],
+        ans: 1,
+        exp: 'Regra do Modus Tollens: $P \\rightarrow Q$; $\\neg Q$; portanto $\\neg P$. Negar o resultado obriga a negar a condição.',
+        erros: ['ERRADA: inverso.', 'CORRETA.', 'ERRADA: dúvida.', 'ERRADA: narrativa.'],
+        tip: 'Negou o "Então", nega o "Se". (Inverte negando).',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'AL03', topic: 'AL', dif: 'h',
+        text: '"Se chover, a rua ficará molhada. A rua está molhada." Conclui-se que:',
+        opts: ['Choveu.', 'Não choveu.', 'Pode ter chovido ou alguém lavou a rua.', 'Nada se pode concluir.'],
+        ans: 3,
+        exp: 'Afirmar o consequente ($Q$) não garante o antecedente ($P$). A rua molhada é o resultado, mas pode ter várias causas.',
+        erros: ['ERRADA: falácia.', 'ERRADA: falácia.', 'ERRADA: possível mas não conclusão válida.', 'CORRETA.'],
+        tip: 'Cuidado! A seta só vai (Condição -> Resultado), ela não volta sozinha.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'AL04', topic: 'AL', dif: 'm',
+        text: '"Se estudo, sou aprovado. Se sou aprovado, ganho bem." Logo:',
+        opts: ['Se ganho bem, estudo.', 'Se estudo, ganho bem.', 'Se não estudo, não ganho bem.', 'Estudo e ganho bem.'],
+        ans: 1,
+        exp: 'Regra da Transitividade: $P \\rightarrow Q$ e $Q \\rightarrow R$, logo $P \\rightarrow R$.',
+        erros: ['ERRADA: inversa.', 'CORRETA.', 'ERRADA: contrapositiva incompleta.', 'ERRADA: conjunção.'],
+        tip: 'É o efeito dominó. Se o primeiro cai, o último também cai.',
+        tiptype: 'cm-gold'
+      },
+      // PROBABILIDADE
+      {
+        id: 'PB01', topic: 'PB', dif: 'l',
+        text: 'Uma urna contém 12 bolas brancas, 8 pretas e 10 cinzas. Retirando-se uma bola ao acaso, qual a probabilidade de ela ser preta?',
+        opts: ['8/20', '8/30', '1/8', '10/30'],
+        ans: 1,
+        exp: 'Probabilidade = Favoráveis / Total. Total = 12 + 8 + 10 = 30. Favoráveis (pretas) = 8. Logo, 8/30.',
+        erros: ['ERRADA: total errado.', 'CORRETA.', 'ERRADA: inverso.', 'ERRADA: cinzas.'],
+        tip: 'Sempre some o total primeiro.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PB02', topic: 'PB', dif: 'm',
+        text: 'No mesmo cenário (12 brancas, 8 pretas, 10 cinzas), qual a probabilidade de a bola retirada NÃO ser branca?',
+        opts: ['12/30', '18/30', '8/30', '20/30'],
+        ans: 1,
+        exp: 'Se não é branca, é preta ou cinza (8 + 10 = 18). Ou 1 - (12/30) = 18/30.',
+        erros: ['ERRADA: brancas.', 'CORRETA.', 'ERRADA: pretas.', 'ERRADA: soma errada.'],
+        tip: '"Não ser X" é o mesmo que somar todos os outros.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PB03', topic: 'PB', dif: 'm',
+        text: 'Um dado comum (6 faces) é lançado duas vezes. Qual a probabilidade de sair o número 5 nos dois lançamentos?',
+        opts: ['1/6', '1/12', '1/36', '2/6'],
+        ans: 2,
+        exp: 'Eventos independentes. $P(A \\text{ e } B) = P(A) \\times P(B)$. No caso, $(1/6) \\times (1/6) = 1/36$.',
+        erros: ['ERRADA: um lançamento.', 'ERRADA: soma.', 'CORRETA.', 'ERRADA: adição.'],
+        tip: '"E" = Multiplica.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PB04', topic: 'PB', dif: 'h',
+        text: 'Em um baralho de 52 cartas, retiram-se duas cartas sucessivamente, sem reposição. Qual a probabilidade de as duas serem de Copas (existem 13 cartas de cada naipe)?',
+        opts: ['(13/52) * (13/52)', '(13/52) * (12/51)', '(13/52) + (13/52)', '1/4'],
+        ans: 1,
+        exp: 'Sem reposição, o total e o favorável diminuem para a segunda carta.',
+        erros: ['ERRADA: com reposição.', 'CORRETA.', 'ERRADA: adição.', 'ERRADA: simplificado.'],
+        tip: 'Fique atento à palavra "Sem Reposição". O denominador sempre muda.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PB05', topic: 'PB', dif: 'm',
+        text: 'Ao lançar um dado, qual a probabilidade de sair um número par OU o número 5?',
+        opts: ['3/6', '1/6', '4/6', '5/6'],
+        ans: 2,
+        exp: 'Pares = {2, 4, 6} (3 chances). Número 5 = {5} (1 chance). Total = 3 + 1 = 4 chances em 6.',
+        erros: ['ERRADA: só pares.', 'ERRADA: só 5.', 'CORRETA.', 'ERRADA: inclui 1.'],
+        tip: '"OU" = Soma. (Mas cuidado para não somar o mesmo número duas vezes!).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PB06', topic: 'PB', dif: 'h',
+        text: 'Ao lançar três moedas honestas, qual a probabilidade de saírem exatamente duas "Caras"?',
+        opts: ['1/8', '2/8', '3/8', '4/8'],
+        ans: 2,
+        exp: 'Total de resultados ($2^3$) = 8. Casos favoráveis: (K,K,C), (K,C,K), (C,K,K). Total = 3. Logo, 3/8.',
+        erros: ['ERRADA: binário simples.', 'ERRADA: combinações erradas.', 'CORRETA.', 'ERRADA: total errado.'],
+        tip: 'Para moedas, o total é sempre $2^n$ (onde $n$ é o número de lançamentos).',
+        tiptype: 'cm-purple'
+      }
+    ];
+  </script>
+  <script src="../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>
+```

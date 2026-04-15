@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado de Reforço — Prisões Cautelares e Medidas Diversas · Técnico Judiciário TJPE · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado de Reforço · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Prisões Cautelares e Medidas Diversas</em><br>12 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo focado em disposições gerais, preventiva, temporária, revisão, medidas diversas e liberdade provisória com gabarito fundamentado, erros por alternativa, narração em voz e repetição inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Disposições Gerais</span>
+      <span class="cv-tag">Prisão Preventiva</span>
+      <span class="cv-tag">Prisão Temporária</span>
+      <span class="cv-tag">Revisão Preventiva</span>
+      <span class="cv-tag">Medidas Diversas</span>
+      <span class="cv-tag">Liberdade Provisória</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      DG: 'Disposições Gerais',
+      PP: 'Prisão Preventiva',
+      PT: 'Prisão Temporária',
+      RV: 'Revisão Preventiva',
+      MD: 'Medidas Diversas',
+      FP: 'Liberdade Provisória'
+    };
+    const TOPIC_COLOR = {
+      DG: { bg: '#E3F5EF', c: '#085041' },
+      PP: { bg: '#FCEAEA', c: '#7A1515' },
+      PT: { bg: '#FFF3DC', c: '#6A4800' },
+      RV: { bg: '#EDE8F8', c: '#3A246A' },
+      MD: { bg: '#E6F1FB', c: '#0C447C' },
+      FP: { bg: '#FAECE7', c: '#712B13' }
+    };
+
+    // ── 12 QUESTÕES DE REFORÇO ─────────────────────────────────────────────────
+    const ALL = [
+      {
+        id: 'DG01',
+        topic: 'DG',
+        dif: 'l',
+        text: 'De acordo com o Código de Processo Penal, as medidas cautelares serão aplicadas observando-se a:',
+        opts: ['Conveniência da autoridade policial, independentemente de prévia decisão judicial.', 'Necessidade para aplicação da lei penal, para a investigação ou instrução criminal e, nos casos previstos, para evitar a prática de infrações penais.', 'Obrigatoriedade de aplicação da prisão preventiva em todo crime hediondo, de forma automática.', 'Aplicação da medida mais grave como regra geral para garantir a ordem pública.'],
+        ans: 1,
+        exp: 'Art. 282, I, do CPP. O binômio Necessidade + Adequação rege as cautelares. A prisão é sempre a última opção (ultima ratio). Se uma medida menos grave resolver, ela deve ser preferida.',
+        erros: ['ERRADA: a autoridade policial não pode aplicar medidas cautelares restritivas de direitos — apenas o juiz pode (art. 282, §1º CPP).', 'CORRETA.', 'ERRADA: não há obrigatoriedade automática de prisão preventiva em crimes hediondos (art. 312 CPP exige fundamentação concreta).', 'ERRADA: a lei exige a medida menos gravosa possível (art. 282, II CPP).'],
+        tip: 'MACETE: Prisão é sempre a última opção (ultima ratio). Se uma medida menos grave resolver, ela deve ser preferida.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'DG02',
+        topic: 'DG',
+        dif: 'm',
+        text: 'Em relação à decretação de medidas cautelares pelo juiz, assinale a alternativa correta:',
+        opts: ['O juiz pode decretar a prisão preventiva de ofício durante a fase de inquérito policial.', 'O juiz não poderá decretar a prisão preventiva de ofício em nenhuma fase, dependendo de representação da autoridade policial ou requerimento do MP ou querelante.', 'As medidas cautelares podem ser aplicadas pelo delegado de polícia em casos de urgência.', 'Durante o processo, o juiz é obrigado a manter a cautelar mesmo que o motivo da sua decretação tenha desaparecido.'],
+        ans: 1,
+        exp: 'Art. 311 do CPP (Redação do Pacote Anticrime). Acabou a figura do juiz que prende de ofício. Ele precisa ser provocado.',
+        erros: ['ERRADA: após o Pacote Anticrime (Lei 13.964/2019), o juiz não pode decretar preventiva de ofício no IP.', 'CORRETA.', 'ERRADA: o delegado não decreta medidas cautelares restritivas — apenas representa ao juiz.', 'ERRADA: o juiz deve revisar e revogar a cautelar quando o motivo desaparecer (art. 282, §1º CPP).'],
+        tip: 'MACETE: Gravou isso? Juiz não prende de ofício, nem no inquérito, nem na ação penal.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'PP01',
+        topic: 'PP',
+        dif: 'l',
+        text: 'A prisão preventiva poderá ser decretada como garantia da ordem pública, da ordem econômica, por conveniência da instrução criminal ou para assegurar a aplicação da lei penal, quando houver:',
+        opts: ['Prova da existência do crime e indício suficiente de autoria.', 'Mera suspeita baseada em denúncia anônima não verificada.', 'Certeza absoluta de condenação futura.', 'Requerimento de qualquer cidadão do povo.'],
+        ans: 0,
+        exp: 'Art. 312 do CPP. São os famosos Fumus Comissi Delicti (prova do crime + indícios) e Periculum Libertatis (perigo em deixar solto).',
+        erros: ['CORRETA.', 'ERRADA: mera suspeita ou denúncia anônima não verificada não bastam — exige indícios razoáveis.', 'ERRADA: não se exige certeza de condenação futura para cautelar (isso é para sentença).', 'ERRADA: qualquer cidadão não tem legitimidade para requerer preventiva — só MP, querelante ou delegado (representação).'],
+        tip: 'MACETE: Indício de autoria não é certeza, mas também não é "achismo".',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PP02',
+        topic: 'PP',
+        dif: 'm',
+        text: 'Nos termos do Art. 313 do CPP, admite-se a decretação da prisão preventiva nos crimes dolosos punidos com pena privativa de liberdade máxima:',
+        opts: ['Superior a 2 anos.', 'Superior a 4 anos.', 'Igual ou superior a 4 anos.', 'Superior a 5 anos.'],
+        ans: 1,
+        exp: 'Art. 313, I, do CPP. A regra de ouro para crimes dolosos é que a pena máxima deve ser superior a 4 anos.',
+        erros: ['ERRADA: a lei exige superior a 4 anos (não 2).', 'CORRETA.', 'ERRADA: deve ser superior a 4 anos — igual a 4 anos só cabe em casos excepcionais (reincidente ou violência doméstica).', 'ERRADA: 5 anos não é o critério legal.'],
+        tip: 'MACETE: Se o crime for punido com exatos 4 anos (como furto simples), a preventiva só cabe se o réu for reincidente em crime doloso ou se houver violência doméstica.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'PT01',
+        topic: 'PT',
+        dif: 'l',
+        text: 'A prisão temporária, espécie de prisão cautelar com prazo determinado, possui como característica fundamental:',
+        opts: ['Poder ser decretada em qualquer fase do processo judicial.', 'Caber apenas durante a fase do inquérito policial.', 'Ter prazo de 30 dias improrrogáveis para crimes comuns.', 'Poder ser decretada pelo Ministério Público sem intervenção judicial.'],
+        ans: 1,
+        exp: 'Diferente da preventiva, a Temporária só existe no Inquérito. Uma vez oferecida a denúncia, ela perde o objeto.',
+        erros: ['ERRADA: temporária só cabe no IP — após denúncia só preventiva.', 'CORRETA.', 'ERRADA: para crimes comuns o prazo é 5+5 dias.', 'ERRADA: MP não decreta — apenas requer ao juiz.'],
+        tip: 'MACETE: Temporária = Investigação. Se o processo já começou, o nome da prisão cautelar é Preventiva.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'PT02',
+        topic: 'PT',
+        dif: 'm',
+        text: 'Sobre o prazo da prisão temporária em caso de crimes hediondos ou equiparados, assinale a alternativa correta:',
+        opts: ['5 dias, prorrogável por igual período em caso de extrema e comprovada necessidade.', '10 dias, improrrogáveis.', '30 dias, prorrogável por igual período em caso de extrema e comprovada necessidade.', '15 dias, prorrogável uma única vez por 5 dias.'],
+        ans: 2,
+        exp: 'Lei 8.072/90, Art. 2º, § 4º. Para crimes comuns é 5+5. Para Hediondos é 30+30.',
+        erros: ['ERRADA: esse é o prazo dos crimes comuns.', 'ERRADA: 10 dias improrrogáveis não existe.', 'CORRETA.', 'ERRADA: 15+5 não é o prazo legal.'],
+        tip: 'MACETE: 5+5 (Comum) | 30+30 (Hediondo). Decore esses números!',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'RV01',
+        topic: 'RV',
+        dif: 'l',
+        text: 'Decretada a prisão preventiva, deverá o órgão emissor da decisão revisar a necessidade de sua manutenção a cada:',
+        opts: ['30 dias, mediante decisão fundamentada, sob pena de ilegalidade.', '60 dias, obrigatoriamente.', '90 dias, mediante decisão fundamentada, de ofício, sob pena de tornar a prisão ilegal.', '120 dias, a requerimento da defesa.'],
+        ans: 2,
+        exp: 'Art. 311, Parágrafo único do CPP. É o dever de revisão nonagesimal.',
+        erros: ['ERRADA: o prazo é de 90 dias.', 'ERRADA: o prazo é de 90 dias.', 'CORRETA.', 'ERRADA: o prazo é de 90 dias e a revisão é de ofício.'],
+        tip: 'MACETE: O juiz precisa "renovar a validade" da preventiva a cada 3 meses (90 dias).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'RV02',
+        topic: 'RV',
+        dif: 'm',
+        text: 'Se o juiz deixar de revisar a prisão preventiva no prazo legal de 90 dias:',
+        opts: ['A prisão torna-se automaticamente nula, devendo o réu ser solto pelo diretor do presídio.', 'A prisão torna-se ilegal, mas o relaxamento deve ser declarado pela autoridade judiciária.', 'O prazo é interrompido se houver pedido de liberdade provisória pela defesa.', 'A omissão do juiz gera apenas sanção administrativa, mantendo-se a prisão válida.'],
+        ans: 1,
+        exp: 'A falta de revisão torna a prisão ilegal. O STF entende que o juiz deve ser provocado a decidir ou os tribunais superiores devem relaxar a prisão.',
+        erros: ['ERRADA: o relaxamento deve ser declarado pelo juiz (não pelo diretor do presídio).', 'CORRETA.', 'ERRADA: o prazo de revisão não é interrompido por pedido da defesa.', 'ERRADA: a omissão gera ilegalidade da prisão, não apenas sanção administrativa.'],
+        tip: 'MACETE: Sem revisão = Prisão Ilegal.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'MD01',
+        topic: 'MD',
+        dif: 'l',
+        text: 'São medidas cautelares diversas da prisão, previstas no Art. 319 do CPP, EXCETO:',
+        opts: ['Monitoração eletrônica.', 'Proibição de acesso ou frequência a determinados lugares.', 'Recolhimento domiciliar no período noturno e nos dias de folga.', 'Prestação de serviços à comunidade.'],
+        ans: 3,
+        exp: 'Prestação de serviços à comunidade é uma Pena Restritiva de Direitos (substitutiva da pena após condenação), não uma medida cautelar.',
+        erros: ['ERRADA: monitoração eletrônica é medida cautelar (art. 319, IX CPP).', 'ERRADA: proibição de acesso a lugares é medida cautelar (art. 319, II CPP).', 'ERRADA: recolhimento domiciliar noturno é medida cautelar (art. 319, V CPP).', 'CORRETA.'],
+        tip: 'MACETE: Cautelar = Antes da sentença. Pena = Depois da sentença.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'MD02',
+        topic: 'MD',
+        dif: 'm',
+        text: 'O descumprimento de qualquer das obrigações impostas por força de outras medidas cautelares (Art. 319):',
+        opts: ['Implica na soltura imediata do acusado por falta de efetividade da medida.', 'Pode dar ensejo à substituição da medida, à imposição de outra em cumulação, ou, em último caso, à decretação da prisão preventiva.', 'Gera automaticamente a condenação do réu pelo crime imputado.', 'Não possui previsão de sanção no Código de Processo Penal.'],
+        ans: 1,
+        exp: 'Art. 282, § 4º do CPP. O descumprimento das "medidas leves" pode levar à "medida pesada" (preventiva).',
+        erros: ['ERRADA: o descumprimento não leva à soltura automática.', 'CORRETA.', 'ERRADA: descumprimento de cautelar não gera condenação automática.', 'ERRADA: o CPP prevê sanção expressa (art. 282, §4º).'],
+        tip: 'MACETE: Descumprir medida cautelar = "Puxar" a prisão preventiva.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'FP01',
+        topic: 'FP',
+        dif: 'l',
+        text: 'A fiança poderá ser concedida como medida cautelar para garantir a liberdade provisória. Sobre ela, é correto afirmar:',
+        opts: ['O delegado de polícia nunca pode conceder fiança.', 'O delegado pode conceder fiança nos casos de infração cuja pena privativa de liberdade máxima não seja superior a 4 anos.', 'A fiança é permitida em crimes de racismo e tortura.', 'O valor da fiança é fixo para todos os crimes, independentemente da situação econômica do réu.'],
+        ans: 1,
+        exp: 'Art. 322 do CPP. Delegado tem o "poder dos 4 anos". Acima disso, só o Juiz.',
+        erros: ['ERRADA: delegado pode conceder fiança até 4 anos.', 'CORRETA.', 'ERRADA: racismo e tortura são inafiançáveis (CF e lei).', 'ERRADA: o valor deve ser fixado considerando a situação econômica do réu (art. 325 CPP).'],
+        tip: 'MACETE: Delegado: Até 4 anos. Juiz: Qualquer pena (que comporte fiança).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FP02',
+        topic: 'FP',
+        dif: 'm',
+        text: 'Não será concedida fiança nos seguintes casos, EXCETO:',
+        opts: ['Nos crimes de racismo.', 'Nos crimes de tráfico ilícito de entorpecentes.', 'Nos crimes dolosos punidos com pena privativa de liberdade máxima inferior a 2 anos.', 'Nos crimes de terrorismo e crimes hediondos.'],
+        ans: 2,
+        exp: 'Crimes de menor potencial ofensivo admitem fiança e, em regra, nem geram prisão em flagrante se houver compromisso de comparecimento. As outras opções são crimes inafiançáveis por mandado constitucional e legal.',
+        erros: ['ERRADA: racismo é inafiançável (art. 5º, XLII CF).', 'ERRADA: tráfico é inafiançável (Lei 11.343/2006).', 'CORRETA.', 'ERRADA: terrorismo e hediondos são inafiançáveis.'],
+        tip: 'MACETE: Mnemônico do Inafiançável: 3T (Tráfico, Tortura, Terrorismo) + Hediondos + RA (Racismo) + Ação de Grupos Armados.',
+        tiptype: 'cm-red'
+      }
+    ];
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

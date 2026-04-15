@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Serviços Públicos - Soluções para comunicação entre cidadãos e órgãos públicos">
+    <meta name="keywords" content="serviços públicos, atendimento cidadão, ouvidoria, transparência">
+    <meta name="author" content="iDialog">
+
+    <title>Serviços Públicos - iDialog</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="../../../public/icon/1 iDialog icone.ico">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../src/styles/main.css">
+    <link rel="stylesheet" href="../../../src/styles/responsive.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Footer Placeholder -->
+        <div id="footer-placeholder"></div>
+
+        <!-- JavaScript -->
+        <script src="../../../assets/js/main.js"></script>
+        <script src="../../../assets/js/components.js"></script>
+        <script>
+            // Torna todas as imagens com a classe 'clickable' interativas
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('img.clickable').forEach(function (img) {
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', function () {
+                        const link = img.getAttribute('data-link');
+                        if (link) window.location.href = link;
+                    });
+                });
+            });
+
+            // Carrega header e footer dinâmicos dos componentes
+            async function loadComponent(elementId, componentPath) {
+                try {
+                    const response = await fetch(componentPath);
+                    const html = await response.text();
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        element.innerHTML = html;
+                    }
+                } catch (error) {
+                    console.error(`Erro ao carregar componente ${componentPath}:`, error);
+                }
+            }
+            document.addEventListener('DOMContentLoaded', async () => {
+                await loadComponent('header-placeholder', '../../../components/header.html');
+                await loadComponent('footer-placeholder', '../../../components/footer.html');
+            });
+        </script>
+        <!-- Destaque institucional -->
+        <section class="publicos-institutional">
+            <div class="container">
+                <div class="publicos-institutional-content">
+                    <h2 class="publicos-institutional-title">Portfólio de Serviços Públicos</h2>
+                    <p class="publicos-institutional-desc">Veja exemplos reais de soluções implementadas para órgãos
+                        públicos e resultados alcançados.</p>
+                    <div class="publicos-institutional-links">
+                        <a href="../../../public/portfolio/iDialog Serviços Públicos.pdf" class="btn btn-primary"
+                            target="_blank">Ver Portfólio Completo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Page Header -->
+        <section class="page-header services-header publicos-page-header">
+            <div class="container">
+                <div class="page-header-content publicos-header-content">
+                    <h1 class="page-title publicos-title">Serviços Públicos</h1>
+                    <p class="page-subtitle publicos-subtitle">
+                        Soluções tecnológicas para melhorar a comunicação entre cidadãos e órgãos públicos
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Overview -->
+        <section class="services-overview">
+            <div class="container">
+                <div class="services-intro publicos-intro">
+                    <h2 class="publicos-intro-title">Transformando o Atendimento Público</h2>
+                    <p class="publicos-intro-desc">
+                        Nossa expertise em tecnologia aplicada ao setor público oferece soluções que promovem
+                        transparência, eficiência e aproximam cidadãos dos serviços governamentais. Desenvolvemos
+                        plataformas que facilitam o acesso à informação e melhoram a experiência do cidadão.
+                    </p>
+                </div>
+                <div class="services-grid publicos-services-grid">
+                    <!-- App Mobile Cidadão -->
+                    <div class="service-card card">
+                        <div class="service-icon">
+                            <img src="../../../public/portfolio/imagens portfolio/iDialog Serviços Públicos-pag09-img0.png"
+                                alt="App Mobile Cidadão" class="service-img clickable"
+                                data-link="../../../public/portfolio/iDialog Serviços Públicos.pdf">
+                        </div>
+                        <h3>App Mobile Cidadão</h3>
+                        <p>Aplicativo mobile para acesso rápido a serviços públicos essenciais, notificações e
+                            acompanhamento de solicitações.</p>
+                        <ul class="service-features">
+                            <li>Notificações em tempo real</li>
+                            <li>Consulta de protocolos</li>
+                            <li>Solicitação de serviços</li>
+                        </ul>
+                        <div class="service-benefits">
+                            <h4>Benefícios:</h4>
+                            <ul>
+                                <li>Facilidade de acesso</li>
+                                <li>Agilidade no atendimento</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Transparência e Ouvidoria -->
+                    <div class="service-card card">
+                        <div class="service-icon">
+                            <img src="../../../public/portfolio/imagens portfolio/iDialog Serviços Públicos-pag03-img0.png"
+                                alt="Transparência e Ouvidoria" class="service-img clickable"
+                                data-link="../../../public/portfolio/iDialog Serviços Públicos.pdf">
+                        </div>
+                        <h3>Transparência e Ouvidoria</h3>
+                        <p>Ferramentas para garantir transparência, participação social e comunicação efetiva com o
+                            cidadão.</p>
+                        <ul class="service-features">
+                            <li>Portal da transparência</li>
+                            <li>Ouvidoria digital</li>
+                            <li>Relatórios públicos</li>
+                        </ul>
+                        <div class="service-benefits">
+                            <h4>Benefícios:</h4>
+                            <ul>
+                                <li>Maior confiança da população</li>
+                                <li>Facilidade de acesso à informação</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Atendimento ao Cidadão -->
+                    <div class="service-card featured card">
+                        <div class="service-icon">
+                            <img src="../../../public/portfolio/imagens portfolio/iDialog Serviços Públicos-pag01-img1.png"
+                                alt="Atendimento ao Cidadão" class="service-img clickable"
+                                data-link="../../../public/portfolio/iDialog Serviços Públicos.pdf">
+                        </div>
+                        <h3>Atendimento ao Cidadão</h3>
+                        <p>Plataforma integrada para centralizar e otimizar o atendimento aos cidadãos.</p>
+                        <ul class="service-features">
+                            <li>Portal unificado de serviços</li>
+                            <li>Sistema de protocolos</li>
+                            <li>Acompanhamento em tempo real</li>
+                            <li>Notificações automáticas</li>
+                            <li>Interface acessível</li>
+                        </ul>
+                        <div class="service-benefits">
+                            <h4>Benefícios:</h4>
+                            <ul>
+                                <li>Redução do tempo de atendimento</li>
+                                <li>Maior transparência nos processos</li>
+                                <li>Satisfação do cidadão</li>
+                                <li>Otimização de recursos</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Ouvidoria Digital -->
+                    <div class="service-card featured">
+                        <div class="service-icon">
+                            <i class="fas fa-megaphone"></i>
+                        </div>
+                        <h3>Ouvidoria Digital</h3>
+                        <p>Sistema completo para gestão de manifestações, reclamações e sugestões.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Recebimento multicanal</li>
+                            <li><i class="fas fa-check"></i> Classificação automática</li>
+                            <li><i class="fas fa-check"></i> Workflow de tratamento</li>
+                            <li><i class="fas fa-check"></i> Relatórios gerenciais</li>
+                            <li><i class="fas fa-check"></i> Dashboard executivo</li>
+                        </ul>
+                        <div class="service-benefits">
+                            <h4>Benefícios:</h4>
+                            <ul>
+                                <li>Gestão eficiente de demandas</li>
+                                <li>Melhoria contínua dos serviços</li>
+                                <li>Compliance com regulamentações</li>
+                                <li>Tomada de decisão baseada em dados</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Portal de Transparência -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Portal de Transparência</h3>
+                        <p>Plataforma para divulgação de informações públicas de forma clara e acessível.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Publicação automatizada</li>
+                            <li><i class="fas fa-check"></i> Busca avançada</li>
+                            <li><i class="fas fa-check"></i> Visualização de dados</li>
+                            <li><i class="fas fa-check"></i> Exportação de relatórios</li>
+                        </ul>
+                    </div>
+
+                    <!-- Gestão de Protocolos -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h3>Gestão de Protocolos</h3>
+                        <p>Sistema para controle e acompanhamento de documentos e processos administrativos.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Numeração automática</li>
+                            <li><i class="fas fa-check"></i> Tramitação digital</li>
+                            <li><i class="fas fa-check"></i> Histórico completo</li>
+                            <li><i class="fas fa-check"></i> Integração com sistemas</li>
+                        </ul>
+                    </div>
+
+                    <!-- Sistema de Agendamento -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Sistema de Agendamento</h3>
+                        <p>Plataforma online para agendamento de atendimentos e serviços públicos.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Agenda integrada</li>
+                            <li><i class="fas fa-check"></i> Confirmação automática</li>
+                            <li><i class="fas fa-check"></i> Lembretes por SMS/Email</li>
+                            <li><i class="fas fa-check"></i> Gestão de filas</li>
+                        </ul>
+                    </div>
+
+                    <!-- Chat Bot Inteligente -->
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>ChatBot Inteligente</h3>
+                        <p>Assistente virtual para atendimento inicial e direcionamento de demandas.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Atendimento 24/7</li>
+                            <li><i class="fas fa-check"></i> Processamento de linguagem natural</li>
+                            <li><i class="fas fa-check"></i> Integração com sistemas</li>
+                            <li><i class="fas fa-check"></i> Aprendizado contínuo</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technologies Section -->
+        <section class="technologies-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Tecnologias Utilizadas</h2>
+                    <p class="section-subtitle">
+                        Utilizamos as melhores tecnologias para garantir performance, segurança e confiabilidade
+                    </p>
+                </div>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <i class="fas fa-database"></i>
+                        <span>Banco de Dados Robusto</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-cloud"></i>
+                        <span>Cloud Computing</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Design Responsivo</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-lock"></i>
+                        <span>Segurança Avançada</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics Integrado</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-universal-access"></i>
+                        <span>Acessibilidade</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Modernize o Atendimento Público</h2>
+                    <p>Entre em contato conosco e descubra como nossas soluções podem transformar o relacionamento com
+                        os cidadãos</p>
+                    <div class="cta-buttons">
+                        <a href="../../../pages/contato.html" class="btn btn-primary">Solicitar Proposta</a>
+                        <a href="../../../pages/portfolio.html" class="btn btn-secondary">Ver Cases de Sucesso</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <!-- JavaScript -->
+    <script src="../../../assets/js/main.js"></script>
+    <script src="../../../assets/js/components.js"></script>
+    <script>
+        // Carrega header e footer dinâmicos dos componentes
+        async function loadComponent(elementId, componentPath) {
+            try {
+                const response = await fetch(componentPath);
+                const html = await response.text();
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.innerHTML = html;
+                }
+            } catch (error) {
+                console.error(`Erro ao carregar componente ${componentPath}:`, error);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadComponent('header-placeholder', '../../../components/header.html');
+            await loadComponent('footer-placeholder', '../../../components/footer.html');
+        });
+    </script>
+</body>
+
+</html>

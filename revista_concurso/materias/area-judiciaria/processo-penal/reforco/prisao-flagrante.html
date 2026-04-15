@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Flagrante — Espécies de Prisão em Flagrante · Técnico Judiciário TJPE · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Técnico · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Espécies de Prisão em Flagrante</em><br>12 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado específico e adaptativo com foco total nas modalidades de flagrante (próprio, impróprio, presumido, preparado, esperado e postergado). Gabarito fundamentado, erros por alternativa, narração em voz e repetição inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Flagrante Próprio</span>
+      <span class="cv-tag">Flagrante Impróprio</span>
+      <span class="cv-tag">Flagrante Presumido</span>
+      <span class="cv-tag">Flagrante Preparado</span>
+      <span class="cv-tag">Flagrante Esperado</span>
+      <span class="cv-tag">Flagrante Postergado</span>
+      <span class="cv-tag">Súmula 145 STF</span>
+      <span class="cv-tag">Ação Controlada</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      FL: 'Flagrante'
+    };
+    const TOPIC_COLOR = {
+      FL: { bg: '#FCEAEA', c: '#7A1515' }
+    };
+
+    // ── 12 QUESTÕES ESPECÍFICAS SOBRE ESPÉCIES DE FLAGRANTE ─────────────────────
+    const ALL = [
+      {
+        id: 'FL01', topic: 'FL', dif: 'l',
+        text: 'Considera-se em flagrante próprio o agente que:',
+        opts: ['É perseguido, logo após, pela autoridade, pelo ofendido ou por qualquer pessoa.', 'É encontrado, logo depois, com instrumentos, armas ou objetos que façam presumir ser ele o autor da infração.', 'Está cometendo a infração penal ou acaba de cometê-la.', 'É induzido por agente policial a praticar o crime para fins de prisão imediata.'],
+        ans: 2,
+        exp: 'Art. 302, incisos I e II, do CPP. É a modalidade clássica, onde a visibilidade do crime é direta.',
+        erros: ['ERRADA: descreve o flagrante impróprio (art. 302, III CPP).', 'ERRADA: descreve o flagrante presumido (art. 302, IV CPP).', 'CORRETA.', 'ERRADA: descreve o flagrante preparado (Súmula 145 STF — ilegal).'],
+        tip: 'Próprio = No ato ou "quente" (acabou de fazer).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FL02', topic: 'FL', dif: 'm',
+        text: 'Tício é surpreendido por policiais militares no exato momento em que subtrai o celular de uma transeunte, mediante grave ameaça. Nessa situação, Tício encontra-se em flagrante:',
+        opts: ['Impróprio.', 'Presumido.', 'Esperado.', 'Próprio.'],
+        ans: 3,
+        exp: 'Como o agente "está cometendo" a infração (Art. 302, I, CPP), a classificação doutrinária é de flagrante próprio, real ou perfeito.',
+        erros: ['ERRADA: impróprio exige perseguição logo após.', 'ERRADA: presumido exige encontro com objetos sem perseguição.', 'ERRADA: esperado é quando a polícia aguarda sem interferir.', 'CORRETA.'],
+        tip: 'Se a conduta ainda está em curso, não há dúvida: flagrante próprio.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FL03', topic: 'FL', dif: 'l',
+        text: 'Para a configuração do flagrante impróprio (Art. 302, III, CPP), é indispensável que:',
+        opts: ['O agente seja encontrado com o produto do crime, independentemente de perseguição.', 'Haja perseguição imediata ao agente, logo após a infração, em situação que faça presumir ser ele o autor.', 'O agente confesse o crime logo após a sua prática à autoridade policial.', 'A perseguição dure, no máximo, 24 horas após o ocorrido.'],
+        ans: 1,
+        exp: 'O flagrante impróprio exige o binômio: Perseguição + Logo após. Se não houver perseguição, não é flagrante impróprio.',
+        erros: ['ERRADA: sem perseguição é presumido.', 'CORRETA.', 'ERRADA: confissão não configura flagrante.', 'ERRADA: o tempo da perseguição é irrelevante desde que contínua.'],
+        tip: 'Impróprio = Perseguição (lembre-se do "I" de Impróprio e "I" de Ininterrupto/Imediato).',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FL04', topic: 'FL', dif: 'm',
+        text: 'Após praticar um furto em uma residência, o suspeito foge. A polícia é acionada imediatamente e inicia uma perseguição ininterrupta por duas horas, vindo a prendê-lo em um bairro vizinho. Esta modalidade de prisão é denominada:',
+        opts: ['Flagrante Presumido.', 'Flagrante Próprio.', 'Flagrante Impróprio.', 'Flagrante Preparado.'],
+        ans: 2,
+        exp: 'A perseguição logo após o fato caracteriza o quase-flagrante. O tempo da perseguição é irrelevante, desde que seja contínua.',
+        erros: ['ERRADA: presumido não exige perseguição.', 'ERRADA: próprio exige prisão no ato.', 'CORRETA.', 'ERRADA: preparado envolve indução (ilegal).'],
+        tip: 'Houve "corrida" atrás do bandido logo após o crime? É Impróprio.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FL05', topic: 'FL', dif: 'l',
+        text: 'Assinale a alternativa que descreve corretamente o flagrante presumido (Art. 302, IV, CPP):',
+        opts: ['O agente é perseguido por populares logo após o cometimento do delito.', 'O agente é encontrado, logo depois, com instrumentos ou objetos que façam presumir ser ele o autor da infração.', 'A autoridade policial aguarda o momento oportuno para realizar a prisão e colher mais provas.', 'O crime é preparado por agente provocador para prender o suspeito.'],
+        ans: 1,
+        exp: 'No presumido, não há perseguição. O agente é "encontrado" (situação estática) com elementos que o liguem ao crime "logo depois".',
+        erros: ['ERRADA: perseguição é impróprio.', 'CORRETA.', 'ERRADA: isso é flagrante esperado.', 'ERRADA: isso é flagrante preparado (ilegal).'],
+        tip: 'Presumido = Encontrado com a "mão na botija" sem ter havido perseguição anterior.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FL06', topic: 'FL', dif: 'm',
+        text: 'Um indivíduo é abordado em uma blitz policial, 30 minutos após um roubo ocorrido nas proximidades. No interior do veículo, são encontrados o simulacro de arma de fogo e os pertences da vítima. Não houve perseguição prévia. O flagrante é:',
+        opts: ['Próprio.', 'Impróprio.', 'Diferido.', 'Presumido.'],
+        ans: 3,
+        exp: 'A ausência de perseguição e o fato de ser "encontrado logo depois" com os objetos do crime enquadram a conduta no inciso IV do Art. 302 do CPP.',
+        erros: ['ERRADA: próprio exige prisão no ato.', 'ERRADA: impróprio exige perseguição.', 'ERRADA: diferido/postergado é ação controlada.', 'CORRETA.'],
+        tip: 'Diferença chave: No Impróprio você "corre atrás"; no Presumido você "acha" o sujeito com o objeto.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FL07', topic: 'FL', dif: 'l',
+        text: 'Sobre o flagrante preparado, conforme a Súmula 145 do STF, é correto afirmar que:',
+        opts: ['É uma modalidade válida de prisão para crimes hediondos.', 'Torna o crime impossível, viciando a prisão e a própria existência do delito.', 'É permitido desde que autorizado judicialmente.', 'Configura-se quando a polícia apenas observa o crime acontecer sem interferir.'],
+        ans: 1,
+        exp: 'Se a polícia induz o agente a cometer o crime, cria-se uma encenação. O STF entende que não há crime (crime impossível).',
+        erros: ['ERRADA: preparado é sempre ilegal.', 'CORRETA.', 'ERRADA: ordem judicial não legitima indução.', 'ERRADA: isso é flagrante esperado (legal).'],
+        tip: 'Preparado = Pegadinha da polícia. É ilegal e não há crime.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'FL08', topic: 'FL', dif: 'm',
+        text: 'Um policial disfarçado insiste repetidamente para que um indivíduo lhe venda drogas, até que este, cedendo à pressão, busca o entorpecente para realizar a venda e é preso. Esse flagrante é:',
+        opts: ['Esperado e legal.', 'Postergado e válido.', 'Preparado e ilegal.', 'Próprio e anulável.'],
+        ans: 2,
+        exp: 'Houve instigação direta (agente provocador). Sem a conduta do policial, o crime não teria ocorrido naquele momento.',
+        erros: ['ERRADA: esperado é vigilância passiva.', 'ERRADA: postergado é ação controlada.', 'CORRETA.', 'ERRADA: não é próprio nem anulável — é nulo por crime impossível.'],
+        tip: 'Se o policial "plantou a ideia" ou forçou o ato, o flagrante é nulo.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'FL09', topic: 'FL', dif: 'l',
+        text: 'O flagrante esperado ocorre quando a polícia, tendo conhecimento de que um crime será praticado:',
+        opts: ['Estimula o agente a consumar o delito para prendê-lo.', 'Monitora o local e aguarda a execução espontânea do crime para efetuar a prisão.', 'Retarda a prisão para identificar outros coautores da organização criminosa.', 'Intervém antes mesmo de qualquer ato executório ser iniciado.'],
+        ans: 1,
+        exp: 'No esperado, a polícia é passiva. Ela apenas vigia. A vontade de delinquir é pura do agente. É perfeitamente legal.',
+        erros: ['ERRADA: isso é preparado (ilegal).', 'CORRETA.', 'ERRADA: isso é postergado.', 'ERRADA: intervenção antes seria prisão preventiva ou outra cautelar.'],
+        tip: 'Esperado = Campana. A polícia só olha e espera o momento de agir. É válido.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FL10', topic: 'FL', dif: 'm',
+        text: 'A polícia recebe uma denúncia anônima de que um banco será assaltado às 10h. Os agentes se posicionam disfarçados dentro da agência. Quando os criminosos anunciam o assalto, são presos. Este flagrante é:',
+        opts: ['Preparado, devendo ser relaxado.', 'Esperado, sendo considerado legítimo.', 'Diferido, pois houve inteligência prévia.', 'Presumido, pois a polícia já sabia da autoria.'],
+        ans: 1,
+        exp: 'Como a polícia não induziu os assaltantes (eles já iam assaltar por conta própria), o flagrante é esperado e válido.',
+        erros: ['ERRADA: preparado exige indução.', 'CORRETA.', 'ERRADA: diferido/postergado é retardamento estratégico.', 'ERRADA: presumido exige encontro com objetos sem perseguição.'],
+        tip: 'Não houve induzimento, apenas vigilância. Logo, é legal.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FL11', topic: 'FL', dif: 'l',
+        text: 'O flagrante postergado consiste em retardar a intervenção policial para o momento mais eficaz do ponto de vista da colheita de provas. Esta técnica:',
+        opts: ['É proibida no ordenamento jurídico brasileiro por violar o dever de agir.', 'É admitida, por exemplo, na Lei de Organizações Criminosas, mediante prévia comunicação ao juiz.', 'Dispensa qualquer comunicação judicial por se tratar de ato administrativo discricionário.', 'Só pode ser aplicada em crimes de menor potencial ofensivo.'],
+        ans: 1,
+        exp: 'Previsto na Lei 12.850/13 e na Lei de Drogas. A polícia "segura" a prisão para pegar o "peixe grande" ou mais provas.',
+        erros: ['ERRADA: é expressamente admitida.', 'CORRETA.', 'ERRADA: exige comunicação ou autorização judicial.', 'ERRADA: aplica-se a crimes graves, especialmente organizados.'],
+        tip: 'Postergado = Deixa para depois (estratégico). Exige previsão legal e aviso ao juiz.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'FL12', topic: 'FL', dif: 'm',
+        text: 'Na ação controlada prevista na Lei de Organizações Criminosas (Lei 12.850/13), o retardamento da intervenção policial:',
+        opts: ['Necessita de autorização judicial prévia e sigilosa.', 'Necessita apenas de comunicação prévia ao juiz, que estabelecerá os limites.', 'Pode ser decidido exclusivamente pelo Delegado de Polícia, sem ciência do Judiciário.', 'É restrito aos crimes praticados por funcionários públicos.'],
+        ans: 1,
+        exp: 'Conforme o Art. 8º da referida lei, a ação controlada será comunicada previamente ao juiz que, se for o caso, estabelecerá seus limites.',
+        erros: ['ERRADA: na L. 12.850 é comunicação, não autorização prévia (diferente da Lei de Drogas).', 'CORRETA.', 'ERRADA: exige ciência do Judiciário.', 'ERRADA: aplica-se a organizações criminosas em geral.'],
+        tip: 'Cuidado! Na Lei de Organizações Criminosas é comunicação; na Lei de Drogas (Art. 53, II) a doutrina debate a necessidade de autorização. Para o TJPE, foque na "comunicação/controle judicial".',
+        tiptype: 'cm-gold'
+      }
+    ];
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

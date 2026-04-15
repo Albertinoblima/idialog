@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Lógica Sentencial — Conectivos e Tabelas-Verdade · Técnico Judiciário TJPE · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado Técnico · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Conectivos e Tabelas-Verdade</em><br>12 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição
+      inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Conjunção (∧)</span>
+      <span class="cv-tag">Disjunção Inclusiva (∨)</span>
+      <span class="cv-tag">Disjunção Exclusiva (⊻)</span>
+      <span class="cv-tag">Condicional (→)</span>
+      <span class="cv-tag">Bicondicional (↔)</span>
+      <span class="cv-tag">Tabelas-Verdade</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 12 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 12</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      CJ: 'Conjunção (∧)',
+      DI: 'Disjunção Inclusiva (∨)',
+      DE: 'Disjunção Exclusiva (⊻)',
+      CD: 'Condicional (→)',
+      BC: 'Bicondicional (↔)',
+      TV: 'Tabelas-Verdade'
+    };
+    const TOPIC_COLOR = {
+      CJ: { bg: '#E3F5EF', c: '#085041' },
+      DI: { bg: '#FFF3DC', c: '#6A4800' },
+      DE: { bg: '#EDE8F8', c: '#3A246A' },
+      CD: { bg: '#FCEAEA', c: '#7A1515' },
+      BC: { bg: '#E6F1FB', c: '#0C447C' },
+      TV: { bg: '#EAF3DE', c: '#173404' }
+    };
+
+    // ── 12 QUESTÕES DE CONECTIVOS E TABELAS-VERDADE ──────────────────────────
+    const ALL = [
+      {
+        id: 'CJ01', topic: 'CJ', dif: 'l',
+        text: 'A proposição composta "O processo é digital e o réu foi intimado" será considerada verdadeira apenas quando:',
+        opts: ['Pelo menos uma das proposições simples for verdadeira.', 'Ambas as proposições simples forem verdadeiras.', 'Ambas as proposições simples forem falsas.', 'A primeira proposição for verdadeira e a segunda for falsa.'],
+        ans: 1,
+        exp: 'Na conjunção (∧), o valor lógico só é Verdadeiro se todas as proposições componentes forem verdadeiras.',
+        erros: ['ERRADA: essa regra ("pelo menos uma verdadeira") descreve a disjunção inclusiva (∨), não a conjunção (∧). Na disjunção, basta UMA parte verdadeira para o todo ser verdadeiro. Na conjunção, TODAS devem ser verdadeiras. Confundir ∧ com ∨ é um dos erros mais comuns em provas — fique atento ao conectivo "e" vs "ou".', 'CORRETA — na conjunção (∧), o resultado só é V quando TODAS as proposições componentes são verdadeiras: V ∧ V = V.', 'ERRADA: se ambas forem falsas, a conjunção é F (F ∧ F = F). Na verdade, a conjunção é F em QUALQUER caso onde haja pelo menos um componente falso. As combinações falsas são: V ∧ F = F, F ∧ V = F, F ∧ F = F. A ÚNICA verdadeira é V ∧ V = V.', 'ERRADA: se a primeira é V e a segunda é F, temos V ∧ F = F. A conjunção exige que AMBAS sejam verdadeiras. Não basta apenas uma ser verdadeira — isso seria a regra da disjunção inclusiva (∨). Lembre: no "e" (conjunção), a falsidade é dominante: basta UM falso para contaminar tudo.'],
+        tip: 'Pense no "e" como um interruptor em série: se um falhar (for falso), a luz não acende (o resultado é falso).',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'CJ02', topic: 'CJ', dif: 'm',
+        text: 'Sabendo que a proposição "P" é verdadeira e a proposição "Q" é falsa, o valor lógico da conjunção P ∧ Q é:',
+        opts: ['Verdadeiro.', 'Falso.', 'Inconclusivo.', 'Proposição simples.'],
+        ans: 1,
+        exp: 'V ∧ F = F. A presença de um único valor falso "contamina" toda a conjunção.',
+        erros: ['ERRADA: V ∧ F = F. Para a conjunção ser verdadeira, AMBAS as proposições precisam ser verdadeiras. Se P é V e Q é F, o resultado é F porque a falsidade de Q "contamina" o resultado inteiro. Pense numa corrente: se um elo quebra (é falso), toda a corrente falha.', 'CORRETA — V ∧ F = F. A presença de um único valor falso torna toda a conjunção falsa.', 'ERRADA: na lógica proposicional, toda proposição composta com conectivos definidos tem valor lógico determinado (V ou F). "Inconclusivo" não existe como resultado em tabela-verdade. A lógica clássica é bivalente: só admite V ou F, nunca "talvez" ou "inconclusivo".', 'ERRADA: P ∧ Q é uma proposição COMPOSTA, não simples. Proposição simples é aquela que não contém conectivos lógicos ("P é verdadeira"). Quando usamos ∧, ∨, →, ↔ ou ⊻ para unir proposições simples, criamos uma proposição composta. A presença do conectivo ∧ já indica composição.'],
+        tip: 'No conectivo "e", a falsidade é dominante.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'DI01', topic: 'DI', dif: 'l',
+        text: 'A proposição "O candidato estuda ou trabalha" é considerada falsa quando:',
+        opts: ['O candidato estuda e trabalha.', 'O candidato estuda, mas não trabalha.', 'O candidato não estuda, mas trabalha.', 'O candidato não estuda e não trabalha.'],
+        ans: 3,
+        exp: 'Na disjunção (∨), o valor lógico só é Falso se todas as proposições componentes forem falsas.',
+        erros: ['ERRADA: se o candidato estuda E trabalha, ambas são verdadeiras (V ∨ V = V). Na disjunção inclusiva, o "ou" inclui a possibilidade de ambas serem verdadeiras — diferente do "ou exclusivo" (⊻), onde V ⊻ V = F. A disjunção inclusiva só é falsa quando TODAS as partes são falsas.', 'ERRADA: se o candidato estuda mas não trabalha, temos V ∨ F = V. Na disjunção, basta UMA proposição verdadeira para o resultado ser V. A primeira parte já é verdadeira, então o resultado é verdadeiro independentemente da segunda.', 'ERRADA: se o candidato não estuda mas trabalha, temos F ∨ V = V. Mesma lógica: basta UMA verdadeira. A segunda parte (trabalha) sendo verdadeira já é suficiente para tornar o "ou" verdadeiro.', 'CORRETA — se o candidato não estuda (F) E não trabalha (F), temos F ∨ F = F. A disjunção inclusiva só é falsa quando TODAS as proposições componentes são falsas. Este é o ÚNICO caso falso do "ou" inclusivo.'],
+        tip: 'O "ou" é generoso: basta uma verdade para salvar a sentença.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'DI02', topic: 'DI', dif: 'm',
+        text: 'Se a proposição "P" é falsa, para que a disjunção P ∨ Q seja verdadeira, é necessário que:',
+        opts: ['Q seja obrigatoriamente falsa.', 'Q seja obrigatoriamente verdadeira.', 'P mude de valor lógico.', 'Q seja uma sentença aberta.'],
+        ans: 1,
+        exp: 'Como P já é Falso, a única forma de salvar o "ou" (P ∨ Q) é garantindo que a outra parte (Q) seja Verdadeira.',
+        erros: ['ERRADA: F ∨ F = F. Se ambas forem falsas, a disjunção é falsa também. Não é possível "salvar" o "ou" quando nenhuma das partes é verdadeira. Essa opção seria correta na conjunção (∧) ou se P mudasse de valor — mas P é dado como F.', 'CORRETA — como P é F, a única maneira de P ∨ Q ser verdadeira é Q = V. F ∨ V = V. Na disjunção, basta uma parte verdadeira.', 'ERRADA: na lógica proposicional clássica, valores lógicos são fixos — uma vez atribuído V ou F a uma proposição, esse valor não muda dentro do mesmo raciocínio. P foi dado como F; você não pode "mudar" para V. A questão pede que você trabalhe com os valores dados.', 'ERRADA: sentença aberta (ex.: "x > 5") não é proposição porque depende de variável — não tem valor V ou F definido. Se Q fosse sentença aberta, P ∨ Q nem seria uma proposição composta válida para tabela-verdade. Q precisa ser uma proposição com valor lógico definido.'],
+        tip: 'F ∨ V = V.',
+        tiptype: 'cm-blue'
+      },
+      {
+        id: 'DE01', topic: 'DE', dif: 'l',
+        text: 'Na disjunção exclusiva "ou Maria é juíza ou Maria é promotora", o valor lógico será verdadeiro se:',
+        opts: ['Maria ocupar os dois cargos simultaneamente.', 'Maria não ocupar nenhum dos dois cargos.', 'Maria ocupar apenas um dos cargos, sendo o outro falso.', 'O valor lógico das duas proposições for idêntico.'],
+        ans: 2,
+        exp: 'No "ou exclusivo" (⊻), a sentença só é verdadeira se os valores lógicos forem diferentes (V e F ou F e V).',
+        erros: ['ERRADA: se Maria ocupa os dois cargos (V ⊻ V), o resultado é F. A disjunção exclusiva é falsa quando ambos têm o MESMO valor lógico. "Exclusivo" significa "um ou outro, mas NÃO ambos". Pense numa porta de entrada com sensor: só permite passagem de uma pessoa por vez.', 'ERRADA: se Maria não ocupa nenhum dos cargos (F ⊻ F), o resultado também é F. A disjunção exclusiva exige valores DIFERENTES — um V e um F. Ambos falsos gera resultado falso, assim como ambos verdadeiros.', 'CORRETA — na disjunção exclusiva (⊻), o resultado é V somente quando os valores são diferentes: V ⊻ F = V ou F ⊻ V = V. Um cargo sim, o outro não.', 'ERRADA: valores lógicos idênticos (V e V, ou F e F) geram resultado FALSO na disjunção exclusiva. Essa é a diferença fundamental entre ∨ (inclusiva) e ⊻ (exclusiva): na inclusiva, V ∨ V = V; na exclusiva, V ⊻ V = F. Memorize: exclusivo = valores devem ser DIFERENTES.'],
+        tip: 'Exclusivo significa que você tem que escolher um: os dois ao mesmo tempo não pode (V e V = F), nenhum também não pode (F e F = F).',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'DE02', topic: 'DE', dif: 'm',
+        text: 'Assinale a alternativa que apresenta os valores lógicos de P e Q, respectivamente, para que P ⊻ Q seja falso:',
+        opts: ['V e F.', 'F e V.', 'V e V.', 'Nenhuma das anteriores.'],
+        ans: 2,
+        exp: 'Se os valores forem iguais (V e V ou F e F), a disjunção exclusiva resulta em Falso.',
+        erros: ['ERRADA: V ⊻ F tem valores DIFERENTES, então o resultado é V (verdadeiro), não F. Na disjunção exclusiva, valores diferentes = verdadeiro. Só fica falso quando são iguais. Se P = V e Q = F → V ⊻ F = V.', 'ERRADA: mesma lógica — F ⊻ V tem valores DIFERENTES, então o resultado é V. F e V são valores distintos, e no "ou exclusivo", diferença = verdade.', 'CORRETA — V ⊻ V tem valores IGUAIS, então o resultado é F. Na disjunção exclusiva, valores iguais = falso. O mesmo vale para F ⊻ F = F. Memorize: exclusivo exige diferença para ser verdadeiro.', 'ERRADA: V e V é sim uma das combinações que torna P ⊻ Q falso, portanto a alternativa C está correta e esta opção ("nenhuma das anteriores") está errada. A outra combinação que torna falso seria F e F.'],
+        tip: 'Valores iguais na disjunção exclusiva geram falsidade.',
+        tiptype: 'cm-purple'
+      },
+      {
+        id: 'CD01', topic: 'CD', dif: 'l',
+        text: 'Na tabela-verdade do conectivo condicional (P → Q), a única combinação que resulta em um valor lógico FALSO é:',
+        opts: ['V → V.', 'F → V.', 'V → F.', 'F → F.'],
+        ans: 2,
+        exp: 'A condicional só é falsa quando a primeira parte (antecedente) é verdadeira e a segunda parte (consequente) é falsa.',
+        erros: ['ERRADA: V → V = V (verdadeiro). Se o antecedente é verdadeiro e o consequente também é verdadeiro, a promessa foi cumprida. Ex.: "Se estudo (V), passo no concurso (V)" — promessa cumprida, resultado verdadeiro. A condicional só é falsa no caso V → F.', 'ERRADA: F → V = V (verdadeiro). Quando o antecedente é falso, a condicional é SEMPRE verdadeira, independentemente do consequente. Regra fundamental: "De uma premissa falsa, qualquer coisa se segue." Se "não estudei" (F), tanto "passei" (V) quanto "não passei" (F) geram resultado V.', 'CORRETA — V → F = F. Este é o ÚNICO caso em que a condicional é falsa: antecedente verdadeiro e consequente falso. Mnemônico: "Vera Fischer é Falsa" (V → F = F). Representa uma promessa quebrada: "prometi (V) e não cumpri (F)".', 'ERRADA: F → F = V (verdadeiro). Mesmo quando ambos são falsos, a condicional é verdadeira. Lembre-se: "de uma premissa falsa, qualquer coisa se segue." Se o antecedente é F, o resultado é SEMPRE V, não importa o consequente.'],
+        tip: 'Mnemônico famoso: "Vera Fischer é Falsa" (V → F = F).',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'CD02', topic: 'CD', dif: 'm',
+        text: 'Considere a sentença: "Se Recife é a capital de Pernambuco, então 5 é um número par". O valor lógico desta sentença é:',
+        opts: ['Verdadeiro.', 'Falso.', 'Inexistente.', 'Tautológico.'],
+        ans: 1,
+        exp: '"Recife é a capital de PE" (V); "5 é par" (F). Temos V → F, o que resulta em Falso.',
+        erros: ['ERRADA: "Recife é a capital de PE" é V e "5 é par" é F. Temos V → V? Não! Temos V → F. O consequente é falso. V → V seria verdadeiro, mas não é o caso aqui — verifique cada proposição separadamente antes de aplicar a tabela-verdade.', 'CORRETA — "Recife é a capital de PE" = V; "5 é par" = F. V → F = F. É o ÚNICO caso falso da condicional: antecedente verdadeiro e consequente falso. Não importa que os assuntos sejam diferentes (geografia e matemática) — na lógica formal, o que importa são os valores V/F, não o conteúdo.', 'ERRADA: toda proposição composta formada por conectivos lógicos entre proposições simples com valor definido possui valor lógico determinado. "Inexistente" não faz sentido em lógica clássica bivalente. Mesmo que os assuntos não tenham relação (capital vs número par), o valor lógico existe e é calculável.', 'ERRADA: uma tautologia é uma proposição que é SEMPRE verdadeira em TODAS as linhas da tabela-verdade, independente dos valores de suas componentes. "Se Recife é capital de PE, então 5 é par" não é tautologia — é uma condicional específica com valor F neste caso. Para ser tautologia, precisaria ser V em todas as combinações possíveis.'],
+        tip: 'Se a promessa começa com uma verdade e termina com uma mentira, a frase inteira é mentirosa.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'BC01', topic: 'BC', dif: 'l',
+        text: 'A proposição bicondicional P ↔ Q será verdadeira quando:',
+        opts: ['P e Q tiverem valores lógicos diferentes.', 'P e Q tiverem valores lógicos iguais (ambos V ou ambos F).', 'Somente quando P e Q forem verdadeiros.', 'Sempre que P for falso.'],
+        ans: 1,
+        exp: 'A bicondicional exige equilíbrio. Se ambos forem iguais, o resultado é verdadeiro.',
+        erros: ['ERRADA: valores lógicos DIFERENTES geram resultado FALSO na bicondicional. V ↔ F = F e F ↔ V = F. A bicondicional funciona como um teste de igualdade: iguais = V, diferentes = F. É exatamente o oposto da disjunção exclusiva (⊻).', 'CORRETA — a bicondicional é V quando ambas têm o MESMO valor: V ↔ V = V e F ↔ F = V. "Se e somente se" significa que ambas as condições caminham juntas — ou ambas verdadeiras, ou ambas falsas.', 'ERRADA: a bicondicional não exige que ambas sejam verdadeiras — exige que ambas tenham o MESMO valor. F ↔ F = V também! Se apenas "ambas V" funcionasse, seria uma conjunção (∧), não bicondicional. A diferença é que na bicondicional, F ↔ F = V, enquanto na conjunção, F ∧ F = F.', 'ERRADA: P ser falso não garante resultado verdadeiro. Depende de Q: se P = F e Q = V, temos F ↔ V = F (valores diferentes). Se P = F e Q = F, temos F ↔ F = V (valores iguais). Portanto, saber apenas que P é F é insuficiente para determinar o resultado.'],
+        tip: 'É o contrário da disjunção exclusiva. Iguais = Verdade.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'BC02', topic: 'BC', dif: 'm',
+        text: 'Qual o valor lógico da sentença "Brasília é em Minas Gerais se e somente se 10 é menor que 5"?',
+        opts: ['Verdadeiro.', 'Falso.', 'Contingente.', 'Inválido.'],
+        ans: 0,
+        exp: '"Brasília é em MG" (F); "10 < 5" (F). Como ambos são falsos (F ↔ F), o resultado da bicondicional é Verdadeiro.',
+        erros: ['CORRETA — "Brasília é em MG" = F; "10 < 5" = F. F ↔ F = V. Na bicondicional, valores iguais geram resultado verdadeiro. Duas mentiras geram uma verdade lógica no "se e somente se".', 'ERRADA: F ↔ F = V, não F. A bicondicional é verdadeira quando ambos os lados têm o MESMO valor lógico. Aqui ambos são F (iguais), logo o resultado é V. Seria F apenas se os valores fossem DIFERENTES (V ↔ F ou F ↔ V).', 'ERRADA: "contingente" significa que a proposição pode ser V ou F dependendo dos valores das componentes. Isso descreve a natureza geral de uma proposição, não seu valor em um caso específico. Aqui temos valores concretos (F e F), então o resultado é determinado: V.', 'ERRADA: a sentença é perfeitamente válida na lógica formal. Não importa que os assuntos não tenham relação (geografia e matemática) — na lógica proposicional, o que importa são os valores V/F das proposições simples. Toda proposição composta formada por conectivos e proposições simples com valor definido possui valor lógico calculável.'],
+        tip: 'Dois erros no "se e somente se" se anulam e geram uma verdade lógica.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'TV01', topic: 'TV', dif: 'l',
+        text: 'Uma tabela-verdade para uma proposição composta que possui 3 proposições simples (P, Q e R) deverá ter um número de linhas igual a:',
+        opts: ['4.', '6.', '8.', '9.'],
+        ans: 2,
+        exp: 'A fórmula para o número de linhas é 2^n, onde n é o número de proposições simples. 2^3 = 8.',
+        erros: ['ERRADA: 4 linhas corresponde a 2² = 4, ou seja, apenas 2 proposições simples. Com 3 proposições (P, Q, R), precisamos de 2³ = 8 linhas para cobrir TODAS as combinações possíveis de V e F. Cada nova proposição DOBRA o número de linhas (4 → 8 → 16 → 32...).', 'ERRADA: 6 não é potência de 2. O número de linhas de uma tabela-verdade é SEMPRE uma potência de 2 (2, 4, 8, 16, 32...). Valores como 6, 10, 12 nunca aparecem como número de linhas de uma tabela-verdade completa.', 'CORRETA — 2³ = 2 × 2 × 2 = 8 linhas. Cada proposição simples pode ser V ou F (2 opções), e com 3 proposições independentes, temos 2 × 2 × 2 = 8 combinações diferentes a serem listadas.', 'ERRADA: 9 = 3² — você usou a base errada! A fórmula é 2^n (base 2, não n²). O 2 vem dos dois valores possíveis (V e F), não das proposições. Com 3 proposições: 2³ = 8, não 3² = 9. Esse é um erro muito cobrado em provas.'],
+        tip: 'A base é sempre 2. O expoente é o número de letras diferentes.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'TV02', topic: 'TV', dif: 'm',
+        text: 'Se uma tabela-verdade possui 16 linhas, a proposição composta que a originou contém quantas proposições simples?',
+        opts: ['2.', '4.', '8.', '16.'],
+        ans: 1,
+        exp: '2^n = 16. Sabemos que 2 × 2 × 2 × 2 = 16. Logo, n = 4.',
+        erros: ['ERRADA: 2² = 4 linhas, não 16. Com apenas 2 proposições simples, a tabela teria V-V, V-F, F-V, F-F = 4 combinações. Para chegar a 16, precisamos de mais proposições.', 'CORRETA — 2⁴ = 16. Invertendo a fórmula: se 2^n = 16, então n = log₂(16) = 4. Ou simplesmente: 2 → 4 → 8 → 16 (dobrou 4 vezes, logo 4 proposições simples). Cada vez que adicionamos uma proposição, dobramos as linhas.', 'ERRADA: 2⁸ = 256 linhas, não 16. 8 proposições gerariam uma tabela com 256 linhas — muito mais do que 16. Aqui, 16 = 2⁴, então são apenas 4 proposições.', 'ERRADA: 2¹⁶ = 65.536 linhas — um número gigantesco, completamente fora de proporção. 16 proposições gerariam uma tabela com mais de 65 mil linhas. A questão diz que a tabela TEM 16 linhas, logo n = 4 (porque 2⁴ = 16).'],
+        tip: 'Vá dobrando o número 2 até chegar no resultado: 2, 4, 8, 16... (o número de vezes que você dobrou é o número de proposições).',
+        tiptype: 'cm-teal'
+      }
+    ];
+
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>

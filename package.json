@@ -1,0 +1,72 @@
+{
+    "name": "idialog-website",
+    "version": "1.0.0",
+    "description": "Site moderno e responsivo para iDialog - Soluções em comunicação e tecnologia",
+    "main": "index.html",
+    "scripts": {
+        "dev": "live-server --port=3000 --open=/",
+        "build": "npm run build:css && npm run build:js && npm run optimize:images",
+        "build:css": "postcss src/styles/main.css -o assets/css/style.css --use autoprefixer cssnano",
+        "build:js": "terser src/scripts/main.js -o assets/js/main.js --compress --mangle",
+        "optimize:images": "imagemin public/images/* --out-dir=assets/images",
+        "lint": "npm run lint:css && npm run lint:js",
+        "lint:css": "stylelint src/styles/**/*.css",
+        "lint:js": "eslint src/scripts/**/*.js",
+        "format": "prettier --write .",
+        "serve": "http-server -p 8080 -c-1",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage",
+        "validate": "npm run lint && npm run test && npm run build"
+    },
+    "keywords": [
+        "website",
+        "responsive",
+        "modern",
+        "idialog",
+        "communication",
+        "technology"
+    ],
+    "author": "iDialog Team",
+    "license": "Proprietary",
+    "devDependencies": {
+        "autoprefixer": "^10.4.14",
+        "cssnano": "^6.0.1",
+        "eslint": "^8.44.0",
+        "http-server": "^14.1.1",
+        "imagemin": "^8.0.1",
+        "imagemin-mozjpeg": "^10.0.0",
+        "imagemin-pngquant": "^9.0.2",
+        "jest": "^29.6.0",
+        "jest-environment-jsdom": "^29.6.0",
+        "live-server": "^1.2.2",
+        "postcss": "^8.4.24",
+        "postcss-cli": "^10.1.0",
+        "prettier": "^3.0.0",
+        "stylelint": "^15.10.1",
+        "terser": "^5.19.0"
+    },
+    "jest": {
+        "testEnvironment": "jsdom",
+        "collectCoverageFrom": [
+            "src/**/*.js",
+            "assets/js/**/*.js",
+            "!node_modules/**"
+        ],
+        "coverageDirectory": "coverage",
+        "coverageReporters": [
+            "text",
+            "lcov",
+            "html"
+        ]
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not dead"
+    ],
+    "engines": {
+        "node": ">=16.0.0",
+        "npm": ">=8.0.0"
+    }
+}

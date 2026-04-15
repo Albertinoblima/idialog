@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado de Reforço — Inquérito Policial TJPE · Banca IBFC</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/css/practice.css">
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div id="cover">
+    <div class="cv-issue">Simulado de Reforço · Edital 01/2025 · Banca IBFC</div>
+    <h1><em>Inquérito Policial</em><br>10 Questões Comentadas</h1>
+    <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição
+      inteligente das áreas com dificuldade.</p>
+    <div class="cv-tags">
+      <span class="cv-tag">Dispensabilidade</span>
+      <span class="cv-tag">Forma e Sigilo</span>
+      <span class="cv-tag">Instauração</span>
+      <span class="cv-tag">Ação Privada</span>
+      <span class="cv-tag">Prazos</span>
+      <span class="cv-tag">Arquivamento</span>
+      <span class="cv-tag">Diligências</span>
+      <span class="cv-tag">Valor Probatório</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS BAR -->
+  <div id="controls">
+    <a class="ctrl" href="../../../../index.html">← Revista</a>
+    <button class="ctrl" id="dark-toggle" onclick="toggleDark()">🌙 Modo escuro</button>
+    <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+    <span class="ctrl-sep"></span>
+    <span id="round-info">Rodada 1 · 10 questões</span>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="app">
+    <div id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-n stat-gold" id="s-total">0</div>
+        <div class="stat-l">Respondidas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-teal" id="s-ok">0</div>
+        <div class="stat-l">Corretas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-red" id="s-err">0</div>
+        <div class="stat-l">Erros</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n stat-blue" id="s-pct">—</div>
+        <div class="stat-l">Aproveitamento</div>
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="prog-txt">Questão 1 de 10</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="q-map"></div>
+
+    <div id="question-area"></div>
+  </div>
+
+  <!-- SCORE -->
+  <div id="score-screen"></div>
+
+  <script>
+    const TOPICS = {
+      IP: 'Inquérito Policial'
+    };
+    const TOPIC_COLOR = {
+      IP: { bg: '#E6F1FB', c: '#0C447C' }
+    };
+
+    // ── 10 QUESTÕES DE REFORÇO INQUÉRITO POLICIAL ──────────────────────────────────
+    const ALL = [
+      {
+        id: 'IP01', topic: 'IP', dif: 'l',
+        text: 'O Inquérito Policial é um procedimento administrativo informativo. Sobre sua necessidade para a propositura da ação penal, é correto afirmar que:',
+        opts: ['É indispensável, não podendo o Ministério Público oferecer denúncia sem ele.', 'É dispensável, desde que o titular da ação penal já possua elementos de informação suficientes.', 'É obrigatório apenas nos crimes de ação penal pública condicionada.', 'Sua ausência gera a nulidade absoluta de todo o processo penal posterior.'],
+        ans: 1,
+        exp: 'O IP é dispensável (Art. 39, § 5º e Art. 46, § 1º do CPP). Se o MP ou o querelante já tiverem as provas da autoria e materialidade, podem dispensar o IP.',
+        erros: ['ERRADA: o IP é dispensável. O MP pode oferecer denúncia com base em outras peças de informação (art. 39, §5º CPP).', 'CORRETA.', 'ERRADA: o IP é dispensável em qualquer tipo de ação penal desde que haja elementos suficientes.', 'ERRADA: a ausência do IP não acarreta nulidade absoluta se existirem outras provas idôneas.'],
+        tip: 'O IP é um "acessório". Se você já tem a prova, não precisa do acessório para entrar com a ação.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'IP02', topic: 'IP', dif: 'm',
+        text: 'Quanto à forma e publicidade do Inquérito Policial, assinale a alternativa correta:',
+        opts: ['O inquérito deverá ser obrigatoriamente oral para garantir a celeridade.', 'Todas as peças do inquérito serão, num só processado, reduzidas a escrito ou datilografadas.', 'O sigilo do inquérito impede o acesso do advogado aos elementos já documentados.', 'O inquérito é público para qualquer cidadão, em respeito ao princípio da publicidade.'],
+        ans: 1,
+        exp: 'Art. 9º do CPP. O IP é escrito. O sigilo (Art. 20) existe, mas não atinge o advogado quanto a provas já encartadas (Súmula Vinculante 14).',
+        erros: ['ERRADA: o Inquérito Policial é escrito (art. 9º CPP).', 'CORRETA.', 'ERRADA: o sigilo não impede o acesso do advogado às provas já documentadas (Súmula Vinculante 14 STF).', 'ERRADA: o IP é sigiloso, não público.'],
+        tip: 'IP = Escrito, Sigiloso (para terceiros) e Inquisitivo.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'IP03', topic: 'IP', dif: 'l',
+        text: 'Nos crimes de ação pública incondicionada, o inquérito policial poderá ser iniciado:',
+        opts: ['Apenas mediante provocação da vítima.', 'Somente após autorização judicial expressa.', 'De ofício pela autoridade policial ou mediante requisição do Ministério Público.', 'Apenas se houver prisão em flagrante delito.'],
+        ans: 2,
+        exp: 'Art. 5º, I e II do CPP. A autoridade policial deve agir de ofício (ex officio) ou por ordem do Juiz/MP.',
+        erros: ['ERRADA: em ação pública incondicionada não depende de provocação da vítima.', 'ERRADA: não depende de autorização judicial.', 'CORRETA.', 'ERRADA: pode ser iniciado de ofício independentemente de flagrante.'],
+        tip: 'Incondicionada = A autoridade "está solta" para agir.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'IP04', topic: 'IP', dif: 'm',
+        text: 'Nos crimes em que a ação pública depender de representação ou nos crimes de ação privada:',
+        opts: ['O inquérito pode ser instaurado de ofício para evitar a prescrição.', 'O inquérito não poderá ser iniciado sem o requerimento de quem tenha qualidade para intentá-la.', 'A autoridade policial pode iniciar o IP, mas não pode concluir sem a vênia da vítima.', 'A requisição do Juiz supre a falta de representação da vítima.'],
+        ans: 1,
+        exp: 'Art. 5º, § 4º e § 5º do CPP. Sem o "ok" da vítima ou representante, a polícia não toca no caso.',
+        erros: ['ERRADA: em ação condicionada ou privada o IP não pode ser instaurado de ofício.', 'CORRETA.', 'ERRADA: a autoridade policial não pode concluir sem representação, mas o problema é o início.', 'ERRADA: a requisição do Juiz não supre a falta de representação da vítima.'],
+        tip: 'Se a vítima manda no processo (Ação Privada), ela manda no início do Inquérito.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'IP05', topic: 'IP', dif: 'l',
+        text: 'Salvo prazos em leis especiais, o inquérito policial deverá terminar no prazo de:',
+        opts: ['10 dias se o indiciado estiver preso e 30 dias se estiver solto.', '15 dias se preso e 30 dias se solto.', '10 dias se preso e 60 dias se solto.', '30 dias, esteja o indiciado preso ou solto.'],
+        ans: 0,
+        exp: 'Art. 10 do CPP. É a regra clássica 10 (Preso) / 30 (Solto).',
+        erros: ['CORRETA.', 'ERRADA: o prazo correto para preso é 10 dias.', 'ERRADA: o prazo para solto é 30 dias.', 'ERRADA: há distinção clara entre preso e solto.'],
+        tip: 'Mnemônico: P10 S30 (Preso 10, Solto 30).',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'IP06', topic: 'IP', dif: 'm',
+        text: 'Encerrado o prazo do inquérito e enviados os autos ao juiz (art. 10, §1º CPP), caso o indiciado esteja solto e o fato seja de difícil elucidação, a autoridade policial poderá:',
+        opts: ['Prorrogar o prazo por mais 30 dias por conta própria.', 'Requerer ao juiz a devolução dos autos para novas diligências, que serão realizadas no prazo marcado pelo juiz.', 'Arquivar o inquérito por falta de provas imediatas.', 'Remeter os autos ao Ministério Público para que este realize as diligências.'],
+        ans: 1,
+        exp: 'Art. 10, § 3º do CPP. Após o envio dos autos ao juiz (§1°), a autoridade policial pode requerer a devolução para ulteriores diligências, realizadas no prazo que o juiz fixar. Esse mecanismo só é possível com indiciado SOLTO — para o preso, o prazo de 10 dias é fatal (prazo improrrogável na regra geral).',
+        erros: ['ERRADA: a autoridade policial não pode prorrogar o prazo por iniciativa própria; deve requerer ao juiz a devolução dos autos (art. 10, §3º CPP).', 'CORRETA.', 'ERRADA: somente o Ministério Público pode promover o arquivamento do IP (art. 28 CPP); o delegado não tem essa prerrogativa.', 'ERRADA: as diligências do inquérito são de competência da própria autoridade policial, não do MP.'],
+        tip: 'Quem dá mais prazo para a polícia com o réu solto é o Juiz.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'IP07', topic: 'IP', dif: 'l',
+        text: 'A autoridade policial (Delegado), após concluir que não há provas suficientes de autoria:',
+        opts: ['Poderá mandar arquivar os autos do inquérito em sua delegacia.', 'Deverá requerer o arquivamento diretamente ao Ministério Público.', 'Nunca poderá mandar arquivar autos de inquérito.', 'Deve aguardar 2 anos e, se não houver novas provas, declarar o arquivamento.'],
+        ans: 2,
+        exp: 'Art. 17 do CPP. "A autoridade policial não poderá mandar arquivar autos de inquérito". É o princípio da indisponibilidade do IP para o delegado.',
+        erros: ['ERRADA: o delegado não pode arquivar.', 'ERRADA: o requerimento de arquivamento é feito ao MP, mas o delegado não decide.', 'CORRETA.', 'ERRADA: não há prazo de 2 anos para o delegado.'],
+        tip: 'Delegado instaura, mas nunca arquiva.',
+        tiptype: 'cm-red'
+      },
+      {
+        id: 'IP08', topic: 'IP', dif: 'm',
+        text: 'Após o arquivamento do inquérito policial por falta de base para a denúncia:',
+        opts: ['A autoridade policial não poderá mais investigar o fato, em respeito à coisa julgada.', 'A autoridade policial poderá proceder a novas pesquisas se tiver notícia de novas provas.', 'O Ministério Público só poderá oferecer denúncia se o inquérito for desarquivado pelo Juiz.', 'Novas provas só podem ser usadas se o crime for hediondo.'],
+        ans: 1,
+        exp: 'Art. 18 do CPP e Súmula 524 do STF. O IP pode ser reaberto se surgirem provas substancialmente novas.',
+        erros: ['ERRADA: o arquivamento por insuficiência de provas não faz coisa julgada material.', 'CORRETA.', 'ERRADA: o MP pode oferecer denúncia com base em novas provas independentemente de desarquivamento formal.', 'ERRADA: novas provas podem ser usadas em qualquer crime.'],
+        tip: 'Arquivamento de IP por falta de provas não faz coisa julgada material. Surgiu prova nova? O jogo recomeça.',
+        tiptype: 'cm-gold'
+      },
+      {
+        id: 'IP09', topic: 'IP', dif: 'l',
+        text: 'Durante o curso do inquérito, o indiciado ou a vítima poderão requerer diligências à autoridade policial. Sobre esse requerimento:',
+        opts: ['A autoridade policial é obrigada a realizar todas as diligências requeridas.', 'A autoridade policial realizará, ou não, a diligência, a seu juízo (discricionariedade).', 'Somente as diligências requeridas pelo Ministério Público podem ser negadas.', 'O exame de corpo de delito pode ser negado se o delegado considerar desnecessário.'],
+        ans: 1,
+        exp: 'Art. 14 do CPP. O delegado tem discricionariedade. Exceção: O Exame de Corpo de Delito é obrigatório se o crime deixou vestígios (Art. 158).',
+        erros: ['ERRADA: o delegado tem discricionariedade.', 'CORRETA.', 'ERRADA: o MP também tem diligências discricionárias no IP.', 'ERRADA: o exame de corpo de delito é obrigatório se houver vestígios.'],
+        tip: 'No IP, quem manda no que vai ser feito é o Delegado, exceto no corpo de delito.',
+        tiptype: 'cm-teal'
+      },
+      {
+        id: 'IP10', topic: 'IP', dif: 'm',
+        text: 'As informações colhidas no Inquérito Policial servem para:',
+        opts: ['Fundamentar exclusivamente a sentença condenatória do juiz.', 'Formar a convicção (opinio delicti) do titular da ação penal.', 'Substituir a prova testemunhal colhida em juízo sob o contraditório.', 'Impedir que o réu apresente defesa prévia.'],
+        ans: 1,
+        exp: 'O IP tem valor informativo. O juiz não pode fundamentar sua decisão exclusivamente nos elementos do IP (Art. 155), ressalvadas as provas cautelares e não repetíveis.',
+        erros: ['ERRADA: o juiz não pode condenar exclusivamente com base no IP.', 'CORRETA.', 'ERRADA: provas do IP não substituem prova judicial sob contraditório.', 'ERRADA: o IP não impede defesa prévia.'],
+        tip: 'IP serve para o MP processar, mas não basta sozinho para o Juiz condenar.',
+        tiptype: 'cm-gold'
+      }
+    ];
+  </script>
+  <script src="../../../../assets/js/practice-engine.js"></script>
+</body>
+
+</html>
