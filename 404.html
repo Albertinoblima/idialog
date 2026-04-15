@@ -11,14 +11,13 @@
     <link rel="stylesheet" href="src/styles/main.css">
     <link rel="stylesheet" href="src/styles/responsive.css">
 
-    <!-- Google Fonts -->
+    <!-- Fonts: Orbitron (titles) + Exo 2 (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="public/icon/1 iDialog icone.ico">
@@ -35,23 +34,27 @@
         }
 
         .error-code {
+            font-family: 'Orbitron', sans-serif;
             font-size: 8rem;
             font-weight: 800;
-            color: var(--primary-color, #1273EB);
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             line-height: 1;
             margin-bottom: 1rem;
         }
 
         .error-title {
+            font-family: 'Orbitron', sans-serif;
             font-size: 2rem;
             font-weight: 700;
-            color: var(--text-dark, #333);
+            color: var(--text-primary);
             margin-bottom: 1rem;
         }
 
         .error-desc {
             font-size: 1.1rem;
-            color: var(--text-light, #666);
+            color: var(--text-secondary);
             margin-bottom: 2rem;
             max-width: 500px;
         }
@@ -66,6 +69,9 @@
 </head>
 
 <body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div id="header-placeholder"></div>
 
     <main class="main">
@@ -91,6 +97,7 @@
 
     <script src="assets/js/components.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/matrix.js"></script>
 </body>
 
 </html>

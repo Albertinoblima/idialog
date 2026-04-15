@@ -16,17 +16,21 @@
     <link rel="stylesheet" href="../src/styles/main.css">
     <link rel="stylesheet" href="../src/styles/responsive.css">
 
-    <!-- Google Fonts -->
+    <!-- Fonts: Orbitron (titles) + Exo 2 (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div id="header-placeholder"></div>
     <!-- Main Content -->
     <main class="main">
@@ -38,8 +42,8 @@
                     <p class="contato-institutional-desc">Entre em contato para orçamentos, parcerias e dúvidas
                         institucionais. Nossa equipe está pronta para atender você com agilidade e transparência.</p>
                     <div class="contato-institutional-links">
-                        <a href="mailto:contato@idialog.com.br" class="btn btn-primary">Enviar Email</a>
-                        <a href="tel:+551199999999" class="btn btn-secondary">Ligar</a>
+                        <a href="mailto:idialog@idialog.com.br" class="btn btn-primary">Enviar Email</a>
+                        <a href="tel:+5527995260026" class="btn btn-secondary">Ligar</a>
                     </div>
                 </div>
             </div>
@@ -70,24 +74,21 @@
                         <div class="contact-methods">
                             <div class="contact-item">
                                 <div class="contact-icon">
-                                    <img src="../public/images/logo 3.3.png" alt="Email iDialog"
-                                        class="contact-img clickable" data-link="mailto:contato@idialog.com.br">
+                                    <i class="fas fa-envelope"></i>
                                 </div>
                                 <div class="contact-details">
                                     <h4>Email</h4>
-                                    <p>contato@idialog.com.br</p>
+                                    <p>idialog@idialog.com.br</p>
                                     <p class="contact-note">Resposta em até 24h</p>
                                 </div>
                             </div>
                             <div class="contact-item">
                                 <div class="contact-icon">
-                                    <img src="../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag11-img0.png"
-                                        alt="Telefone iDialog" class="contact-img clickable"
-                                        data-link="tel:+551199999999">
+                                    <i class="fas fa-phone"></i>
                                 </div>
                                 <div class="contact-details">
                                     <h4>Telefone</h4>
-                                    <p>(11) 9999-9999</p>
+                                    <p>(27) 99526-0026</p>
                                     <p class="contact-note">Seg à Sex, 9h às 18h</p>
                                 </div>
                             </div>
@@ -98,7 +99,7 @@
                                 </div>
                                 <div class="contact-details">
                                     <h4>WhatsApp</h4>
-                                    <p>(11) 9999-9999</p>
+                                    <p>(27) 99526-0026</p>
                                     <p class="contact-note">Atendimento rápido</p>
                                 </div>
                             </div>
@@ -109,7 +110,7 @@
                                 </div>
                                 <div class="contact-details">
                                     <h4>Localização</h4>
-                                    <p>São Paulo, SP - Brasil</p>
+                                    <p>Alfredo Chaves - ES</p>
                                     <p class="contact-note">Atendimento remoto e presencial</p>
                                 </div>
                             </div>
@@ -307,11 +308,11 @@
                     <h2>Pronto para começar seu projeto?</h2>
                     <p>Nossa equipe está ansiosa para conhecer suas ideias e transformá-las em soluções incríveis</p>
                     <div class="cta-buttons">
-                        <a href="tel:+5511999999999" class="btn btn-primary">
+                        <a href="tel:+5527995260026" class="btn btn-primary">
                             <i class="fas fa-phone"></i>
                             Ligar Agora
                         </a>
-                        <a href="https://wa.me/5511999999999" class="btn btn-secondary" target="_blank" rel="noopener">
+                        <a href="https://wa.me/5527995260026" class="btn btn-secondary" target="_blank" rel="noopener">
                             <i class="fab fa-whatsapp"></i>
                             WhatsApp
                         </a>
@@ -323,8 +324,9 @@
 
     <div id="footer-placeholder"></div>
     <!-- JavaScript -->
-    <script src="../assets/js/main.js"></script>
     <script src="../assets/js/components.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/matrix.js"></script>
     <script>
         // FAQ Accordion
         document.addEventListener('DOMContentLoaded', function () {

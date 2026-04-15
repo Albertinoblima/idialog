@@ -17,17 +17,19 @@
     <link rel="stylesheet" href="../../../src/styles/main.css">
     <link rel="stylesheet" href="../../../src/styles/responsive.css">
 
-    <!-- Google Fonts -->
+    <!-- Fonts: Orbitron (titles) + Exo 2 (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div id="header-placeholder"></div>
     <!-- Main Content -->
     <main class="main">
@@ -73,9 +75,7 @@
                     <!-- App Mobile Corporativo -->
                     <div class="service-card card">
                         <div class="service-icon">
-                            <img src="../../../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag11-img0.png"
-                                alt="App Mobile Corporativo" class="service-img clickable"
-                                data-link="../../../public/portfolio/iDialog Empresas Privadas.pdf">
+                            <i class="fas fa-mobile-alt"></i>
                         </div>
                         <h3>App Mobile Corporativo</h3>
                         <p>Aplicativo mobile para gestão de equipes e comunicação interna em empresas privadas.</p>
@@ -95,9 +95,7 @@
                     <!-- Chatbot Inteligente -->
                     <div class="service-card card">
                         <div class="service-icon">
-                            <img src="../../../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag09-img0.png"
-                                alt="Chatbot Inteligente" class="service-img clickable"
-                                data-link="../../../public/portfolio/iDialog Empresas Privadas.pdf">
+                            <i class="fas fa-robot"></i>
                         </div>
                         <h3>Chatbot Inteligente</h3>
                         <p>Atendimento automatizado e inteligente para clientes, disponível 24/7.</p>
@@ -117,9 +115,7 @@
                     <!-- CRM Avançado -->
                     <div class="service-card featured card">
                         <div class="service-icon">
-                            <img src="../../../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag01-img1.png"
-                                alt="CRM Avançado" class="service-img clickable"
-                                data-link="../../../public/portfolio/iDialog Empresas Privadas.pdf">
+                            <i class="fas fa-address-book"></i>
                         </div>
                         <h3>CRM Avançado</h3>
                         <p>Sistema completo de gestão de relacionamento com clientes.</p>
@@ -349,8 +345,9 @@
 
     <div id="footer-placeholder"></div>
     <!-- JavaScript -->
-    <script src="../../../assets/js/main.js"></script>
     <script src="../../../assets/js/components.js"></script>
+    <script src="../../../assets/js/main.js"></script>
+    <script src="../../../assets/js/matrix.js"></script>
 </body>
 
 </html>

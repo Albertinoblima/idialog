@@ -5,140 +5,268 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="iDialog - Soluções em comunicação e tecnologia para serviços públicos e empresas privadas">
-    <meta name="keywords" content="comunicação, tecnologia, diálogo, soluções, atendimento, ouvidoria">
+        content="iDialog - Consultoria e soluções inteligentes em gestão, tecnologia e comunicação para o setor público e privado">
+    <meta name="keywords" content="consultoria, tecnologia, gestão, comunicação, setor público, empresas, iDialog">
     <meta name="author" content="iDialog">
 
-    <title>iDialog - Soluções em Comunicação e Tecnologia</title>
-
-    <!-- Favicons -->
-    <link rel="icon" type="image/x-icon" href="public/icon/1 iDialog icone.ico">
+    <title>iDialog - Soluções Inteligentes em Tecnologia</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="src/styles/main.css">
     <link rel="stylesheet" href="src/styles/responsive.css">
 
-    <!-- Google Fonts -->
+    <!-- Fonts: Orbitron (titles) + Exo 2 (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div id="header-placeholder"></div>
 
     <!-- Main Content -->
     <main class="main">
+
         <!-- Hero Section -->
-        <section class="hero" id="home"
-            style="background: linear-gradient(120deg, #008080 60%, #1D2D50 100%); color: #fff;">
-            <div class="hero-container"
-                style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-                <div class="hero-content" style="flex:1; min-width:320px;">
-                    <h1 class="hero-title" style="font-size:2.5rem; font-weight:700;">
-                        Consultoria e Soluções Inteligentes<br>
-                        <span class="highlight" style="color:#00a0a0;">para o Setor Público e Privado</span>
+        <section class="hero" id="home">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-bolt"></i> Consultoria & Tecnologia
+                    </div>
+                    <h1 class="hero-title">
+                        Soluções<br>
+                        <span class="highlight">Inteligentes</span><br>
+                        para Transformar
                     </h1>
-                    <p class="hero-subtitle" style="font-size:1.2rem; margin:1.5rem 0;">
+                    <p class="hero-subtitle">
                         Modelagens sistêmicas, tecnologia, inovação e gestão para transformar organizações e cidades.
                     </p>
                     <div class="hero-buttons">
-                        <a href="pages/servicos/publicos/index.html" class="btn btn-primary"
-                            style="margin-right:1rem;">Soluções para o Setor Público</a>
-                        <a href="pages/servicos/privados/index.html" class="btn btn-secondary">Soluções para
-                            Empresas</a>
+                        <a href="pages/servicos/publicos/index.html" class="btn btn-primary">
+                            <i class="fas fa-landmark"></i> Setor Público
+                        </a>
+                        <a href="pages/servicos/privados/index.html" class="btn btn-secondary">
+                            <i class="fas fa-building"></i> Setor Privado
+                        </a>
                     </div>
                 </div>
-                <div class="hero-image" style="flex:1; min-width:320px; text-align:center;">
-                    <img src="public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag03-img0.png"
-                        alt="Consultoria iDialog"
-                        style="max-width:350px; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.12);">
+                <div class="hero-graphic">
+                    <!-- Animated Circuit SVG -->
+                    <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        style="animation: float 6s ease-in-out infinite;">
+                        <!-- Outer ring -->
+                        <circle cx="250" cy="250" r="200" stroke="url(#heroGrad)" stroke-width="1.5" opacity="0.3" />
+                        <circle cx="250" cy="250" r="160" stroke="url(#heroGrad)" stroke-width="1" opacity="0.2" />
+                        <circle cx="250" cy="250" r="120" stroke="url(#heroGrad)" stroke-width="0.8" opacity="0.15" />
+                        <!-- Connection nodes -->
+                        <circle cx="250" cy="50" r="6" fill="#00e5ff" style="animation: pulse-glow 2s infinite;" />
+                        <circle cx="450" cy="250" r="6" fill="#00ff88"
+                            style="animation: pulse-glow 2s infinite 0.5s;" />
+                        <circle cx="250" cy="450" r="6" fill="#00e5ff" style="animation: pulse-glow 2s infinite 1s;" />
+                        <circle cx="50" cy="250" r="6" fill="#00ff88" style="animation: pulse-glow 2s infinite 1.5s;" />
+                        <!-- Diagonal connections -->
+                        <line x1="110" y1="110" x2="390" y2="390" stroke="url(#heroGrad)" stroke-width="0.8"
+                            opacity="0.2" />
+                        <line x1="390" y1="110" x2="110" y2="390" stroke="url(#heroGrad)" stroke-width="0.8"
+                            opacity="0.2" />
+                        <!-- Center hexagon -->
+                        <polygon points="250,180 310,215 310,285 250,320 190,285 190,215" stroke="url(#heroGrad)"
+                            stroke-width="2" fill="none" opacity="0.5" />
+                        <!-- Center icon -->
+                        <text x="250" y="262" text-anchor="middle" fill="#00e5ff" font-size="48"
+                            font-family="'Font Awesome 6 Free'" font-weight="900">&#xf0e8;</text>
+                        <!-- Circuit paths -->
+                        <path d="M250 180 L250 50" stroke="#00e5ff" stroke-width="1" opacity="0.3"
+                            stroke-dasharray="4 4" />
+                        <path d="M310 250 L450 250" stroke="#00ff88" stroke-width="1" opacity="0.3"
+                            stroke-dasharray="4 4" />
+                        <path d="M250 320 L250 450" stroke="#00e5ff" stroke-width="1" opacity="0.3"
+                            stroke-dasharray="4 4" />
+                        <path d="M190 250 L50 250" stroke="#00ff88" stroke-width="1" opacity="0.3"
+                            stroke-dasharray="4 4" />
+                        <!-- Corner dots -->
+                        <circle cx="110" cy="110" r="4" fill="#00e5ff" opacity="0.4" />
+                        <circle cx="390" cy="110" r="4" fill="#00ff88" opacity="0.4" />
+                        <circle cx="390" cy="390" r="4" fill="#00e5ff" opacity="0.4" />
+                        <circle cx="110" cy="390" r="4" fill="#00ff88" opacity="0.4" />
+                        <defs>
+                            <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#00e5ff" />
+                                <stop offset="100%" stop-color="#00ff88" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
                 </div>
             </div>
         </section>
 
-        <!-- Services Overview Section -->
-        <section class="services-overview" id="services" style="background:#EBF2FA;">
+        <!-- Services Section -->
+        <section class="services-overview" id="services">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title" style="color:#008080;">Nossos Serviços</h2>
-                    <p class="section-subtitle">
-                        Consultoria, tecnologia e soluções completas para o setor público e privado.
-                    </p>
+                    <h2 class="section-title">Nossos <span class="accent">Serviços</span></h2>
+                    <p class="section-subtitle">Consultoria, tecnologia e soluções completas para transformar
+                        organizações.</p>
                 </div>
                 <div class="services-grid">
-                    <div class="service-card" style="background:#fff;">
-                        <img src="public/portfolio/imagens-portfolio/iDialog Serviços Públicos-pag03-img0.png"
-                            alt="Serviços Públicos" style="max-width:100%; border-radius:8px; margin-bottom:1rem;">
-                        <h3 style="color:#1D2D50;">Setor Público</h3>
+                    <div class="service-card">
+                        <div class="service-icon-wrap public">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <h3>Setor Público</h3>
                         <ul class="service-features">
-                            <li>Consultoria e suporte técnico especializado para órgãos públicos</li>
-                            <li>Planejamento estrutural, auditorias e reestruturação administrativa</li>
-                            <li>Elaboração de instrumentos normativos e planos diretores</li>
+                            <li>Consultoria e suporte técnico para órgãos públicos</li>
+                            <li>Planejamento estrutural e reestruturação administrativa</li>
+                            <li>Instrumentos normativos e planos diretores</li>
                             <li>Captação de recursos e projetos técnicos</li>
-                            <li>Gestão ambiental, regularização fundiária e arrecadação municipal</li>
-                            <li>Comunicação institucional, marketing público e produção audiovisual</li>
-                            <li>Desenvolvimento de softwares e sistemas integrados para gestão</li>
+                            <li>Gestão ambiental e arrecadação municipal</li>
+                            <li>Comunicação institucional e marketing público</li>
+                            <li>Desenvolvimento de softwares de gestão</li>
                         </ul>
-                        <a href="pages/servicos/publicos/index.html" class="btn btn-primary">Ver detalhes</a>
+                        <a href="pages/servicos/publicos/index.html" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> Ver Detalhes
+                        </a>
                     </div>
-                    <div class="service-card" style="background:#fff;">
-                        <img src="public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag03-img0.png"
-                            alt="Empresas Privadas" style="max-width:100%; border-radius:8px; margin-bottom:1rem;">
-                        <h3 style="color:#008080;">Empresas Privadas</h3>
+                    <div class="service-card">
+                        <div class="service-icon-wrap private">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3>Setor Privado</h3>
                         <ul class="service-features">
-                            <li>Planejamento estratégico, organização e blindagem patrimonial</li>
-                            <li>Gestão de negócios, formatação de franquias e desenvolvimento institucional</li>
-                            <li>Desenvolvimento de pessoas, eficiência e produtividade</li>
-                            <li>Desenvolvimento e implantação de softwares de gestão inteligente</li>
-                            <li>Marketing institucional, produção de vídeo e gestão de redes sociais</li>
-                            <li>Pesquisa de satisfação, motivação e vendas</li>
-                            <li>Sustentabilidade e inovação alinhadas ao mercado</li>
+                            <li>Planejamento estratégico e blindagem patrimonial</li>
+                            <li>Gestão de negócios e formatação de franquias</li>
+                            <li>Desenvolvimento de pessoas e produtividade</li>
+                            <li>Softwares de gestão inteligente</li>
+                            <li>Marketing institucional e gestão de redes sociais</li>
+                            <li>Pesquisa de satisfação e motivação</li>
+                            <li>Sustentabilidade e inovação</li>
                         </ul>
-                        <a href="pages/servicos/privados/index.html" class="btn btn-primary">Ver detalhes</a>
+                        <a href="pages/servicos/privados/index.html" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> Ver Detalhes
+                        </a>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Casos de Sucesso Section -->
+        <section class="cases-section" id="cases">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Casos de <span class="accent">Sucesso</span></h2>
+                    <p class="section-subtitle">Resultados reais entregues para clientes públicos e privados.</p>
+                </div>
+                <div class="cases-grid">
+                    <div class="case-card">
+                        <div class="case-icon"><i class="fas fa-headset"></i></div>
+                        <h3>Plataforma de Atendimento ao Cidadão</h3>
+                        <p>Sistema omnichannel para prefeitura integrando WhatsApp, portal web e app mobile para gestão
+                            de demandas públicas.</p>
+                        <div class="case-tags">
+                            <span>Omnichannel</span><span>Cidadão</span><span>Gestão Pública</span>
+                        </div>
+                        <div class="case-result">
+                            <i class="fas fa-chart-line"></i>
+                            <span>68% de redução no tempo de resposta</span>
+                        </div>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-icon"><i class="fas fa-bullhorn"></i></div>
+                        <h3>Ouvidoria Digital</h3>
+                        <p>Modernização do sistema de ouvidoria estadual com triagem automática e rastreamento em tempo
+                            real.</p>
+                        <div class="case-tags">
+                            <span>Ouvidoria</span><span>Transparência</span><span>LAI</span>
+                        </div>
+                        <div class="case-result">
+                            <i class="fas fa-chart-line"></i>
+                            <span>200% de aumento nas manifestações</span>
+                        </div>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-icon"><i class="fas fa-users-cog"></i></div>
+                        <h3>Central de Atendimento Empresarial</h3>
+                        <p>Central integrada com CRM para empresa de médio porte, com automação de respostas e
+                            dashboards gerenciais.</p>
+                        <div class="case-tags">
+                            <span>CRM</span><span>Atendimento</span><span>Automação</span>
+                        </div>
+                        <div class="case-result">
+                            <i class="fas fa-chart-line"></i>
+                            <span>45% de aumento no NPS</span>
+                        </div>
+                    </div>
+                    <div class="case-card">
+                        <div class="case-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <h3>App Mobile Corporativo</h3>
+                        <p>Aplicativo para gestão de equipes externas e comunicação interna com acesso offline e
+                            sincronização automática.</p>
+                        <div class="case-tags">
+                            <span>Mobile</span><span>Equipes</span><span>Produtividade</span>
+                        </div>
+                        <div class="case-result">
+                            <i class="fas fa-chart-line"></i>
+                            <span>50% de melhoria na produtividade</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top:40px;">
+                    <a href="pages/casos-de-sucesso.html" class="btn btn-secondary">
+                        <i class="fas fa-folder-open"></i> Ver Todos os Casos
+                    </a>
                 </div>
             </div>
         </section>
 
         <!-- About Preview Section -->
-        <section class="about-preview" style="background:#fff;">
+        <section class="about-preview" id="about">
             <div class="container">
-                <div class="about-content" style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
-                    <div class="about-text" style="flex:1;min-width:320px;">
-                        <h2 style="color:#008080;">Sobre a iDialog</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>Sobre a <span class="accent">iDialog</span></h2>
                         <p>
                             Somos uma consultoria que une experiência, ética e inovação para entregar soluções
-                            inteligentes em gestão, tecnologia e comunicação.<br>
+                            inteligentes em gestão, tecnologia e comunicação.
+                        </p>
+                        <p>
                             Nossa equipe atua em diversos segmentos, promovendo desenvolvimento sustentável,
                             transparência e resultados de alto impacto para clientes públicos e privados.
                         </p>
-                        <p>
+                        <div class="mission"
+                            style="padding:16px 20px; border-left:3px solid var(--neon-cyan); background:rgba(0,229,255,0.04); border-radius:0 8px 8px 0; margin:20px 0;">
                             <strong>Missão:</strong> Transformar organizações e cidades por meio de soluções sistêmicas,
                             tecnologia e gestão moderna.
-                        </p>
-                        <a href="pages/sobre.html" class="btn btn-secondary">Conheça Nossa História</a>
+                        </div>
+                        <a href="pages/sobre.html" class="btn btn-secondary">
+                            <i class="fas fa-info-circle"></i> Conheça Nossa História
+                        </a>
                     </div>
-                    <div class="about-stats" style="flex:1;min-width:320px;">
-                        <img src="public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag01-img1.png"
-                            alt="Equipe iDialog"
-                            style="max-width:100%;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-                        <div style="display:flex;gap:2rem;justify-content:center;margin-top:1.5rem;">
-                            <div class="stat-item">
+                    <div class="about-stats">
+                        <div class="stats-grid">
+                            <div class="stat-card">
                                 <div class="stat-number">500+</div>
                                 <div class="stat-label">Projetos Entregues</div>
                             </div>
-                            <div class="stat-item">
+                            <div class="stat-card">
                                 <div class="stat-number">100+</div>
                                 <div class="stat-label">Clientes Satisfeitos</div>
                             </div>
-                            <div class="stat-item">
+                            <div class="stat-card">
                                 <div class="stat-number">5+</div>
                                 <div class="stat-label">Anos de Experiência</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">Suporte Disponível</div>
                             </div>
                         </div>
                     </div>
@@ -147,75 +275,31 @@
         </section>
 
         <!-- CTA Section -->
-        <section class="cta-section" style="background:#008080;color:#fff;">
+        <section class="cta-section">
             <div class="container">
-                <div class="cta-content" style="text-align:center;">
+                <div class="cta-content">
                     <h2>Pronto para transformar sua gestão?</h2>
                     <p>Entre em contato e descubra como a iDialog pode impulsionar resultados para sua organização.</p>
                     <div class="cta-buttons">
-                        <a href="pages/contato.html" class="btn btn-primary" style="background:#1D2D50;">Entre em
-                            Contato</a>
-                        <a href="pages/casos-de-sucesso.html" class="btn btn-secondary"
-                            style="background:#fff;color:#008080;">Ver Casos de Sucesso</a>
+                        <a href="pages/contato.html" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Fale Conosco
+                        </a>
+                        <a href="pages/sobre.html" class="btn btn-secondary">
+                            <i class="fas fa-users"></i> Conheça a Equipe
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer" style="background:#1D2D50;color:#fff;">
-        <div class="container">
-            <div class="footer-content" style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;">
-                <div class="footer-section" style="flex:1;min-width:220px;">
-                    <div class="footer-logo">
-                        <img src="public/images/logo 3.3.png" alt="iDialog" class="footer-logo-img"
-                            style="max-height:50px;">
-                        <span>iDialog</span>
-                    </div>
-                    <p>Soluções inteligentes em gestão, tecnologia e comunicação para o setor público e privado.</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="footer-section" style="flex:1;min-width:180px;">
-                    <h4>Links Rápidos</h4>
-                    <ul>
-                        <li><a href="index.html">Início</a></li>
-                        <li><a href="pages/sobre.html">Sobre</a></li>
-                        <li><a href="pages/servicos/publicos/index.html">Setor Público</a></li>
-                        <li><a href="pages/servicos/privados/index.html">Empresas</a></li>
-                        <li><a href="pages/contato.html">Contato</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section" style="flex:1;min-width:180px;">
-                    <h4>Serviços</h4>
-                    <ul>
-                        <li><a href="pages/servicos/publicos/index.html">Consultoria Pública</a></li>
-                        <li><a href="pages/servicos/privados/index.html">Consultoria Privada</a></li>
-                        <li><a href="pages/casos-de-sucesso.html">Casos de Sucesso</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section" style="flex:1;min-width:220px;">
-                    <h4>Contato</h4>
-                    <div class="footer-contact">
-                        <p><i class="fas fa-envelope"></i> idialog@idialog.com.br</p>
-                        <p><i class="fas fa-phone"></i> (27) 99526-0026</p>
-                        <p><i class="fas fa-map-marker-alt"></i> Alfredo Chaves-ES</p>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom" style="text-align:center;margin-top:2rem;">
-                <p>&copy; 2025 iDialog Soluções Inteligentes. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <!-- JavaScript -->
     <script src="assets/js/components.js"></script>
     <script src="assets/js/main.js"></script>
+
+    <script src="assets/js/matrix.js"></script>
 </body>
 
 </html>

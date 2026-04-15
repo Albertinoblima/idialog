@@ -16,17 +16,19 @@
     <link rel="stylesheet" href="../../../src/styles/main.css">
     <link rel="stylesheet" href="../../../src/styles/responsive.css">
 
-    <!-- Google Fonts -->
+    <!-- Fonts: Orbitron (titles) + Exo 2 (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div id="header-placeholder"></div>
     <!-- Main Content -->
     <main class="main">
@@ -71,9 +73,7 @@
                     <!-- App Mobile Cidadão -->
                     <div class="service-card card">
                         <div class="service-icon">
-                            <img src="../../../public/portfolio/imagens-portfolio/iDialog Serviços Públicos-pag09-img0.png"
-                                alt="App Mobile Cidadão" class="service-img clickable"
-                                data-link="../../../public/portfolio/iDialog Serviços Públicos.pdf">
+                            <i class="fas fa-mobile-alt"></i>
                         </div>
                         <h3>App Mobile Cidadão</h3>
                         <p>Aplicativo mobile para acesso rápido a serviços públicos essenciais, notificações e
@@ -94,9 +94,7 @@
                     <!-- Transparência e Ouvidoria -->
                     <div class="service-card card">
                         <div class="service-icon">
-                            <img src="../../../public/portfolio/imagens-portfolio/iDialog Serviços Públicos-pag03-img0.png"
-                                alt="Transparência e Ouvidoria" class="service-img clickable"
-                                data-link="../../../public/portfolio/iDialog Serviços Públicos.pdf">
+                            <i class="fas fa-search"></i>
                         </div>
                         <h3>Transparência e Ouvidoria</h3>
                         <p>Ferramentas para garantir transparência, participação social e comunicação efetiva com o
@@ -117,9 +115,7 @@
                     <!-- Atendimento ao Cidadão -->
                     <div class="service-card featured card">
                         <div class="service-icon">
-                            <img src="../../../public/portfolio/imagens-portfolio/iDialog Serviços Públicos-pag01-img1.png"
-                                alt="Atendimento ao Cidadão" class="service-img clickable"
-                                data-link="../../../public/portfolio/iDialog Serviços Públicos.pdf">
+                            <i class="fas fa-headset"></i>
                         </div>
                         <h3>Atendimento ao Cidadão</h3>
                         <p>Plataforma integrada para centralizar e otimizar o atendimento aos cidadãos.</p>
@@ -286,8 +282,9 @@
 
     <div id="footer-placeholder"></div>
     <!-- JavaScript -->
-    <script src="../../../assets/js/main.js"></script>
     <script src="../../../assets/js/components.js"></script>
+    <script src="../../../assets/js/main.js"></script>
+    <script src="../../../assets/js/matrix.js"></script>
 </body>
 
 </html>

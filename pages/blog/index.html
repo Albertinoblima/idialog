@@ -14,24 +14,28 @@
     <link rel="stylesheet" href="/src/styles/responsive.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        /* ---- Blog Layout ---- */
+        /* ---- Blog Layout (Dark Theme) ---- */
         .blog-header {
-            background: linear-gradient(135deg, #1273EB 0%, #0a4fa3 100%);
-            color: #fff;
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+            color: var(--text-primary);
             padding: 80px 0 48px;
             text-align: center;
             margin-top: 70px;
         }
 
         .blog-header h1 {
+            font-family: 'Orbitron', sans-serif;
             font-size: 2.8rem;
-            font-weight: 800;
+            font-weight: 700;
             margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .blog-header p {
@@ -39,13 +43,13 @@
             opacity: .85;
             max-width: 560px;
             margin: 0 auto;
+            color: var(--text-secondary);
         }
 
-        /* filtros de categoria */
         .blog-filters {
-            background: #f8f9fa;
+            background: var(--bg-secondary);
             padding: 20px 0;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 70px;
             z-index: 100;
@@ -61,9 +65,9 @@
         .filter-btn {
             padding: 6px 18px;
             border-radius: 50px;
-            border: 2px solid #1273EB;
+            border: 2px solid var(--neon-cyan);
             background: transparent;
-            color: #1273EB;
+            color: var(--neon-cyan);
             font-weight: 500;
             cursor: pointer;
             transition: all .25s;
@@ -72,11 +76,10 @@
 
         .filter-btn.active,
         .filter-btn:hover {
-            background: #1273EB;
-            color: #fff;
+            background: var(--neon-cyan);
+            color: var(--bg-primary);
         }
 
-        /* grid de posts */
         .blog-grid-section {
             padding: 56px 0 80px;
         }
@@ -87,11 +90,10 @@
             gap: 32px;
         }
 
-        /* card */
         .post-card {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, .08);
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
             overflow: hidden;
             transition: transform .3s, box-shadow .3s;
             display: flex;
@@ -100,25 +102,20 @@
 
         .post-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, .14);
+            box-shadow: var(--shadow-neon);
+            border-color: var(--neon-cyan);
         }
 
         .post-thumb {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background: linear-gradient(135deg, #e8f0fe 0%, #c7d9ff 100%);
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(0, 255, 136, 0.05));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #1273EB;
+            color: var(--neon-cyan);
             font-size: 3rem;
-        }
-
-        .post-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .post-body {
@@ -134,12 +131,12 @@
             align-items: center;
             margin-bottom: 12px;
             font-size: .82rem;
-            color: #888;
+            color: var(--text-muted);
         }
 
         .post-cat {
-            background: #e8f0fe;
-            color: #1273EB;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--neon-cyan);
             padding: 3px 12px;
             border-radius: 50px;
             font-weight: 600;
@@ -149,14 +146,14 @@
         .post-title {
             font-size: 1.15rem;
             font-weight: 700;
-            color: #333;
+            color: var(--text-primary);
             margin-bottom: 10px;
             line-height: 1.4;
         }
 
         .post-resumo {
             font-size: .95rem;
-            color: #666;
+            color: var(--text-secondary);
             line-height: 1.6;
             flex: 1;
         }
@@ -166,7 +163,7 @@
             align-items: center;
             gap: 6px;
             margin-top: 20px;
-            color: #1273EB;
+            color: var(--neon-cyan);
             font-weight: 600;
             font-size: .95rem;
             transition: gap .2s;
@@ -176,11 +173,10 @@
             gap: 10px;
         }
 
-        /* vazio */
         .blog-empty {
             text-align: center;
             padding: 80px 20px;
-            color: #999;
+            color: var(--text-muted);
         }
 
         .blog-empty i {
@@ -202,6 +198,9 @@
 </head>
 
 <body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div id="header-placeholder"></div>
 
     <main>
@@ -240,6 +239,7 @@
 
     <script src="/assets/js/components.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/matrix.js"></script>
     <script src="posts-data.js"></script>
     <script>
         // ── Formata data "AAAA-MM-DD" → "15 de abril de 2026"

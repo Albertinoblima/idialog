@@ -15,16 +15,20 @@
     <link rel="stylesheet" href="../src/styles/main.css">
     <link rel="stylesheet" href="../src/styles/responsive.css">
 
-    <!-- Google Fonts -->
+    <!-- Fonts: Orbitron (titles) + Exo 2 (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div id="header-placeholder"></div>
 
     <!-- Main Content -->
@@ -66,9 +70,11 @@
                     </div>
                     <div class="about-image sobre-about-image">
                         <a href="casos-de-sucesso.html" aria-label="Ver casos de sucesso da iDialog">
-                            <img src="../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag01-img1.png"
-                                alt="Foto da equipe iDialog colaborando em projetos de tecnologia e comunicação, promovendo inclusão e inovação."
-                                class="about-img sobre-about-img" loading="lazy">
+                            <div class="about-img-placeholder"
+                                style="display:flex;align-items:center;justify-content:center;width:100%;min-height:300px;border-radius:var(--radius-lg);background:var(--gradient-card);border:1px solid var(--border-color);">
+                                <i class="fas fa-project-diagram"
+                                    style="font-size:5rem;background:var(--gradient-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent;"></i>
+                            </div>
                         </a>
                     </div>
                 </div>
@@ -81,10 +87,7 @@
                 <div class="mvv-grid sobre-mvv-grid">
                     <div class="mvv-item sobre-mvv-item">
                         <div class="mvv-icon sobre-mvv-icon">
-                            <img src="../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag03-img0.png"
-                                alt="Ilustração representando a missão da iDialog: facilitar a comunicação entre organizações e seus públicos através de soluções tecnológicas inovadoras."
-                                class="service-img clickable sobre-mvv-img" data-link="servicos/privados/index.html"
-                                loading="lazy">
+                            <i class="fas fa-bullseye" style="font-size:2.5rem;color:var(--neon-cyan);"></i>
                         </div>
                         <h3 class="sobre-mvv-title">Missão</h3>
                         <p class="sobre-mvv-text">Facilitar a comunicação entre organizações e seus públicos através de
@@ -92,10 +95,7 @@
                     </div>
                     <div class="mvv-item sobre-mvv-item">
                         <div class="mvv-icon sobre-mvv-icon">
-                            <img src="../public/portfolio/imagens-portfolio/iDialog Serviços Públicos-pag03-img0.png"
-                                alt="Ilustração representando a visão da iDialog: ser referência em soluções de comunicação digital, contribuindo para uma sociedade mais conectada e transparente."
-                                class="service-img clickable sobre-mvv-img" data-link="servicos/publicos/index.html"
-                                loading="lazy">
+                            <i class="fas fa-eye" style="font-size:2.5rem;color:var(--neon-green);"></i>
                         </div>
                         <h3 class="sobre-mvv-title">Visão</h3>
                         <p class="sobre-mvv-text">Ser referência em soluções de comunicação digital, contribuindo para
@@ -103,9 +103,7 @@
                     </div>
                     <div class="mvv-item sobre-mvv-item">
                         <div class="mvv-icon sobre-mvv-icon">
-                            <img src="../public/images/logo 3.3.png"
-                                alt="Ícone representando os valores institucionais da iDialog: inovação, transparência, excelência, responsabilidade social, ética e integridade."
-                                class="service-img clickable sobre-mvv-img" data-link="equipe.html" loading="lazy">
+                            <i class="fas fa-gem" style="font-size:2.5rem;color:var(--neon-purple);"></i>
                         </div>
                         <h3 class="sobre-mvv-title">Valores</h3>
                         <ul class="sobre-mvv-list">
@@ -132,45 +130,35 @@
                 <div class="features-grid">
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <img src="../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag09-img0.png"
-                                alt="Ícone de lâmpada representando inovação tecnológica na iDialog"
-                                class="service-img clickable" data-link="casos-de-sucesso.html" loading="lazy">
+                            <i class="fas fa-lightbulb"></i>
                         </div>
                         <h3>Inovação</h3>
                         <p>Sempre buscando as melhores e mais modernas soluções tecnológicas do mercado.</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <img src="../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag11-img0.png"
-                                alt="Ícone de pessoas representando foco no cliente e atendimento personalizado"
-                                class="service-img clickable" data-link="contato.html" loading="lazy">
+                            <i class="fas fa-users"></i>
                         </div>
                         <h3>Foco no Cliente</h3>
                         <p>Atendimento personalizado e suporte contínuo para garantir o sucesso dos projetos.</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <img src="../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag06-img0.jpeg"
-                                alt="Ícone de cadeado representando segurança e proteção de dados"
-                                class="service-img clickable" data-link="sobre.html#seguranca" loading="lazy">
+                            <i class="fas fa-shield-alt"></i>
                         </div>
                         <h3>Segurança</h3>
                         <p>Proteção de dados e conformidade com as principais regulamentações de segurança.</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <img src="../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag12-img0.png"
-                                alt="Ícone de raio representando agilidade nos processos" class="service-img clickable"
-                                data-link="sobre.html#agilidade" loading="lazy">
+                            <i class="fas fa-bolt"></i>
                         </div>
                         <h3>Agilidade</h3>
                         <p>Processos otimizados para entregas rápidas sem comprometer a qualidade.</p>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <img src="../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag13-img0.png"
-                                alt="Ícone de engrenagem representando customização de soluções"
-                                class="service-img clickable" data-link="servicos/privados/index.html" loading="lazy">
+                            <i class="fas fa-cogs"></i>
                         </div>
                         <h3>Customização</h3>
                         <p>Soluções desenvolvidas sob medida para atender às necessidades específicas de cada cliente.
@@ -178,9 +166,7 @@
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <img src="../public/portfolio/imagens-portfolio/iDialog Empresas Privadas-pag14-img0.png"
-                                alt="Ícone de headset representando suporte técnico 24/7" class="service-img clickable"
-                                data-link="contato.html" loading="lazy">
+                            <i class="fas fa-headset"></i>
                         </div>
                         <h3>Suporte 24/7</h3>
                         <p>Equipe dedicada disponível para suporte técnico e atendimento ao cliente.</p>
@@ -218,28 +204,9 @@
     <div id="footer-placeholder"></div>
 
     <!-- JavaScript -->
-    <script src="../assets/js/main.js"></script>
     <script src="../assets/js/components.js"></script>
-    <script>
-        // Torna todas as imagens com a classe 'clickable' interativas
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('img.clickable').forEach(function (img) {
-                img.style.cursor = 'pointer';
-                img.addEventListener('click', function () {
-                    const link = img.getAttribute('data-link');
-                    if (link) window.location.href = link;
-                });
-            });
-        });
-
-        // Carrega header e footer dinâmicos usando o ComponentLoader universal
-        document.addEventListener('DOMContentLoaded', async () => {
-            if (window.ComponentLoader) {
-                await window.ComponentLoader.loadHeader();
-                await window.ComponentLoader.loadFooter();
-            }
-        });
-    </script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/matrix.js"></script>
 </body>
 
 </html>

@@ -13,9 +13,8 @@
     <link rel="stylesheet" href="/src/styles/responsive.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
         .post-page {
@@ -31,12 +30,12 @@
 
         .post-breadcrumb {
             font-size: .85rem;
-            color: #888;
+            color: var(--text-muted);
             margin-bottom: 20px;
         }
 
         .post-breadcrumb a {
-            color: #1273EB;
+            color: var(--neon-cyan);
         }
 
         .post-breadcrumb a:hover {
@@ -45,8 +44,8 @@
 
         .post-cat-badge {
             display: inline-block;
-            background: #e8f0fe;
-            color: #1273EB;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--neon-cyan);
             padding: 4px 14px;
             border-radius: 50px;
             font-size: .82rem;
@@ -55,17 +54,18 @@
         }
 
         .post-page h1 {
+            font-family: 'Orbitron', sans-serif;
             font-size: 2.4rem;
-            font-weight: 800;
+            font-weight: 700;
             line-height: 1.25;
-            color: #1a1a2e;
+            color: var(--text-primary);
             margin-bottom: 16px;
         }
 
         .post-page-meta {
             display: flex;
             gap: 20px;
-            color: #888;
+            color: var(--text-muted);
             font-size: .88rem;
             margin-bottom: 32px;
             flex-wrap: wrap;
@@ -79,28 +79,27 @@
 
         .post-divider {
             border: none;
-            border-top: 2px solid #e9ecef;
+            border-top: 1px solid var(--border-color);
             margin: 32px 0;
         }
 
-        /* Conteúdo do artigo */
         .post-content {
             font-size: 1.05rem;
             line-height: 1.85;
-            color: #333;
+            color: var(--text-secondary);
         }
 
         .post-content h2 {
             font-size: 1.6rem;
             font-weight: 700;
-            color: #1a1a2e;
+            color: var(--text-primary);
             margin: 40px 0 16px;
         }
 
         .post-content h3 {
             font-size: 1.25rem;
             font-weight: 600;
-            color: #1a1a2e;
+            color: var(--text-primary);
             margin: 30px 0 12px;
         }
 
@@ -118,26 +117,19 @@
         }
 
         .post-content blockquote {
-            border-left: 4px solid #1273EB;
-            background: #f0f6ff;
+            border-left: 4px solid var(--neon-cyan);
+            background: rgba(0, 229, 255, 0.04);
             padding: 16px 20px;
             margin: 24px 0;
             border-radius: 0 8px 8px 0;
             font-style: italic;
-            color: #555;
+            color: var(--text-secondary);
         }
 
-        .post-content img {
-            border-radius: 12px;
-            margin: 24px 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .1);
-        }
-
-        /* rodapé do post */
         .post-footer {
             margin-top: 60px;
             padding-top: 32px;
-            border-top: 2px solid #e9ecef;
+            border-top: 1px solid var(--border-color);
         }
 
         .post-footer-nav {
@@ -151,7 +143,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #1273EB;
+            color: var(--neon-cyan);
             font-weight: 600;
         }
 
@@ -168,6 +160,9 @@
 </head>
 
 <body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div id="header-placeholder"></div>
 
     <main>
@@ -225,7 +220,7 @@
                 <p>
                     Novas matérias serão publicadas diariamente. Fique à vontade para compartilhar, comentar
                     e sugerir temas pelo nosso canal de
-                    <a href="/pages/contato.html" style="color:#1273EB;font-weight:600;">contato</a>.
+                    <a href="/pages/contato.html" style="color:var(--neon-cyan);font-weight:600;">contato</a>.
                 </p>
 
                 <p>Bem-vindo(a)! 🎉</p>
@@ -251,6 +246,7 @@
 
     <script src="/assets/js/components.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/matrix.js"></script>
 </body>
 
 </html>

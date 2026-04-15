@@ -1,15 +1,14 @@
 /* ===========================
-   Responsive Design Enhancements
+   Responsive - Futuristic Theme
 =========================== */
 
-/* Extra Large Devices (1400px and up) */
 @media (min-width: 1400px) {
     .container {
         max-width: 1320px;
     }
 
     .hero-title {
-        font-size: 4rem;
+        font-size: 3.8rem;
     }
 
     .section-title {
@@ -17,7 +16,6 @@
     }
 }
 
-/* Large Devices (992px to 1199px) */
 @media (max-width: 1199px) {
     .container {
         max-width: 960px;
@@ -28,39 +26,34 @@
     }
 
     .hero-title {
-        font-size: 3rem;
+        font-size: 2.6rem;
     }
 
-    .services-grid {
+    .footer-content {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* Medium Devices (768px to 991px) */
 @media (max-width: 991px) {
     .container {
         max-width: 720px;
-        padding: 0 15px;
-    }
-
-    .navbar {
-        padding: 12px 0;
+        padding: 0 16px;
     }
 
     .navbar-nav {
         position: fixed;
-        top: 70px;
+        top: 72px;
         left: -100%;
         width: 100%;
-        height: calc(100vh - 70px);
-        background-color: var(--white);
+        height: calc(100vh - 72px);
+        background: rgba(10, 10, 15, 0.98);
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        padding-top: 50px;
+        padding-top: 40px;
         transition: var(--transition);
-        box-shadow: var(--shadow);
         z-index: 999;
+        backdrop-filter: blur(20px);
     }
 
     .navbar-nav.active {
@@ -68,7 +61,12 @@
     }
 
     .navbar-nav .nav-item {
-        margin-bottom: 20px;
+        margin-bottom: 8px;
+    }
+
+    .nav-link {
+        font-size: 1.1rem;
+        padding: 12px 24px;
     }
 
     .navbar-toggle {
@@ -82,49 +80,63 @@
     .hero-container {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 50px;
-    }
-
-    .hero-title {
-        font-size: 2.8rem;
+        gap: 40px;
     }
 
     .hero-graphic {
-        width: 250px;
-        height: 250px;
+        display: none;
     }
 
-    .hero-graphic i {
-        font-size: 100px;
+    .hero-subtitle {
+        margin: 0 auto 40px;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-title {
+        font-size: 2.4rem;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
     }
 
     .about-content {
         grid-template-columns: 1fr;
-        gap: 50px;
-        text-align: center;
+        gap: 40px;
     }
 
-    .about-stats {
-        flex-direction: row;
-        gap: 20px;
-    }
-
-    .contact-content {
+    .sobre-about-content {
         grid-template-columns: 1fr;
-        gap: 50px;
+    }
+
+    .sobre-mvv-grid {
+        grid-template-columns: 1fr;
     }
 
     .footer-content {
         grid-template-columns: repeat(2, 1fr);
-        gap: 40px;
+        gap: 30px;
+    }
+
+    .dropdown-menu {
+        position: static;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        background: rgba(0, 229, 255, 0.03);
+        opacity: 1;
+        visibility: visible;
+        min-width: 100%;
+        padding: 8px 0;
     }
 }
 
-/* Small Devices (576px to 767px) */
 @media (max-width: 767px) {
     .container {
         max-width: 540px;
-        padding: 0 15px;
     }
 
     .section-header {
@@ -132,7 +144,7 @@
     }
 
     .section-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
 
     .hero {
@@ -141,318 +153,125 @@
     }
 
     .hero-title {
-        font-size: 2.3rem;
-        margin-bottom: 15px;
+        font-size: 2rem;
     }
 
     .hero-subtitle {
-        font-size: 1.1rem;
-        margin-bottom: 30px;
+        font-size: 1rem;
     }
 
     .hero-buttons {
         flex-direction: column;
         align-items: center;
-        gap: 15px;
+        gap: 12px;
     }
 
     .btn {
         padding: 12px 25px;
-        font-size: 15px;
+        font-size: 14px;
         min-width: 200px;
+        justify-content: center;
     }
 
-    .hero-graphic {
-        width: 200px;
-        height: 200px;
-    }
-
-    .hero-graphic i {
-        font-size: 80px;
-    }
-
-    .about,
-    .services,
-    .contact {
-        padding: 60px 0;
-    }
-
-    .about-stats {
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .stat {
-        padding: 25px 20px;
-    }
-
-    .stat h4 {
-        font-size: 2rem;
-    }
-
-    .services-grid {
-        grid-template-columns: 1fr;
-        gap: 25px;
-    }
-
-    .service-card {
-        padding: 30px 25px;
-    }
-
-    .service-icon {
-        width: 70px;
-        height: 70px;
-        margin-bottom: 20px;
-    }
-
-    .service-icon i {
-        font-size: 1.8rem;
-    }
-
-    .contact-form {
-        padding: 30px 25px;
-    }
-
-    .form-row {
+    .cases-grid {
         grid-template-columns: 1fr;
     }
 
-    .footer {
-        padding: 50px 0 20px;
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .footer-content {
         grid-template-columns: 1fr;
-        gap: 30px;
         text-align: center;
     }
 
     .social-links {
         justify-content: center;
     }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .portfolio-institutional {
+        padding: 24px;
+    }
+
+    .portfolio-institutional-links {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
 }
 
-/* Extra Small Devices (less than 576px) */
 @media (max-width: 575px) {
     .container {
-        padding: 0 10px;
+        padding: 0 12px;
     }
 
     .hero-title {
-        font-size: 2rem;
-        line-height: 1.3;
-    }
-
-    .hero-subtitle {
-        font-size: 1rem;
+        font-size: 1.7rem;
     }
 
     .section-title {
-        font-size: 1.8rem;
-    }
-
-    .section-subtitle {
-        font-size: 1rem;
-    }
-
-    .hero-graphic {
-        width: 180px;
-        height: 180px;
-    }
-
-    .hero-graphic i {
-        font-size: 70px;
-    }
-
-    .about-text h3 {
         font-size: 1.6rem;
     }
 
-    .about-text p {
-        font-size: 1rem;
-    }
-
-    .stat h4 {
+    .stat-number {
         font-size: 1.8rem;
     }
 
-    .service-card h3 {
-        font-size: 1.3rem;
-    }
-
-    .service-card p {
-        font-size: 0.95rem;
-    }
-
-    .contact-item h4 {
-        font-size: 1.1rem;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        padding: 12px 15px;
-        font-size: 15px;
-    }
-
-    .footer-section h4 {
-        font-size: 1.1rem;
+    .navbar {
+        padding: 0 12px;
     }
 }
 
-/* ===========================
-   Mobile Menu Animation
-=========================== */
-.navbar-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.navbar-toggle.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.navbar-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -6px);
-}
-
-/* ===========================
-   Print Styles
-=========================== */
+/* Print */
 @media print {
 
     .header,
-    .navbar-toggle,
-    .hero-buttons,
-    .contact-form,
-    .social-links {
-        display: none !important;
+    .footer,
+    #matrix-canvas,
+    .hero-graphic {
+        display: none;
+    }
+
+    body {
+        background: #fff;
+        color: #000;
     }
 
     .hero {
         min-height: auto;
         padding: 20px 0;
+        background: #fff !important;
     }
 
-    .section-title {
-        font-size: 1.5rem;
-        color: var(--black) !important;
-    }
-
-    .section-subtitle {
-        font-size: 1rem;
-        color: var(--text-dark) !important;
-    }
-
-    .hero-title {
-        font-size: 2rem;
-        color: var(--black) !important;
-    }
-
-    .hero-graphic {
-        display: none;
-    }
-
-    .about,
-    .services,
-    .contact {
-        padding: 30px 0;
-    }
-
-    .service-card,
-    .stat {
-        border: 1px solid var(--border-color) !important;
-        box-shadow: none !important;
-    }
-
-    .footer {
-        background-color: var(--white) !important;
-        color: var(--black) !important;
-        border-top: 2px solid var(--border-color);
+    .hero-title,
+    .section-title,
+    h1,
+    h2,
+    h3 {
+        color: #000 !important;
+        -webkit-text-fill-color: #000 !important;
     }
 }
 
-/* ===========================
-   High Contrast Mode
-=========================== */
-@media (prefers-contrast: high) {
-    :root {
-        --primary-color: #0066cc;
-        --text-dark: #000000;
-        --text-light: #333333;
-        --border-color: #666666;
-    }
-
-    .btn-primary {
-        border-width: 3px;
-    }
-
-    .service-card,
-    .stat {
-        border: 2px solid var(--border-color);
-    }
-}
-
-/* ===========================
-   Reduced Motion
-=========================== */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
     }
 
-    .hero-graphic {
-        animation: none;
-    }
-}
-
-/* ===========================
-   Dark Mode Support
-=========================== */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --primary-color: #4da6ff;
-        --secondary-color: #2a2a2a;
-        --text-dark: #ffffff;
-        --text-light: #cccccc;
-        --text-muted: #999999;
-        --white: #1a1a1a;
-        --black: #ffffff;
-        --border-color: #444444;
-        --shadow: 0 2px 15px rgba(255, 255, 255, 0.1);
-        --shadow-hover: 0 5px 25px rgba(255, 255, 255, 0.15);
-    }
-
-    body {
-        background-color: #1a1a1a;
-        color: #ffffff;
-    }
-
-    .header {
-        background-color: #1a1a1a;
-        border-bottom: 1px solid #444444;
-    }
-
-    .hero {
-        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-    }
-
-    .service-card,
-    .contact-form,
-    .stat {
-        background-color: #2a2a2a;
-        border-color: #444444;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        background-color: #1a1a1a;
-        border-color: #444444;
-        color: #ffffff;
-    }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-        color: #999999;
+    #matrix-canvas {
+        display: none;
     }
 }
