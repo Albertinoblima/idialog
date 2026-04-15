@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Política de Cookies - iDialog Soluções Inteligentes">
+    <meta name="robots" content="index, follow">
+    <title>Política de Cookies - iDialog</title>
+
+    <link rel="icon" type="image/x-icon" href="../../public/icon/1 iDialog icone.ico">
+    <link rel="stylesheet" href="../../src/styles/main.css">
+    <link rel="stylesheet" href="../../src/styles/responsive.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <div id="header-placeholder"></div>
+
+    <main class="main">
+
+        <section class="legal-page-header">
+            <div class="container">
+                <div class="legal-header-badge">
+                    <i class="fas fa-cookie-bite"></i> Documentos Legais
+                </div>
+                <h1 class="legal-page-title">Política de Cookies</h1>
+                <p class="legal-page-subtitle">Última atualização: <span class="legal-date">Abril de 2026</span></p>
+            </div>
+        </section>
+
+        <section class="legal-section">
+            <div class="container">
+                <div class="legal-layout">
+
+                    <aside class="legal-toc">
+                        <div class="legal-toc-inner">
+                            <h3 class="legal-toc-title"><i class="fas fa-list"></i> Sumário</h3>
+                            <ol class="legal-toc-list">
+                                <li><a href="#o-que-sao">O que são Cookies</a></li>
+                                <li><a href="#tipos">Tipos de Cookies</a></li>
+                                <li><a href="#usamos">Cookies que Usamos</a></li>
+                                <li><a href="#terceiros">Cookies de Terceiros</a></li>
+                                <li><a href="#controle">Controle e Preferências</a></li>
+                                <li><a href="#desativar">Como Desativar</a></li>
+                                <li><a href="#atualizacoes">Atualizações</a></li>
+                                <li><a href="#contato-cookies">Contato</a></li>
+                            </ol>
+                        </div>
+                    </aside>
+
+                    <article class="legal-content">
+
+                        <div class="legal-alert legal-alert--cookies">
+                            <i class="fas fa-cookie-bite"></i>
+                            <p>Utilizamos cookies para melhorar sua experiência de navegação, analisar o tráfego e personalizar conteúdo. Esta política explica o que são cookies, quais usamos e como você pode controlá-los.</p>
+                        </div>
+
+                        <div class="legal-article" id="o-que-sao">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">01</span>
+                                <h2>O que são Cookies?</h2>
+                            </div>
+                            <p>Cookies são pequenos arquivos de texto armazenados no seu dispositivo (computador, tablet ou smartphone) quando você acessa um site. Eles permitem que o site reconheça seu dispositivo em visitas futuras, melhorando a experiência de navegação.</p>
+                            <p>Além de cookies, utilizamos tecnologias similares como <strong>web beacons</strong>, <strong>pixels de rastreamento</strong> e <strong>armazenamento local (localStorage)</strong>, todos sujeitos a esta política.</p>
+                        </div>
+
+                        <div class="legal-article" id="tipos">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">02</span>
+                                <h2>Tipos de Cookies</h2>
+                            </div>
+                            <div class="legal-cookie-types">
+                                <div class="legal-cookie-type">
+                                    <div class="legal-cookie-type-icon essential">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <div>
+                                        <h4>Cookies Essenciais</h4>
+                                        <p>Necessários para o funcionamento básico do site. Não podem ser desativados pois a navegação seria comprometida. Não requerem consentimento.</p>
+                                    </div>
+                                </div>
+                                <div class="legal-cookie-type">
+                                    <div class="legal-cookie-type-icon functional">
+                                        <i class="fas fa-cogs"></i>
+                                    </div>
+                                    <div>
+                                        <h4>Cookies Funcionais</h4>
+                                        <p>Lembram preferências do usuário (idioma, tema, formulários preenchidos) para personalizar a experiência. Requerem consentimento.</p>
+                                    </div>
+                                </div>
+                                <div class="legal-cookie-type">
+                                    <div class="legal-cookie-type-icon analytics">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <div>
+                                        <h4>Cookies Analíticos</h4>
+                                        <p>Coletam informações sobre como os visitantes usam o site (páginas visitadas, tempo de permanência) para ajudar a melhorar o serviço. Requerem consentimento.</p>
+                                    </div>
+                                </div>
+                                <div class="legal-cookie-type">
+                                    <div class="legal-cookie-type-icon marketing">
+                                        <i class="fas fa-bullhorn"></i>
+                                    </div>
+                                    <div>
+                                        <h4>Cookies de Marketing</h4>
+                                        <p>Usados para rastrear visitantes e exibir anúncios relevantes. Requerem consentimento explícito.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="legal-article" id="usamos">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">03</span>
+                                <h2>Cookies que Utilizamos</h2>
+                            </div>
+                            <div class="legal-table-wrap">
+                                <table class="legal-table">
+                                    <thead>
+                                        <tr><th>Cookie</th><th>Tipo</th><th>Finalidade</th><th>Duração</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>idialog_session</code></td>
+                                            <td><span class="legal-badge essential">Essencial</span></td>
+                                            <td>Manutenção da sessão de navegação</td>
+                                            <td>Sessão</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>idialog_consent</code></td>
+                                            <td><span class="legal-badge essential">Essencial</span></td>
+                                            <td>Registra preferências de consentimento de cookies</td>
+                                            <td>1 ano</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>idialog_prefs</code></td>
+                                            <td><span class="legal-badge functional">Funcional</span></td>
+                                            <td>Salva preferências de interface do usuário</td>
+                                            <td>6 meses</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>_ga</code></td>
+                                            <td><span class="legal-badge analytics">Analítico</span></td>
+                                            <td>Google Analytics – distingue usuários únicos</td>
+                                            <td>2 anos</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>_gid</code></td>
+                                            <td><span class="legal-badge analytics">Analítico</span></td>
+                                            <td>Google Analytics – distingue usuários (sessão)</td>
+                                            <td>24 horas</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>_gat</code></td>
+                                            <td><span class="legal-badge analytics">Analítico</span></td>
+                                            <td>Google Analytics – limita a taxa de requisições</td>
+                                            <td>1 minuto</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="legal-article" id="terceiros">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">04</span>
+                                <h2>Cookies de Terceiros</h2>
+                            </div>
+                            <p>Alguns cookies são definidos por serviços de terceiros incorporados ao site:</p>
+                            <ul class="legal-list">
+                                <li><i class="fab fa-google"></i> <strong>Google Analytics</strong> – análise de tráfego e comportamento (<a href="https://policies.google.com/privacy" class="legal-link" target="_blank" rel="noopener">Política do Google</a>)</li>
+                                <li><i class="fab fa-youtube"></i> <strong>YouTube</strong> – quando vídeos são incorporados nas páginas</li>
+                                <li><i class="fab fa-linkedin"></i> <strong>LinkedIn Insight Tag</strong> – análise de desempenho de conteúdo profissional</li>
+                            </ul>
+                            <p>A iDialog não controla os cookies de terceiros. Recomendamos consultar as políticas de privacidade dessas plataformas.</p>
+                        </div>
+
+                        <div class="legal-article" id="controle">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">05</span>
+                                <h2>Controle e Preferências</h2>
+                            </div>
+                            <p>Ao acessar nosso site pela primeira vez, você verá um banner de consentimento de cookies. Você pode:</p>
+                            <ul class="legal-list">
+                                <li><i class="fas fa-check"></i> <strong>Aceitar todos:</strong> habilita cookies essenciais, funcionais, analíticos e de marketing</li>
+                                <li><i class="fas fa-sliders-h"></i> <strong>Personalizar:</strong> escolher quais categorias aceitar individualmente</li>
+                                <li><i class="fas fa-times"></i> <strong>Recusar opcionais:</strong> apenas cookies essenciais serão ativados</li>
+                            </ul>
+                            <p>Suas preferências são salvas por 12 meses. Você pode alterar a qualquer momento clicando em "Preferências de Cookies" no rodapé do site.</p>
+                        </div>
+
+                        <div class="legal-article" id="desativar">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">06</span>
+                                <h2>Como Desativar Cookies no Navegador</h2>
+                            </div>
+                            <p>Você também pode gerenciar cookies diretamente no seu navegador:</p>
+                            <div class="legal-browser-grid">
+                                <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener" class="legal-browser-item">
+                                    <i class="fab fa-chrome"></i><span>Chrome</span>
+                                </a>
+                                <a href="https://support.mozilla.org/pt-BR/kb/cookies-informacoes" target="_blank" rel="noopener" class="legal-browser-item">
+                                    <i class="fab fa-firefox"></i><span>Firefox</span>
+                                </a>
+                                <a href="https://support.apple.com/pt-br/guide/safari/sfri11471/mac" target="_blank" rel="noopener" class="legal-browser-item">
+                                    <i class="fab fa-safari"></i><span>Safari</span>
+                                </a>
+                                <a href="https://support.microsoft.com/pt-br/microsoft-edge/excluir-cookies-no-microsoft-edge" target="_blank" rel="noopener" class="legal-browser-item">
+                                    <i class="fab fa-edge"></i><span>Edge</span>
+                                </a>
+                            </div>
+                            <div class="legal-highlight">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p>Desativar cookies pode afetar funcionalidades do site. Cookies essenciais são necessários para navegação básica.</p>
+                            </div>
+                        </div>
+
+                        <div class="legal-article" id="atualizacoes">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">07</span>
+                                <h2>Atualizações desta Política</h2>
+                            </div>
+                            <p>Esta Política de Cookies pode ser atualizada para refletir mudanças nos serviços ou na legislação. A data de atualização consta no topo deste documento. Alterações significativas serão comunicadas por banner no site.</p>
+                        </div>
+
+                        <div class="legal-article" id="contato-cookies">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">08</span>
+                                <h2>Contato</h2>
+                            </div>
+                            <p>Para dúvidas sobre nossa política de cookies:</p>
+                            <div class="legal-contact-grid">
+                                <a href="mailto:idialog@idialog.com.br" class="legal-contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>idialog@idialog.com.br</span>
+                                </a>
+                                <div class="legal-contact-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Assunto: "Cookies"</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="legal-footer-nav">
+                            <a href="/pages/legal/termos-de-uso.html" class="btn btn-secondary">
+                                <i class="fas fa-file-contract"></i> Termos de Uso
+                            </a>
+                            <a href="/pages/legal/politica-de-privacidade.html" class="btn btn-secondary">
+                                <i class="fas fa-user-shield"></i> Política de Privacidade
+                            </a>
+                        </div>
+
+                    </article>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="../../assets/js/components.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/matrix.js"></script>
+    <script>
+        document.querySelectorAll('.legal-toc-list a').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+        const articles = document.querySelectorAll('.legal-article');
+        const tocLinks = document.querySelectorAll('.legal-toc-list a');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    tocLinks.forEach(l => l.classList.remove('active'));
+                    const active = document.querySelector(`.legal-toc-list a[href="#${entry.target.id}"]`);
+                    if (active) active.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -60% 0px' });
+        articles.forEach(a => observer.observe(a));
+    </script>
+</body>
+</html>

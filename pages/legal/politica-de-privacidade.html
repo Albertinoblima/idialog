@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Política de Privacidade e LGPD - iDialog Soluções Inteligentes">
+    <meta name="robots" content="index, follow">
+    <title>Política de Privacidade - iDialog</title>
+
+    <link rel="icon" type="image/x-icon" href="../../public/icon/1 iDialog icone.ico">
+    <link rel="stylesheet" href="../../src/styles/main.css">
+    <link rel="stylesheet" href="../../src/styles/responsive.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <div id="header-placeholder"></div>
+
+    <main class="main">
+
+        <!-- Page Header -->
+        <section class="legal-page-header">
+            <div class="container">
+                <div class="legal-header-badge">
+                    <i class="fas fa-user-shield"></i> Documentos Legais
+                </div>
+                <h1 class="legal-page-title">Política de Privacidade</h1>
+                <p class="legal-page-subtitle">Em conformidade com a LGPD – Lei nº 13.709/2018 &nbsp;·&nbsp; Última
+                    atualização: <span class="legal-date">Abril de 2026</span></p>
+            </div>
+        </section>
+
+        <section class="legal-section">
+            <div class="container">
+                <div class="legal-layout">
+
+                    <aside class="legal-toc">
+                        <div class="legal-toc-inner">
+                            <h3 class="legal-toc-title"><i class="fas fa-list"></i> Sumário</h3>
+                            <ol class="legal-toc-list">
+                                <li><a href="#controlador">Controlador dos Dados</a></li>
+                                <li><a href="#dados-coletados">Dados Coletados</a></li>
+                                <li><a href="#finalidades">Finalidades do Tratamento</a></li>
+                                <li><a href="#bases-legais">Bases Legais (LGPD)</a></li>
+                                <li><a href="#compartilhamento">Compartilhamento</a></li>
+                                <li><a href="#retencao">Retenção e Eliminação</a></li>
+                                <li><a href="#seguranca">Segurança</a></li>
+                                <li><a href="#direitos">Seus Direitos (LGPD)</a></li>
+                                <li><a href="#transferencia">Transferência Internacional</a></li>
+                                <li><a href="#menores">Menores de Idade</a></li>
+                                <li><a href="#dpo">Encarregado (DPO)</a></li>
+                                <li><a href="#alteracoes">Alterações</a></li>
+                            </ol>
+                        </div>
+                    </aside>
+
+                    <article class="legal-content">
+
+                        <div class="legal-alert legal-alert--privacy">
+                            <i class="fas fa-shield-alt"></i>
+                            <p>A iDialog respeita a privacidade de seus usuários e clientes. Esta política descreve de
+                                forma transparente como coletamos, usamos e protegemos seus dados pessoais, em
+                                conformidade com a <strong>Lei Geral de Proteção de Dados (LGPD)</strong>.</p>
+                        </div>
+
+                        <div class="legal-article" id="controlador">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">01</span>
+                                <h2>Controlador dos Dados</h2>
+                            </div>
+                            <div class="legal-info-card">
+                                <div class="legal-info-row"><span>Razão Social:</span><strong>iDialog Soluções
+                                        Inteligentes</strong></div>
+                                <div class="legal-info-row"><span>Endereço:</span><strong>Alfredo Chaves – ES,
+                                        Brasil</strong></div>
+                                <div class="legal-info-row"><span>E-mail:</span><strong><a
+                                            href="mailto:idialog@idialog.com.br"
+                                            class="legal-link">idialog@idialog.com.br</a></strong></div>
+                                <div class="legal-info-row"><span>Telefone:</span><strong>(27) 99526-0026</strong></div>
+                            </div>
+                        </div>
+
+                        <div class="legal-article" id="dados-coletados">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">02</span>
+                                <h2>Dados Coletados</h2>
+                            </div>
+                            <p>Coletamos diferentes categorias de dados dependendo da sua interação:</p>
+
+                            <div class="legal-table-wrap">
+                                <table class="legal-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Categoria</th>
+                                            <th>Dados</th>
+                                            <th>Origem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Identificação</td>
+                                            <td>Nome, email, telefone, empresa</td>
+                                            <td>Formulários do site</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Navegação</td>
+                                            <td>IP, browser, páginas visitadas, tempo de sessão</td>
+                                            <td>Cookies e logs</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Comunicação</td>
+                                            <td>Mensagens enviadas, histórico de atendimento</td>
+                                            <td>Formulário de contato / chat</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Contratual</td>
+                                            <td>CNPJ, dados fiscais, responsável legal</td>
+                                            <td>Processo de contratação</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Técnicos</td>
+                                            <td>Credenciais de acesso, logs de uso de sistemas</td>
+                                            <td>Plataformas contratadas</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <p>Não coletamos dados sensíveis (origem racial, saúde, biometria, etc.) sem consentimento
+                                explícito e específico.</p>
+                        </div>
+
+                        <div class="legal-article" id="finalidades">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">03</span>
+                                <h2>Finalidades do Tratamento</h2>
+                            </div>
+                            <ul class="legal-list">
+                                <li><i class="fas fa-chevron-right"></i> <strong>Atendimento:</strong> responder
+                                    solicitações, orçamentos e suporte técnico</li>
+                                <li><i class="fas fa-chevron-right"></i> <strong>Execução Contratual:</strong> prestação
+                                    dos serviços contratados</li>
+                                <li><i class="fas fa-chevron-right"></i> <strong>Marketing:</strong> envio de
+                                    newsletters e comunicações (com consentimento)</li>
+                                <li><i class="fas fa-chevron-right"></i> <strong>Melhoria:</strong> análise de uso para
+                                    aprimorar produtos e serviços</li>
+                                <li><i class="fas fa-chevron-right"></i> <strong>Segurança:</strong> prevenção de
+                                    fraudes e proteção dos sistemas</li>
+                                <li><i class="fas fa-chevron-right"></i> <strong>Obrigação Legal:</strong> cumprimento
+                                    de exigências fiscais e regulatórias</li>
+                            </ul>
+                        </div>
+
+                        <div class="legal-article" id="bases-legais">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">04</span>
+                                <h2>Bases Legais (LGPD)</h2>
+                            </div>
+                            <p>Tratamos seus dados com base nas seguintes hipóteses legais do Art. 7º da LGPD:</p>
+                            <div class="legal-bases-grid">
+                                <div class="legal-base-item">
+                                    <i class="fas fa-handshake"></i>
+                                    <h4>Consentimento</h4>
+                                    <p>Para envio de comunicações de marketing e uso de cookies não essenciais.</p>
+                                </div>
+                                <div class="legal-base-item">
+                                    <i class="fas fa-file-contract"></i>
+                                    <h4>Execução Contratual</h4>
+                                    <p>Para prestação dos serviços acordados e cumprimento do contrato.</p>
+                                </div>
+                                <div class="legal-base-item">
+                                    <i class="fas fa-balance-scale"></i>
+                                    <h4>Obrigação Legal</h4>
+                                    <p>Para cumprimento de obrigações fiscais, contábeis e regulatórias.</p>
+                                </div>
+                                <div class="legal-base-item">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <h4>Interesse Legítimo</h4>
+                                    <p>Para segurança dos sistemas, prevenção de fraudes e melhoria dos serviços.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="legal-article" id="compartilhamento">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">05</span>
+                                <h2>Compartilhamento de Dados</h2>
+                            </div>
+                            <p>Seus dados podem ser compartilhados com:</p>
+                            <ul class="legal-list">
+                                <li><i class="fas fa-chevron-right"></i> <strong>Fornecedores de
+                                        infraestrutura:</strong> serviços de hospedagem e cloud (Google Cloud, AWS,
+                                    etc.)</li>
+                                <li><i class="fas fa-chevron-right"></i> <strong>Ferramentas de análise:</strong> Google
+                                    Analytics (dados anonimizados)</li>
+                                <li><i class="fas fa-chevron-right"></i> <strong>Serviços de email:</strong> plataformas
+                                    para envio de comunicações</li>
+                                <li><i class="fas fa-chevron-right"></i> <strong>Autoridades competentes:</strong>
+                                    quando exigido por lei ou ordem judicial</li>
+                            </ul>
+                            <div class="legal-highlight">
+                                <i class="fas fa-lock"></i>
+                                <p><strong>Nunca vendemos seus dados pessoais</strong> a terceiros para fins comerciais.
+                                    Todos os parceiros são obrigados contratualmente a manter a mesma diligência no
+                                    tratamento de dados.</p>
+                            </div>
+                        </div>
+
+                        <div class="legal-article" id="retencao">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">06</span>
+                                <h2>Retenção e Eliminação</h2>
+                            </div>
+                            <p>Mantemos seus dados pelo tempo necessário para cumprir as finalidades descritas:</p>
+                            <div class="legal-table-wrap">
+                                <table class="legal-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo de Dado</th>
+                                            <th>Prazo de Retenção</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Dados de contato (leads)</td>
+                                            <td>2 anos após último contato</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dados contratuais</td>
+                                            <td>5 anos após encerramento</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dados fiscais</td>
+                                            <td>10 anos (obrigação legal)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Logs de navegação</td>
+                                            <td>6 meses</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dados de suporte</td>
+                                            <td>3 anos após resolução</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p>Após os prazos, os dados são eliminados de forma segura ou anonimizados.</p>
+                        </div>
+
+                        <div class="legal-article" id="seguranca">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">07</span>
+                                <h2>Segurança da Informação</h2>
+                            </div>
+                            <p>Adotamos medidas técnicas e organizacionais para proteger seus dados:</p>
+                            <ul class="legal-list">
+                                <li><i class="fas fa-lock"></i> Criptografia em trânsito (TLS 1.3) e em repouso</li>
+                                <li><i class="fas fa-lock"></i> Controle de acesso baseado em funções (RBAC)</li>
+                                <li><i class="fas fa-lock"></i> Monitoramento contínuo de ameaças</li>
+                                <li><i class="fas fa-lock"></i> Backups criptografados e testados regularmente</li>
+                                <li><i class="fas fa-lock"></i> Política de senhas e autenticação multifator</li>
+                                <li><i class="fas fa-lock"></i> Treinamento periódico da equipe em segurança</li>
+                            </ul>
+                            <p>Em caso de incidente que possa causar risco aos titulares, notificaremos a ANPD e os
+                                afetados no prazo legal.</p>
+                        </div>
+
+                        <div class="legal-article" id="direitos">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">08</span>
+                                <h2>Seus Direitos como Titular (LGPD)</h2>
+                            </div>
+                            <p>Conforme o Art. 18 da LGPD, você tem direito a:</p>
+                            <div class="legal-rights-grid">
+                                <div class="legal-right-item"><i class="fas fa-eye"></i>
+                                    <h4>Acesso</h4>
+                                    <p>Confirmar existência e obter cópia dos seus dados</p>
+                                </div>
+                                <div class="legal-right-item"><i class="fas fa-edit"></i>
+                                    <h4>Correção</h4>
+                                    <p>Solicitar atualização de dados incompletos ou inexatos</p>
+                                </div>
+                                <div class="legal-right-item"><i class="fas fa-trash-alt"></i>
+                                    <h4>Eliminação</h4>
+                                    <p>Solicitar exclusão de dados tratados por consentimento</p>
+                                </div>
+                                <div class="legal-right-item"><i class="fas fa-ban"></i>
+                                    <h4>Oposição</h4>
+                                    <p>Opor-se a tratamentos baseados em interesse legítimo</p>
+                                </div>
+                                <div class="legal-right-item"><i class="fas fa-pause-circle"></i>
+                                    <h4>Bloqueio</h4>
+                                    <p>Solicitar suspensão temporária do tratamento</p>
+                                </div>
+                                <div class="legal-right-item"><i class="fas fa-download"></i>
+                                    <h4>Portabilidade</h4>
+                                    <p>Receber seus dados em formato interoperável</p>
+                                </div>
+                                <div class="legal-right-item"><i class="fas fa-undo"></i>
+                                    <h4>Revogação</h4>
+                                    <p>Retirar consentimento a qualquer momento</p>
+                                </div>
+                                <div class="legal-right-item"><i class="fas fa-info-circle"></i>
+                                    <h4>Informação</h4>
+                                    <p>Saber com quem seus dados foram compartilhados</p>
+                                </div>
+                            </div>
+                            <p>Para exercer seus direitos, envie solicitação para <a
+                                    href="mailto:idialog@idialog.com.br" class="legal-link">idialog@idialog.com.br</a>
+                                com assunto "LGPD – [seu direito]". Responderemos em até 15 dias.</p>
+                        </div>
+
+                        <div class="legal-article" id="transferencia">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">09</span>
+                                <h2>Transferência Internacional</h2>
+                            </div>
+                            <p>Alguns serviços de infraestrutura podem envolver transferência de dados para servidores
+                                em outros países. Nesses casos, garantimos que os destinatários ofereçam nível adequado
+                                de proteção ou adotamos cláusulas contratuais padrão conforme exigido pela LGPD e
+                                regulamentação da ANPD.</p>
+                        </div>
+
+                        <div class="legal-article" id="menores">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">10</span>
+                                <h2>Menores de Idade</h2>
+                            </div>
+                            <p>Nossos serviços são direcionados a pessoas maiores de 18 anos. Não coletamos
+                                intencionalmente dados de crianças e adolescentes. Se detectarmos tal coleta
+                                inadvertida, os dados serão imediatamente eliminados.</p>
+                        </div>
+
+                        <div class="legal-article" id="dpo">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">11</span>
+                                <h2>Encarregado de Dados (DPO)</h2>
+                            </div>
+                            <p>Nossa equipe responsável pelo tratamento de dados pessoais pode ser contactada pelo
+                                canal:</p>
+                            <div class="legal-contact-grid">
+                                <a href="mailto:idialog@idialog.com.br" class="legal-contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>idialog@idialog.com.br</span>
+                                </a>
+                                <div class="legal-contact-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Assunto: "LGPD – Privacidade"</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="legal-article" id="alteracoes">
+                            <div class="legal-article-header">
+                                <span class="legal-article-num">12</span>
+                                <h2>Alterações desta Política</h2>
+                            </div>
+                            <p>Esta Política pode ser atualizada periodicamente. A data de última atualização consta no
+                                topo deste documento. Alterações significativas serão comunicadas por email ou aviso no
+                                site.</p>
+                        </div>
+
+                        <div class="legal-footer-nav">
+                            <a href="/pages/legal/termos-de-uso.html" class="btn btn-secondary">
+                                <i class="fas fa-file-contract"></i> Termos de Uso
+                            </a>
+                            <a href="/pages/legal/politica-de-cookies.html" class="btn btn-secondary">
+                                <i class="fas fa-cookie-bite"></i> Política de Cookies
+                            </a>
+                        </div>
+
+                    </article>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="../../assets/js/components.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/matrix.js"></script>
+    <script>
+        document.querySelectorAll('.legal-toc-list a').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+        const articles = document.querySelectorAll('.legal-article');
+        const tocLinks = document.querySelectorAll('.legal-toc-list a');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    tocLinks.forEach(l => l.classList.remove('active'));
+                    const active = document.querySelector(`.legal-toc-list a[href="#${entry.target.id}"]`);
+                    if (active) active.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -60% 0px' });
+        articles.forEach(a => observer.observe(a));
+    </script>
+</body>
+
+</html>
