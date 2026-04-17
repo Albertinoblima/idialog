@@ -1,6 +1,6 @@
 # iDialog - Site Moderno
 
-![Versão](https://img.shields.io/badge/vers%C3%A3o-1.1.0-blue) ![Status](https://img.shields.io/badge/status-em%20produ%C3%A7%C3%A3o-brightgreen) ![Deploy](https://img.shields.io/badge/deploy-Railway-blueviolet) ![Domínio](https://img.shields.io/badge/dom%C3%ADnio-idialog.com.br-informational)
+![Versão](https://img.shields.io/badge/vers%C3%A3o-1.2.0-blue) ![Status](https://img.shields.io/badge/status-em%20produ%C3%A7%C3%A3o-brightgreen) ![Deploy](https://img.shields.io/badge/deploy-Railway-blueviolet) ![Domínio](https://img.shields.io/badge/dom%C3%ADnio-idialog.com.br-informational)
 
 ## 📋 Sobre o Projeto
 
@@ -201,8 +201,9 @@ Para detalhes completos de deploy, consulte [DEPLOY.md](DEPLOY.md).
 - [x] Blog com posts e painel editorial
 - [x] Cases de sucesso
 - [x] Página de equipe
-- [x] Admin CMS interno (`/pages/admin/`)
-- [x] Ferramentas interativas (`/pages/ferramentas/`)
+- [x] Admin CMS interno (`/pages/admin/`) — redesign completo estilo WordPress (v1.2.0)
+- [x] Gestor de Publicidade (widgets/banners) integrado ao painel admin
+- [x] Ferramentas interativas (`/pages/ferramentas/`) com Hub de Gestão lateral
 - [x] Páginas de serviços (públicos e privados)
 - [x] Revista / Concursos
 - [x] Deploy em produção (Railway + domínio próprio)
@@ -230,6 +231,14 @@ Para dúvidas ou suporte técnico:
 
 ---
 
-**Versão 1.1.0 — Em produção desde abril de 2026**
+**Versão 1.2.0 — Atualizado em abril de 2026**
+
+### Histórico de versões
+
+| Versão | Data | Destaques |
+|--------|------|-----------|
+| 1.2.0 | Abr/2026 | Redesign completo do painel admin (estilo WordPress), gestor de widgets/publicidade, fix bugs login e CSS |
+| 1.1.0 | Abr/2026 | Hub de Gestão (ferramentas) com sidebar, deploy Railway, domínio próprio |
+| 1.0.0 | 2025 | Versão inicial em produção |
 
 **Desenvolvido com ❤️ para iDialog**
