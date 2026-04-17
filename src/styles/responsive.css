@@ -63,7 +63,7 @@
         }
     }
 
-    .navbar-nav.active {
+    .navbar-menu.active .navbar-nav {
         left: 0;
     }
 
