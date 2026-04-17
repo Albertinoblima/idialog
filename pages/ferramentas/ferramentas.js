@@ -1256,6 +1256,19 @@
         event.preventDefault();
         const formData = new FormData(el.registerForm);
 
+        const password = formData.get('admin_password');
+        const confirmPassword = formData.get('admin_password_confirm');
+
+        if (password !== confirmPassword) {
+            showToast('As senhas não coincidem.', true);
+            return;
+        }
+
+        if (password.length < 6) {
+            showToast('A senha deve ter pelo menos 6 caracteres.', true);
+            return;
+        }
+
         try {
             const payload = {
                 company: {
@@ -1949,6 +1962,128 @@
         showToast('Sessao encerrada.');
     }
 
+    /* ===========================
+       Auth UI Helpers
+    =========================== */
+
+    function initAuthTabs() {
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', () => switchAuthTab(tab.dataset.authTab));
+        });
+        document.querySelectorAll('[data-auth-go]').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                switchAuthTab(link.dataset.authGo);
+            });
+        });
+    }
+
+    function switchAuthTab(target) {
+        document.querySelectorAll('.auth-tab').forEach(t => {
+            const isActive = t.dataset.authTab === target;
+            t.classList.toggle('active', isActive);
+            t.setAttribute('aria-selected', isActive);
+        });
+        document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+        const panel = document.getElementById('auth-' + target + '-panel');
+        if (panel) panel.classList.add('active');
+    }
+
+    function initPasswordToggles() {
+        document.querySelectorAll('.pwd-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const wrap = btn.closest('.input-password-wrap');
+                const input = wrap.querySelector('input');
+                const icon = btn.querySelector('i');
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                icon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+                btn.classList.toggle('visible', isPassword);
+                btn.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
+            });
+        });
+    }
+
+    function initPasswordStrength() {
+        const pwdInput = document.getElementById('reg-password');
+        const strengthEl = document.getElementById('pwd-strength');
+        if (!pwdInput || !strengthEl) return;
+
+        pwdInput.addEventListener('input', () => {
+            const val = pwdInput.value;
+            let score = 0;
+            if (val.length >= 6) score++;
+            if (val.length >= 8) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+
+            const levels = [
+                { pct: '0%', color: 'rgba(255,255,255,0.08)', label: '' },
+                { pct: '20%', color: '#ff5050', label: 'Fraca' },
+                { pct: '40%', color: '#ff9040', label: 'Regular' },
+                { pct: '60%', color: '#ffd740', label: 'Média' },
+                { pct: '80%', color: '#69f0ae', label: 'Forte' },
+                { pct: '100%', color: '#00e5ff', label: 'Excelente' },
+            ];
+            const level = levels[score] || levels[0];
+            strengthEl.style.setProperty('--strength', level.pct);
+            strengthEl.style.setProperty('--strength-color', level.color);
+            const labelEl = strengthEl.querySelector('.pwd-strength-label');
+            if (labelEl) labelEl.textContent = level.label;
+            checkPasswordMatch();
+        });
+    }
+
+    function initPasswordMatch() {
+        const confirmInput = document.getElementById('reg-password-confirm');
+        if (!confirmInput) return;
+        confirmInput.addEventListener('input', checkPasswordMatch);
+    }
+
+    function checkPasswordMatch() {
+        const pwd = document.getElementById('reg-password');
+        const confirm = document.getElementById('reg-password-confirm');
+        const msg = document.getElementById('pwd-match-msg');
+        if (!pwd || !confirm || !msg) return;
+        if (!confirm.value) {
+            msg.textContent = '';
+            msg.className = 'field-help pwd-match-msg';
+            return;
+        }
+        if (pwd.value === confirm.value) {
+            msg.textContent = '✓ Senhas coincidem';
+            msg.className = 'field-help pwd-match-msg match';
+        } else {
+            msg.textContent = '✗ Senhas não coincidem';
+            msg.className = 'field-help pwd-match-msg no-match';
+        }
+    }
+
+    function initCnpjMask() {
+        const cnpjInput = document.getElementById('cnpj-input');
+        if (!cnpjInput) return;
+        cnpjInput.addEventListener('input', () => {
+            let v = cnpjInput.value.replace(/\D/g, '').slice(0, 14);
+            if (v.length > 12) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/, '$1.$2.$3/$4-$5');
+            else if (v.length > 8) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{0,4})/, '$1.$2.$3/$4');
+            else if (v.length > 5) v = v.replace(/^(\d{2})(\d{3})(\d{0,3})/, '$1.$2.$3');
+            else if (v.length > 2) v = v.replace(/^(\d{2})(\d{0,3})/, '$1.$2');
+            cnpjInput.value = v;
+        });
+    }
+
+    function initPhoneMask() {
+        const phoneInput = document.getElementById('phone-input');
+        if (!phoneInput) return;
+        phoneInput.addEventListener('input', () => {
+            let v = phoneInput.value.replace(/\D/g, '').slice(0, 11);
+            if (v.length > 6) v = v.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+            else if (v.length > 2) v = v.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+            phoneInput.value = v;
+        });
+    }
+
     function bindEvents() {
         el.loginForm.addEventListener('submit', handleLogin);
         el.registerForm.addEventListener('submit', handleRegister);
@@ -1988,6 +2123,12 @@
     function init() {
         syncWidgetFieldVisibility();
         bindEvents();
+        initAuthTabs();
+        initPasswordToggles();
+        initPasswordStrength();
+        initPasswordMatch();
+        initCnpjMask();
+        initPhoneMask();
         restoreSession();
     }
 

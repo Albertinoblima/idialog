@@ -41,54 +41,149 @@
         </section>
 
         <section class="container ferramentas-content">
-            <div id="auth-view" class="panel-grid">
-                <article class="panel-card">
-                    <h2><i class="fas fa-right-to-bracket"></i> Login</h2>
-                    <form id="login-form" class="stack-form">
-                        <label>Email
-                            <input required type="email" name="email" placeholder="admin@empresa.com">
-                        </label>
-                        <label>Senha
-                            <input required type="password" name="password" minlength="6">
-                        </label>
-                        <button class="btn btn-primary" type="submit">Entrar</button>
-                    </form>
-                </article>
+            <div id="auth-view" class="auth-view">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <i class="fas fa-building-shield"></i>
+                    </div>
+                    <h2 class="auth-title">Hub de Gestão <span class="highlight">iDialog</span></h2>
+                    <p class="auth-desc">Plataforma corporativa de gestão estratégica, planejamento e análise
+                        empresarial.</p>
+                </div>
 
-                <article class="panel-card">
-                    <h2><i class="fas fa-building-circle-check"></i> Cadastro de Empresa</h2>
-                    <form id="register-form" class="stack-form">
-                        <label>Nome da empresa
-                            <input required type="text" name="company_name">
-                        </label>
-                        <label>CNPJ
-                            <input type="text" name="cnpj" placeholder="00.000.000/0000-00">
-                        </label>
-                        <label>Email institucional
-                            <input type="email" name="company_email">
-                        </label>
-                        <label>Telefone
-                            <input type="text" name="company_phone">
-                        </label>
-                        <label>Endereco
-                            <input type="text" name="company_address">
-                        </label>
-                        <label>Nome do administrador
-                            <input required type="text" name="admin_name" value="Administrador">
-                        </label>
-                        <label>Email do administrador
-                            <input required type="email" name="admin_email">
-                        </label>
-                        <label>Senha do administrador
-                            <input required type="password" name="admin_password" minlength="6">
-                        </label>
-                        <label>Logo da empresa (opcional)
-                            <input type="file" id="register-logo-file" name="register_logo" accept="image/*">
-                            <small class="field-help">Se enviar agora, a logo ja fica vinculada no cadastro.</small>
-                        </label>
-                        <button class="btn btn-primary" type="submit">Criar empresa</button>
-                    </form>
-                </article>
+                <div class="auth-tabs" role="tablist">
+                    <button class="auth-tab active" data-auth-tab="login" role="tab" aria-selected="true" type="button">
+                        <i class="fas fa-right-to-bracket"></i> Entrar
+                    </button>
+                    <button class="auth-tab" data-auth-tab="register" role="tab" aria-selected="false" type="button">
+                        <i class="fas fa-building-circle-check"></i> Criar Conta
+                    </button>
+                </div>
+
+                <div class="auth-panels">
+                    <article class="auth-panel active" id="auth-login-panel">
+                        <form id="login-form" class="stack-form">
+                            <label>Email corporativo
+                                <input required type="email" name="email" placeholder="admin@empresa.com"
+                                    autocomplete="email">
+                            </label>
+                            <label>Senha
+                                <div class="input-password-wrap">
+                                    <input required type="password" name="password" minlength="6"
+                                        autocomplete="current-password">
+                                    <button type="button" class="pwd-toggle" aria-label="Mostrar senha" tabindex="-1">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </label>
+                            <button class="btn btn-primary btn-auth" type="submit">
+                                <i class="fas fa-arrow-right-to-bracket"></i> Entrar
+                            </button>
+                            <p class="auth-switch">Não possui conta? <a href="#" data-auth-go="register">Crie agora</a>
+                            </p>
+                        </form>
+                    </article>
+
+                    <article class="auth-panel" id="auth-register-panel">
+                        <form id="register-form" class="stack-form">
+                            <fieldset class="auth-fieldset">
+                                <legend><i class="fas fa-building"></i> Dados da Empresa</legend>
+                                <label>Nome da empresa
+                                    <input required type="text" name="company_name"
+                                        placeholder="Razão social ou nome fantasia">
+                                </label>
+                                <label>CNPJ
+                                    <input type="text" name="cnpj" id="cnpj-input" placeholder="00.000.000/0000-00"
+                                        maxlength="18" inputmode="numeric">
+                                </label>
+                                <div class="form-row-2">
+                                    <label>Email institucional
+                                        <input type="email" name="company_email" placeholder="contato@empresa.com"
+                                            autocomplete="email">
+                                    </label>
+                                    <label>Telefone
+                                        <input type="text" name="company_phone" id="phone-input"
+                                            placeholder="(00) 00000-0000" maxlength="15" inputmode="tel">
+                                    </label>
+                                </div>
+                                <label>Endereço
+                                    <input type="text" name="company_address" placeholder="Rua, número - Cidade/UF">
+                                </label>
+                            </fieldset>
+
+                            <fieldset class="auth-fieldset">
+                                <legend><i class="fas fa-user-shield"></i> Administrador</legend>
+                                <label>Nome completo
+                                    <input required type="text" name="admin_name" placeholder="Nome do responsável">
+                                </label>
+                                <label>Email do administrador
+                                    <input required type="email" name="admin_email" placeholder="admin@empresa.com"
+                                        autocomplete="email">
+                                </label>
+                                <label>Senha
+                                    <div class="input-password-wrap">
+                                        <input required type="password" name="admin_password" id="reg-password"
+                                            minlength="6" autocomplete="new-password">
+                                        <button type="button" class="pwd-toggle" aria-label="Mostrar senha"
+                                            tabindex="-1">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="pwd-strength" id="pwd-strength">
+                                        <div class="pwd-strength-bar"></div>
+                                        <span class="pwd-strength-label"></span>
+                                    </div>
+                                </label>
+                                <label>Confirmar senha
+                                    <div class="input-password-wrap">
+                                        <input required type="password" name="admin_password_confirm"
+                                            id="reg-password-confirm" minlength="6" autocomplete="new-password">
+                                        <button type="button" class="pwd-toggle" aria-label="Mostrar senha"
+                                            tabindex="-1">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <small class="field-help pwd-match-msg" id="pwd-match-msg"></small>
+                                </label>
+                            </fieldset>
+
+                            <fieldset class="auth-fieldset">
+                                <legend><i class="fas fa-image"></i> Identidade Visual</legend>
+                                <label>Logo da empresa (opcional)
+                                    <input type="file" id="register-logo-file" name="register_logo" accept="image/*">
+                                    <small class="field-help">Se enviar agora, a logo já fica vinculada no
+                                        cadastro.</small>
+                                </label>
+                            </fieldset>
+
+                            <button class="btn btn-primary btn-auth" type="submit">
+                                <i class="fas fa-building-circle-check"></i> Criar Empresa
+                            </button>
+                            <p class="auth-switch">Já possui conta? <a href="#" data-auth-go="login">Faça login</a></p>
+                        </form>
+                    </article>
+                </div>
+
+                <div class="auth-trust">
+                    <div class="auth-trust-item">
+                        <i class="fas fa-lock"></i>
+                        <span>Dados criptografados</span>
+                    </div>
+                    <div class="auth-trust-item">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>LGPD compliance</span>
+                    </div>
+                    <div class="auth-trust-item">
+                        <i class="fas fa-server"></i>
+                        <span>Infraestrutura segura</span>
+                    </div>
+                    <div class="auth-trust-item">
+                        <i class="fas fa-headset"></i>
+                        <span>Suporte dedicado</span>
+                    </div>
+                </div>
+
+                <p class="auth-copyright">&copy; 2026 iDialog &mdash; Todos os direitos reservados.</p>
             </div>
 
             <section id="dashboard-view" class="dashboard" hidden>
