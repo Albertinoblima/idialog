@@ -1,9 +1,9 @@
 {
     "build": {
-        "builder": "nixpacks"
+        "builder": "dockerfile",
+        "dockerfilePath": "Dockerfile"
     },
     "deploy": {
-        "startCommand": "python backend/app.py",
         "restartPolicyMaxRetries": 5
     }
 }

@@ -1,4 +1,27 @@
 // ===========================
+// Auto-detecção da URL da API
+// ===========================
+(function () {
+    /*
+     * URL do backend Railway — atualize com a URL real do seu serviço.
+     * Formato: https://<nome-do-servico>-production.up.railway.app
+     * Para encontrar: Railway Dashboard → seu projeto → Settings → Domains
+     */
+    var RAILWAY_URL = 'https://idialog-production.up.railway.app';
+
+    var saved = localStorage.getItem('idialog-tools-api');
+    // Se o usuário configurou manualmente uma URL completa, mantém
+    if (saved && saved !== '/api' && saved.startsWith('http')) return;
+
+    var host = location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+        localStorage.setItem('idialog-tools-api', '/api');
+    } else {
+        localStorage.setItem('idialog-tools-api', RAILWAY_URL + '/api');
+    }
+})();
+
+// ===========================
 // Inicialização no DOM pronto (imagens inline)
 // ===========================
 document.addEventListener('DOMContentLoaded', function () {

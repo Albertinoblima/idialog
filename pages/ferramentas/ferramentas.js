@@ -2134,16 +2134,29 @@
     }
 
     async function autoDetectApi() {
-        if (state.apiBase !== '/api') return;
-        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+        // main.js já configurou localStorage com a URL correta
+        var detected = localStorage.getItem('idialog-tools-api');
+        if (detected && detected !== '/api') {
+            state.apiBase = detected;
+        }
+        // Tenta health check; se falhar, mostra painel de config
         try {
-            const resp = await fetch('/api/health', { method: 'GET' });
-            if (resp.ok) return;
-        } catch (_) {}
+            const resp = await fetch(state.apiBase + '/health', { method: 'GET' });
+            if (resp.ok) {
+                if (el.apiStatus) {
+                    el.apiStatus.textContent = '✓ Servidor online';
+                    el.apiStatus.className = 'api-status ok';
+                }
+                return;
+            }
+        } catch (_) { }
         if (el.apiConfigPanel) {
             el.apiConfigPanel.hidden = false;
+            if (el.apiUrlInput) {
+                el.apiUrlInput.value = state.apiBase === '/api' ? '' : state.apiBase;
+            }
             if (el.apiStatus) {
-                el.apiStatus.textContent = '⚠ Configure o servidor para continuar';
+                el.apiStatus.textContent = '⚠ Servidor não respondeu — verifique a URL';
                 el.apiStatus.className = 'api-status error';
             }
         }
