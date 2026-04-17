@@ -8,7 +8,7 @@
     <meta name="owner" content="Albertino Bezerra Lima - iDialog">
     <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
     <meta name="contact" content="albertinoblima@gmail.com">
-  <title>Simulado Lógica Sentencial — Equivalências Lógicas · Técnico Judiciário TJPE · Banca IBFC</title>
+  <title>Simulado Lógica Sentencial — Equivalências Lógicas</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
     rel="stylesheet">
@@ -19,8 +19,8 @@
 
   <!-- COVER -->
   <div id="cover">
-    <div class="cv-issue">Simulado Técnico · Edital 01/2025 · Banca IBFC</div>
-    <h1><em>Equivalências Lógicas</em><br>12 Questões Comentadas (Padrão IBFC)</h1>
+    <div class="cv-issue">Simulado de Reforço</div>
+    <h1><em>Equivalências Lógicas</em><br>12 Questões Comentadas </h1>
     <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição
       inteligente das áreas com dificuldade.</p>
     <div class="cv-tags">
@@ -99,12 +99,12 @@
       TV: { bg: '#EAF3DE', c: '#173404' }
     };
 
-    // ── 12 QUESTÕES DE EQUIVALÊNCIAS LÓGICAS (REFORÇO RLM — PADRÃO IBFC) ─────
+    // ── 12 QUESTÕES DE EQUIVALÊNCIAS LÓGICAS (REFORÇO RLM — ) ─────
     const ALL = [
       {
         id: 'EC01', topic: 'EC', dif: 'l',
-        text: 'A proposição "Se eu estudar, então passarei no TJPE" é logicamente equivalente a:',
-        opts: ['Eu não estudo ou passarei no TJPE.', 'Eu estudo e passarei no TJPE.', 'Se eu não estudar, então não passarei no TJPE.', 'Eu estudo ou passarei no TJPE.'],
+        text: 'A proposição "Se eu estudar, então passarei no concurso" é logicamente equivalente a:',
+        opts: ['Eu não estudo ou passarei no concurso.', 'Eu estudo e passarei no concurso.', 'Se eu não estudar, então não passarei no concurso.', 'Eu estudo ou passarei no concurso.'],
         ans: 0,
         exp: 'P → Q ≡ ¬P ∨ Q (equivalência fundamental da condicional). A alternativa A é a forma disjuntiva equivalente.',
         erros: ['CORRETA — P → Q ≡ ¬P ∨ Q. Leia: "não estudo OU passo". É a equivalência fundamental da condicional: negue o antecedente e faça disjunção com o consequente.', 'ERRADA: P ∧ Q ("eu estudo E passo") é uma CONJUNÇÃO, não uma equivalência da condicional. A conjunção exige que ambas sejam verdadeiras simultaneamente, enquanto a condicional só é falsa no caso V → F. As tabelas-verdade são completamente diferentes.', 'ERRADA: "Se NÃO estudo, NÃO passo" é a INVERSA da original (¬P → ¬Q), que NÃO é equivalente a P → Q. Cuidado: a inversa é diferente da contrapositiva! A CONTRAPOSITIVA seria ¬Q → ¬P ("Se NÃO passo, NÃO estudo") — essa sim é equivalente, mas não é o que a alternativa diz.', 'ERRADA: "Eu estudo OU passo" (P ∨ Q) é uma disjunção das afirmações originais, sem negar nenhuma. A equivalência correta exige a NEGAÇÃO do antecedente: ¬P ∨ Q ("NÃO estudo OU passo"). Sem o "não" na primeira parte, a tabela-verdade difere.'],
@@ -118,7 +118,7 @@
         ans: 1,
         exp: 'P → Q = V → F = F. ¬P ∨ Q = F ∨ F = F. Ambas falsas → equivalentes.',
         erros: ['ERRADA: P ∧ Q = V ∧ F = F. Embora o resultado seja F (igual a P → Q), isso sozinho não prova equivalência. Você precisa verificar TODAS as combinações, não só uma. E a conjunção NÃO é equivalente à condicional — compare: quando P=F e Q=V, a condicional dá V mas a conjunção dá F.', 'CORRETA — P → Q = V → F = F. ¬P ∨ Q = ¬V ∨ F = F ∨ F = F. Neste caso, ambas são F. E em TODAS as combinações de V/F, os valores coincidem. Por isso são equivalentes.', 'ERRADA: P ∨ ¬Q = V ∨ ¬F = V ∨ V = V. Mas P → Q = V → F = F. Resultados diferentes (V ≠ F), portanto NÃO são equivalentes. Compare sempre os resultados com os mesmos valores de P e Q.', 'ERRADA: ¬P ∧ ¬Q = F ∧ V = F. Embora aqui dê F (igual a P → Q), testando P=F e Q=F: ¬P ∧ ¬Q = V ∧ V = V, enquanto P → Q = F → F = V. Coincide neste caso, mas em P=F e Q=V: ¬P ∧ ¬Q = V ∧ F = F, enquanto P → Q = F → V = V. Diferem! Não são equivalentes.'],
-        tip: 'IBFC cobra: verifique com valores concretos para confirmar equivalência.',
+        tip: 'Costuma cair em prova: verifique com valores concretos para confirmar equivalência.',
         tiptype: 'cm-gold'
       },
       {
@@ -158,7 +158,7 @@
         ans: 3,
         exp: 'Bicondicional é exatamente a conjunção das duas condicionais.',
         erros: ['ERRADA: esta é apenas UMA das condicionais ("ida": processo digital → internet funciona). O bicondicional exige a IDA E a VOLTA. Falta a condicional "se internet funciona, então processo é digital" (a "volta"). Uma condicional simples é mais fraca que o bicondicional.', 'ERRADA: "processo digital OU internet não funciona" (P ∨ ¬Q) não é equivalente ao bicondicional. Essa é uma disjunção com uma negação parcial. Para equivaler ao bicondicional, precisaríamos de (P → Q) ∧ (Q → P), que é bem diferente de uma disjunção simples.', 'ERRADA: "Se processo NÃO é digital, internet NÃO funciona" (¬P → ¬Q) é a INVERSA da original (P → Q). A inversa não é equivalente à original, e também não é equivalente ao bicondicional. O bicondicional requer (P → Q) ∧ (Q → P), não uma única condicional invertida.', 'CORRETA — P ↔ Q ≡ (P → Q) ∧ (Q → P). O bicondicional "se e somente se" é a conjunção de duas condicionais recíprocas: ida ("se p digital, internet funciona") E volta ("se internet funciona, p digital").'],
-        tip: 'IBFC adora testar a forma expandida do bicondicional.',
+        tip: 'Bancas adoram testar a forma expandida do bicondicional.',
         tiptype: 'cm-purple'
       },
       {
@@ -198,7 +198,7 @@
         ans: 1,
         exp: '¬(P ∧ Q) ≡ ¬P ∨ ¬Q.',
         erros: ['ERRADA: esta alternativa mantém a CONJUNÇÃO (∧ / "e") — "não é culpado E não mentiu" = ¬P ∧ ¬Q. Isso é a 2ª Lei de De Morgan (¬(P ∨ Q)), não a 1ª. Na negação do "E", o conectivo deve trocar para "OU". Nega, nega e TROCA o conectivo.', 'CORRETA — ¬(P ∧ Q) ≡ ¬P ∨ ¬Q. "O réu NÃO é culpado OU a testemunha NÃO mentiu." Negou cada parte e trocou "E" por "OU" (1ª Lei de De Morgan).', 'ERRADA: a condicional (¬P → ¬Q) não é resultado de De Morgan. De Morgan transforma conjunção/disjunção, não gera condicional. A negação de "P E Q" nunca resulta em "Se...então". sempre resulta em "nãoP OU nãoQ".', 'ERRADA: "O réu é culpado OU a testemunha não mentiu" = P ∨ ¬Q. Aqui, você só negou Q (testemunha) mas manteve P (réu) afirmado. De Morgan exige negar AMBAS as proposições: ¬P ∨ ¬Q, não P ∨ ¬Q.'],
-        tip: 'De Morgan é uma das equivalências mais cobradas pela IBFC.',
+        tip: 'De Morgan é uma das equivalências mais cobradas em provas.',
         tiptype: 'cm-teal'
       },
       {

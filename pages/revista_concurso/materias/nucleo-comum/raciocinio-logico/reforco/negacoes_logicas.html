@@ -8,7 +8,7 @@
     <meta name="owner" content="Albertino Bezerra Lima - iDialog">
     <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
     <meta name="contact" content="albertinoblima@gmail.com">
-  <title>Simulado Lógica Sentencial — Negações Lógicas (Padrão IBFC) · Técnico Judiciário TJPE · Banca IBFC</title>
+  <title>Simulado Lógica Sentencial — Negações Lógicas </title>
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap"
     rel="stylesheet">
@@ -19,8 +19,8 @@
 
   <!-- COVER -->
   <div id="cover">
-    <div class="cv-issue">Simulado Técnico · Edital 01/2025 · Banca IBFC</div>
-    <h1><em>Negações Lógicas</em><br>12 Questões Comentadas (Padrão IBFC)</h1>
+    <div class="cv-issue">Simulado de Reforço</div>
+    <h1><em>Negações Lógicas</em><br>12 Questões Comentadas </h1>
     <p class="cv-sub">Simulado adaptativo com gabarito fundamentado, erros por alternativa, narração em voz e repetição inteligente das áreas com dificuldade.</p>
     <div class="cv-tags">
       <span class="cv-tag">Negação Categórica</span>
@@ -98,7 +98,7 @@
       DE: { bg: '#EAF3DE', c: '#173404' }
     };
 
-    // ── 12 QUESTÕES DE NEGAÇÕES LÓGICAS (PADRÃO IBFC) ────────────────────────
+    // ── 12 QUESTÕES DE NEGAÇÕES LÓGICAS  ────────────────────────
     const ALL = [
       {
         id: 'NC01', topic: 'NC', dif: 'l',
@@ -137,7 +137,7 @@
         ans: 0,
         exp: '"É falso que..." indica negação. Aplicando De Morgan no "e", temos "não P ou não Q".',
         erros: ['CORRETA.', 'Mantém "e" — erro.', 'Condicional — não é negação.', 'Afirmação, não negação.'],
-        tip: 'A IBFC costuma usar "É falso que" para introduzir a questão.',
+        tip: 'Bancas costumam usar "É falso que" para introduzir a questão.',
         tiptype: 'cm-teal'
       },
       {
@@ -162,8 +162,8 @@
       },
       {
         id: 'CD01', topic: 'CD', dif: 'l',
-        text: 'A negação lógica de "Se eu estudar, então passarei no TJPE" é:',
-        opts: ['Se eu não estudar, então não passarei no TJPE.', 'Eu estudo e não passo no TJPE.', 'Eu não estudo e passo no TJPE.', 'Se eu passar no TJPE, então estudei.'],
+        text: 'A negação lógica de "Se eu estudar, então passarei no concurso" é:',
+        opts: ['Se eu não estudar, então não passarei no concurso.', 'Eu estudo e não passo no concurso.', 'Eu não estudo e passo no concurso.', 'Se eu passar no concurso, então estudei.'],
         ans: 1,
         exp: 'Regra do MANÉ (MAntém a primeira E NEga a segunda). ¬(P → Q) ⇔ P ∧ ¬Q.',
         erros: ['Condicional invertida — não é negação.', 'CORRETA.', 'Negação errada.', 'Condicional — não é negação.'],

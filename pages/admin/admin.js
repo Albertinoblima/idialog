@@ -1034,6 +1034,186 @@
         showToast('Servidor nao respondeu. Verifique se o backend esta online.', true);
     }
 
+    // ── Widgets CRUD ──────────────────────────────────────────────────────────
+    function syncWidgetFieldVisibility() {
+        if (!el.widgetType || !el.widgetMediaFields || !el.widgetCodeFields) return;
+        var isCode = el.widgetType.value === 'code';
+        el.widgetMediaFields.hidden = isCode;
+        el.widgetCodeFields.hidden = !isCode;
+    }
+
+    async function refreshWidgets() {
+        try {
+            var response = await request('/widgets', { method: 'GET' });
+            state.widgets = response.widgets || [];
+            renderWidgets();
+        } catch (_err) {
+            state.widgets = [];
+        }
+    }
+
+    function renderWidgets() {
+        if (!el.widgetsList) return;
+        if (!state.widgets.length) {
+            el.widgetsList.innerHTML = '<p>Nenhum widget cadastrado.</p>';
+            return;
+        }
+        el.widgetsList.innerHTML = state.widgets.map(function (w) {
+            var statusClass = w.is_active ? 'is-live' : 'is-paused';
+            var statusLabel = w.is_active ? 'Ativo' : 'Inativo';
+            var placementLabels = {
+                top_banner: 'Banner superior',
+                prefooter_banner: 'Banner rodape',
+                content_square: 'Quadrado conteudo',
+                sidebar_square: 'Quadrado lateral',
+            };
+            return '<div class="content-item" data-widget-id="' + w.id + '">' +
+                '<div class="content-item-header">' +
+                '<div>' +
+                '<div class="content-item-title">' + escapeHtml(w.name) + '</div>' +
+                '<div class="widget-item-meta">' +
+                '<span class="widget-chip">' + escapeHtml(placementLabels[w.placement] || w.placement) + '</span>' +
+                '<span class="widget-chip">' + escapeHtml(w.scope || 'all') + '</span>' +
+                '<span class="widget-chip ' + statusClass + '">' + statusLabel + '</span>' +
+                '</div></div>' +
+                '<div class="plan-item-actions">' +
+                '<button type="button" class="mini-btn" data-action="edit-widget">Editar</button>' +
+                '<button type="button" class="mini-btn" data-action="delete-widget">Excluir</button>' +
+                '</div></div></div>';
+        }).join('');
+    }
+
+    function fillWidgetForm(widget) {
+        if (!el.widgetForm || !widget) return;
+        el.widgetForm.elements.widget_id.value = widget.id || '';
+        el.widgetForm.elements.current_media_path.value = widget.media_path || '';
+        el.widgetForm.elements.name.value = widget.name || '';
+        el.widgetForm.elements.title.value = widget.title || '';
+        el.widgetForm.elements.placement.value = widget.placement || 'top_banner';
+        el.widgetForm.elements.scope.value = widget.scope || 'all';
+        el.widgetForm.elements.widget_type.value = widget.widget_type || 'image';
+        el.widgetForm.elements.display_order.value = widget.display_order || 0;
+        el.widgetForm.elements.target_url.value = widget.target_url || '';
+        el.widgetForm.elements.alt_text.value = widget.alt_text || '';
+        el.widgetForm.elements.embed_code.value = widget.embed_code || '';
+        el.widgetForm.elements.is_active.checked = widget.is_active !== false;
+        if (widget.media_url && el.widgetPreview) {
+            el.widgetPreview.src = widget.media_url;
+            el.widgetPreview.hidden = false;
+        } else if (el.widgetPreview) {
+            el.widgetPreview.hidden = true;
+        }
+        syncWidgetFieldVisibility();
+    }
+
+    function clearWidgetForm() {
+        if (!el.widgetForm) return;
+        el.widgetForm.reset();
+        el.widgetForm.elements.widget_id.value = '';
+        el.widgetForm.elements.current_media_path.value = '';
+        if (el.widgetPreview) {
+            el.widgetPreview.hidden = true;
+            el.widgetPreview.removeAttribute('src');
+        }
+        syncWidgetFieldVisibility();
+    }
+
+    async function handleWidgetSave(event) {
+        event.preventDefault();
+        var formData = new FormData(el.widgetForm);
+        var widgetId = formData.get('widget_id');
+
+        try {
+            var uploadedMedia = null;
+            if (el.widgetMediaFile && el.widgetMediaFile.files && el.widgetMediaFile.files.length) {
+                var mediaPayload = new FormData();
+                mediaPayload.append('media', el.widgetMediaFile.files[0]);
+                uploadedMedia = await request('/widgets/media', { method: 'POST', body: mediaPayload });
+            }
+
+            var widgetType = formData.get('widget_type');
+            var payload = {
+                name: formData.get('name'),
+                title: formData.get('title'),
+                placement: formData.get('placement'),
+                scope: formData.get('scope'),
+                widget_type: widgetType,
+                media_path: uploadedMedia && uploadedMedia.media_path ? uploadedMedia.media_path : formData.get('current_media_path'),
+                target_url: formData.get('target_url'),
+                alt_text: formData.get('alt_text'),
+                embed_code: widgetType === 'code' ? formData.get('embed_code') : '',
+                display_order: Number(formData.get('display_order') || 0),
+                is_active: formData.get('is_active') === 'on',
+            };
+
+            if (widgetId) {
+                await request('/widgets/' + widgetId, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                showToast('Widget atualizado.');
+            } else {
+                await request('/widgets', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                showToast('Widget criado.');
+            }
+
+            clearWidgetForm();
+            await refreshWidgets();
+            populateKpis();
+        } catch (error) {
+            showToast(error.message, true);
+        }
+    }
+
+    async function handleWidgetActions(event) {
+        var target = event.target;
+        if (!(target instanceof HTMLButtonElement)) return;
+        var action = target.dataset.action;
+        if (!action) return;
+        var wrapper = target.closest('[data-widget-id]');
+        if (!wrapper) return;
+        var widgetId = wrapper.getAttribute('data-widget-id');
+        var widget = state.widgets.find(function (w) { return String(w.id) === String(widgetId); });
+        if (!widget) return;
+
+        try {
+            if (action === 'edit-widget') {
+                fillWidgetForm(widget);
+                showToast('Widget carregado para edicao.');
+                return;
+            }
+            if (action === 'delete-widget') {
+                if (!window.confirm('Excluir este widget?')) return;
+                await request('/widgets/' + widget.id, { method: 'DELETE' });
+                clearWidgetForm();
+                await refreshWidgets();
+                populateKpis();
+                showToast('Widget excluido.');
+            }
+        } catch (error) {
+            showToast(error.message, true);
+        }
+    }
+
+    // ── API Auto-detect ───────────────────────────────────────────────────────
+    async function autoDetectApi() {
+        var detected = localStorage.getItem('idialog-tools-api');
+        if (detected && detected !== '/api') {
+            state.apiBase = detected;
+            localStorage.setItem(ADMIN_API_KEY, detected);
+        }
+        try {
+            var resp = await fetch(state.apiBase + '/health', { method: 'GET' });
+            if (resp.ok) return;
+        } catch (_) { }
+        showToast('Servidor nao respondeu. Verifique se o backend esta online.', true);
+    }
+
     // ── Bootstrap ─────────────────────────────────────────────────────────────
     function bindEvents() {
         if (el.loginForm) {
