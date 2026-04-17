@@ -2,921 +2,1116 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="author" content="Albertino Bezerra Lima">
-  <meta name="owner" content="Albertino Bezerra Lima - iDialog">
-  <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
-  <meta name="contact" content="albertinoblima@gmail.com">
-  <title>Revista do Concurseiro · Aprova Concursos</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    /* ═══════════════════════════════════════════════════════════════
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Albertino Bezerra Lima">
+    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+    <meta name="contact" content="albertinoblima@gmail.com">
+    <title>Revista do Concurseiro · Aprova Concursos</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Fira+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
        APROVA CONCURSOS · REVISTA DO CONCURSEIRO
        Visual de revista impressa de qualidade editorial
     ═══════════════════════════════════════════════════════════════ */
-    :root {
-      --ink:       #1a1209;
-      --ink2:      #3d3020;
-      --ink3:      #6b5b43;
-      --paper:     #faf7f2;
-      --paper2:    #f2ede4;
-      --paper3:    #e8e0d2;
-      --rule:      #cfc3af;
-      --gold:      #b8860b;
-      --gold-d:    #8b6508;
-      --gold-l:    #d4a017;
-      --red:       #8b1a1a;
-      --blue:      #1a3a5c;
-      --teal:      #14504a;
-      --drop-cap:  #8b1a1a;
-
-      --font-display: 'Playfair Display', 'Georgia', serif;
-      --font-body:    'EB Garamond', 'Georgia', serif;
-      --font-sans:    'DM Sans', system-ui, sans-serif;
-      --font-mono:    'Fira Mono', monospace;
-
-      --col-w: 680px;
-      --page-max: 860px;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--paper3);
-      color: var(--ink);
-      font-family: var(--font-body);
-      font-size: 18px;
-      line-height: 1.75;
-    }
-
-    /* ── CAPA / MASTHEAD ───────────────────────────────────────────────────────── */
-    .masthead {
-      background: var(--ink);
-      color: var(--paper);
-      text-align: center;
-      padding: 0;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 6px solid var(--gold);
-    }
-
-    .masthead-topbar {
-      background: var(--gold-d);
-      font-family: var(--font-sans);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      color: #fff;
-      padding: 7px 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .masthead-topbar a {
-      color: rgba(255,255,255,.75);
-      text-decoration: none;
-      font-size: 11px;
-    }
-
-    .masthead-topbar a:hover { color: #fff; }
-
-    .masthead-body {
-      padding: 3.5rem 2rem 3rem;
-      position: relative;
-    }
-
-    .masthead-body::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 70% 80% at 50% 100%, rgba(184,134,11,.18) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .masthead-kicker {
-      font-family: var(--font-sans);
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: .35em;
-      text-transform: uppercase;
-      color: var(--gold-l);
-      margin-bottom: 1rem;
-    }
-
-    .masthead-title {
-      font-family: var(--font-display);
-      font-size: clamp(3rem, 8vw, 6.5rem);
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -.01em;
-      color: #fff;
-      margin-bottom: .25rem;
-    }
-
-    .masthead-title em {
-      font-style: italic;
-      color: var(--gold-l);
-    }
-
-    .masthead-subtitle {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: clamp(.9rem, 2vw, 1.15rem);
-      color: rgba(255,255,255,.65);
-      margin-bottom: 1.75rem;
-      letter-spacing: .02em;
-    }
-
-    .masthead-meta {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      font-family: var(--font-sans);
-      font-size: 11px;
-      color: rgba(255,255,255,.5);
-      letter-spacing: .1em;
-    }
-
-    .masthead-meta-item { display: flex; align-items: center; gap: .35rem; }
-    .masthead-meta-item i { color: var(--gold); }
-
-    .masthead-rule {
-      width: 80px;
-      height: 3px;
-      background: var(--gold);
-      margin: 1.25rem auto;
-    }
-
-    /* ── NAV / ÍNDICE ─────────────────────────────────────────────────────────── */
-    .toc-bar {
-      background: var(--paper2);
-      border-bottom: 1px solid var(--rule);
-      padding: .6rem 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1.75rem;
-      flex-wrap: wrap;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      font-family: var(--font-sans);
-    }
-
-    .toc-bar a {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: var(--ink3);
-      text-decoration: none;
-      padding: .25rem 0;
-      border-bottom: 2px solid transparent;
-      transition: color .15s, border-color .15s;
-    }
-
-    .toc-bar a:hover { color: var(--gold-d); border-bottom-color: var(--gold); }
-
-    .toc-bar a.toc-home { margin-right: auto; color: var(--ink2); }
-
-    /* ── PAGE WRAPPER ────────────────────────────────────────────────────────── */
-    .page-wrap {
-      max-width: var(--page-max);
-      margin: 0 auto;
-      background: var(--paper);
-      box-shadow: 0 0 60px rgba(0,0,0,.22);
-      min-height: 100vh;
-    }
-
-    /* ── ARTIGO GENÉRICO ─────────────────────────────────────────────────────── */
-    .article {
-      padding: 4rem 2.5rem;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .article:last-child { border-bottom: none; }
-
-    /* ── SECTION LABEL ───────────────────────────────────────────────────────── */
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: .45rem;
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .35em;
-      text-transform: uppercase;
-      color: var(--paper);
-      background: var(--gold-d);
-      padding: 4px 12px;
-      margin-bottom: 1.5rem;
-    }
-
-    /* ── ARTICLE HEADER ──────────────────────────────────────────────────────── */
-    .article-header { margin-bottom: 2rem; }
-
-    .article-title {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 700;
-      line-height: 1.12;
-      color: var(--ink);
-      margin-bottom: .6rem;
-    }
-
-    .article-title em { font-style: italic; color: var(--gold-d); }
-
-    .article-deck {
-      font-family: var(--font-body);
-      font-size: 1.2rem;
-      font-style: italic;
-      color: var(--ink3);
-      line-height: 1.55;
-      border-left: 4px solid var(--gold);
-      padding-left: 1.1rem;
-      margin: 1.25rem 0 1.75rem;
-    }
-
-    .article-byline {
-      font-family: var(--font-sans);
-      font-size: 11.5px;
-      color: var(--ink3);
-      letter-spacing: .06em;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .byline-name { font-weight: 700; color: var(--ink2); }
-
-    .byline-sep { color: var(--rule); }
-
-    .article-rule {
-      height: 1px;
-      background: linear-gradient(to right, var(--gold), transparent);
-      margin: 1.75rem 0;
-    }
-
-    /* ── EDITORIAL GRID ──────────────────────────────────────────────────────── */
-    .editorial-intro {
-      column-count: 2;
-      column-gap: 2.5rem;
-      column-rule: 1px solid var(--rule);
-      text-align: justify;
-      hyphens: auto;
-    }
-
-    @media (max-width: 620px) {
-      .editorial-intro { column-count: 1; }
-    }
-
-    /* Drop cap */
-    .editorial-intro > p:first-child::first-letter {
-      font-family: var(--font-display);
-      font-size: 5.5em;
-      font-weight: 900;
-      color: var(--drop-cap);
-      float: left;
-      line-height: .75;
-      margin-right: .08em;
-      margin-top: .06em;
-    }
-
-    /* ── BODY TYPOGRAPHY ─────────────────────────────────────────────────────── */
-    .article p {
-      margin-bottom: 1.1rem;
-      text-align: justify;
-      hyphens: auto;
-    }
-
-    .article p:last-child { margin-bottom: 0; }
-
-    .article strong { color: var(--ink2); }
-
-    .article em { color: var(--gold-d); font-style: italic; }
-
-    /* ── LEAD PARAGRAPH ──────────────────────────────────────────────────────── */
-    .p-lead {
-      font-size: 1.2rem;
-      line-height: 1.65;
-      color: var(--ink2);
-      font-weight: 500;
-      margin-bottom: 1.5rem !important;
-    }
-
-    /* ── PULL QUOTE ──────────────────────────────────────────────────────────── */
-    .pull-quote {
-      margin: 2.5rem -1rem;
-      padding: 1.75rem 2rem;
-      border-top: 3px solid var(--gold);
-      border-bottom: 1px solid var(--rule);
-      text-align: center;
-    }
-
-    .pull-quote p {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 1.5rem;
-      line-height: 1.45;
-      color: var(--ink2);
-      text-align: center !important;
-      hyphens: none;
-    }
-
-    .pull-quote cite {
-      display: block;
-      margin-top: .75rem;
-      font-family: var(--font-sans);
-      font-size: 11px;
-      font-style: normal;
-      font-weight: 700;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--gold-d);
-    }
-
-    /* ── BANCA CARDS (Seção especial) ────────────────────────────────────────── */
-    .bancas-intro {
-      font-family: var(--font-body);
-      font-size: 1.1rem;
-      font-style: italic;
-      color: var(--ink3);
-      line-height: 1.65;
-      margin-bottom: 2.5rem;
-      padding: 1.25rem 1.5rem;
-      background: var(--paper2);
-      border-left: 4px solid var(--gold-d);
-    }
-
-    .banca-entry {
-      margin-bottom: 3.5rem;
-      padding-bottom: 3rem;
-      border-bottom: 1px dashed var(--rule);
-    }
-
-    .banca-entry:last-child { border-bottom: none; margin-bottom: 0; }
-
-    .banca-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 1.25rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .banca-num {
-      flex-shrink: 0;
-      width: 52px;
-      height: 52px;
-      background: var(--ink);
-      color: var(--gold-l);
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 2px;
-    }
-
-    .banca-head-text {}
-
-    .banca-name {
-      font-family: var(--font-display);
-      font-size: 1.75rem;
-      font-weight: 700;
-      line-height: 1.1;
-      color: var(--ink);
-    }
-
-    .banca-longname {
-      font-family: var(--font-sans);
-      font-size: 11.5px;
-      color: var(--ink3);
-      margin-top: .2rem;
-      font-style: italic;
-    }
-
-    .banca-tagline {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 1.1rem;
-      color: var(--gold-d);
-      margin: 1rem 0 1.25rem;
-      padding-left: 1rem;
-      border-left: 3px solid var(--gold);
-    }
-
-    .banca-body {
-      column-count: 2;
-      column-gap: 2.25rem;
-      column-rule: 1px solid var(--rule);
-    }
-
-    @media (max-width: 640px) {
-      .banca-body { column-count: 1; }
-    }
-
-    .banca-topic {
-      break-inside: avoid;
-      margin-bottom: 1.1rem;
-    }
-
-    .banca-topic-label {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: .25rem;
-    }
-
-    .banca-marca {
-      break-inside: avoid;
-      background: var(--paper2);
-      border: 1px solid var(--paper3);
-      border-radius: 3px;
-      padding: .8rem 1rem;
-      margin-top: .85rem;
-      font-size: .9rem;
-    }
-
-    .banca-marca-label {
-      font-family: var(--font-sans);
-      font-size: 9.5px;
-      font-weight: 800;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--gold-d);
-      margin-bottom: .4rem;
-    }
-
-    /* ── TABELA COMPARATIVA ──────────────────────────────────────────────────── */
-    .table-wrap {
-      overflow-x: auto;
-      margin: 2.5rem -1rem;
-      border: 1px solid var(--rule);
-    }
-
-    .comp-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: var(--font-sans);
-      font-size: .85rem;
-    }
-
-    .comp-table caption {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: .95rem;
-      color: var(--ink3);
-      padding: .75rem 1rem;
-      text-align: left;
-      background: var(--paper2);
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .comp-table th {
-      background: var(--ink);
-      color: var(--gold-l);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      padding: .75rem 1rem;
-      text-align: left;
-    }
-
-    .comp-table td {
-      padding: .7rem 1rem;
-      border-bottom: 1px solid var(--paper3);
-      vertical-align: top;
-      color: var(--ink2);
-      line-height: 1.5;
-    }
-
-    .comp-table tr:nth-child(even) td { background: var(--paper2); }
-
-    .comp-table td:first-child {
-      font-weight: 700;
-      color: var(--ink);
-      font-family: var(--font-display);
-      font-size: .95rem;
-      white-space: nowrap;
-    }
-
-    .level-badge {
-      display: inline-block;
-      padding: 2px 9px;
-      border-radius: 99px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .05em;
-    }
-
-    .level-high     { background: #fceaea; color: #7a1515; }
-    .level-vhigh    { background: #e8f0fa; color: #0c3a6e; }
-    .level-medhigh  { background: #e3f5ef; color: #085041; }
-    .level-med      { background: #fff3dc; color: #6a4800; }
-
-    /* ── CONCLUSÃO BOX ───────────────────────────────────────────────────────── */
-    .conclusion-box {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 2.5rem 2rem;
-      margin: 3rem -1rem 0;
-      border-radius: 2px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .conclusion-box::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(to right, var(--gold), var(--gold-l), var(--gold));
-    }
-
-    .conclusion-box h3 {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      color: var(--gold-l);
-      margin-bottom: .85rem;
-    }
-
-    .conclusion-box p {
-      font-size: .95rem;
-      line-height: 1.75;
-      color: rgba(250,247,242,.82);
-      margin-bottom: .9rem;
-      text-align: left !important;
-      hyphens: none;
-    }
-
-    .conclusion-box p:last-child { margin-bottom: 0; }
-
-    /* ── FOOTER DA REVISTA ───────────────────────────────────────────────────── */
-    .revista-footer {
-      background: var(--ink);
-      color: rgba(255,255,255,.4);
-      font-family: var(--font-sans);
-      font-size: 11px;
-      text-align: center;
-      padding: 1.75rem 2rem;
-      letter-spacing: .08em;
-    }
-
-    .revista-footer a {
-      color: var(--gold);
-      text-decoration: none;
-    }
-
-    /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
-    @media (max-width: 700px) {
-      .article { padding: 2.5rem 1.25rem; }
-      .pull-quote { margin: 2rem -.5rem; }
-      .table-wrap { margin: 2rem -.5rem; }
-      .conclusion-box { margin: 2rem -.5rem 0; padding: 2rem 1.25rem; }
-    }
-
-    @media (max-width: 480px) {
-      .masthead-meta { gap: .9rem; }
-      .banca-header { flex-direction: column; gap: .75rem; }
-      .banca-num { width: 42px; height: 42px; font-size: 1.2rem; }
-    }
-  </style>
+        :root {
+            --ink: #1a1209;
+            --ink2: #3d3020;
+            --ink3: #6b5b43;
+            --paper: #faf7f2;
+            --paper2: #f2ede4;
+            --paper3: #e8e0d2;
+            --rule: #cfc3af;
+            --gold: #b8860b;
+            --gold-d: #8b6508;
+            --gold-l: #d4a017;
+            --red: #8b1a1a;
+            --blue: #1a3a5c;
+            --teal: #14504a;
+            --drop-cap: #8b1a1a;
+
+            --font-display: 'Playfair Display', 'Georgia', serif;
+            --font-body: 'EB Garamond', 'Georgia', serif;
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            --font-mono: 'Fira Mono', monospace;
+
+            --col-w: 680px;
+            --page-max: 860px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--paper3);
+            color: var(--ink);
+            font-family: var(--font-body);
+            font-size: 18px;
+            line-height: 1.75;
+        }
+
+        /* ── CAPA / MASTHEAD ───────────────────────────────────────────────────────── */
+        .masthead {
+            background: var(--ink);
+            color: var(--paper);
+            text-align: center;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 6px solid var(--gold);
+        }
+
+        .masthead-topbar {
+            background: var(--gold-d);
+            font-family: var(--font-sans);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            color: #fff;
+            padding: 7px 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .masthead-topbar a {
+            color: rgba(255, 255, 255, .75);
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .masthead-topbar a:hover {
+            color: #fff;
+        }
+
+        .masthead-body {
+            padding: 3.5rem 2rem 3rem;
+            position: relative;
+        }
+
+        .masthead-body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 80% at 50% 100%, rgba(184, 134, 11, .18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .masthead-kicker {
+            font-family: var(--font-sans);
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: .35em;
+            text-transform: uppercase;
+            color: var(--gold-l);
+            margin-bottom: 1rem;
+        }
+
+        .masthead-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -.01em;
+            color: #fff;
+            margin-bottom: .25rem;
+        }
+
+        .masthead-title em {
+            font-style: italic;
+            color: var(--gold-l);
+        }
+
+        .masthead-subtitle {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: clamp(.9rem, 2vw, 1.15rem);
+            color: rgba(255, 255, 255, .65);
+            margin-bottom: 1.75rem;
+            letter-spacing: .02em;
+        }
+
+        .masthead-meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-family: var(--font-sans);
+            font-size: 11px;
+            color: rgba(255, 255, 255, .5);
+            letter-spacing: .1em;
+        }
+
+        .masthead-meta-item {
+            display: flex;
+            align-items: center;
+            gap: .35rem;
+        }
+
+        .masthead-meta-item i {
+            color: var(--gold);
+        }
+
+        .masthead-rule {
+            width: 80px;
+            height: 3px;
+            background: var(--gold);
+            margin: 1.25rem auto;
+        }
+
+        /* ── NAV / ÍNDICE ─────────────────────────────────────────────────────────── */
+        .toc-bar {
+            background: var(--paper2);
+            border-bottom: 1px solid var(--rule);
+            padding: .6rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            font-family: var(--font-sans);
+        }
+
+        .toc-bar a {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--ink3);
+            text-decoration: none;
+            padding: .25rem 0;
+            border-bottom: 2px solid transparent;
+            transition: color .15s, border-color .15s;
+        }
+
+        .toc-bar a:hover {
+            color: var(--gold-d);
+            border-bottom-color: var(--gold);
+        }
+
+        .toc-bar a.toc-home {
+            margin-right: auto;
+            color: var(--ink2);
+        }
+
+        /* ── PAGE WRAPPER ────────────────────────────────────────────────────────── */
+        .page-wrap {
+            max-width: var(--page-max);
+            margin: 0 auto;
+            background: var(--paper);
+            box-shadow: 0 0 60px rgba(0, 0, 0, .22);
+            min-height: 100vh;
+        }
+
+        /* ── ARTIGO GENÉRICO ─────────────────────────────────────────────────────── */
+        .article {
+            padding: 4rem 2.5rem;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .article:last-child {
+            border-bottom: none;
+        }
+
+        /* ── SECTION LABEL ───────────────────────────────────────────────────────── */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            font-family: var(--font-sans);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .35em;
+            text-transform: uppercase;
+            color: var(--paper);
+            background: var(--gold-d);
+            padding: 4px 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── ARTICLE HEADER ──────────────────────────────────────────────────────── */
+        .article-header {
+            margin-bottom: 2rem;
+        }
+
+        .article-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.12;
+            color: var(--ink);
+            margin-bottom: .6rem;
+        }
+
+        .article-title em {
+            font-style: italic;
+            color: var(--gold-d);
+        }
+
+        .article-deck {
+            font-family: var(--font-body);
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--ink3);
+            line-height: 1.55;
+            border-left: 4px solid var(--gold);
+            padding-left: 1.1rem;
+            margin: 1.25rem 0 1.75rem;
+        }
+
+        .article-byline {
+            font-family: var(--font-sans);
+            font-size: 11.5px;
+            color: var(--ink3);
+            letter-spacing: .06em;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .byline-name {
+            font-weight: 700;
+            color: var(--ink2);
+        }
+
+        .byline-sep {
+            color: var(--rule);
+        }
+
+        .article-rule {
+            height: 1px;
+            background: linear-gradient(to right, var(--gold), transparent);
+            margin: 1.75rem 0;
+        }
+
+        /* ── EDITORIAL GRID ──────────────────────────────────────────────────────── */
+        .editorial-intro {
+            column-count: 2;
+            column-gap: 2.5rem;
+            column-rule: 1px solid var(--rule);
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        @media (max-width: 620px) {
+            .editorial-intro {
+                column-count: 1;
+            }
+        }
+
+        /* Drop cap */
+        .editorial-intro>p:first-child::first-letter {
+            font-family: var(--font-display);
+            font-size: 5.5em;
+            font-weight: 900;
+            color: var(--drop-cap);
+            float: left;
+            line-height: .75;
+            margin-right: .08em;
+            margin-top: .06em;
+        }
+
+        /* ── BODY TYPOGRAPHY ─────────────────────────────────────────────────────── */
+        .article p {
+            margin-bottom: 1.1rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .article p:last-child {
+            margin-bottom: 0;
+        }
+
+        .article strong {
+            color: var(--ink2);
+        }
+
+        .article em {
+            color: var(--gold-d);
+            font-style: italic;
+        }
+
+        /* ── LEAD PARAGRAPH ──────────────────────────────────────────────────────── */
+        .p-lead {
+            font-size: 1.2rem;
+            line-height: 1.65;
+            color: var(--ink2);
+            font-weight: 500;
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* ── PULL QUOTE ──────────────────────────────────────────────────────────── */
+        .pull-quote {
+            margin: 2.5rem -1rem;
+            padding: 1.75rem 2rem;
+            border-top: 3px solid var(--gold);
+            border-bottom: 1px solid var(--rule);
+            text-align: center;
+        }
+
+        .pull-quote p {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 1.5rem;
+            line-height: 1.45;
+            color: var(--ink2);
+            text-align: center !important;
+            hyphens: none;
+        }
+
+        .pull-quote cite {
+            display: block;
+            margin-top: .75rem;
+            font-family: var(--font-sans);
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 700;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--gold-d);
+        }
+
+        /* ── BANCA CARDS (Seção especial) ────────────────────────────────────────── */
+        .bancas-intro {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--ink3);
+            line-height: 1.65;
+            margin-bottom: 2.5rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--paper2);
+            border-left: 4px solid var(--gold-d);
+        }
+
+        .banca-entry {
+            margin-bottom: 3.5rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px dashed var(--rule);
+        }
+
+        .banca-entry:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .banca-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .banca-num {
+            flex-shrink: 0;
+            width: 52px;
+            height: 52px;
+            background: var(--ink);
+            color: var(--gold-l);
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+        }
+
+        .banca-head-text {}
+
+        .banca-name {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--ink);
+        }
+
+        .banca-longname {
+            font-family: var(--font-sans);
+            font-size: 11.5px;
+            color: var(--ink3);
+            margin-top: .2rem;
+            font-style: italic;
+        }
+
+        .banca-tagline {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--gold-d);
+            margin: 1rem 0 1.25rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--gold);
+        }
+
+        .banca-body {
+            column-count: 2;
+            column-gap: 2.25rem;
+            column-rule: 1px solid var(--rule);
+        }
+
+        @media (max-width: 640px) {
+            .banca-body {
+                column-count: 1;
+            }
+        }
+
+        .banca-topic {
+            break-inside: avoid;
+            margin-bottom: 1.1rem;
+        }
+
+        .banca-topic-label {
+            font-family: var(--font-sans);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: .25rem;
+        }
+
+        .banca-marca {
+            break-inside: avoid;
+            background: var(--paper2);
+            border: 1px solid var(--paper3);
+            border-radius: 3px;
+            padding: .8rem 1rem;
+            margin-top: .85rem;
+            font-size: .9rem;
+        }
+
+        .banca-marca-label {
+            font-family: var(--font-sans);
+            font-size: 9.5px;
+            font-weight: 800;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--gold-d);
+            margin-bottom: .4rem;
+        }
+
+        /* ── TABELA COMPARATIVA ──────────────────────────────────────────────────── */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 2.5rem -1rem;
+            border: 1px solid var(--rule);
+        }
+
+        .comp-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-sans);
+            font-size: .85rem;
+        }
+
+        .comp-table caption {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: .95rem;
+            color: var(--ink3);
+            padding: .75rem 1rem;
+            text-align: left;
+            background: var(--paper2);
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .comp-table th {
+            background: var(--ink);
+            color: var(--gold-l);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            padding: .75rem 1rem;
+            text-align: left;
+        }
+
+        .comp-table td {
+            padding: .7rem 1rem;
+            border-bottom: 1px solid var(--paper3);
+            vertical-align: top;
+            color: var(--ink2);
+            line-height: 1.5;
+        }
+
+        .comp-table tr:nth-child(even) td {
+            background: var(--paper2);
+        }
+
+        .comp-table td:first-child {
+            font-weight: 700;
+            color: var(--ink);
+            font-family: var(--font-display);
+            font-size: .95rem;
+            white-space: nowrap;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 2px 9px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .05em;
+        }
+
+        .level-high {
+            background: #fceaea;
+            color: #7a1515;
+        }
+
+        .level-vhigh {
+            background: #e8f0fa;
+            color: #0c3a6e;
+        }
+
+        .level-medhigh {
+            background: #e3f5ef;
+            color: #085041;
+        }
+
+        .level-med {
+            background: #fff3dc;
+            color: #6a4800;
+        }
+
+        /* ── CONCLUSÃO BOX ───────────────────────────────────────────────────────── */
+        .conclusion-box {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 2.5rem 2rem;
+            margin: 3rem -1rem 0;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .conclusion-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--gold), var(--gold-l), var(--gold));
+        }
+
+        .conclusion-box h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: var(--gold-l);
+            margin-bottom: .85rem;
+        }
+
+        .conclusion-box p {
+            font-size: .95rem;
+            line-height: 1.75;
+            color: rgba(250, 247, 242, .82);
+            margin-bottom: .9rem;
+            text-align: left !important;
+            hyphens: none;
+        }
+
+        .conclusion-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ── VARIANTES DE TÍTULO ─────────────────────────────────────────────────── */
+        .article-title--sm {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-title--md {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ── UTILITÁRIOS DA CONCLUSION BOX ──────────────────────────────────────── */
+        .icon-gold {
+            color: var(--gold-l);
+            margin-right: .5rem;
+        }
+
+        .txt-gold {
+            color: var(--gold-l);
+        }
+
+        /* ── FOOTER DA REVISTA ───────────────────────────────────────────────────── */
+        .revista-footer-links {
+            margin-top: .35rem;
+        }
+
+        .revista-footer {
+            background: var(--ink);
+            color: rgba(255, 255, 255, .4);
+            font-family: var(--font-sans);
+            font-size: 11px;
+            text-align: center;
+            padding: 1.75rem 2rem;
+            letter-spacing: .08em;
+        }
+
+        .revista-footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
+        @media (max-width: 700px) {
+            .article {
+                padding: 2.5rem 1.25rem;
+            }
+
+            .pull-quote {
+                margin: 2rem -.5rem;
+            }
+
+            .table-wrap {
+                margin: 2rem -.5rem;
+            }
+
+            .conclusion-box {
+                margin: 2rem -.5rem 0;
+                padding: 2rem 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .masthead-meta {
+                gap: .9rem;
+            }
+
+            .banca-header {
+                flex-direction: column;
+                gap: .75rem;
+            }
+
+            .banca-num {
+                width: 42px;
+                height: 42px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <div class="page-wrap">
+    <div class="page-wrap">
 
-    <!-- ══════════════════════ CAPA / MASTHEAD ══════════════════════ -->
-    <header class="masthead">
-      <div class="masthead-topbar">
-        <span>Aprova Concursos · Plataforma de Estudos</span>
-        <a href="index.html">← Voltar ao Painel</a>
-      </div>
-      <div class="masthead-body">
-        <div class="masthead-kicker">Revista do Concurseiro</div>
-        <h1 class="masthead-title"><em>Aprova</em><br>Concursos</h1>
-        <p class="masthead-subtitle">Análise &amp; Estratégia para o Alto Desempenho em Certames</p>
-        <div class="masthead-rule"></div>
-        <div class="masthead-meta">
-          <span class="masthead-meta-item"><i class="fa-solid fa-calendar-days"></i> Edição Abril 2026</span>
-          <span class="masthead-meta-item"><i class="fa-solid fa-layer-group"></i> Vol. 1 · Nº 1</span>
-          <span class="masthead-meta-item"><i class="fa-solid fa-book-open-reader"></i> Engenharia Concursal</span>
-        </div>
-      </div>
-    </header>
+        <!-- ══════════════════════ CAPA / MASTHEAD ══════════════════════ -->
+        <header class="masthead">
+            <div class="masthead-topbar">
+                <span>Aprova Concursos · Plataforma de Estudos</span>
+                <a href="index.html">← Voltar ao Painel</a>
+            </div>
+            <div class="masthead-body">
+                <div class="masthead-kicker">Revista do Concurseiro</div>
+                <h1 class="masthead-title"><em>Aprova</em><br>Concursos</h1>
+                <p class="masthead-subtitle">Análise &amp; Estratégia para o Alto Desempenho em Certames</p>
+                <div class="masthead-rule"></div>
+                <div class="masthead-meta">
+                    <span class="masthead-meta-item"><i class="fa-solid fa-calendar-days"></i> Edição Abril 2026</span>
+                    <span class="masthead-meta-item"><i class="fa-solid fa-layer-group"></i> Vol. 1 · Nº 1</span>
+                    <span class="masthead-meta-item"><i class="fa-solid fa-book-open-reader"></i> Engenharia
+                        Concursal</span>
+                </div>
+            </div>
+        </header>
 
-    <!-- ══════════════════════ NAV / ÍNDICE ══════════════════════ -->
-    <nav class="toc-bar" aria-label="Índice da Revista">
-      <a href="index.html" class="toc-home"><i class="fa-solid fa-arrow-left"></i> Painel</a>
-      <a href="#editorial">Editorial</a>
-      <a href="#bancas">Anatomia das Bancas</a>
-      <a href="#tabela">Tabela Comparativa</a>
-      <a href="#conclusao">Estratégia</a>
-    </nav>
+        <!-- ══════════════════════ NAV / ÍNDICE ══════════════════════ -->
+        <nav class="toc-bar" aria-label="Índice da Revista">
+            <a href="index.html" class="toc-home"><i class="fa-solid fa-arrow-left"></i> Painel</a>
+            <a href="#editorial">Editorial</a>
+            <a href="#bancas">Anatomia das Bancas</a>
+            <a href="#tabela">Tabela Comparativa</a>
+            <a href="#conclusao">Estratégia</a>
+        </nav>
 
-    <!-- ══════════════════════ EDITORIAL ══════════════════════ -->
-    <article class="article" id="editorial">
-      <div class="section-label"><i class="fa-solid fa-feather-pointed"></i>&nbsp; Editorial</div>
-      <header class="article-header">
-        <h2 class="article-title">A arte de conhecer<br><em>quem vai te examinar</em></h2>
-        <p class="article-deck">
-          Numa disputa de alto nível, vencer não é apenas saber a matéria — é dominar a mente de quem elaborou as questões.
-        </p>
-        <div class="article-byline">
-          <span class="byline-name">Redação Aprova Concursos</span>
-          <span class="byline-sep">|</span>
-          <span>Abril de 2026</span>
-          <span class="byline-sep">|</span>
-          <span>Estratégia &amp; Análise</span>
-        </div>
-        <div class="article-rule"></div>
-      </header>
+        <!-- ══════════════════════ EDITORIAL ══════════════════════ -->
+        <article class="article" id="editorial">
+            <div class="section-label"><i class="fa-solid fa-feather-pointed"></i>&nbsp; Editorial</div>
+            <header class="article-header">
+                <h2 class="article-title">A arte de conhecer<br><em>quem vai te examinar</em></h2>
+                <p class="article-deck">
+                    Numa disputa de alto nível, vencer não é apenas saber a matéria — é dominar a mente de quem elaborou
+                    as questões.
+                </p>
+                <div class="article-byline">
+                    <span class="byline-name">Redação Aprova Concursos</span>
+                    <span class="byline-sep">|</span>
+                    <span>Abril de 2026</span>
+                    <span class="byline-sep">|</span>
+                    <span>Estratégia &amp; Análise</span>
+                </div>
+                <div class="article-rule"></div>
+            </header>
 
-      <div class="editorial-intro">
-        <p>
-          Cada certame é, antes de tudo, um diálogo. De um lado, o candidato — seu repertório acumulado em meses ou anos de estudo, sua resistência psíquica, sua capacidade de isolar o sinal do ruído numa questão projetada para confundir. Do outro, a banca examinadora — uma instituição com linguagem própria, crenças pedagógicas sedimentadas, padrões que se repetem e armadilhas que se refinam edição após edição.
-        </p>
-        <p>
-          A <em>Revista Aprova Concursos</em> nasce com uma proposta singular: tratar o estudo para concursos com o rigor de uma disciplina acadêmica. Não basta acumular conteúdo; é preciso desenvolver uma inteligência estratégica sobre como esse conteúdo será cobrado, por quem, e de que maneira.
-        </p>
-        <p>
-          Nesta edição inaugural, abrimos com o tema que consideramos o mais negligenciado pelos candidatos que ficam à margem da aprovação: o <strong>perfil psicométrico das bancas examinadoras</strong>. Conhecer a FGV é tão importante quanto conhecer Direito Civil. Entender o estilo do Cebraspe é tão estratégico quanto decorar súmulas do STJ.
-        </p>
-        <p>
-          Nas páginas a seguir, você encontrará uma análise técnica das principais instituições examinadoras do Brasil — sua filosofia avaliativa, seus padrões linguísticos, suas predileções por tópicos e, principalmente, como adaptar seu método de estudo a cada uma delas. Este é o tipo de material que não encontra espaço nos apostilões convencionais, mas que os aprovados de primeiro lugar dominam intuitivamente.
-        </p>
-        <p>
-          Bem-vindo à nova etapa da sua preparação. Aqui, estudar é uma ciência.
-        </p>
-      </div>
+            <div class="editorial-intro">
+                <p>
+                    Cada certame é, antes de tudo, um diálogo. De um lado, o candidato — seu repertório acumulado em
+                    meses ou anos de estudo, sua resistência psíquica, sua capacidade de isolar o sinal do ruído numa
+                    questão projetada para confundir. Do outro, a banca examinadora — uma instituição com linguagem
+                    própria, crenças pedagógicas sedimentadas, padrões que se repetem e armadilhas que se refinam edição
+                    após edição.
+                </p>
+                <p>
+                    A <em>Revista Aprova Concursos</em> nasce com uma proposta singular: tratar o estudo para concursos
+                    com o rigor de uma disciplina acadêmica. Não basta acumular conteúdo; é preciso desenvolver uma
+                    inteligência estratégica sobre como esse conteúdo será cobrado, por quem, e de que maneira.
+                </p>
+                <p>
+                    Nesta edição inaugural, abrimos com o tema que consideramos o mais negligenciado pelos candidatos
+                    que ficam à margem da aprovação: o <strong>perfil psicométrico das bancas examinadoras</strong>.
+                    Conhecer a FGV é tão importante quanto conhecer Direito Civil. Entender o estilo do Cebraspe é tão
+                    estratégico quanto decorar súmulas do STJ.
+                </p>
+                <p>
+                    Nas páginas a seguir, você encontrará uma análise técnica das principais instituições examinadoras
+                    do Brasil — sua filosofia avaliativa, seus padrões linguísticos, suas predileções por tópicos e,
+                    principalmente, como adaptar seu método de estudo a cada uma delas. Este é o tipo de material que
+                    não encontra espaço nos apostilões convencionais, mas que os aprovados de primeiro lugar dominam
+                    intuitivamente.
+                </p>
+                <p>
+                    Bem-vindo à nova etapa da sua preparação. Aqui, estudar é uma ciência.
+                </p>
+            </div>
 
-      <div class="pull-quote">
-        <p>"Conhecer a linguagem das bancas é, <em>per se</em>, uma disciplina à parte no Direito e na Linguística Aplicada."</p>
-        <cite>— Redação Aprova Concursos</cite>
-      </div>
-    </article>
+            <div class="pull-quote">
+                <p>"Conhecer a linguagem das bancas é, <em>per se</em>, uma disciplina à parte no Direito e na
+                    Linguística Aplicada."</p>
+                <cite>— Redação Aprova Concursos</cite>
+            </div>
+        </article>
 
-    <!-- ══════════════════════ ARTIGO: BANCAS ══════════════════════ -->
-    <article class="article" id="bancas">
-      <div class="section-label"><i class="fa-solid fa-building-columns"></i>&nbsp; Análise Técnica</div>
-      <header class="article-header">
-        <h2 class="article-title">Anatomia das Bancas Examinadoras:<br><em>Guia de Engenharia Concursal</em></h2>
-        <p class="article-deck">
-          Esta matéria técnica analisa a arquitetura avaliativa das principais instituições examinadoras do Brasil. Para um profissional que busca não apenas responder, mas compreender a lógica por trás dos certames, é imperativo decodificar o "DNA" de cada banca.
-        </p>
-        <div class="article-byline">
-          <span class="byline-name">Equipe Editorial</span>
-          <span class="byline-sep">|</span>
-          <span>Análise Psicométrica &amp; Linguística Aplicada</span>
-        </div>
-        <div class="article-rule"></div>
-      </header>
+        <!-- ══════════════════════ ARTIGO: BANCAS ══════════════════════ -->
+        <article class="article" id="bancas">
+            <div class="section-label"><i class="fa-solid fa-building-columns"></i>&nbsp; Análise Técnica</div>
+            <header class="article-header">
+                <h2 class="article-title">Anatomia das Bancas Examinadoras:<br><em>Guia de Engenharia Concursal</em>
+                </h2>
+                <p class="article-deck">
+                    Esta matéria técnica analisa a arquitetura avaliativa das principais instituições examinadoras do
+                    Brasil. Para um profissional que busca não apenas responder, mas compreender a lógica por trás dos
+                    certames, é imperativo decodificar o "DNA" de cada banca.
+                </p>
+                <div class="article-byline">
+                    <span class="byline-name">Equipe Editorial</span>
+                    <span class="byline-sep">|</span>
+                    <span>Análise Psicométrica &amp; Linguística Aplicada</span>
+                </div>
+                <div class="article-rule"></div>
+            </header>
 
-      <p class="p-lead">
-        O sucesso em concursos de alto nível no Brasil exige mais do que o domínio do conteúdo programático; requer uma <strong>análise psicométrica e linguística das bancas</strong>. Em 2026, observamos uma sofisticação ainda maior nos enunciados, exigindo do candidato uma postura analítica e menos mecânica.
-      </p>
+            <p class="p-lead">
+                O sucesso em concursos de alto nível no Brasil exige mais do que o domínio do conteúdo programático;
+                requer uma <strong>análise psicométrica e linguística das bancas</strong>. Em 2026, observamos uma
+                sofisticação ainda maior nos enunciados, exigindo do candidato uma postura analítica e menos mecânica.
+            </p>
 
-      <div class="bancas-intro">
-        A seguir, dissecamos as cinco bancas que mais impactam a vida dos concurseiros brasileiros. Para cada uma, identificamos o perfil intelectual, as particularidades por área e as características marcantes que todo candidato de alto desempenho deve internalizar.
-      </div>
+            <div class="bancas-intro">
+                A seguir, dissecamos as cinco bancas que mais impactam a vida dos concurseiros brasileiros. Para cada
+                uma, identificamos o perfil intelectual, as particularidades por área e as características marcantes que
+                todo candidato de alto desempenho deve internalizar.
+            </div>
 
-      <!-- ── BANCA 1: CEBRASPE ───────────────────────────────────────────────── -->
-      <div class="banca-entry" id="banca-cebraspe">
-        <div class="banca-header">
-          <div class="banca-num">1</div>
-          <div class="banca-head-text">
-            <div class="banca-name">Cebraspe</div>
-            <div class="banca-longname">Centro Brasileiro de Pesquisa em Avaliação e Seleção e de Promoção de Eventos · Antigo CESPE/UnB</div>
-          </div>
-        </div>
-        <p class="banca-tagline">O Perfil Intelectual: a banca da inferência.</p>
+            <!-- ── BANCA 1: CEBRASPE ───────────────────────────────────────────────── -->
+            <div class="banca-entry" id="banca-cebraspe">
+                <div class="banca-header">
+                    <div class="banca-num">1</div>
+                    <div class="banca-head-text">
+                        <div class="banca-name">Cebraspe</div>
+                        <div class="banca-longname">Centro Brasileiro de Pesquisa em Avaliação e Seleção e de Promoção
+                            de Eventos · Antigo CESPE/UnB</div>
+                    </div>
+                </div>
+                <p class="banca-tagline">O Perfil Intelectual: a banca da inferência.</p>
 
-        <div class="banca-body">
-          <div class="banca-topic">
-            <div class="banca-topic-label">Língua Portuguesa</div>
-            <p>Foco em <strong>reescrita de frases</strong>, coesão e coerência. A banca não pergunta apenas a regra gramatical, mas se a alteração de um conectivo preserva o sentido original e a correção gramatical. Uma vírgula mal posicionada na reescrita pode transformar um item correto em incorreto.</p>
-          </div>
-          <div class="banca-topic">
-            <div class="banca-topic-label">Direito</div>
-            <p>É a <strong>banca da jurisprudência</strong>. Conhecer apenas a letra da lei é insuficiente; é necessário dominar os informativos e súmulas do STF e STJ. O Cebraspe frequentemente apresenta um enunciado que parece correto pela lei seca, mas está desatualizado pela jurisprudência — e vice-versa.</p>
-          </div>
-          <div class="banca-marca">
-            <div class="banca-marca-label">Características Marcantes</div>
-            <p>Método "<strong>Certo ou Errado</strong>" com penalização por erro (−1 acerto por erro). Itens interconectados: um erro de interpretação no enunciado principal pode comprometer uma sequência de respostas. Elimina o fator sorte — e por isso exige confiança técnica absoluta nas respostas.</p>
-          </div>
-        </div>
-      </div>
+                <div class="banca-body">
+                    <div class="banca-topic">
+                        <div class="banca-topic-label">Língua Portuguesa</div>
+                        <p>Foco em <strong>reescrita de frases</strong>, coesão e coerência. A banca não pergunta apenas
+                            a regra gramatical, mas se a alteração de um conectivo preserva o sentido original e a
+                            correção gramatical. Uma vírgula mal posicionada na reescrita pode transformar um item
+                            correto em incorreto.</p>
+                    </div>
+                    <div class="banca-topic">
+                        <div class="banca-topic-label">Direito</div>
+                        <p>É a <strong>banca da jurisprudência</strong>. Conhecer apenas a letra da lei é insuficiente;
+                            é necessário dominar os informativos e súmulas do STF e STJ. O Cebraspe frequentemente
+                            apresenta um enunciado que parece correto pela lei seca, mas está desatualizado pela
+                            jurisprudência — e vice-versa.</p>
+                    </div>
+                    <div class="banca-marca">
+                        <div class="banca-marca-label">Características Marcantes</div>
+                        <p>Método "<strong>Certo ou Errado</strong>" com penalização por erro (−1 acerto por erro).
+                            Itens interconectados: um erro de interpretação no enunciado principal pode comprometer uma
+                            sequência de respostas. Elimina o fator sorte — e por isso exige confiança técnica absoluta
+                            nas respostas.</p>
+                    </div>
+                </div>
+            </div>
 
-      <!-- ── BANCA 2: FGV ────────────────────────────────────────────────────── -->
-      <div class="banca-entry" id="banca-fgv">
-        <div class="banca-header">
-          <div class="banca-num">2</div>
-          <div class="banca-head-text">
-            <div class="banca-name">FGV</div>
-            <div class="banca-longname">Fundação Getulio Vargas · Especialmente atuante em Tribunais e Carreiras Fiscais</div>
-          </div>
-        </div>
-        <p class="banca-tagline">O Perfil Sofístico: a mais imprevisível e complexa do país.</p>
+            <!-- ── BANCA 2: FGV ────────────────────────────────────────────────────── -->
+            <div class="banca-entry" id="banca-fgv">
+                <div class="banca-header">
+                    <div class="banca-num">2</div>
+                    <div class="banca-head-text">
+                        <div class="banca-name">FGV</div>
+                        <div class="banca-longname">Fundação Getulio Vargas · Especialmente atuante em Tribunais e
+                            Carreiras Fiscais</div>
+                    </div>
+                </div>
+                <p class="banca-tagline">O Perfil Sofístico: a mais imprevisível e complexa do país.</p>
 
-        <div class="banca-body">
-          <div class="banca-topic">
-            <div class="banca-topic-label">Língua Portuguesa</div>
-            <p>Notoriamente a <strong>mais difícil</strong>. Foca em lógica linguística, polifonia e tipologia textual. Suas questões de gramática são aplicadas ao texto de forma extremamente sutil, muitas vezes gerando polêmicas doutrinárias. Requer domínio da semântica em profundidade, não apenas morfossintaxe.</p>
-          </div>
-          <div class="banca-topic">
-            <div class="banca-topic-label">Direito</div>
-            <p>Utiliza <strong>casos práticos</strong>. Em vez de perguntar a definição de um crime, a FGV narra uma situação hipotética complexa — o clássico "caso de Tício e Mévio" — e exige que o candidato aplique a norma jurídica àquele cenário. A teoria existe para servir ao caso, nunca o contrário.</p>
-          </div>
-          <div class="banca-marca">
-            <div class="banca-marca-label">Características Marcantes</div>
-            <p>Enunciados longos que testam a <strong>resistência física e mental</strong> do candidato. Questões que parecem simples escondem sutilezas que eliminam quem lê apenas a superfície. Nível de português considerado altíssimo e crítico: a FGV não mede o que você sabe, mas como você pensa.</p>
-          </div>
-        </div>
-      </div>
+                <div class="banca-body">
+                    <div class="banca-topic">
+                        <div class="banca-topic-label">Língua Portuguesa</div>
+                        <p>Notoriamente a <strong>mais difícil</strong>. Foca em lógica linguística, polifonia e
+                            tipologia textual. Suas questões de gramática são aplicadas ao texto de forma extremamente
+                            sutil, muitas vezes gerando polêmicas doutrinárias. Requer domínio da semântica em
+                            profundidade, não apenas morfossintaxe.</p>
+                    </div>
+                    <div class="banca-topic">
+                        <div class="banca-topic-label">Direito</div>
+                        <p>Utiliza <strong>casos práticos</strong>. Em vez de perguntar a definição de um crime, a FGV
+                            narra uma situação hipotética complexa — o clássico "caso de Tício e Mévio" — e exige que o
+                            candidato aplique a norma jurídica àquele cenário. A teoria existe para servir ao caso,
+                            nunca o contrário.</p>
+                    </div>
+                    <div class="banca-marca">
+                        <div class="banca-marca-label">Características Marcantes</div>
+                        <p>Enunciados longos que testam a <strong>resistência física e mental</strong> do candidato.
+                            Questões que parecem simples escondem sutilezas que eliminam quem lê apenas a superfície.
+                            Nível de português considerado altíssimo e crítico: a FGV não mede o que você sabe, mas como
+                            você pensa.</p>
+                    </div>
+                </div>
+            </div>
 
-      <!-- ── BANCA 3: FCC ────────────────────────────────────────────────────── -->
-      <div class="banca-entry" id="banca-fcc">
-        <div class="banca-header">
-          <div class="banca-num">3</div>
-          <div class="banca-head-text">
-            <div class="banca-name">FCC</div>
-            <div class="banca-longname">Fundação Carlos Chagas · Historicamente a "Fundação Cópia e Cola", hoje bem mais exigente</div>
-          </div>
-        </div>
-        <p class="banca-tagline">O Perfil da Segurança Jurídica: rigor técnico com compreensão sistêmica.</p>
+            <!-- ── BANCA 3: FCC ────────────────────────────────────────────────────── -->
+            <div class="banca-entry" id="banca-fcc">
+                <div class="banca-header">
+                    <div class="banca-num">3</div>
+                    <div class="banca-head-text">
+                        <div class="banca-name">FCC</div>
+                        <div class="banca-longname">Fundação Carlos Chagas · Historicamente a "Fundação Cópia e Cola",
+                            hoje bem mais exigente</div>
+                    </div>
+                </div>
+                <p class="banca-tagline">O Perfil da Segurança Jurídica: rigor técnico com compreensão sistêmica.</p>
 
-        <div class="banca-body">
-          <div class="banca-topic">
-            <div class="banca-topic-label">Língua Portuguesa</div>
-            <p>Ênfase em <strong>sintaxe, concordância e vozes verbais</strong>. As questões são diretas, mas exigem atenção minuciosa a detalhes. A FCC cobra a norma gramatical de maneira técnica e exige do candidato precisão na identificação de funções sintáticas e relações de subordinação.</p>
-          </div>
-          <div class="banca-topic">
-            <div class="banca-topic-label">Direito</div>
-            <p>Predomina a <strong>literalidade da lei</strong> (doutrina clássica e texto seco), mas com questões de alta complexidade que exigem a combinação de vários artigos para se chegar à resposta. Quem decora os códigos tem vantagem; quem só entende o contexto geral, não.</p>
-          </div>
-          <div class="banca-marca">
-            <div class="banca-marca-label">Características Marcantes</div>
-            <p>Organização impecável das provas e raros casos de anulação de questões — o que exige precisão do candidato, sem a "tábua de salvação" dos recursos. A evolução da banca de literalidade pura para compreensão sistêmica é a principal mudança dos últimos cinco anos.</p>
-          </div>
-        </div>
-      </div>
+                <div class="banca-body">
+                    <div class="banca-topic">
+                        <div class="banca-topic-label">Língua Portuguesa</div>
+                        <p>Ênfase em <strong>sintaxe, concordância e vozes verbais</strong>. As questões são diretas,
+                            mas exigem atenção minuciosa a detalhes. A FCC cobra a norma gramatical de maneira técnica e
+                            exige do candidato precisão na identificação de funções sintáticas e relações de
+                            subordinação.</p>
+                    </div>
+                    <div class="banca-topic">
+                        <div class="banca-topic-label">Direito</div>
+                        <p>Predomina a <strong>literalidade da lei</strong> (doutrina clássica e texto seco), mas com
+                            questões de alta complexidade que exigem a combinação de vários artigos para se chegar à
+                            resposta. Quem decora os códigos tem vantagem; quem só entende o contexto geral, não.</p>
+                    </div>
+                    <div class="banca-marca">
+                        <div class="banca-marca-label">Características Marcantes</div>
+                        <p>Organização impecável das provas e raros casos de anulação de questões — o que exige precisão
+                            do candidato, sem a "tábua de salvação" dos recursos. A evolução da banca de literalidade
+                            pura para compreensão sistêmica é a principal mudança dos últimos cinco anos.</p>
+                    </div>
+                </div>
+            </div>
 
-      <!-- ── BANCA 4: VUNESP ─────────────────────────────────────────────────── -->
-      <div class="banca-entry" id="banca-vunesp">
-        <div class="banca-header">
-          <div class="banca-num">4</div>
-          <div class="banca-head-text">
-            <div class="banca-name">Vunesp</div>
-            <div class="banca-longname">Fundação para o Vestibular da Universidade Estadual Paulista · Expansão nacional consolidada</div>
-          </div>
-        </div>
-        <p class="banca-tagline">O Perfil da Regularidade: a prova justa.</p>
+            <!-- ── BANCA 4: VUNESP ─────────────────────────────────────────────────── -->
+            <div class="banca-entry" id="banca-vunesp">
+                <div class="banca-header">
+                    <div class="banca-num">4</div>
+                    <div class="banca-head-text">
+                        <div class="banca-name">Vunesp</div>
+                        <div class="banca-longname">Fundação para o Vestibular da Universidade Estadual Paulista ·
+                            Expansão nacional consolidada</div>
+                    </div>
+                </div>
+                <p class="banca-tagline">O Perfil da Regularidade: a prova justa.</p>
 
-        <div class="banca-body">
-          <div class="banca-topic">
-            <div class="banca-topic-label">Língua Portuguesa</div>
-            <p>Tradicional. Cobra <strong>gramática normativa</strong> de forma clara: sinônimos, antônimos, pontuação e classes de palavras. Sem pegadinhas linguísticas sofisticadas — o candidato que domina a norma culta padrão está bem posicionado para excelentes resultados.</p>
-          </div>
-          <div class="banca-topic">
-            <div class="banca-topic-label">Direito</div>
-            <p>Foco quase total na <strong>"lei seca"</strong>. O candidato que memoriza os códigos com precisão costuma ter excelente desempenho. A Vunesp raramente lança questões sobre jurisprudência recente ou temas doutrinários controversos — o que reduz a incerteza do estudo.</p>
-          </div>
-          <div class="banca-marca">
-            <div class="banca-marca-label">Características Marcantes</div>
-            <p>Banca <strong>previsível por excelência</strong>. Ao resolver os últimos cinco anos de prova, o candidato mapeia cerca de 90% do que será cobrado. A estratégia ideal é resolver provas antigas sistematicamente — cada edição reforça os padrões da anterior.</p>
-          </div>
-        </div>
-      </div>
+                <div class="banca-body">
+                    <div class="banca-topic">
+                        <div class="banca-topic-label">Língua Portuguesa</div>
+                        <p>Tradicional. Cobra <strong>gramática normativa</strong> de forma clara: sinônimos, antônimos,
+                            pontuação e classes de palavras. Sem pegadinhas linguísticas sofisticadas — o candidato que
+                            domina a norma culta padrão está bem posicionado para excelentes resultados.</p>
+                    </div>
+                    <div class="banca-topic">
+                        <div class="banca-topic-label">Direito</div>
+                        <p>Foco quase total na <strong>"lei seca"</strong>. O candidato que memoriza os códigos com
+                            precisão costuma ter excelente desempenho. A Vunesp raramente lança questões sobre
+                            jurisprudência recente ou temas doutrinários controversos — o que reduz a incerteza do
+                            estudo.</p>
+                    </div>
+                    <div class="banca-marca">
+                        <div class="banca-marca-label">Características Marcantes</div>
+                        <p>Banca <strong>previsível por excelência</strong>. Ao resolver os últimos cinco anos de prova,
+                            o candidato mapeia cerca de 90% do que será cobrado. A estratégia ideal é resolver provas
+                            antigas sistematicamente — cada edição reforça os padrões da anterior.</p>
+                    </div>
+                </div>
+            </div>
 
-      <!-- ── BANCA 5: CESGRANRIO ─────────────────────────────────────────────── -->
-      <div class="banca-entry" id="banca-cesgranrio">
-        <div class="banca-header">
-          <div class="banca-num">5</div>
-          <div class="banca-head-text">
-            <div class="banca-name">Cesgranrio</div>
-            <div class="banca-longname">Fundação Cesgranrio · Banca oficial do CNU e de grandes estatais federais</div>
-          </div>
-        </div>
-        <p class="banca-tagline">O Perfil Pragmático: distribuição equânime e objetividade.</p>
+            <!-- ── BANCA 5: CESGRANRIO ─────────────────────────────────────────────── -->
+            <div class="banca-entry" id="banca-cesgranrio">
+                <div class="banca-header">
+                    <div class="banca-num">5</div>
+                    <div class="banca-head-text">
+                        <div class="banca-name">Cesgranrio</div>
+                        <div class="banca-longname">Fundação Cesgranrio · Banca oficial do CNU e de grandes estatais
+                            federais</div>
+                    </div>
+                </div>
+                <p class="banca-tagline">O Perfil Pragmático: distribuição equânime e objetividade.</p>
 
-        <div class="banca-body">
-          <div class="banca-topic">
-            <div class="banca-topic-label">Língua Portuguesa</div>
-            <p>Equilibrada entre interpretação e gramática. Gosta de <strong>gráficos, charges e textos de atualidades</strong>. O candidato que acompanha o noticiário nacional e sabe interpretar dados visuais tem vantagem clara. Não há extremos: nem muito difícil, nem superficial.</p>
-          </div>
-          <div class="banca-topic">
-            <div class="banca-topic-label">Direito e Conhecimentos Transversais</div>
-            <p>Prioriza a <strong>aplicação prática das políticas públicas e normas éticas</strong>. Não aprofunda tanto em debates doutrinários, focando na objetividade. A Cesgranrio espera que o candidato saiba usar o Direito como ferramenta de gestão, não como exercício acadêmico.</p>
-          </div>
-          <div class="banca-marca">
-            <div class="banca-marca-label">Características Marcantes</div>
-            <p>Distribuição <strong>equânime do edital</strong>: raramente deixa um tópico previsto sem cobrança. Isso obriga o candidato a uma preparação ampla, sem apostar em "temas quentes" isolados. Quem estuda tudo com regularidade leva vantagem sobre quem estuda poucos temas com profundidade extrema.</p>
-          </div>
-        </div>
-      </div>
+                <div class="banca-body">
+                    <div class="banca-topic">
+                        <div class="banca-topic-label">Língua Portuguesa</div>
+                        <p>Equilibrada entre interpretação e gramática. Gosta de <strong>gráficos, charges e textos de
+                                atualidades</strong>. O candidato que acompanha o noticiário nacional e sabe interpretar
+                            dados visuais tem vantagem clara. Não há extremos: nem muito difícil, nem superficial.</p>
+                    </div>
+                    <div class="banca-topic">
+                        <div class="banca-topic-label">Direito e Conhecimentos Transversais</div>
+                        <p>Prioriza a <strong>aplicação prática das políticas públicas e normas éticas</strong>. Não
+                            aprofunda tanto em debates doutrinários, focando na objetividade. A Cesgranrio espera que o
+                            candidato saiba usar o Direito como ferramenta de gestão, não como exercício acadêmico.</p>
+                    </div>
+                    <div class="banca-marca">
+                        <div class="banca-marca-label">Características Marcantes</div>
+                        <p>Distribuição <strong>equânime do edital</strong>: raramente deixa um tópico previsto sem
+                            cobrança. Isso obriga o candidato a uma preparação ampla, sem apostar em "temas quentes"
+                            isolados. Quem estuda tudo com regularidade leva vantagem sobre quem estuda poucos temas com
+                            profundidade extrema.</p>
+                    </div>
+                </div>
+            </div>
 
-    </article>
+        </article>
 
-    <!-- ══════════════════════ TABELA COMPARATIVA ══════════════════════ -->
-    <article class="article" id="tabela">
-      <div class="section-label"><i class="fa-solid fa-table-columns"></i>&nbsp; Síntese Comparativa</div>
-      <h2 class="article-title" style="font-size:1.75rem;margin-bottom:1.5rem;">Abordagem por Banca &amp; Disciplina</h2>
+        <!-- ══════════════════════ TABELA COMPARATIVA ══════════════════════ -->
+        <article class="article" id="tabela">
+            <div class="section-label"><i class="fa-solid fa-table-columns"></i>&nbsp; Síntese Comparativa</div>
+            <h2 class="article-title article-title--sm">Abordagem por Banca &amp; Disciplina</h2>
 
-      <div class="table-wrap">
-        <table class="comp-table">
-          <caption>Síntese das arquiteturas avaliativas das principais bancas · Edição 2026</caption>
-          <thead>
-            <tr>
-              <th>Banca</th>
-              <th>Foco Principal</th>
-              <th>Estilo Jurídico</th>
-              <th>Nível de Português</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Cebraspe</td>
-              <td>Doutrina / Jurisprudência</td>
-              <td>Reflexivo / Analítico</td>
-              <td><span class="level-badge level-high">Alto · Reescrita</span></td>
-            </tr>
-            <tr>
-              <td>FGV</td>
-              <td>Interpretação / Lógica</td>
-              <td>Casos Práticos</td>
-              <td><span class="level-badge level-vhigh">Altíssimo · Crítico</span></td>
-            </tr>
-            <tr>
-              <td>FCC</td>
-              <td>Texto da Lei</td>
-              <td>Técnico / Sistêmico</td>
-              <td><span class="level-badge level-medhigh">Médio–Alto · Sintaxe</span></td>
-            </tr>
-            <tr>
-              <td>Vunesp</td>
-              <td>Memorização</td>
-              <td>Literal</td>
-              <td><span class="level-badge level-med">Médio · Gramatical</span></td>
-            </tr>
-            <tr>
-              <td>Cesgranrio</td>
-              <td>Objetividade</td>
-              <td>Normativo / Direto</td>
-              <td><span class="level-badge level-med">Médio · Contextual</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </article>
+            <div class="table-wrap">
+                <table class="comp-table">
+                    <caption>Síntese das arquiteturas avaliativas das principais bancas · Edição 2026</caption>
+                    <thead>
+                        <tr>
+                            <th>Banca</th>
+                            <th>Foco Principal</th>
+                            <th>Estilo Jurídico</th>
+                            <th>Nível de Português</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cebraspe</td>
+                            <td>Doutrina / Jurisprudência</td>
+                            <td>Reflexivo / Analítico</td>
+                            <td><span class="level-badge level-high">Alto · Reescrita</span></td>
+                        </tr>
+                        <tr>
+                            <td>FGV</td>
+                            <td>Interpretação / Lógica</td>
+                            <td>Casos Práticos</td>
+                            <td><span class="level-badge level-vhigh">Altíssimo · Crítico</span></td>
+                        </tr>
+                        <tr>
+                            <td>FCC</td>
+                            <td>Texto da Lei</td>
+                            <td>Técnico / Sistêmico</td>
+                            <td><span class="level-badge level-medhigh">Médio–Alto · Sintaxe</span></td>
+                        </tr>
+                        <tr>
+                            <td>Vunesp</td>
+                            <td>Memorização</td>
+                            <td>Literal</td>
+                            <td><span class="level-badge level-med">Médio · Gramatical</span></td>
+                        </tr>
+                        <tr>
+                            <td>Cesgranrio</td>
+                            <td>Objetividade</td>
+                            <td>Normativo / Direto</td>
+                            <td><span class="level-badge level-med">Médio · Contextual</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
 
-    <!-- ══════════════════════ CONCLUSÃO / ESTRATÉGIA ══════════════════════ -->
-    <article class="article" id="conclusao">
-      <div class="section-label"><i class="fa-solid fa-chess-king"></i>&nbsp; Conclusão &amp; Estratégia</div>
-      <h2 class="article-title" style="font-size:2rem;margin-bottom:1rem;">A variável que separa<br><em>o aprovado do candidato</em></h2>
-      <div class="article-rule"></div>
+        <!-- ══════════════════════ CONCLUSÃO / ESTRATÉGIA ══════════════════════ -->
+        <article class="article" id="conclusao">
+            <div class="section-label"><i class="fa-solid fa-chess-king"></i>&nbsp; Conclusão &amp; Estratégia</div>
+            <h2 class="article-title article-title--md">A variável que separa<br><em>o aprovado do candidato</em></h2>
+            <div class="article-rule"></div>
 
-      <p>
-        Para a elaboração de estudos de alta performance, a recomendação técnica é o <strong>isolamento de variáveis</strong>. Ao estudar para um concurso da FGV, o material deve ser focado em resolução de problemas e casos práticos; para o Cebraspe, em atualização jurisprudencial constante. Misturar metodologias sem critério é tão contraproducente quanto estudar matérias erradas.
-      </p>
-      <p>
-        A compreensão da linguagem dessas bancas é, <em>per se</em>, uma disciplina à parte no Direito e na Linguística Aplicada. Os candidatos que atingem as primeiras posições nos concursos de maior concorrência do país invariavelmente dominam não apenas o conteúdo, mas a gramática avaliativa da instituição que os examinará.
-      </p>
+            <p>
+                Para a elaboração de estudos de alta performance, a recomendação técnica é o <strong>isolamento de
+                    variáveis</strong>. Ao estudar para um concurso da FGV, o material deve ser focado em resolução de
+                problemas e casos práticos; para o Cebraspe, em atualização jurisprudencial constante. Misturar
+                metodologias sem critério é tão contraproducente quanto estudar matérias erradas.
+            </p>
+            <p>
+                A compreensão da linguagem dessas bancas é, <em>per se</em>, uma disciplina à parte no Direito e na
+                Linguística Aplicada. Os candidatos que atingem as primeiras posições nos concursos de maior
+                concorrência do país invariavelmente dominam não apenas o conteúdo, mas a gramática avaliativa da
+                instituição que os examinará.
+            </p>
 
-      <div class="conclusion-box">
-        <h3><i class="fa-solid fa-lightbulb" style="color:var(--gold-l);margin-right:.5rem;"></i>Recomendações Práticas</h3>
-        <p><strong style="color:var(--gold-l);">1. Identifique sua banca antes de abrir o primeiro livro.</strong> A escolha do material, da metodologia e do nível de profundidade depende diretamente de quem vai te avaliar.</p>
-        <p><strong style="color:var(--gold-l);">2. Resolva provas antigas como exercício de análise.</strong> Não para "decorar respostas", mas para mapear padrões de raciocínio, vocabulário preferencial e armadilhas recorrentes.</p>
-        <p><strong style="color:var(--gold-l);">3. Estude o comentário dos gabaritos, não apenas o gabarito.</strong> A lógica por trás de cada distrator revela o modelo mental da banca — e isso vale mais do que qualquer esquema.</p>
-        <p><strong style="color:var(--gold-l);">4. Adapte seu método ao estilo avaliativo.</strong> Para Cebraspe: construa certeza antes de marcar. Para FGV: treine leitura crítica e casos. Para Vunesp: vá direto ao texto da lei.</p>
-      </div>
-    </article>
+            <div class="conclusion-box">
+                <h3><i class="fa-solid fa-lightbulb icon-gold"></i>Recomendações Práticas</h3>
+                <p><strong class="txt-gold">1. Identifique sua banca antes de abrir o primeiro livro.</strong> A escolha do material, da metodologia e do nível de profundidade depende diretamente de quem vai te avaliar.</p>
+                <p><strong class="txt-gold">2. Resolva provas antigas como exercício de análise.</strong> Não para "decorar respostas", mas para mapear padrões de raciocínio, vocabulário preferencial e armadilhas recorrentes.</p>
+                <p><strong class="txt-gold">3. Estude o comentário dos gabaritos, não apenas o gabarito.</strong> A lógica por trás de cada distrator revela o modelo mental da banca — e isso vale mais do que qualquer esquema.</p>
+                <p><strong class="txt-gold">4. Adapte seu método ao estilo avaliativo.</strong> Para Cebraspe: construa certeza antes de marcar. Para FGV: treine leitura crítica e casos. Para Vunesp: vá direto ao texto da lei.</p>
+            </div>
+        </article>
 
-    <!-- ══════════════════════ RODAPÉ ══════════════════════ -->
-    <footer class="revista-footer">
-      <p>Revista Aprova Concursos &mdash; Vol. 1, Nº 1 &mdash; Abril de 2026</p>
-      <p style="margin-top:.35rem;">
-        <a href="index.html">← Voltar ao Painel</a>
-        &nbsp;&middot;&nbsp;
-        <a href="simulador.html">Montar Simulado</a>
-        &nbsp;&middot;&nbsp;
-        <a href="simulador.html">Ir para os Simulados</a>
-      </p>
-    </footer>
+        <!-- ══════════════════════ RODAPÉ ══════════════════════ -->
+        <footer class="revista-footer">
+            <p>Revista Aprova Concursos &mdash; Vol. 1, Nº 1 &mdash; Abril de 2026</p>
+            <p class="revista-footer-links">
+                <a href="index.html">← Voltar ao Painel</a>
+                &nbsp;&middot;&nbsp;
+                <a href="simulador.html">Montar Simulado</a>
+                &nbsp;&middot;&nbsp;
+                <a href="simulador.html">Ir para os Simulados</a>
+            </p>
+        </footer>
 
-  </div><!-- /.page-wrap -->
+    </div><!-- /.page-wrap -->
 
 </body>
+
 </html>

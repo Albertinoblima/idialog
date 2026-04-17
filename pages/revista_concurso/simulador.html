@@ -360,6 +360,19 @@
         }
 
         /* ── FILTRO BANCA / CONCURSOS ABERTOS ─────────────────────────────────── */
+        .is-hidden {
+            display: none;
+        }
+
+        .area-subtitle {
+            font-size: 10px;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+            color: var(--text3);
+            margin-left: .6rem;
+        }
+
         .filter-note {
             font-size: .78rem;
             color: var(--text3);
@@ -421,7 +434,9 @@
         .concurso-card::before {
             content: '';
             position: absolute;
-            left: 0; top: 0; bottom: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
             width: 4px;
             background: var(--cc-color, var(--gold));
             border-radius: 4px 0 0 4px;
@@ -455,15 +470,51 @@
             text-transform: uppercase;
         }
 
-        .cc-badge-banca  { background: rgba(0,229,255,.12); color: var(--gold); }
-        .cc-badge-open   { background: rgba(34,197,94,.15);  color: #4ade80; }
-        .cc-badge-close  { background: rgba(239,68,68,.15);  color: #f87171; }
-        .cc-badge-future { background: rgba(250,204,21,.15); color: #fde047; }
+        .cc-badge-banca {
+            background: rgba(0, 229, 255, .12);
+            color: var(--gold);
+        }
 
-        .cc-orgao  { font-size: .95rem; font-weight: 700; color: var(--text); line-height: 1.2; }
-        .cc-cargo  { font-size: .8rem;  color: var(--text2); margin-top: .15rem; }
-        .cc-encerra { font-size: .75rem; color: var(--text3); margin-top: .45rem; }
-        .cc-subjects { font-size: .72rem; color: var(--text3); margin-top: .2rem; line-height: 1.55; }
+        .cc-badge-open {
+            background: rgba(34, 197, 94, .15);
+            color: #4ade80;
+        }
+
+        .cc-badge-close {
+            background: rgba(239, 68, 68, .15);
+            color: #f87171;
+        }
+
+        .cc-badge-future {
+            background: rgba(250, 204, 21, .15);
+            color: #fde047;
+        }
+
+        .cc-orgao {
+            font-size: .95rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .cc-cargo {
+            font-size: .8rem;
+            color: var(--text2);
+            margin-top: .15rem;
+        }
+
+        .cc-encerra {
+            font-size: .75rem;
+            color: var(--text3);
+            margin-top: .45rem;
+        }
+
+        .cc-subjects {
+            font-size: .72rem;
+            color: var(--text3);
+            margin-top: .2rem;
+            line-height: 1.55;
+        }
     </style>
 </head>
 
@@ -490,9 +541,9 @@
         <div id="sim-body">
 
             <!-- CONCURSOS ABERTOS -->
-            <div class="area-block" id="section-concursos" style="display:none">
+            <div class="area-block is-hidden" id="section-concursos">
                 <div class="area-title">🎯 &nbsp;Concursos Abertos
-                    <small style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3);margin-left:.6rem;">clique para pré-marcar as matérias do edital</small>
+                    <small class="area-subtitle">clique para pré-marcar as matérias do edital</small>
                 </div>
                 <div id="concursos-grid" class="concursos-grid"></div>
             </div>
@@ -584,14 +635,14 @@
     <script>
         // ── Dados: Bancas ──────────────────────────────────────────────────────
         var BANCAS = [
-            { id: 'ibfc',    label: 'IBFC',           color: '#c05621', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues','informatica','dir-civil','dir-processual-penal'] },
-            { id: 'cespe',   label: 'CEBRASPE',       color: '#1a56db', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues','dir-civil','dir-processual-penal','dir-penal'] },
-            { id: 'fgv',     label: 'FGV',            color: '#0e7490', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues','dir-civil'] },
-            { id: 'fcc',     label: 'FCC',            color: '#6d28d9', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues'] },
-            { id: 'vunesp',  label: 'VUNESP',         color: '#065f46', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues'] },
-            { id: 'quadrix', label: 'QUADRIX',        color: '#9d174d', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues','informatica'] },
-            { id: 'idecan',  label: 'IDECAN',         color: '#1e40af', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues'] },
-            { id: 'ibade',   label: 'IBADE',          color: '#7c3aed', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues'] }
+            { id: 'ibfc', label: 'IBFC', color: '#c05621', subjects: ['dir-constitucional', 'dir-administrativo', 'raciocinio-logico', 'portugues', 'informatica', 'dir-civil', 'dir-processual-penal'] },
+            { id: 'cespe', label: 'CEBRASPE', color: '#1a56db', subjects: ['dir-constitucional', 'dir-administrativo', 'raciocinio-logico', 'portugues', 'dir-civil', 'dir-processual-penal', 'dir-penal'] },
+            { id: 'fgv', label: 'FGV', color: '#0e7490', subjects: ['dir-constitucional', 'dir-administrativo', 'raciocinio-logico', 'portugues', 'dir-civil'] },
+            { id: 'fcc', label: 'FCC', color: '#6d28d9', subjects: ['dir-constitucional', 'dir-administrativo', 'raciocinio-logico', 'portugues'] },
+            { id: 'vunesp', label: 'VUNESP', color: '#065f46', subjects: ['dir-constitucional', 'dir-administrativo', 'raciocinio-logico', 'portugues'] },
+            { id: 'quadrix', label: 'QUADRIX', color: '#9d174d', subjects: ['dir-constitucional', 'dir-administrativo', 'raciocinio-logico', 'portugues', 'informatica'] },
+            { id: 'idecan', label: 'IDECAN', color: '#1e40af', subjects: ['dir-constitucional', 'dir-administrativo', 'raciocinio-logico', 'portugues'] },
+            { id: 'ibade', label: 'IBADE', color: '#7c3aed', subjects: ['dir-constitucional', 'dir-administrativo', 'raciocinio-logico', 'portugues'] }
         ];
 
         // ── Dados: Concursos Abertos ───────────────────────────────────────────
@@ -719,13 +770,13 @@
         function renderConcursos() {
             if (CONCURSOS.length === 0) return;
             var section = document.getElementById('section-concursos');
-            var grid    = document.getElementById('concursos-grid');
+            var grid = document.getElementById('concursos-grid');
             if (!section || !grid) return;
-            section.style.display = '';
+            section.classList.remove('is-hidden');
             CONCURSOS.forEach(function (c) {
-                var banca     = BANCAS.find(function (b) { return b.id === c.banca; });
-                var ccColor   = banca ? banca.color : 'var(--gold)';
-                var dias      = diasAte(c.encerramento);
+                var banca = BANCAS.find(function (b) { return b.id === c.banca; });
+                var ccColor = banca ? banca.color : 'var(--gold)';
+                var dias = diasAte(c.encerramento);
                 var diasAbert = diasAte(c.abertura);
                 var statusBadge;
                 var encerraInfo = '';
