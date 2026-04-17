@@ -1,5 +1,8 @@
 FROM python:3.11-slim
 
+# Unbuffered output for proper logging on Railway
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
 # Install system dependencies for reportlab, Pillow, python-docx
@@ -25,4 +28,5 @@ RUN mkdir -p /app/backend/uploads
 ENV PORT=5001
 EXPOSE $PORT
 
-CMD ["python", "backend/app.py"]
+# Use gunicorn for production (Flask's built-in server is for development only)
+CMD gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 120 backend.app:app
