@@ -9,7 +9,6 @@
         projects: [],
         projectTasks: [],
         activeProjectId: null,
-        widgets: [],
         company: null,
     };
 
@@ -52,14 +51,6 @@
         pmAlerts: document.getElementById('pm-alerts'),
         pmTimelineContainer: document.getElementById('pm-timeline-container'),
         pmTimeline: document.getElementById('pm-timeline'),
-        widgetForm: document.getElementById('widget-form'),
-        widgetReset: document.getElementById('widget-reset'),
-        widgetsList: document.getElementById('widgets-list'),
-        widgetType: document.getElementById('widget-type'),
-        widgetMediaFile: document.getElementById('widget-media-file'),
-        widgetMediaFields: document.getElementById('widget-media-fields'),
-        widgetCodeFields: document.getElementById('widget-code-fields'),
-        widgetPreview: document.getElementById('widget-preview'),
         logoutBtn: document.getElementById('logout-btn'),
         toast: document.getElementById('toast'),
 
@@ -1206,33 +1197,87 @@
     }
 
     async function loadDashboard() {
-        const me = await request('/me', { method: 'GET' });
-        state.company = me.company;
-        fillCompanyForm(me.company);
+        var loadingEl = document.getElementById('dash-loading');
+        if (loadingEl) loadingEl.hidden = false;
 
-        const plansResponse = await request('/plans', { method: 'GET' });
-        state.plans = plansResponse.plans || [];
-        renderPlans();
+        try {
+            const me = await request('/me', { method: 'GET' });
+            state.company = me.company;
+            fillCompanyForm(me.company);
 
-        const swotResponse = await request('/swot-analyses', { method: 'GET' });
-        state.swotAnalyses = swotResponse.analyses || [];
-        renderSwotAnalyses();
+            // Populate welcome
+            var welcomeEl = document.getElementById('dash-welcome');
+            var welcomeSubEl = document.getElementById('dash-welcome-sub');
+            var sidebarLogo = document.getElementById('sidebar-logo');
+            if (welcomeEl && state.company) {
+                welcomeEl.textContent = 'Ola, ' + (state.company.name || 'Empresa');
+            }
+            if (welcomeSubEl) {
+                welcomeSubEl.textContent = 'Visao geral do seu Hub de Gestao';
+            }
+            if (sidebarLogo && state.company && state.company.logo_url) {
+                sidebarLogo.src = state.company.logo_url;
+            }
 
-        const businessPlansResponse = await request('/business-plans', { method: 'GET' });
-        state.businessPlans = businessPlansResponse.business_plans || [];
-        renderBusinessPlans();
+            // Parallel data loading
+            const [plansRes, swotRes, bpRes, feasRes, projRes] = await Promise.all([
+                request('/plans', { method: 'GET' }),
+                request('/swot-analyses', { method: 'GET' }),
+                request('/business-plans', { method: 'GET' }),
+                request('/feasibility-studies', { method: 'GET' }),
+                request('/projects', { method: 'GET' }),
+            ]);
 
-        const feasibilityResponse = await request('/feasibility-studies', { method: 'GET' });
-        state.feasibilityStudies = feasibilityResponse.feasibility_studies || [];
-        renderFeasibilityStudies();
+            state.plans = plansRes.plans || [];
+            renderPlans();
 
-        const projectsResponse = await request('/projects', { method: 'GET' });
-        state.projects = projectsResponse.projects || [];
-        renderProjects();
-        renderPmDashboard();
+            state.swotAnalyses = swotRes.analyses || [];
+            renderSwotAnalyses();
 
-        await refreshWidgets();
-        setLoggedIn(true);
+            state.businessPlans = bpRes.business_plans || [];
+            renderBusinessPlans();
+
+            state.feasibilityStudies = feasRes.feasibility_studies || [];
+            renderFeasibilityStudies();
+
+            state.projects = projRes.projects || [];
+            renderProjects();
+            renderPmDashboard();
+
+            // Populate KPIs on dashboard home
+            populateKpis();
+
+            setLoggedIn(true);
+            switchToTab('home');
+        } catch (error) {
+            showToast(error.message, true);
+        } finally {
+            if (loadingEl) loadingEl.hidden = true;
+        }
+    }
+
+    function populateKpis() {
+        var kpiMap = {
+            'kpi-plans': state.plans.length,
+            'kpi-swot': state.swotAnalyses.length,
+            'kpi-business': state.businessPlans.length,
+            'kpi-feasibility': state.feasibilityStudies.length,
+            'kpi-projects': state.projects.length,
+        };
+        Object.keys(kpiMap).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = kpiMap[id];
+        });
+
+        // Alerts KPI: overdue tasks + projects without tasks
+        var alerts = 0;
+        if (state.projects.length) {
+            state.projects.forEach(function (p) {
+                if (!p.milestones || !p.milestones.length) alerts++;
+            });
+        }
+        var alertEl = document.getElementById('kpi-alerts');
+        if (alertEl) alertEl.textContent = alerts;
     }
 
     async function handleLogin(event) {
@@ -1936,20 +1981,33 @@
     }
 
     function handleTabSwitch(event) {
-        const trigger = event.target;
-        if (!(trigger instanceof HTMLButtonElement) || !trigger.dataset.tab) {
-            return;
-        }
+        const trigger = event.target.closest('.dash-nav-item[data-tab]') || event.target.closest('[data-tab-go]');
+        if (!trigger) return;
+        const tabName = trigger.dataset.tab || trigger.dataset.tabGo;
+        if (!tabName) return;
+        switchToTab(tabName);
+        closeSidebar();
+    }
 
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        trigger.classList.add('active');
-
+    function switchToTab(tabName) {
+        document.querySelectorAll('.dash-nav-item').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabName));
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        const tabId = `tab-${trigger.dataset.tab}`;
-        const tabContent = document.getElementById(tabId);
-        if (tabContent) {
-            tabContent.classList.add('active');
-        }
+        const tabContent = document.getElementById('tab-' + tabName);
+        if (tabContent) tabContent.classList.add('active');
+    }
+
+    function openSidebar() {
+        var sidebar = document.querySelector('.dash-sidebar');
+        var overlay = document.querySelector('.dash-overlay');
+        if (sidebar) sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('open');
+    }
+
+    function closeSidebar() {
+        var sidebar = document.querySelector('.dash-sidebar');
+        var overlay = document.querySelector('.dash-overlay');
+        if (sidebar) sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('open');
     }
 
     function handleLogout() {
@@ -1961,7 +2019,6 @@
         state.projects = [];
         state.projectTasks = [];
         state.activeProjectId = null;
-        state.widgets = [];
         state.company = null;
         localStorage.removeItem('idialog-tools-token');
         setLoggedIn(false);
@@ -2187,19 +2244,31 @@
         el.taskForm.addEventListener('submit', handleTaskSave);
         el.taskReset.addEventListener('click', clearTaskForm);
         el.pmTaskList.addEventListener('click', handleTaskActions);
-        el.widgetForm.addEventListener('submit', handleWidgetSave);
-        el.widgetReset.addEventListener('click', clearWidgetForm);
-        el.widgetsList.addEventListener('click', handleWidgetActions);
-        el.widgetType.addEventListener('change', syncWidgetFieldVisibility);
         el.logoutBtn.addEventListener('click', handleLogout);
 
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        // Sidebar navigation
+        document.querySelectorAll('.dash-nav-item[data-tab]').forEach(btn => {
             btn.addEventListener('click', handleTabSwitch);
         });
+
+        // Quick cards on dashboard home
+        document.querySelectorAll('[data-tab-go]').forEach(card => {
+            card.addEventListener('click', handleTabSwitch);
+        });
+
+        // Sidebar mobile toggle
+        var sidebarToggle = document.getElementById('sidebar-toggle');
+        if (sidebarToggle) sidebarToggle.addEventListener('click', openSidebar);
+
+        var dashOverlay = document.querySelector('.dash-overlay');
+        if (dashOverlay) dashOverlay.addEventListener('click', closeSidebar);
+
+        // Mobile logout
+        var logoutMobile = document.getElementById('logout-btn-mobile');
+        if (logoutMobile) logoutMobile.addEventListener('click', handleLogout);
     }
 
     function init() {
-        syncWidgetFieldVisibility();
         bindEvents();
         initAuthTabs();
         initPasswordToggles();
