@@ -2,11 +2,6 @@
 // Auto-detecção da URL da API
 // ===========================
 (function () {
-    /*
-     * URL do backend Railway — atualize com a URL real do seu serviço.
-     * Formato: https://<nome-do-servico>-production.up.railway.app
-     * Para encontrar: Railway Dashboard → seu projeto → Settings → Domains
-     */
     var RAILWAY_URL = 'https://idialog-production.up.railway.app';
 
     var saved = localStorage.getItem('idialog-tools-api');
