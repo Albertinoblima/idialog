@@ -172,6 +172,10 @@
     position: relative;
 }
 
+.dashboard[hidden] {
+    display: none !important;
+}
+
 .dash-loading {
     position: fixed;
     inset: 0;

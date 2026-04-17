@@ -26,64 +26,160 @@
 
     <div id="header-placeholder"></div>
 
-    <main class="main ferramentas-main" id="main-content">
-        <section class="ferramentas-hero">
-            <div class="container ferramentas-hero-inner">
-                <div>
-                    <p class="hero-kicker">Acesso Restrito</p>
-                    <h1 class="hero-title">Painel de <span class="highlight">Controle</span></h1>
-                    <p class="hero-subtitle">Gerencie conteudos, publicacoes, simulados e configuracoes visuais do
-                        site iDialog.</p>
+    <main class="main admin-page" id="main-content">
+        <!-- LOGIN -->
+        <section id="auth-view" class="admin-auth">
+            <div class="admin-login-page">
+                <div class="admin-login-card">
+                    <div class="admin-login-brand">
+                        <img src="/public/images/Configuracao.gif" alt="Admin" class="admin-login-gif">
+                        <h1>iDialog <span>Admin</span></h1>
+                        <p>Painel de Controle</p>
+                    </div>
+                    <form id="login-form" class="admin-login-form">
+                        <div class="admin-field">
+                            <label for="adm-email">Email do administrador</label>
+                            <input id="adm-email" required type="email" name="email" placeholder="admin@idialog.com.br"
+                                autocomplete="username">
+                        </div>
+                        <div class="admin-field">
+                            <label for="adm-password">Senha</label>
+                            <input id="adm-password" required type="password" name="password" minlength="6"
+                                autocomplete="current-password">
+                        </div>
+                        <button class="admin-login-btn" type="submit">
+                            <i class="fas fa-right-to-bracket"></i> Entrar no painel
+                        </button>
+                    </form>
+                    <p class="admin-login-hint"><i class="fas fa-lock"></i> Acesso restrito a administradores</p>
                 </div>
             </div>
         </section>
 
-        <section class="container ferramentas-content">
-            <div id="auth-view" class="panel-grid admin-login-wrap">
-                <article class="panel-card admin-login-card">
-                    <div class="admin-login-icon">
-                        <img src="/public/images/Configuracao.gif" alt="Admin" class="admin-login-gif">
-                    </div>
-                    <h2><i class="fas fa-shield-halved"></i> Acesso ao Painel</h2>
-                    <p class="panel-lead">Esta area e exclusiva para administradores do site iDialog.</p>
-                    <form id="login-form" class="stack-form">
-                        <label>Email do administrador
-                            <input required type="email" name="email" placeholder="admin@idialog.com.br"
-                                autocomplete="username">
-                        </label>
-                        <label>Senha
-                            <input required type="password" name="password" minlength="6"
-                                autocomplete="current-password">
-                        </label>
-                        <button class="btn btn-primary" type="submit">
-                            <i class="fas fa-right-to-bracket"></i> Entrar no painel
-                        </button>
-                    </form>
-                </article>
+        <!-- ADMIN SHELL -->
+        <section id="dashboard-view" class="admin-shell" hidden>
+            <!-- Loading -->
+            <div class="admin-loading" id="admin-loading" hidden>
+                <div class="admin-loading-spinner"></div>
+                <span>Carregando painel...</span>
             </div>
 
-            <section id="dashboard-view" class="dashboard" hidden>
-                <div class="dashboard-header">
-                    <h2><i class="fas fa-gauge-high"></i> Painel de Controle iDialog</h2>
-                    <button class="btn btn-secondary" id="logout-btn" type="button">
-                        <i class="fas fa-arrow-right-from-bracket"></i> Sair
+            <!-- Sidebar -->
+            <aside class="admin-sidebar" id="admin-sidebar">
+                <div class="admin-sidebar-brand">
+                    <img class="admin-sidebar-logo" src="/public/icon/icon.png" alt="iDialog">
+                    <div>
+                        <div class="admin-sidebar-title">iDialog</div>
+                        <div class="admin-sidebar-role">Administrador</div>
+                    </div>
+                </div>
+                <nav class="admin-nav">
+                    <button class="admin-nav-item active" data-tab="dashboard" type="button">
+                        <i class="fas fa-gauge-high"></i> <span>Dashboard</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="cms" type="button">
+                        <i class="fas fa-file-pen"></i> <span>Conteudo</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="widgets" type="button">
+                        <i class="fas fa-rectangle-ad"></i> <span>Publicidade</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="agenda" type="button">
+                        <i class="fas fa-calendar-days"></i> <span>Agenda</span>
+                    </button>
+                    <div class="admin-nav-divider"></div>
+                    <button class="admin-nav-item" data-tab="aparencia" type="button">
+                        <i class="fas fa-palette"></i> <span>Aparencia</span>
+                    </button>
+                </nav>
+                <div class="admin-sidebar-footer">
+                    <button class="btn btn-secondary btn-sm" id="logout-btn" type="button">
+                        <i class="fas fa-right-from-bracket"></i> Sair
                     </button>
                 </div>
+            </aside>
 
-                <div class="tabs-row" role="tablist" aria-label="Modulos do painel">
-                    <button class="tab-btn active" type="button" data-tab="cms">
-                        <i class="fas fa-sitemap"></i> CMS &mdash; Conteudo
-                    </button>
-                    <button class="tab-btn" type="button" data-tab="agenda">
-                        <i class="fas fa-calendar-clock"></i> Agenda Editorial
-                    </button>
-                    <button class="tab-btn" type="button" data-tab="cursor">
-                        <i class="fas fa-meteor"></i> Cursor Foguete
-                    </button>
+            <!-- Mobile top bar -->
+            <div class="admin-topbar" id="admin-topbar">
+                <button class="admin-topbar-toggle" id="admin-sidebar-toggle" type="button" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <span class="admin-topbar-title">iDialog Admin</span>
+                <button class="btn btn-secondary btn-sm" id="logout-btn-mobile" type="button">
+                    <i class="fas fa-right-from-bracket"></i>
+                </button>
+            </div>
+            <div class="admin-overlay" id="admin-overlay"></div>
+
+            <!-- Main content -->
+            <div class="admin-main">
+                <!-- DASHBOARD HOME -->
+                <div class="tab-content active" id="tab-dashboard">
+                    <div class="admin-page-header">
+                        <h2><i class="fas fa-gauge-high"></i> Dashboard</h2>
+                        <p>Visao geral do site e conteudos</p>
+                    </div>
+                    <div class="admin-kpi-grid">
+                        <div class="admin-kpi-card" data-tab-go="cms">
+                            <div class="admin-kpi-icon"><i class="fas fa-file-lines"></i></div>
+                            <div class="admin-kpi-value" id="kpi-total">0</div>
+                            <div class="admin-kpi-label">Conteudos</div>
+                        </div>
+                        <div class="admin-kpi-card is-success" data-tab-go="cms">
+                            <div class="admin-kpi-icon"><i class="fas fa-circle-check"></i></div>
+                            <div class="admin-kpi-value" id="kpi-published">0</div>
+                            <div class="admin-kpi-label">Publicados</div>
+                        </div>
+                        <div class="admin-kpi-card is-warning" data-tab-go="agenda">
+                            <div class="admin-kpi-icon"><i class="fas fa-clock"></i></div>
+                            <div class="admin-kpi-value" id="kpi-scheduled">0</div>
+                            <div class="admin-kpi-label">Agendados</div>
+                        </div>
+                        <div class="admin-kpi-card" data-tab-go="cms">
+                            <div class="admin-kpi-icon"><i class="fas fa-pen-to-square"></i></div>
+                            <div class="admin-kpi-value" id="kpi-drafts">0</div>
+                            <div class="admin-kpi-label">Rascunhos</div>
+                        </div>
+                        <div class="admin-kpi-card" data-tab-go="widgets">
+                            <div class="admin-kpi-icon"><i class="fas fa-rectangle-ad"></i></div>
+                            <div class="admin-kpi-value" id="kpi-widgets">0</div>
+                            <div class="admin-kpi-label">Widgets</div>
+                        </div>
+                        <div class="admin-kpi-card" data-tab-go="cms">
+                            <div class="admin-kpi-icon"><i class="fas fa-graduation-cap"></i></div>
+                            <div class="admin-kpi-value" id="kpi-simulados">0</div>
+                            <div class="admin-kpi-label">Simulados</div>
+                        </div>
+                    </div>
+                    <div class="admin-quick-grid">
+                        <article class="admin-quick-card" data-tab-go="cms">
+                            <i class="fas fa-plus-circle"></i>
+                            <h4>Novo Conteudo</h4>
+                            <p>Criar pagina, postagem ou simulado</p>
+                        </article>
+                        <article class="admin-quick-card" data-tab-go="widgets">
+                            <i class="fas fa-rectangle-ad"></i>
+                            <h4>Gerenciar Publicidade</h4>
+                            <p>Banners, anuncios e espacos visuais</p>
+                        </article>
+                        <article class="admin-quick-card" data-tab-go="agenda">
+                            <i class="fas fa-calendar-days"></i>
+                            <h4>Agenda Editorial</h4>
+                            <p>Publicacoes programadas</p>
+                        </article>
+                        <article class="admin-quick-card" data-tab-go="aparencia">
+                            <i class="fas fa-palette"></i>
+                            <h4>Aparencia</h4>
+                            <p>Cursor personalizado e visual</p>
+                        </article>
+                    </div>
                 </div>
 
-                <!-- ===== CMS ===== -->
-                <div class="tab-content active" id="tab-cms">
+                <!-- CMS -->
+                <div class="tab-content" id="tab-cms">
+                    <div class="admin-page-header">
+                        <h2><i class="fas fa-file-pen"></i> Gerenciador de Conteudo</h2>
+                        <p>Crie e gerencie paginas, postagens e simulados</p>
+                    </div>
                     <article class="panel-card">
                         <h3><i class="fas fa-sitemap"></i> Central de Conteudo</h3>
                         <p class="panel-lead">Crie paginas institucionais, postagens do blog e simulados administraveis
@@ -196,19 +292,112 @@
                     </article>
                 </div>
 
-                <!-- ===== AGENDA ===== -->
-                <div class="tab-content" id="tab-agenda">
+                <!-- WIDGETS / PUBLICIDADE -->
+                <div class="tab-content" id="tab-widgets">
+                    <div class="admin-page-header">
+                        <h2><i class="fas fa-rectangle-ad"></i> Espacos Publicitarios</h2>
+                        <p>Gerencie banners, anuncios e widgets visuais do site</p>
+                    </div>
                     <article class="panel-card">
-                        <h3><i class="fas fa-calendar-clock"></i> Agenda Editorial</h3>
-                        <p class="panel-lead">Acompanhe os conteudos programados para publicacao automatica.</p>
+                        <h3><i class="fas fa-rectangle-ad"></i> Cadastrar Widget</h3>
+                        <p class="panel-lead">Cadastre banners, quadrados laterais, widgets visuais e codigo do Google
+                            Ads.</p>
+                        <form id="widget-form" class="stack-form">
+                            <input type="hidden" name="widget_id" value="">
+                            <input type="hidden" name="current_media_path" value="">
+                            <label>Nome interno do widget
+                                <input required type="text" name="name" placeholder="Banner superior blog - Google Ads">
+                            </label>
+                            <label>Titulo visivel (opcional)
+                                <input type="text" name="title" placeholder="Publicidade">
+                            </label>
+                            <div class="split-2">
+                                <label>Posicao
+                                    <select name="placement">
+                                        <option value="top_banner">Banner estreito superior</option>
+                                        <option value="prefooter_banner">Banner estreito antes do rodape</option>
+                                        <option value="content_square">Quadrados antes do rodape</option>
+                                        <option value="sidebar_square">Quadrado lateral direito</option>
+                                    </select>
+                                </label>
+                                <label>Escopo
+                                    <select name="scope">
+                                        <option value="all">Site inteiro</option>
+                                        <option value="site">Somente site institucional</option>
+                                        <option value="blog">Somente blog</option>
+                                        <option value="revista">Somente revista</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Tipo do widget
+                                    <select name="widget_type" id="widget-type">
+                                        <option value="image">Imagem ou GIF</option>
+                                        <option value="code">Codigo do Google/HTML</option>
+                                    </select>
+                                </label>
+                                <label>Ordem de exibicao
+                                    <input type="number" name="display_order" value="0" min="0">
+                                </label>
+                            </div>
+                            <label>URL de destino (opcional para imagem/GIF)
+                                <input type="url" name="target_url" placeholder="https://exemplo.com/campanha">
+                            </label>
+                            <label>Texto alternativo
+                                <input type="text" name="alt_text" placeholder="Banner iDialog">
+                            </label>
+                            <div id="widget-media-fields" class="widget-fields-group">
+                                <label>Arquivo do banner
+                                    <input type="file" id="widget-media-file" name="media"
+                                        accept="image/png,image/jpeg,image/webp,image/gif">
+                                    <small class="field-help">Aceita PNG, JPG, WEBP e GIF.</small>
+                                </label>
+                                <div class="widget-preview-wrap">
+                                    <img id="widget-preview" alt="Preview do widget" hidden>
+                                </div>
+                            </div>
+                            <div id="widget-code-fields" class="widget-fields-group" hidden>
+                                <label>Codigo embed do Google ou HTML
+                                    <textarea name="embed_code" rows="7"
+                                        placeholder="Cole aqui o script ou bloco do anuncio"></textarea>
+                                </label>
+                            </div>
+                            <label class="checkbox-row">
+                                <input type="checkbox" name="is_active" checked>
+                                <span>Widget ativo para publicacao</span>
+                            </label>
+                            <div class="action-row">
+                                <button class="btn btn-primary" type="submit">Salvar widget</button>
+                                <button class="btn btn-secondary" type="button" id="widget-reset">Novo widget</button>
+                            </div>
+                        </form>
+                    </article>
+                    <article class="panel-card">
+                        <h3><i class="fas fa-layer-group"></i> Widgets Publicados</h3>
+                        <p class="panel-lead">Organize os espacos de propaganda do blog, revista e paginas.</p>
+                        <div id="widgets-list" class="widgets-list"></div>
+                    </article>
+                </div>
+
+                <!-- AGENDA -->
+                <div class="tab-content" id="tab-agenda">
+                    <div class="admin-page-header">
+                        <h2><i class="fas fa-calendar-days"></i> Agenda Editorial</h2>
+                        <p>Conteudos programados para publicacao automatica</p>
+                    </div>
+                    <article class="panel-card">
                         <div id="scheduled-list" class="scheduled-list"></div>
                     </article>
                 </div>
 
-                <!-- ===== CURSOR ===== -->
-                <div class="tab-content" id="tab-cursor">
+                <!-- APARENCIA -->
+                <div class="tab-content" id="tab-aparencia">
+                    <div class="admin-page-header">
+                        <h2><i class="fas fa-palette"></i> Aparencia</h2>
+                        <p>Personalize elementos visuais do site</p>
+                    </div>
                     <article class="panel-card">
-                        <h3><i class="fas fa-meteor"></i> Configuracao do Cursor Personalizado</h3>
+                        <h3><i class="fas fa-meteor"></i> Cursor Personalizado</h3>
                         <p class="panel-lead">Ajuste em tempo real o foguete do mouse: tamanho, brilho e parametros da
                             cauda/trilha.</p>
                         <form id="cursor-form" class="stack-form">
@@ -256,7 +445,8 @@
                         </form>
                     </article>
                 </div>
-            </section>
+
+            </div><!-- /admin-main -->
         </section>
     </main>
 

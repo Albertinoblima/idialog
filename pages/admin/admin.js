@@ -7,8 +7,9 @@
 
     const state = {
         token: localStorage.getItem(ADMIN_TOKEN_KEY) || '',
-        apiBase: localStorage.getItem(ADMIN_API_KEY) || '/api',
+        apiBase: localStorage.getItem(ADMIN_API_KEY) || localStorage.getItem('idialog-tools-api') || '/api',
         contents: [],
+        widgets: [],
         clockTimer: null,
     };
 
@@ -29,6 +30,14 @@
         contentCoverPreview: document.getElementById('content-cover-preview'),
         contentStats: document.getElementById('content-stats'),
         scheduledList: document.getElementById('scheduled-list'),
+        widgetForm: document.getElementById('widget-form'),
+        widgetReset: document.getElementById('widget-reset'),
+        widgetsList: document.getElementById('widgets-list'),
+        widgetType: document.getElementById('widget-type'),
+        widgetMediaFile: document.getElementById('widget-media-file'),
+        widgetMediaFields: document.getElementById('widget-media-fields'),
+        widgetCodeFields: document.getElementById('widget-code-fields'),
+        widgetPreview: document.getElementById('widget-preview'),
         cursorForm: document.getElementById('cursor-form'),
         cursorReset: document.getElementById('cursor-reset'),
         cursorScale: document.getElementById('cursor-scale'),
@@ -226,6 +235,11 @@
         if (el.dashboardView) {
             el.dashboardView.hidden = !loggedIn;
         }
+        // Hide site header/footer when admin dashboard is active
+        var header = document.getElementById('header-placeholder');
+        var footer = document.getElementById('footer-placeholder');
+        if (header) header.hidden = loggedIn;
+        if (footer) footer.hidden = loggedIn;
     }
 
     async function handleLogin(event) {
@@ -254,14 +268,51 @@
     function handleLogout() {
         state.token = '';
         state.contents = [];
+        state.widgets = [];
         localStorage.removeItem(ADMIN_TOKEN_KEY);
         setLoggedIn(false);
         showToast('Sessao encerrada.');
     }
 
     async function loadDashboard() {
-        await refreshContent();
-        setLoggedIn(true);
+        var loadingEl = document.getElementById('admin-loading');
+        if (loadingEl) loadingEl.hidden = false;
+
+        try {
+            const [contentRes, widgetsRes] = await Promise.all([
+                refreshContent(),
+                refreshWidgets(),
+            ]);
+            populateKpis();
+            setLoggedIn(true);
+            switchToTab('dashboard');
+        } catch (error) {
+            throw error;
+        } finally {
+            if (loadingEl) loadingEl.hidden = true;
+        }
+    }
+
+    function populateKpis() {
+        var total = state.contents.length;
+        var published = state.contents.filter(function (i) { return i.status === 'published'; }).length;
+        var scheduled = state.contents.filter(function (i) { return isScheduledPublication(i); }).length;
+        var drafts = state.contents.filter(function (i) { return i.status === 'draft'; }).length;
+        var simulados = state.contents.filter(function (i) { return i.content_type === 'simulado'; }).length;
+        var widgets = state.widgets.length;
+
+        var map = {
+            'kpi-total': total,
+            'kpi-published': published,
+            'kpi-scheduled': scheduled,
+            'kpi-drafts': drafts,
+            'kpi-widgets': widgets,
+            'kpi-simulados': simulados,
+        };
+        Object.keys(map).forEach(function (id) {
+            var e = document.getElementById(id);
+            if (e) e.textContent = map[id];
+        });
     }
 
     async function restoreSession() {
@@ -471,6 +522,10 @@
         el.contentForm.elements.extra_json.value = JSON.stringify(item.extra || {}, null, 2);
         setContentCoverPreview(item.cover_url || '', item.title || 'Preview da capa');
         syncContentFieldVisibility();
+        // Mark slug as manual to prevent overwrite when editing title
+        if (el.contentSlug) {
+            el.contentSlug.dataset.manual = item.slug ? 'true' : '';
+        }
     }
 
     function clearContentForm() {
@@ -764,21 +819,219 @@
         showToast('Cursor restaurado para o padrao.');
     }
 
-    // ── Tabs ──────────────────────────────────────────────────────────────────
+    // ── Tabs / Navigation ──────────────────────────────────────────────────
     function handleTabSwitch(event) {
-        const trigger = event.target;
-        if (!(trigger instanceof HTMLButtonElement) || !trigger.dataset.tab) {
+        var trigger = event.target.closest('.admin-nav-item[data-tab]') || event.target.closest('[data-tab-go]');
+        if (!trigger) return;
+        var tabName = trigger.dataset.tab || trigger.dataset.tabGo;
+        if (!tabName) return;
+        switchToTab(tabName);
+        closeSidebar();
+    }
+
+    function switchToTab(tabName) {
+        document.querySelectorAll('.admin-nav-item').forEach(function (btn) {
+            btn.classList.toggle('active', btn.dataset.tab === tabName);
+        });
+        document.querySelectorAll('.admin-shell .tab-content').forEach(function (tab) {
+            tab.classList.remove('active');
+        });
+        var tabContent = document.getElementById('tab-' + tabName);
+        if (tabContent) tabContent.classList.add('active');
+    }
+
+    function openSidebar() {
+        var sidebar = document.getElementById('admin-sidebar');
+        var overlay = document.getElementById('admin-overlay');
+        if (sidebar) sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('open');
+    }
+
+    function closeSidebar() {
+        var sidebar = document.getElementById('admin-sidebar');
+        var overlay = document.getElementById('admin-overlay');
+        if (sidebar) sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('open');
+    }
+
+    // ── Widgets CRUD ──────────────────────────────────────────────────────────
+    function syncWidgetFieldVisibility() {
+        if (!el.widgetType || !el.widgetMediaFields || !el.widgetCodeFields) return;
+        var isCode = el.widgetType.value === 'code';
+        el.widgetMediaFields.hidden = isCode;
+        el.widgetCodeFields.hidden = !isCode;
+    }
+
+    async function refreshWidgets() {
+        try {
+            var response = await request('/widgets', { method: 'GET' });
+            state.widgets = response.widgets || [];
+            renderWidgets();
+        } catch (_err) {
+            state.widgets = [];
+        }
+    }
+
+    function renderWidgets() {
+        if (!el.widgetsList) return;
+        if (!state.widgets.length) {
+            el.widgetsList.innerHTML = '<p>Nenhum widget cadastrado.</p>';
             return;
         }
+        el.widgetsList.innerHTML = state.widgets.map(function (w) {
+            var statusClass = w.is_active ? 'is-live' : 'is-paused';
+            var statusLabel = w.is_active ? 'Ativo' : 'Inativo';
+            var placementLabels = {
+                top_banner: 'Banner superior',
+                prefooter_banner: 'Banner rodape',
+                content_square: 'Quadrado conteudo',
+                sidebar_square: 'Quadrado lateral',
+            };
+            return '<div class="content-item" data-widget-id="' + w.id + '">' +
+                '<div class="content-item-header">' +
+                '<div>' +
+                '<div class="content-item-title">' + escapeHtml(w.name) + '</div>' +
+                '<div class="widget-item-meta">' +
+                '<span class="widget-chip">' + escapeHtml(placementLabels[w.placement] || w.placement) + '</span>' +
+                '<span class="widget-chip">' + escapeHtml(w.scope || 'all') + '</span>' +
+                '<span class="widget-chip ' + statusClass + '">' + statusLabel + '</span>' +
+                '</div></div>' +
+                '<div class="plan-item-actions">' +
+                '<button type="button" class="mini-btn" data-action="edit-widget">Editar</button>' +
+                '<button type="button" class="mini-btn" data-action="delete-widget">Excluir</button>' +
+                '</div></div></div>';
+        }).join('');
+    }
 
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        trigger.classList.add('active');
-
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        const tabContent = document.getElementById(`tab-${trigger.dataset.tab}`);
-        if (tabContent) {
-            tabContent.classList.add('active');
+    function fillWidgetForm(widget) {
+        if (!el.widgetForm || !widget) return;
+        el.widgetForm.elements.widget_id.value = widget.id || '';
+        el.widgetForm.elements.current_media_path.value = widget.media_path || '';
+        el.widgetForm.elements.name.value = widget.name || '';
+        el.widgetForm.elements.title.value = widget.title || '';
+        el.widgetForm.elements.placement.value = widget.placement || 'top_banner';
+        el.widgetForm.elements.scope.value = widget.scope || 'all';
+        el.widgetForm.elements.widget_type.value = widget.widget_type || 'image';
+        el.widgetForm.elements.display_order.value = widget.display_order || 0;
+        el.widgetForm.elements.target_url.value = widget.target_url || '';
+        el.widgetForm.elements.alt_text.value = widget.alt_text || '';
+        el.widgetForm.elements.embed_code.value = widget.embed_code || '';
+        el.widgetForm.elements.is_active.checked = widget.is_active !== false;
+        if (widget.media_url && el.widgetPreview) {
+            el.widgetPreview.src = widget.media_url;
+            el.widgetPreview.hidden = false;
+        } else if (el.widgetPreview) {
+            el.widgetPreview.hidden = true;
         }
+        syncWidgetFieldVisibility();
+    }
+
+    function clearWidgetForm() {
+        if (!el.widgetForm) return;
+        el.widgetForm.reset();
+        el.widgetForm.elements.widget_id.value = '';
+        el.widgetForm.elements.current_media_path.value = '';
+        if (el.widgetPreview) {
+            el.widgetPreview.hidden = true;
+            el.widgetPreview.removeAttribute('src');
+        }
+        syncWidgetFieldVisibility();
+    }
+
+    async function handleWidgetSave(event) {
+        event.preventDefault();
+        var formData = new FormData(el.widgetForm);
+        var widgetId = formData.get('widget_id');
+
+        try {
+            var uploadedMedia = null;
+            if (el.widgetMediaFile && el.widgetMediaFile.files && el.widgetMediaFile.files.length) {
+                var mediaPayload = new FormData();
+                mediaPayload.append('media', el.widgetMediaFile.files[0]);
+                uploadedMedia = await request('/widgets/media', { method: 'POST', body: mediaPayload });
+            }
+
+            var widgetType = formData.get('widget_type');
+            var payload = {
+                name: formData.get('name'),
+                title: formData.get('title'),
+                placement: formData.get('placement'),
+                scope: formData.get('scope'),
+                widget_type: widgetType,
+                media_path: uploadedMedia && uploadedMedia.media_path ? uploadedMedia.media_path : formData.get('current_media_path'),
+                target_url: formData.get('target_url'),
+                alt_text: formData.get('alt_text'),
+                embed_code: widgetType === 'code' ? formData.get('embed_code') : '',
+                display_order: Number(formData.get('display_order') || 0),
+                is_active: formData.get('is_active') === 'on',
+            };
+
+            if (widgetId) {
+                await request('/widgets/' + widgetId, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                showToast('Widget atualizado.');
+            } else {
+                await request('/widgets', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                showToast('Widget criado.');
+            }
+
+            clearWidgetForm();
+            await refreshWidgets();
+            populateKpis();
+        } catch (error) {
+            showToast(error.message, true);
+        }
+    }
+
+    async function handleWidgetActions(event) {
+        var target = event.target;
+        if (!(target instanceof HTMLButtonElement)) return;
+        var action = target.dataset.action;
+        if (!action) return;
+        var wrapper = target.closest('[data-widget-id]');
+        if (!wrapper) return;
+        var widgetId = wrapper.getAttribute('data-widget-id');
+        var widget = state.widgets.find(function (w) { return String(w.id) === String(widgetId); });
+        if (!widget) return;
+
+        try {
+            if (action === 'edit-widget') {
+                fillWidgetForm(widget);
+                showToast('Widget carregado para edicao.');
+                return;
+            }
+            if (action === 'delete-widget') {
+                if (!window.confirm('Excluir este widget?')) return;
+                await request('/widgets/' + widget.id, { method: 'DELETE' });
+                clearWidgetForm();
+                await refreshWidgets();
+                populateKpis();
+                showToast('Widget excluido.');
+            }
+        } catch (error) {
+            showToast(error.message, true);
+        }
+    }
+
+    // ── API Auto-detect ───────────────────────────────────────────────────────
+    async function autoDetectApi() {
+        var detected = localStorage.getItem('idialog-tools-api');
+        if (detected && detected !== '/api') {
+            state.apiBase = detected;
+            localStorage.setItem(ADMIN_API_KEY, detected);
+        }
+        try {
+            var resp = await fetch(state.apiBase + '/health', { method: 'GET' });
+            if (resp.ok) return;
+        } catch (_) { }
+        showToast('Servidor nao respondeu. Verifique se o backend esta online.', true);
     }
 
     // ── Bootstrap ─────────────────────────────────────────────────────────────
@@ -817,7 +1070,34 @@
                 el.contentSlug.value = slugify(el.contentSlug.value);
             });
         }
+        // Cover preview on file select
+        if (el.contentCoverFile) {
+            el.contentCoverFile.addEventListener('change', function () {
+                if (el.contentCoverFile.files && el.contentCoverFile.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        setContentCoverPreview(e.target.result, 'Preview');
+                    };
+                    reader.readAsDataURL(el.contentCoverFile.files[0]);
+                }
+            });
+        }
 
+        // Widget events
+        if (el.widgetForm) {
+            el.widgetForm.addEventListener('submit', handleWidgetSave);
+        }
+        if (el.widgetReset) {
+            el.widgetReset.addEventListener('click', clearWidgetForm);
+        }
+        if (el.widgetsList) {
+            el.widgetsList.addEventListener('click', handleWidgetActions);
+        }
+        if (el.widgetType) {
+            el.widgetType.addEventListener('change', syncWidgetFieldVisibility);
+        }
+
+        // Cursor events
         if (el.cursorForm) {
             el.cursorForm.addEventListener('submit', handleCursorSave);
         }
@@ -838,16 +1118,31 @@
             }
         });
 
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        // Sidebar navigation
+        document.querySelectorAll('.admin-nav-item[data-tab]').forEach(btn => {
             btn.addEventListener('click', handleTabSwitch);
         });
+        // Quick cards on dashboard
+        document.querySelectorAll('[data-tab-go]').forEach(card => {
+            card.addEventListener('click', handleTabSwitch);
+        });
+        // Sidebar mobile toggle
+        var sidebarToggle = document.getElementById('admin-sidebar-toggle');
+        if (sidebarToggle) sidebarToggle.addEventListener('click', openSidebar);
+        var adminOverlay = document.getElementById('admin-overlay');
+        if (adminOverlay) adminOverlay.addEventListener('click', closeSidebar);
+        // Mobile logout
+        var logoutMobile = document.getElementById('logout-btn-mobile');
+        if (logoutMobile) logoutMobile.addEventListener('click', handleLogout);
     }
 
     function init() {
         syncContentFieldVisibility();
+        syncWidgetFieldVisibility();
         fillCursorForm(getCursorConfigFromStorage());
         startClockTick();
         bindEvents();
+        autoDetectApi();
         restoreSession();
     }
 
