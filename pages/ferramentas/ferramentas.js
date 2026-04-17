@@ -1,7 +1,7 @@
 (function () {
     const state = {
         token: localStorage.getItem('idialog-tools-token') || '',
-        apiBase: localStorage.getItem('idialog-tools-api') || 'http://127.0.0.1:5001/api',
+        apiBase: localStorage.getItem('idialog-tools-api') || '/api',
         plans: [],
         swotAnalyses: [],
         businessPlans: [],
@@ -62,8 +62,7 @@
         widgetPreview: document.getElementById('widget-preview'),
         logoutBtn: document.getElementById('logout-btn'),
         toast: document.getElementById('toast'),
-        apiBaseInput: document.getElementById('api-base'),
-        saveApiBtn: document.getElementById('save-api'),
+
         logoPreview: document.getElementById('logo-preview'),
         registerLogoFile: document.getElementById('register-logo-file'),
     };
@@ -1950,18 +1949,6 @@
         showToast('Sessao encerrada.');
     }
 
-    function handleApiSave() {
-        const value = (el.apiBaseInput.value || '').trim();
-        if (!value) {
-            showToast('Informe uma URL valida para a API.', true);
-            return;
-        }
-
-        state.apiBase = value;
-        localStorage.setItem('idialog-tools-api', value);
-        showToast('Endereco da API atualizado.');
-    }
-
     function bindEvents() {
         el.loginForm.addEventListener('submit', handleLogin);
         el.registerForm.addEventListener('submit', handleRegister);
@@ -1992,7 +1979,6 @@
         el.widgetsList.addEventListener('click', handleWidgetActions);
         el.widgetType.addEventListener('change', syncWidgetFieldVisibility);
         el.logoutBtn.addEventListener('click', handleLogout);
-        el.saveApiBtn.addEventListener('click', handleApiSave);
 
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', handleTabSwitch);
@@ -2000,9 +1986,6 @@
     }
 
     function init() {
-        if (el.apiBaseInput) {
-            el.apiBaseInput.value = state.apiBase;
-        }
         syncWidgetFieldVisibility();
         bindEvents();
         restoreSession();

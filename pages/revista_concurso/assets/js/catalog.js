@@ -58,6 +58,7 @@ window.CATALOG = (() => {
     ];
 
     const bancas = [
+        { id: 'todas', label: 'Todas as bancas' },
         { id: 'ibfc', label: 'IBFC' },
         { id: 'cespe', label: 'CESPE / CEBRASPE' },
         { id: 'fcc', label: 'FCC' },
@@ -69,6 +70,7 @@ window.CATALOG = (() => {
     ];
 
     const concursos = [
+        { id: 'estudar-concursos', label: 'Estudar para concursos (geral)', banca: null, areas: [] },
         { id: 'tjpe-2025', label: 'TJPE 2025 — Técnico Judiciário', banca: 'ibfc', areas: ['nucleo-comum', 'area-judiciaria'] },
         { id: 'trf5-2025', label: 'TRF 5ª Região 2025', banca: 'ibfc', areas: ['nucleo-comum', 'area-judiciaria', 'area-administrativa'] },
         { id: 'tse-2025', label: 'TSE 2025', banca: 'cespe', areas: ['nucleo-comum', 'area-judiciaria', 'area-administrativa'] },

@@ -7,7 +7,7 @@
 
     const state = {
         token: localStorage.getItem(ADMIN_TOKEN_KEY) || '',
-        apiBase: localStorage.getItem(ADMIN_API_KEY) || 'http://127.0.0.1:5001/api',
+        apiBase: localStorage.getItem(ADMIN_API_KEY) || '/api',
         contents: [],
         clockTimer: null,
     };

@@ -345,7 +345,7 @@
         padding: .85rem 1.1rem;
         border-radius: var(--r);
         border: 1.5px solid var(--paper2);
-        background: var(--cream);
+        background: var(--paper);
         cursor: pointer;
         text-align: left;
         width: 100%;
@@ -357,8 +357,8 @@
     }
 
     .opt:not([disabled]):hover {
-        background: var(--paper);
-        border-color: var(--text3);
+        background: var(--navy3);
+        border-color: var(--gold);
     }
 
     .opt-letter {

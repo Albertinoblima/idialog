@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Albertino Bezerra Lima">
-    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
-    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
-    <meta name="contact" content="albertinoblima@gmail.com">
+  <meta name="author" content="Albertino Bezerra Lima">
+  <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+  <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+  <meta name="contact" content="albertinoblima@gmail.com">
   <title>Aprova Concursos · Revista de Estudos</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
@@ -95,6 +95,43 @@
           agora</button>
       </div>
     </div>
+
+    <!-- Trust signals -->
+    <div class="landing-trust">
+      <div class="landing-container">
+        <div class="trust-grid">
+          <div class="trust-item">
+            <div class="trust-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h4>100% Gratuito</h4>
+            <p>Acesso completo sem custo. Sem cartão de crédito.</p>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon"><i class="fa-solid fa-lock"></i></div>
+            <h4>Dados Seguros</h4>
+            <p>Suas informações ficam protegidas e nunca são compartilhadas.</p>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon"><i class="fa-solid fa-sync"></i></div>
+            <h4>Conteúdo Atualizado</h4>
+            <p>Material revisado conforme as últimas alterações legislativas.</p>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon"><i class="fa-solid fa-building"></i></div>
+            <h4>Powered by iDialog</h4>
+            <p>Plataforma desenvolvida pela iDialog — Soluções em Tecnologia.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer de marca -->
+    <div class="landing-brand-footer">
+      <div class="landing-container">
+        <p class="brand-line"><span class="brand-logo">Aprova Concursos</span> · Uma plataforma <a
+            href="../../index.html" class="brand-link">iDialog</a></p>
+        <p class="brand-copy">&copy; 2026 iDialog — Todos os direitos reservados.</p>
+      </div>
+    </div>
   </div>
 
   <!-- ╔══════════════════════════════════════════════════════════╗ -->
@@ -161,7 +198,45 @@
             <h2><i class="fa-solid fa-layer-group"></i> Áreas de Estudo</h2>
             <p class="section-hint">Selecione as áreas e matérias que deseja estudar. Isso personaliza o seu dashboard e
               simulados.</p>
+            <div class="areas-selector-actions">
+              <button type="button" class="btn-ghost small" id="btn-select-all-areas"
+                onclick="App.toggleAllAreas(true)"><i class="fa-solid fa-check-double"></i> Selecionar todas</button>
+              <button type="button" class="btn-ghost small" id="btn-deselect-all-areas"
+                onclick="App.toggleAllAreas(false)"><i class="fa-solid fa-xmark"></i> Desmarcar todas</button>
+            </div>
             <div id="areas-selector" class="areas-selector"></div>
+          </div>
+
+          <!-- Comunicação / Newsletter -->
+          <div class="profile-section">
+            <h2><i class="fa-solid fa-bell"></i> Comunicação e Atualizações</h2>
+            <p class="section-hint">Escolha como deseja receber novidades, dicas de estudo e publicações do blog
+              iDialog.</p>
+            <div class="newsletter-options">
+              <label class="newsletter-check">
+                <input type="checkbox" id="pf-newsletter" name="newsletter">
+                <div class="nl-info">
+                  <span class="nl-label"><i class="fa-solid fa-envelope"></i> Receber publicações do blog por
+                    email</span>
+                  <span class="nl-desc">Artigos sobre tecnologia, gestão e inovação da iDialog.</span>
+                </div>
+              </label>
+              <label class="newsletter-check">
+                <input type="checkbox" id="pf-updates" name="updates">
+                <div class="nl-info">
+                  <span class="nl-label"><i class="fa-solid fa-graduation-cap"></i> Receber atualizações de
+                    conteúdo</span>
+                  <span class="nl-desc">Novas matérias, questões e funcionalidades da plataforma Aprova.</span>
+                </div>
+              </label>
+              <label class="newsletter-check">
+                <input type="checkbox" id="pf-tips" name="tips">
+                <div class="nl-info">
+                  <span class="nl-label"><i class="fa-solid fa-lightbulb"></i> Receber dicas de estudo semanais</span>
+                  <span class="nl-desc">Resumos, técnicas de memorização e cronogramas sugeridos.</span>
+                </div>
+              </label>
+            </div>
           </div>
 
           <!-- Actions -->

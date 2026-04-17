@@ -3,7 +3,7 @@
 =========================== */
 
 // API Configuration
-const API_BASE = localStorage.getItem('idialog-tools-api') || localStorage.getItem('apiBase') || 'http://127.0.0.1:5001/api';
+const API_BASE = localStorage.getItem('idialog-tools-api') || '/api';
 
 /**
  * Abre um modal

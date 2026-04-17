@@ -98,6 +98,14 @@ window.App = (() => {
 
             const btnDel = document.getElementById('btn-delete-profile');
             if (btnDel) btnDel.style.display = 'inline-flex';
+
+            // Restore newsletter preferences
+            const nlCheck = document.getElementById('pf-newsletter');
+            const upCheck = document.getElementById('pf-updates');
+            const tipCheck = document.getElementById('pf-tips');
+            if (nlCheck) nlCheck.checked = profile.newsletter || false;
+            if (upCheck) upCheck.checked = profile.updates || false;
+            if (tipCheck) tipCheck.checked = profile.tips || false;
         }
 
         // Render areas selector
@@ -150,6 +158,16 @@ window.App = (() => {
         }
     }
 
+    function toggleAllAreas(checked) {
+        CATALOG.areas.forEach(area => {
+            const cb = document.querySelector(`input[name="area"][value="${area.id}"]`);
+            if (cb) {
+                cb.checked = checked;
+                toggleArea(area.id, checked);
+            }
+        });
+    }
+
     function onConcursoChange() {
         const concursoId = document.getElementById('pf-concurso').value;
         const concurso = CATALOG.concursos.find(c => c.id === concursoId);
@@ -174,16 +192,35 @@ window.App = (() => {
     function handlePhoto(event) {
         const file = event.target.files[0];
         if (!file) return;
-        if (file.size > 500000) {
-            alert('Imagem muito grande. Use uma foto menor que 500KB.');
-            return;
-        }
+
+        const MAX_SIZE = 200; // px — thumbnail adequado para perfil
+        const QUALITY = 0.8;
+
         const reader = new FileReader();
         reader.onload = function (e) {
-            const img = document.getElementById('photo-preview');
-            const ph = document.getElementById('photo-placeholder');
-            if (img) { img.src = e.target.result; img.style.display = 'block'; }
-            if (ph) ph.style.display = 'none';
+            const image = new Image();
+            image.onload = function () {
+                const canvas = document.createElement('canvas');
+                let w = image.width;
+                let h = image.height;
+
+                if (w > h) {
+                    if (w > MAX_SIZE) { h = Math.round(h * MAX_SIZE / w); w = MAX_SIZE; }
+                } else {
+                    if (h > MAX_SIZE) { w = Math.round(w * MAX_SIZE / h); h = MAX_SIZE; }
+                }
+
+                canvas.width = w;
+                canvas.height = h;
+                canvas.getContext('2d').drawImage(image, 0, 0, w, h);
+
+                const dataUrl = canvas.toDataURL('image/jpeg', QUALITY);
+                const img = document.getElementById('photo-preview');
+                const ph = document.getElementById('photo-placeholder');
+                if (img) { img.src = dataUrl; img.style.display = 'block'; }
+                if (ph) ph.style.display = 'none';
+            };
+            image.src = e.target.result;
         };
         reader.readAsDataURL(file);
     }
@@ -204,6 +241,9 @@ window.App = (() => {
             targetBanca: document.getElementById('pf-banca').value,
             selectedAreas: selectedAreas,
             selectedSubjects: selectedSubjects,
+            newsletter: document.getElementById('pf-newsletter')?.checked || false,
+            updates: document.getElementById('pf-updates')?.checked || false,
+            tips: document.getElementById('pf-tips')?.checked || false,
         };
 
         if (!data.name) {
@@ -418,7 +458,7 @@ window.App = (() => {
     return {
         goTo, goBack, init,
         saveProfile, confirmDeleteProfile, handlePhoto,
-        toggleArea, onConcursoChange,
+        toggleArea, toggleAllAreas, onConcursoChange,
         goToSubject,
         renderDashboard,
     };
