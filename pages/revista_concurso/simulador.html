@@ -358,6 +358,112 @@
             opacity: .4;
             cursor: not-allowed;
         }
+
+        /* ── FILTRO BANCA / CONCURSOS ABERTOS ─────────────────────────────────── */
+        .filter-note {
+            font-size: .78rem;
+            color: var(--text3);
+            font-style: italic;
+            margin-top: .55rem;
+        }
+
+        /* Bancas */
+        .banca-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .45rem;
+        }
+
+        .banca-pill {
+            padding: 5px 16px;
+            border: 1.5px solid var(--paper2);
+            border-radius: 99px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s, border-color .15s, color .15s;
+            color: var(--text2);
+            background: var(--navy);
+            font-family: var(--font-b);
+            letter-spacing: .04em;
+        }
+
+        .banca-pill:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .banca-pill.active {
+            background: var(--gold);
+            color: var(--navy);
+            border-color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* Concursos */
+        .concursos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: .85rem;
+        }
+
+        .concurso-card {
+            position: relative;
+            border: 1.5px solid var(--paper2);
+            border-radius: var(--r);
+            background: var(--paper);
+            padding: .9rem 1rem .9rem 1.2rem;
+            cursor: pointer;
+            transition: border-color .18s, box-shadow .18s, background .18s;
+            overflow: hidden;
+        }
+
+        .concurso-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: var(--cc-color, var(--gold));
+            border-radius: 4px 0 0 4px;
+        }
+
+        .concurso-card:hover {
+            border-color: var(--cc-color, var(--gold));
+            box-shadow: 0 2px 14px rgba(0, 229, 255, .1);
+        }
+
+        .concurso-card.active {
+            border-color: var(--cc-color, var(--gold));
+            background: rgba(0, 229, 255, .05);
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, .1);
+        }
+
+        .cc-badges {
+            display: flex;
+            gap: .35rem;
+            align-items: center;
+            margin-bottom: .4rem;
+            flex-wrap: wrap;
+        }
+
+        .cc-badge {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            padding: 2px 8px;
+            border-radius: 99px;
+            text-transform: uppercase;
+        }
+
+        .cc-badge-banca  { background: rgba(0,229,255,.12); color: var(--gold); }
+        .cc-badge-open   { background: rgba(34,197,94,.15);  color: #4ade80; }
+        .cc-badge-close  { background: rgba(239,68,68,.15);  color: #f87171; }
+        .cc-badge-future { background: rgba(250,204,21,.15); color: #fde047; }
+
+        .cc-orgao  { font-size: .95rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+        .cc-cargo  { font-size: .8rem;  color: var(--text2); margin-top: .15rem; }
+        .cc-encerra { font-size: .75rem; color: var(--text3); margin-top: .45rem; }
+        .cc-subjects { font-size: .72rem; color: var(--text3); margin-top: .2rem; line-height: 1.55; }
     </style>
 </head>
 
@@ -382,6 +488,21 @@
 
         <!-- BODY -->
         <div id="sim-body">
+
+            <!-- CONCURSOS ABERTOS -->
+            <div class="area-block" id="section-concursos" style="display:none">
+                <div class="area-title">🎯 &nbsp;Concursos Abertos
+                    <small style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3);margin-left:.6rem;">clique para pré-marcar as matérias do edital</small>
+                </div>
+                <div id="concursos-grid" class="concursos-grid"></div>
+            </div>
+
+            <!-- FILTRAR POR BANCA -->
+            <div class="area-block">
+                <div class="area-title">🏷️ &nbsp;Filtrar por Banca</div>
+                <div class="banca-row" id="banca-row"></div>
+                <p class="filter-note">Selecione uma banca para pré-marcar as matérias que ela costuma cobrar.</p>
+            </div>
 
             <!-- ÁREA: NÚCLEO COMUM -->
             <div class="area-block">
@@ -461,6 +582,45 @@
     </main>
 
     <script>
+        // ── Dados: Bancas ──────────────────────────────────────────────────────
+        var BANCAS = [
+            { id: 'ibfc',    label: 'IBFC',           color: '#c05621', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues','informatica','dir-civil','dir-processual-penal'] },
+            { id: 'cespe',   label: 'CEBRASPE',       color: '#1a56db', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues','dir-civil','dir-processual-penal','dir-penal'] },
+            { id: 'fgv',     label: 'FGV',            color: '#0e7490', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues','dir-civil'] },
+            { id: 'fcc',     label: 'FCC',            color: '#6d28d9', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues'] },
+            { id: 'vunesp',  label: 'VUNESP',         color: '#065f46', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues'] },
+            { id: 'quadrix', label: 'QUADRIX',        color: '#9d174d', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues','informatica'] },
+            { id: 'idecan',  label: 'IDECAN',         color: '#1e40af', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues'] },
+            { id: 'ibade',   label: 'IBADE',          color: '#7c3aed', subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','portugues'] }
+        ];
+
+        // ── Dados: Concursos Abertos ───────────────────────────────────────────
+        // Para adicionar um novo concurso, inclua um objeto neste array:
+        // {
+        //   id:          'orgao-cargo-ano',         // identificador único
+        //   label:       'Nome do Órgão',            // ex: 'TJPE'
+        //   cargo:       'Nome do Cargo',            // ex: 'Técnico Judiciário'
+        //   banca:       'ibfc',                     // id da banca (ou null)
+        //   abertura:    '2026-04-01',               // data de início das inscrições (YYYY-MM-DD, ou null)
+        //   encerramento:'2026-06-30',               // data de encerramento (YYYY-MM-DD, ou null)
+        //   subjects:    ['dir-constitucional', 'dir-administrativo', 'raciocinio-logico']
+        // },
+        var CONCURSOS = [
+            // Exemplo — remova os // para ativar:
+            // {
+            //   id: 'tjpe-tecnico-2026',
+            //   label: 'TJPE',
+            //   cargo: 'Técnico Judiciário',
+            //   banca: 'ibfc',
+            //   abertura: '2026-05-01',
+            //   encerramento: '2026-06-15',
+            //   subjects: ['dir-constitucional','dir-administrativo','raciocinio-logico','dir-civil','dir-processual-penal']
+            // },
+        ];
+
+        var activeBanca = null;
+        var activeConcurso = null;
+
         // ── Dados dos subjects ─────────────────────────────────────────────────
         var SUBJECTS = [
             // Núcleo Comum
@@ -500,6 +660,129 @@
         ];
 
         var selected = new Set();
+
+        // ── Helpers de data ────────────────────────────────────────────────────
+        function diasAte(dateStr) {
+            if (!dateStr) return null;
+            var today = new Date(); today.setHours(0, 0, 0, 0);
+            return Math.round((new Date(dateStr + 'T00:00:00') - today) / 86400000);
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            var p = dateStr.split('-');
+            return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : dateStr;
+        }
+
+        // ── Aplicar conjunto de matérias ───────────────────────────────────────
+        function applySubjectSet(subjectIds) {
+            selected.clear();
+            subjectIds.forEach(function (sid) {
+                var s = SUBJECTS.find(function (x) { return x.id === sid; });
+                if (s && !s.disabled) selected.add(sid);
+            });
+            document.querySelectorAll('.subject-card').forEach(function (card) {
+                card.classList.toggle('selected', selected.has(card.dataset.id));
+            });
+            updateSummary();
+        }
+
+        // ── Render: Bancas ─────────────────────────────────────────────────────
+        function renderBancas() {
+            var row = document.getElementById('banca-row');
+            if (!row) return;
+            BANCAS.forEach(function (b) {
+                var btn = document.createElement('button');
+                btn.className = 'banca-pill';
+                btn.dataset.banca = b.id;
+                btn.textContent = b.label;
+                btn.addEventListener('click', function () { toggleBanca(b.id); });
+                row.appendChild(btn);
+            });
+        }
+
+        function toggleBanca(id) {
+            if (activeBanca === id) {
+                activeBanca = null;
+                document.querySelectorAll('.banca-pill').forEach(function (p) { p.classList.remove('active'); });
+                return;
+            }
+            activeBanca = id;
+            activeConcurso = null;
+            document.querySelectorAll('.banca-pill').forEach(function (p) { p.classList.toggle('active', p.dataset.banca === id); });
+            document.querySelectorAll('.concurso-card').forEach(function (c) { c.classList.remove('active'); });
+            var banca = BANCAS.find(function (b) { return b.id === id; });
+            if (banca) applySubjectSet(banca.subjects);
+        }
+
+        // ── Render: Concursos Abertos ──────────────────────────────────────────
+        function renderConcursos() {
+            if (CONCURSOS.length === 0) return;
+            var section = document.getElementById('section-concursos');
+            var grid    = document.getElementById('concursos-grid');
+            if (!section || !grid) return;
+            section.style.display = '';
+            CONCURSOS.forEach(function (c) {
+                var banca     = BANCAS.find(function (b) { return b.id === c.banca; });
+                var ccColor   = banca ? banca.color : 'var(--gold)';
+                var dias      = diasAte(c.encerramento);
+                var diasAbert = diasAte(c.abertura);
+                var statusBadge;
+                var encerraInfo = '';
+                if (dias === null) {
+                    statusBadge = '';
+                } else if (diasAbert !== null && diasAbert > 0) {
+                    statusBadge = '<span class="cc-badge cc-badge-future">⏳ Em breve</span>';
+                    encerraInfo = '<div class="cc-encerra">Inscrições a partir de ' + formatDate(c.abertura) + '</div>';
+                } else if (dias > 0) {
+                    statusBadge = '<span class="cc-badge cc-badge-open">● Aberto</span>';
+                    encerraInfo = '<div class="cc-encerra">Inscrições até ' + formatDate(c.encerramento) + ' · ' + dias + ' dia' + (dias !== 1 ? 's' : '') + '</div>';
+                } else {
+                    statusBadge = '<span class="cc-badge cc-badge-close">Encerrado</span>';
+                    encerraInfo = '<div class="cc-encerra">Inscrições encerradas em ' + formatDate(c.encerramento) + '</div>';
+                }
+                var subjectNames = (c.subjects || []).map(function (sid) {
+                    var s = SUBJECTS.find(function (x) { return x.id === sid; });
+                    return s ? s.label : sid;
+                }).join(' · ');
+                var card = document.createElement('div');
+                card.className = 'concurso-card';
+                card.dataset.concurso = c.id;
+                card.style.setProperty('--cc-color', ccColor);
+                card.innerHTML =
+                    '<div class="cc-badges">'
+                    + (banca ? '<span class="cc-badge cc-badge-banca">' + banca.label + '</span>' : '')
+                    + statusBadge
+                    + '</div>'
+                    + '<div class="cc-orgao">' + c.label + '</div>'
+                    + '<div class="cc-cargo">' + c.cargo + '</div>'
+                    + encerraInfo
+                    + '<div class="cc-subjects">' + subjectNames + '</div>';
+                card.addEventListener('click', function () { toggleConcurso(c.id); });
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleConcurso(id) {
+            if (activeConcurso === id) {
+                activeConcurso = null;
+                document.querySelectorAll('.concurso-card').forEach(function (c) { c.classList.remove('active'); });
+                return;
+            }
+            activeConcurso = id;
+            activeBanca = null;
+            document.querySelectorAll('.concurso-card').forEach(function (c) { c.classList.toggle('active', c.dataset.concurso === id); });
+            document.querySelectorAll('.banca-pill').forEach(function (p) { p.classList.remove('active'); });
+            var concurso = CONCURSOS.find(function (c) { return c.id === id; });
+            if (!concurso) return;
+            // Destacar banca correspondente (sem acionar toggleBanca)
+            if (concurso.banca) {
+                var pill = document.querySelector('.banca-pill[data-banca="' + concurso.banca + '"]');
+                if (pill) pill.classList.add('active');
+                activeBanca = concurso.banca;
+            }
+            applySubjectSet(concurso.subjects);
+        }
 
         // ── Renderizar cards ───────────────────────────────────────────────────
         function renderCards() {
@@ -574,7 +857,9 @@
             var cfg = {
                 subjects: Array.from(selected),
                 dif: dif,
-                maxPerSubject: maxPer
+                maxPerSubject: maxPer,
+                banca: activeBanca,
+                concurso: activeConcurso
             };
             localStorage.setItem('APROVA_SIMULADO_CONFIG', JSON.stringify(cfg));
             window.location.href = 'simulado-combinado.html';
@@ -587,6 +872,8 @@
 
         // ── Init ───────────────────────────────────────────────────────────────
         renderCards();
+        renderConcursos();
+        renderBancas();
         updateSummary();
     </script>
     <div id="footer-placeholder"></div>
