@@ -65,6 +65,12 @@
 
         logoPreview: document.getElementById('logo-preview'),
         registerLogoFile: document.getElementById('register-logo-file'),
+
+        apiConfigToggle: document.getElementById('api-config-toggle'),
+        apiConfigPanel: document.getElementById('api-config-panel'),
+        apiUrlInput: document.getElementById('api-url-input'),
+        apiSaveBtn: document.getElementById('api-save-btn'),
+        apiStatus: document.getElementById('api-status'),
     };
 
     function showToast(message, isError) {
@@ -2084,6 +2090,65 @@
         });
     }
 
+    function initApiConfig() {
+        if (el.apiConfigToggle) {
+            el.apiConfigToggle.addEventListener('click', () => {
+                const panel = el.apiConfigPanel;
+                panel.hidden = !panel.hidden;
+                if (!panel.hidden && el.apiUrlInput) {
+                    el.apiUrlInput.value = state.apiBase === '/api' ? '' : state.apiBase;
+                }
+            });
+        }
+        if (el.apiSaveBtn) {
+            el.apiSaveBtn.addEventListener('click', handleApiSave);
+        }
+    }
+
+    async function handleApiSave() {
+        const url = (el.apiUrlInput.value || '').trim().replace(/\/+$/, '');
+        if (!url) {
+            showToast('Informe a URL do servidor.', true);
+            return;
+        }
+        el.apiStatus.textContent = 'Verificando...';
+        el.apiStatus.className = 'api-status';
+        try {
+            const resp = await fetch(url + '/health', { method: 'GET' });
+            if (!resp.ok) throw new Error('Status ' + resp.status);
+            const data = await resp.json();
+            if (data.status === 'ok') {
+                state.apiBase = url;
+                localStorage.setItem('idialog-tools-api', url);
+                el.apiStatus.textContent = '✓ Conectado';
+                el.apiStatus.className = 'api-status ok';
+                showToast('Servidor conectado com sucesso.');
+            } else {
+                throw new Error('Resposta inesperada');
+            }
+        } catch (e) {
+            el.apiStatus.textContent = '✗ Falha na conexão';
+            el.apiStatus.className = 'api-status error';
+            showToast('Não foi possível conectar ao servidor. Verifique a URL.', true);
+        }
+    }
+
+    async function autoDetectApi() {
+        if (state.apiBase !== '/api') return;
+        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+        try {
+            const resp = await fetch('/api/health', { method: 'GET' });
+            if (resp.ok) return;
+        } catch (_) {}
+        if (el.apiConfigPanel) {
+            el.apiConfigPanel.hidden = false;
+            if (el.apiStatus) {
+                el.apiStatus.textContent = '⚠ Configure o servidor para continuar';
+                el.apiStatus.className = 'api-status error';
+            }
+        }
+    }
+
     function bindEvents() {
         el.loginForm.addEventListener('submit', handleLogin);
         el.registerForm.addEventListener('submit', handleRegister);
@@ -2129,7 +2194,9 @@
         initPasswordMatch();
         initCnpjMask();
         initPhoneMask();
+        initApiConfig();
         restoreSession();
+        autoDetectApi();
     }
 
     document.addEventListener('DOMContentLoaded', init);

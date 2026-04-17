@@ -1606,6 +1606,80 @@
     opacity: 0.7;
 }
 
+/* API Config */
+.api-config {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.api-config-toggle {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    font-family: 'Exo 2', sans-serif;
+}
+
+.api-config-toggle:hover {
+    color: var(--neon-cyan);
+    background: rgba(0, 229, 255, 0.05);
+}
+
+.api-config-panel {
+    margin-top: 12px;
+    padding: 16px;
+    background: rgba(14, 18, 28, 0.84);
+    border: 1px solid rgba(0, 229, 255, 0.1);
+    border-radius: 12px;
+    text-align: left;
+}
+
+.api-config-panel label {
+    display: grid;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.api-config-panel input {
+    width: 100%;
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    background: rgba(7, 12, 20, 0.9);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: var(--text-primary);
+    font-size: 0.88rem;
+}
+
+.api-config-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn-sm {
+    padding: 8px 16px !important;
+    font-size: 0.82rem !important;
+}
+
+.api-status {
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.api-status.ok {
+    color: #00ff88;
+}
+
+.api-status.error {
+    color: #ff5050;
+}
+
 .toast {
     position: fixed;
     right: 20px;
