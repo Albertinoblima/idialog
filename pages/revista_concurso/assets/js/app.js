@@ -14,7 +14,7 @@ window.App = (() => {
         if (!VIEWS.includes(view)) return;
         VIEWS.forEach(v => {
             const el = document.getElementById('view-' + v);
-            if (el) el.style.display = (v === view) ? '' : 'none';
+            if (el) el.style.display = (v === view) ? 'block' : 'none';
         });
         currentView = view;
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -97,7 +97,7 @@ window.App = (() => {
             }
 
             const btnDel = document.getElementById('btn-delete-profile');
-            if (btnDel) btnDel.style.display = '';
+            if (btnDel) btnDel.style.display = 'inline-flex';
         }
 
         // Render areas selector

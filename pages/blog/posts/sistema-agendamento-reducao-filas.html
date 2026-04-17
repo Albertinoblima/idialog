@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Sistema de agendamento para reducao de filas: organize demanda, diminua espera e melhore a experiencia no servico publico.">
+    <meta name="keywords"
+        content="sistema de agendamento, reducao de filas, setor publico, atendimento ao cidadao, governo digital">
+    <meta name="author" content="iDialog">
+    <meta name="robots" content="index, follow">
+    <meta name="canonical" href="/pages/blog/posts/sistema-agendamento-reducao-filas.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Sistema de Agendamento e reducao de filas">
+    <meta property="og:description"
+        content="Agendar bem e organizar capacidade para atender melhor e com menos espera.">
+    <meta property="og:url" content="/pages/blog/posts/sistema-agendamento-reducao-filas.html">
+    <meta property="og:image" content="/public/icon/1 iDialog icone.ico">
+    <title>Sistema de Agendamento e reducao de filas - Blog iDialog</title>
+    <link rel="icon" type="image/x-icon" href="/public/icon/1 iDialog icone.ico">
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/responsive.css">
+    <link rel="stylesheet" href="/src/styles/blog-post.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <div id="header-placeholder"></div>
+    <main>
+        <article class="blog-post-page">
+            <header class="blog-post-header" data-reveal>
+                <p class="blog-post-breadcrumb"><a href="/index.html"><i class="fas fa-home"></i> Inicio</a> &rsaquo; <a
+                        href="/pages/blog/index.html">Blog</a> &rsaquo; Sistema de Agendamento</p><span
+                    class="blog-post-category"><i class="fas fa-calendar-alt"></i> Setor Publico</span>
+                <h1 class="blog-post-title">Sistema de Agendamento e reducao de filas</h1>
+                <p class="blog-post-intro">Fila e sinal de desequilibrio entre demanda e capacidade. Com agendamento
+                    digital, o atendimento ganha previsibilidade e o cidadao ganha tempo.</p>
+                <div class="blog-post-meta"><span><i class="fas fa-calendar-alt"></i> 16 de abril de 2026</span><span><i
+                            class="fas fa-user"></i> Equipe iDialog</span><span><i class="fas fa-clock"></i> 6 min de
+                        leitura</span></div>
+            </header>
+            <hr class="blog-divider">
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Principais ganhos de um agendamento inteligente</h2>
+                <div class="blog-service-grid">
+                    <article class="blog-service-card">
+                        <div class="blog-service-head"><span class="blog-service-icon"><i
+                                    class="fas fa-clock"></i></span>
+                            <h3>Menos tempo de espera</h3>
+                        </div>
+                        <p>Distribuicao de horarios reduz concentracao e filas presenciais.</p>
+                    </article>
+                    <article class="blog-service-card">
+                        <div class="blog-service-head"><span class="blog-service-icon"><i
+                                    class="fas fa-bell"></i></span>
+                            <h3>Lembretes automaticos</h3>
+                        </div>
+                        <p>Confirmacoes por SMS ou email diminuem faltas e ociosidade.</p>
+                    </article>
+                    <article class="blog-service-card">
+                        <div class="blog-service-head"><span class="blog-service-icon"><i
+                                    class="fas fa-bars-progress"></i></span>
+                            <h3>Gestao de capacidade</h3>
+                        </div>
+                        <p>Paineis ajudam a ajustar equipe e janela de atendimento por demanda real.</p>
+                    </article>
+                </div>
+            </section>
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Como desenhar uma agenda eficiente</h2>
+                <div class="blog-tabs" data-blog-tabs>
+                    <div class="blog-tabs-controls" role="tablist" aria-label="Agenda publica"><button
+                            class="blog-tab-btn" role="tab" type="button" data-tab-target="slots">Slots por
+                            servico</button><button class="blog-tab-btn" role="tab" type="button"
+                            data-tab-target="confirmacao">Confirmacao ativa</button><button class="blog-tab-btn"
+                            role="tab" type="button" data-tab-target="fila">Gestao de fila</button></div>
+                    <section class="blog-tab-panel" data-tab-panel="slots">Planeje disponibilidade por tipo de
+                        atendimento e complexidade.</section>
+                    <section class="blog-tab-panel" data-tab-panel="confirmacao" hidden>Use lembretes e reconfirmacao
+                        para reduzir no-show.</section>
+                    <section class="blog-tab-panel" data-tab-panel="fila" hidden>Tenha fila digital e regras claras de
+                        encaixe para picos de demanda.</section>
+                </div>
+            </section>
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Perguntas para evoluir a operacao</h2>
+                <div class="blog-reveal-list">
+                    <details class="blog-reveal">
+                        <summary>Qual horario concentra maior no-show?<span class="blog-summary-action">Ver
+                                explicacao</span></summary>
+                        <div class="blog-reveal-body">Esse dado orienta ajuste de grade e estrategia de lembretes.</div>
+                    </details>
+                    <details class="blog-reveal">
+                        <summary>Quais servicos estao com maior espera?<span class="blog-summary-action">Ver
+                                explicacao</span></summary>
+                        <div class="blog-reveal-body">Permite realocar capacidade e evitar gargalos recorrentes.</div>
+                    </details>
+                    <details class="blog-reveal">
+                        <summary>Qual taxa de atendimento dentro do prazo?<span class="blog-summary-action">Ver
+                                explicacao</span></summary>
+                        <div class="blog-reveal-body">Indicador central para qualidade percebida pelo cidadao.</div>
+                    </details>
+                </div>
+                <blockquote class="blog-quote">"Agendamento eficiente nao e agenda cheia. E atendimento fluido com
+                    previsibilidade."</blockquote>
+            </section>
+            <section class="blog-cta-wrap" data-reveal>
+                <h2>Reduza filas com um Sistema de Agendamento moderno</h2>
+                <p>Estruture uma jornada digital de marcacao e confirmacao para melhorar a experiencia do cidadao e a
+                    eficiencia interna.</p>
+                <div class="blog-cta-actions"><a href="/pages/servicos/publicos/index.html" class="btn btn-primary"><i
+                            class="fas fa-building-columns"></i> Ver Servicos Publicos</a><a href="/pages/contato.html"
+                        class="btn btn-secondary"><i class="fas fa-comments"></i> Entrar em contato</a></div>
+            </section>
+            <footer class="blog-post-footer"><a href="/pages/blog/index.html" class="blog-post-footer-link"><i
+                        class="fas fa-arrow-left"></i> Voltar para o Blog</a><a
+                    href="/pages/servicos/publicos/index.html" class="blog-post-footer-link">Ir para Servicos Publicos
+                    <i class="fas fa-arrow-right"></i></a></footer>
+        </article>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="/assets/js/components.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/matrix.js"></script>
+    <script src="/assets/js/blog-post.js"></script>
+</body>
+
+</html>

@@ -57,6 +57,12 @@
         backdrop-filter: blur(20px);
     }
 
+    @supports not ((-webkit-backdrop-filter: blur(2px)) or (backdrop-filter: blur(2px))) {
+        .navbar-nav {
+            background: rgba(10, 10, 15, 0.995);
+        }
+    }
+
     .navbar-nav.active {
         left: 0;
     }
@@ -104,6 +110,22 @@
         grid-template-columns: 1fr;
     }
 
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tool-card {
+        padding: 30px 24px;
+    }
+
+    .tool-card h3 {
+        font-size: 1.15rem;
+    }
+
+    .tool-features li {
+        font-size: 0.85rem;
+    }
+
     .about-content {
         grid-template-columns: 1fr;
         gap: 40px;
@@ -145,6 +167,14 @@
     .contato-institutional {
         padding-top: 88px;
         padding-bottom: 40px;
+    }
+
+    .idialog-ad-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .idialog-ad-slot.is-sidebar {
+        display: none;
     }
 }
 
@@ -189,6 +219,32 @@
 
     .cases-grid {
         grid-template-columns: 1fr;
+    }
+
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tool-card {
+        padding: 25px 20px;
+    }
+
+    .tool-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.6rem;
+    }
+
+    .tool-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .tool-card p {
+        font-size: 0.9rem;
+    }
+
+    .tool-features li {
+        font-size: 0.8rem;
     }
 
     .stats-grid {
@@ -238,6 +294,31 @@
 
     .integration-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .idialog-ad-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .idialog-ad-frame {
+        margin: 14px auto;
+        padding: 10px;
+    }
+
+    .cms-public-article {
+        padding: 16px;
+    }
+
+    .cms-public-cover {
+        margin-bottom: 16px;
+    }
+
+    .cms-question-card {
+        padding: 14px;
+    }
+
+    .cms-spotlight-grid {
+        grid-template-columns: 1fr;
     }
 }
 

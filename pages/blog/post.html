@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Albertino Bezerra Lima">
+    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+    <meta name="contact" content="albertinoblima@gmail.com">
+    <meta name="description" content="Postagem dinâmica do blog iDialog">
+    <title>Post | Blog iDialog</title>
+    <link rel="icon" type="image/x-icon" href="/public/icon/1 iDialog icone.ico">
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <div id="header-placeholder"></div>
+
+    <main id="main-content">
+        <section class="cms-public-hero is-blog">
+            <div class="container">
+                <p id="blog-cat" class="hero-kicker">Blog iDialog</p>
+                <h1 id="blog-title" class="hero-title">Carregando postagem...</h1>
+                <p id="blog-meta" class="hero-subtitle">Aguarde enquanto buscamos o conteúdo publicado.</p>
+            </div>
+        </section>
+
+        <section class="cms-public-section">
+            <div class="container cms-public-shell is-blog-shell">
+                <article class="cms-public-article">
+                    <img id="blog-cover" class="cms-public-cover" alt="Capa do post" hidden>
+                    <div id="blog-body" class="cms-public-body"></div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/assets/js/components.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/matrix.js"></script>
+    <script src="/assets/js/cms-public.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const slug = window.iDialogCMS.getSlugFromUrl();
+            const title = document.getElementById('blog-title');
+            const meta = document.getElementById('blog-meta');
+            const cat = document.getElementById('blog-cat');
+            const body = document.getElementById('blog-body');
+            const cover = document.getElementById('blog-cover');
+
+            if (!slug) {
+                title.textContent = 'Postagem não encontrada';
+                meta.textContent = 'Informe um slug válido para abrir uma postagem dinâmica.';
+                return;
+            }
+
+            try {
+                const item = await window.iDialogCMS.fetchContentBySlug(slug);
+                document.title = `${item.seo_title || item.title} | Blog iDialog`;
+                title.textContent = item.title;
+                cat.textContent = item.category || 'Blog iDialog';
+                meta.textContent = item.published_at ? window.iDialogCMS.formatDate(item.published_at) : (item.summary || 'Postagem publicada pelo painel CMS da iDialog.');
+                body.innerHTML = item.body_html || '<p>Esta postagem ainda não possui corpo HTML publicado.</p>';
+
+                if (item.cover_url) {
+                    cover.src = item.cover_url;
+                    cover.hidden = false;
+                }
+            } catch (error) {
+                title.textContent = 'Falha ao carregar postagem';
+                meta.textContent = 'O post solicitado não foi encontrado ou ainda não está publicado.';
+                body.innerHTML = '<p>Publique a postagem no painel CMS e tente novamente.</p>';
+            }
+        });
+    </script>
+</body>
+
+</html>

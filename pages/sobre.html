@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Conheça a história da iDialog - Soluções em comunicação e tecnologia">
     <meta name="keywords" content="sobre, empresa, história, missão, visão, valores">
-    <meta name="author" content="iDialog">
+    <meta name="author" content="Albertino Bezerra Lima">
+    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+    <meta name="contact" content="albertinoblima@gmail.com">
 
     <title>Sobre - iDialog</title>
 
@@ -23,6 +26,28 @@
         rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Dados estruturados - Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "url": "https://www.idialog.com.br/pages/sobre.html",
+      "name": "Sobre a iDialog",
+      "description": "Conheça a história e os valores da iDialog - fundada por Albertino Bezerra Lima",
+      "publisher": {
+        "@type": "Organization",
+        "name": "iDialog",
+        "url": "https://www.idialog.com.br",
+        "founder": {
+          "@type": "Person",
+          "name": "Albertino Bezerra Lima",
+          "email": "albertinoblima@gmail.com",
+          "telephone": "+5587988568605"
+        }
+      }
+    }
+    </script>
 </head>
 
 <body>
@@ -70,10 +95,8 @@
                     </div>
                     <div class="about-image sobre-about-image">
                         <a href="casos-de-sucesso.html" aria-label="Ver casos de sucesso da iDialog">
-                            <div class="about-img-placeholder"
-                                style="display:flex;align-items:center;justify-content:center;width:100%;min-height:300px;border-radius:var(--radius-lg);background:var(--gradient-card);border:1px solid var(--border-color);">
-                                <i class="fas fa-project-diagram"
-                                    style="font-size:5rem;background:var(--gradient-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent;"></i>
+                            <div class="about-img-placeholder about-img-placeholder-visual">
+                                <i class="fas fa-project-diagram about-img-placeholder-icon"></i>
                             </div>
                         </a>
                     </div>
@@ -87,7 +110,7 @@
                 <div class="mvv-grid sobre-mvv-grid">
                     <div class="mvv-item sobre-mvv-item">
                         <div class="mvv-icon sobre-mvv-icon">
-                            <i class="fas fa-bullseye" style="font-size:2.5rem;color:var(--neon-cyan);"></i>
+                            <i class="fas fa-bullseye sobre-mvv-icon-cyan"></i>
                         </div>
                         <h3 class="sobre-mvv-title">Missão</h3>
                         <p class="sobre-mvv-text">Facilitar a comunicação entre organizações e seus públicos através de
@@ -95,7 +118,7 @@
                     </div>
                     <div class="mvv-item sobre-mvv-item">
                         <div class="mvv-icon sobre-mvv-icon">
-                            <i class="fas fa-eye" style="font-size:2.5rem;color:var(--neon-green);"></i>
+                            <i class="fas fa-eye sobre-mvv-icon-green"></i>
                         </div>
                         <h3 class="sobre-mvv-title">Visão</h3>
                         <p class="sobre-mvv-text">Ser referência em soluções de comunicação digital, contribuindo para
@@ -103,7 +126,7 @@
                     </div>
                     <div class="mvv-item sobre-mvv-item">
                         <div class="mvv-icon sobre-mvv-icon">
-                            <i class="fas fa-gem" style="font-size:2.5rem;color:var(--neon-purple);"></i>
+                            <i class="fas fa-gem sobre-mvv-icon-purple"></i>
                         </div>
                         <h3 class="sobre-mvv-title">Valores</h3>
                         <ul class="sobre-mvv-list">

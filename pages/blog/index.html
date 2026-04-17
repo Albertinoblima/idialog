@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Blog iDialog - Artigos sobre tecnologia, gestão pública e inovação">
     <meta name="keywords" content="blog, tecnologia, gestão pública, inovação, idialog">
-    <meta name="author" content="iDialog">
+    <meta name="author" content="Albertino Bezerra Lima">
+    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+    <meta name="contact" content="albertinoblima@gmail.com">
     <title>Blog - iDialog</title>
 
     <link rel="icon" type="image/x-icon" href="/public/icon/1 iDialog icone.ico">
@@ -100,6 +103,7 @@
             transition: transform .3s, box-shadow .3s;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
 
         .post-card:hover {
@@ -158,21 +162,6 @@
             color: var(--text-secondary);
             line-height: 1.6;
             flex: 1;
-        }
-
-        .post-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 20px;
-            color: var(--neon-cyan);
-            font-weight: 600;
-            font-size: .95rem;
-            transition: gap .2s;
-        }
-
-        .post-link:hover {
-            gap: 10px;
         }
 
         .blog-empty {
@@ -242,14 +231,51 @@
     <script src="/assets/js/components.js"></script>
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/matrix.js"></script>
+    <script src="/assets/js/cms-public.js"></script>
     <script src="posts-data.js"></script>
     <script>
         // ── Formata data "AAAA-MM-DD" → "15 de abril de 2026"
         function formatarData(str) {
-            const [ano, mes, dia] = str.split('-');
+            const base = String(str || '').slice(0, 10);
+            const [ano, mes, dia] = base.split('-');
             const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
                 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
             return `${parseInt(dia)} de ${meses[parseInt(mes) - 1]} de ${ano}`;
+        }
+
+        function parseDataSegura(value) {
+            const raw = String(value || '').trim();
+            if (!raw) return null;
+            const parsed = new Date(raw);
+            if (Number.isNaN(parsed.getTime())) return null;
+            return parsed;
+        }
+
+        // Regras de publicacao/listagem:
+        // - status=published publica o post (respeitando publishAt/published_at quando informado)
+        // - status=draft|archived deixa oculto
+        // - status=unlisted ou unlisted=true oculta da listagem (mantem URL direta)
+        function normalizarPost(post) {
+            const status = String(post.status || 'published').toLowerCase();
+            const publishAt = post.publishAt || post.publicarEm || post.published_at || post.data || '';
+            const publishDate = parseDataSegura(publishAt);
+            const agora = Date.now();
+            const publicadoAgora = !['draft', 'archived'].includes(status)
+                && (!publishDate || publishDate.getTime() <= agora);
+
+            const listedFlag = post.listed;
+            const isExplicitlyUnlisted = status === 'unlisted'
+                || post.unlisted === true
+                || listedFlag === false
+                || post.listado === false;
+
+            return {
+                ...post,
+                status,
+                data: post.data || String(publishAt).slice(0, 10),
+                isPublicNow: publicadoAgora,
+                isListed: publicadoAgora && !isExplicitlyUnlisted,
+            };
         }
 
         // ── Ícone padrão por categoria
@@ -275,11 +301,11 @@
                 return;
             }
             grid.innerHTML = lista.map(post => `
-                <article class="post-card">
+                <a href="${post.arquivo}" class="post-card blog-post-link">
                     <div class="post-thumb">
-                        ${post.imagem
-                    ? `<img src="${post.imagem}" alt="${post.titulo}" loading="lazy">`
-                    : `<i class="fas ${iconeCat(post.categoria)}"></i>`}
+                        ${post.svg
+                    ? post.svg
+                    : (post.imagem ? `<img src="${post.imagem}" alt="${post.titulo}" loading="lazy">` : `<i class="fas ${iconeCat(post.categoria)}"></i>`)}
                     </div>
                     <div class="post-body">
                         <div class="post-meta">
@@ -288,11 +314,8 @@
                         </div>
                         <h2 class="post-title">${post.titulo}</h2>
                         <p class="post-resumo">${post.resumo}</p>
-                        <a href="${post.arquivo}" class="post-link">
-                            Ler artigo <i class="fas fa-arrow-right"></i>
-                        </a>
                     </div>
-                </article>
+                </a>
             `).join('');
         }
 
@@ -310,21 +333,48 @@
         }
 
         // ── Filtro
+        let postsDisponiveis = [];
         let catAtiva = 'todas';
         document.getElementById('categorias-filtro').addEventListener('click', e => {
             if (!e.target.classList.contains('filter-btn')) return;
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             e.target.classList.add('active');
             catAtiva = e.target.dataset.cat;
-            const filtrado = catAtiva === 'todas' ? posts : posts.filter(p => p.categoria === catAtiva);
+            const filtrado = catAtiva === 'todas'
+                ? postsDisponiveis
+                : postsDisponiveis.filter(p => p.categoria === catAtiva);
             renderPosts(filtrado);
         });
 
-        // ── Init
-        // posts ordenados do mais recente para o mais antigo
-        const postsOrdenados = [...posts].sort((a, b) => b.data.localeCompare(a.data));
-        renderFiltros(postsOrdenados);
-        renderPosts(postsOrdenados);
+        async function carregarPostsCMS() {
+            try {
+                const items = await window.iDialogCMS.fetchContentList({ type: 'blog_post', context: 'blog', limit: 100 });
+                return items.map(item => ({
+                    id: `cms-${item.id}`,
+                    titulo: item.title,
+                    data: (item.published_at || '').slice(0, 10),
+                    published_at: item.published_at || '',
+                    status: item.status || 'published',
+                    unlisted: Boolean(item.extra && (item.extra.unlisted === true || item.extra.listed === false)),
+                    categoria: item.category || 'Blog iDialog',
+                    resumo: item.summary || 'Postagem dinâmica publicada pelo painel CMS da iDialog.',
+                    arquivo: item.preview_url,
+                    imagem: item.cover_url || '',
+                }));
+            } catch (error) {
+                return [];
+            }
+        }
+
+        async function initBlog() {
+            const cmsPosts = await carregarPostsCMS();
+            const base = [...cmsPosts, ...posts].map(normalizarPost).filter(p => p.isListed);
+            postsDisponiveis = base.sort((a, b) => (b.data || '').localeCompare(a.data || ''));
+            renderFiltros(postsDisponiveis);
+            renderPosts(postsDisponiveis);
+        }
+
+        initBlog();
     </script>
 </body>
 

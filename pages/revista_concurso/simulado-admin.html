@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Albertino Bezerra Lima">
+    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+    <meta name="contact" content="albertinoblima@gmail.com">
+    <title>Simulado Dinâmico | iDialog</title>
+    <link rel="stylesheet" href="../../src/styles/main.css">
+    <link rel="stylesheet" href="../../src/styles/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <div id="header-placeholder"></div>
+
+    <main id="main-content">
+        <section class="cms-public-hero is-simulado">
+            <div class="container">
+                <p class="hero-kicker">Revista Concurso · Simulado Dinâmico</p>
+                <h1 id="sim-title" class="hero-title">Carregando simulado...</h1>
+                <p id="sim-summary" class="hero-subtitle">Aguarde enquanto o painel editorial entrega as questões
+                    publicadas.</p>
+            </div>
+        </section>
+
+        <section class="cms-public-section">
+            <div class="container cms-public-shell is-simulado-shell">
+                <article class="cms-public-article">
+                    <img id="sim-cover" class="cms-public-cover" alt="Capa do simulado" hidden>
+                    <div id="sim-questions" class="cms-simulado-list"></div>
+                    <div class="action-row">
+                        <button type="button" class="btn btn-primary" id="sim-check">Corrigir respostas</button>
+                    </div>
+                    <div id="sim-result" class="cms-simulado-result"></div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="../../assets/js/components.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/matrix.js"></script>
+    <script src="../../assets/js/cms-public.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const slug = window.iDialogCMS.getSlugFromUrl();
+            const title = document.getElementById('sim-title');
+            const summary = document.getElementById('sim-summary');
+            const cover = document.getElementById('sim-cover');
+            const list = document.getElementById('sim-questions');
+            const result = document.getElementById('sim-result');
+            const checkBtn = document.getElementById('sim-check');
+
+            if (!slug) {
+                title.textContent = 'Simulado não encontrado';
+                summary.textContent = 'Informe um slug válido para abrir um simulado dinâmico.';
+                return;
+            }
+
+            try {
+                const item = await window.iDialogCMS.fetchContentBySlug(slug);
+                const questions = Array.isArray(item.extra && item.extra.questions) ? item.extra.questions : [];
+                document.title = `${item.title} | Simulado iDialog`;
+                title.textContent = item.title;
+                summary.textContent = item.summary || 'Simulado publicado pelo painel CMS da iDialog.';
+
+                if (item.cover_url) {
+                    cover.src = item.cover_url;
+                    cover.hidden = false;
+                }
+
+                if (!questions.length) {
+                    list.innerHTML = '<div class="cms-simulado-empty">Este simulado ainda não possui questões publicadas.</div>';
+                    checkBtn.disabled = true;
+                    return;
+                }
+
+                list.innerHTML = questions.map((question, index) => `
+                    <article class="cms-question-card" data-question-index="${index}">
+                        <div class="cms-question-index">Questão ${index + 1}</div>
+                        <h3>${question.question || 'Enunciado não informado.'}</h3>
+                        <div class="cms-question-options">
+                            ${(question.options || []).map((option, optionIndex) => `
+                                <label class="cms-option-row">
+                                    <input type="radio" name="question-${index}" value="${optionIndex}">
+                                    <span>${option}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                        <div class="cms-question-feedback" hidden></div>
+                    </article>
+                `).join('');
+
+                checkBtn.addEventListener('click', () => {
+                    let score = 0;
+                    questions.forEach((question, index) => {
+                        const checked = document.querySelector(`input[name="question-${index}"]:checked`);
+                        const feedback = document.querySelector(`.cms-question-card[data-question-index="${index}"] .cms-question-feedback`);
+                        const selectedValue = checked ? Number(checked.value) : null;
+                        const correct = Number(question.answer);
+                        const isCorrect = selectedValue === correct;
+                        if (isCorrect) score += 1;
+                        feedback.hidden = false;
+                        feedback.className = `cms-question-feedback ${isCorrect ? 'is-correct' : 'is-wrong'}`;
+                        feedback.textContent = isCorrect
+                            ? `Correta. ${question.explanation || ''}`.trim()
+                            : `Resposta correta: ${(question.options || [])[correct] || 'n/d'}. ${question.explanation || ''}`.trim();
+                    });
+
+                    result.innerHTML = `<strong>Resultado:</strong> ${score} de ${questions.length} questões corretas.`;
+                });
+            } catch (error) {
+                title.textContent = 'Falha ao carregar simulado';
+                summary.textContent = 'O simulado solicitado não foi encontrado ou ainda não está publicado.';
+                list.innerHTML = '<div class="cms-simulado-empty">Publique o simulado no painel CMS e tente novamente.</div>';
+                checkBtn.disabled = true;
+            }
+        });
+    </script>
+</body>
+
+</html>

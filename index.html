@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -7,13 +7,17 @@
     <meta name="description"
         content="iDialog - Consultoria e soluções inteligentes em gestão, tecnologia e comunicação para o setor público e privado">
     <meta name="keywords" content="consultoria, tecnologia, gestão, comunicação, setor público, empresas, iDialog">
-    <meta name="author" content="iDialog">
+    <meta name="author" content="Albertino Bezerra Lima">
+    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+    <meta name="contact" content="albertinoblima@gmail.com">
 
     <title>iDialog - Soluções Inteligentes em Tecnologia</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="src/styles/main.css">
     <link rel="stylesheet" href="src/styles/responsive.css">
+    <link rel="stylesheet" href="src/styles/modals.css">
 
     <!-- Fonts: Orbitron (titles) + Exo 2 (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +28,42 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Dados estruturados - Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://www.idialog.com.br/#founder",
+          "name": "Albertino Bezerra Lima",
+          "email": "albertinoblima@gmail.com",
+          "telephone": "+5587988568605",
+          "url": "https://www.idialog.com.br",
+          "jobTitle": "Fundador e Diretor",
+          "knowsAbout": ["Gestão Pública", "Tecnologia da Informação", "Comunicação Institucional", "Consultoria Empresarial"],
+          "worksFor": { "@id": "https://www.idialog.com.br/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://www.idialog.com.br/#organization",
+          "name": "iDialog",
+          "url": "https://www.idialog.com.br",
+          "founder": { "@id": "https://www.idialog.com.br/#founder" },
+          "description": "Consultoria e soluções inteligentes em gestão, tecnologia e comunicação para o setor público e privado",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+5587988568605",
+            "contactType": "customer service",
+            "email": "albertinoblima@gmail.com",
+            "availableLanguage": "Portuguese"
+          },
+          "sameAs": ["https://wa.me/5587988568605"]
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body>
@@ -51,28 +91,40 @@
                         Modelagens sistêmicas, tecnologia, inovação e gestão para transformar organizações e cidades.
                     </p>
                     <div class="hero-buttons">
-                        <a href="pages/servicos/publicos/index.html" class="btn btn-primary">
-                            <i class="fas fa-landmark"></i> Setor Público
-                        </a>
-                        <a href="pages/servicos/privados/index.html" class="btn btn-secondary">
-                            <i class="fas fa-building"></i> Setor Privado
-                        </a>
+                        <button class="btn btn-primary" onclick="openModal('login-modal')">
+                            <i class="fas fa-sign-in-alt"></i> Fazer Login
+                        </button>
+                        <button class="btn btn-secondary" onclick="openModal('register-modal')">
+                            <i class="fas fa-user-plus"></i> Criar Conta
+                        </button>
+                    </div>
+                    <div class="hero-services-hint-wrap">
+                        <p class="hero-services-hint-text">Ou conheça mais
+                            sobre nossos serviços:</p>
+                        <div class="hero-services-hint-actions">
+                            <a href="pages/servicos/publicos/index.html"
+                                class="btn hero-service-btn hero-service-btn-public">
+                                <i class="fas fa-landmark"></i> Setor Público
+                            </a>
+                            <a href="pages/servicos/privados/index.html"
+                                class="btn hero-service-btn hero-service-btn-private">
+                                <i class="fas fa-building"></i> Setor Privado
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="hero-graphic">
                     <!-- Animated Circuit SVG -->
-                    <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        style="animation: float 6s ease-in-out infinite;">
+                    <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" class="hero-circuit-svg">
                         <!-- Outer ring -->
                         <circle cx="250" cy="250" r="200" stroke="url(#heroGrad)" stroke-width="1.5" opacity="0.3" />
                         <circle cx="250" cy="250" r="160" stroke="url(#heroGrad)" stroke-width="1" opacity="0.2" />
                         <circle cx="250" cy="250" r="120" stroke="url(#heroGrad)" stroke-width="0.8" opacity="0.15" />
                         <!-- Connection nodes -->
-                        <circle cx="250" cy="50" r="6" fill="#00e5ff" style="animation: pulse-glow 2s infinite;" />
-                        <circle cx="450" cy="250" r="6" fill="#00ff88"
-                            style="animation: pulse-glow 2s infinite 0.5s;" />
-                        <circle cx="250" cy="450" r="6" fill="#00e5ff" style="animation: pulse-glow 2s infinite 1s;" />
-                        <circle cx="50" cy="250" r="6" fill="#00ff88" style="animation: pulse-glow 2s infinite 1.5s;" />
+                        <circle cx="250" cy="50" r="6" fill="#00e5ff" class="hero-node hero-node-1" />
+                        <circle cx="450" cy="250" r="6" fill="#00ff88" class="hero-node hero-node-2" />
+                        <circle cx="250" cy="450" r="6" fill="#00e5ff" class="hero-node hero-node-3" />
+                        <circle cx="50" cy="250" r="6" fill="#00ff88" class="hero-node hero-node-4" />
                         <!-- Diagonal connections -->
                         <line x1="110" y1="110" x2="390" y2="390" stroke="url(#heroGrad)" stroke-width="0.8"
                             opacity="0.2" />
@@ -105,6 +157,74 @@
                             </linearGradient>
                         </defs>
                     </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools Overview Section -->
+        <section class="tools-overview" id="ferramentas">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Menu <span class="accent">Ferramentas</span></h2>
+                    <p class="section-subtitle">Plataforma integrada para gestão estratégica e operacional de sua
+                        empresa.</p>
+                </div>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-chess"></i>
+                        </div>
+                        <h3>Planejamento Estratégico</h3>
+                        <p>Desenvolva estratégias sólidas com nossa ferramenta completa de planejamento. Defina missão,
+                            visão, análise SWOT, objetivos e indicadores de desempenho.</p>
+                        <ul class="tool-features">
+                            <li><i class="fas fa-check"></i> Análise SWOT integrada</li>
+                            <li><i class="fas fa-check"></i> Definição de objetivos e iniciativas</li>
+                            <li><i class="fas fa-check"></i> KPIs e indicadores</li>
+                            <li><i class="fas fa-check"></i> Exportação em múltiplos formatos</li>
+                        </ul>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon tool-icon-green">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3>Painel Corporativo</h3>
+                        <p>Gerenciador multi-empresa com painel centralizado. Upload de logo, gerenciamento de
+                            informações institucionais e controle de acesso.</p>
+                        <ul class="tool-features">
+                            <li><i class="fas fa-check"></i> Multi-empresa</li>
+                            <li><i class="fas fa-check"></i> Upload de logo</li>
+                            <li><i class="fas fa-check"></i> Gestão de informações institucionais</li>
+                            <li><i class="fas fa-check"></i> Controle de acesso</li>
+                        </ul>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon tool-icon-orange">
+                            <i class="fas fa-file-export"></i>
+                        </div>
+                        <h3>Exportação de Documentos</h3>
+                        <p>Exporte seus planejamentos em formatos profissionais. Suporte para DOCX, PDF e Excel com
+                            formatação automática e branding.</p>
+                        <ul class="tool-features">
+                            <li><i class="fas fa-check"></i> Exportar em DOCX</li>
+                            <li><i class="fas fa-check"></i> Exportar em PDF</li>
+                            <li><i class="fas fa-check"></i> Exportar em Excel</li>
+                            <li><i class="fas fa-check"></i> Formatação profissional</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tools-cta tools-cta-center">
+                    <p class="tools-cta-lead">
+                        <strong>Acesso rápido:</strong> Crie uma conta ou faça login para começar a usar as ferramentas.
+                    </p>
+                    <div class="tools-cta-actions">
+                        <button class="btn btn-primary" onclick="openModal('register-modal')">
+                            <i class="fas fa-rocket"></i> Começar Agora
+                        </button>
+                        <button class="btn btn-secondary" onclick="openModal('login-modal')">
+                            <i class="fas fa-sign-in-alt"></i> Já Tenho Conta
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -219,7 +339,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="text-align:center; margin-top:40px;">
+                <div class="cases-cta-wrap">
                     <a href="pages/casos-de-sucesso.html" class="btn btn-secondary">
                         <i class="fas fa-folder-open"></i> Ver Todos os Casos
                     </a>
@@ -241,8 +361,7 @@
                             Nossa equipe atua em diversos segmentos, promovendo desenvolvimento sustentável,
                             transparência e resultados de alto impacto para clientes públicos e privados.
                         </p>
-                        <div class="mission"
-                            style="padding:16px 20px; border-left:3px solid var(--neon-cyan); background:rgba(0,229,255,0.04); border-radius:0 8px 8px 0; margin:20px 0;">
+                        <div class="mission mission-highlight">
                             <strong>Missão:</strong> Transformar organizações e cidades por meio de soluções sistêmicas,
                             tecnologia e gestão moderna.
                         </div>
@@ -295,9 +414,95 @@
 
     <div id="footer-placeholder"></div>
 
+    <!-- MODAIS DE AUTENTICAÇÃO -->
+    <!-- Modal Login -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('login-modal')">&times;</span>
+            <h2 class="modal-title"><i class="fas fa-sign-in-alt"></i> Fazer Login</h2>
+            <form id="login-form" onsubmit="handleLoginSubmit(event)">
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" name="email" required placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Senha:</label>
+                    <input type="password" id="login-password" name="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full-width">
+                    <i class="fas fa-arrow-right"></i> Entrar
+                </button>
+            </form>
+            <p class="modal-footer">
+                Não tem conta? <a href="#" onclick="switchModal('login-modal', 'register-modal')">Crie uma agora</a>
+            </p>
+            <div id="login-message" class="form-message"></div>
+        </div>
+    </div>
+
+    <!-- Modal Registrar -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('register-modal')">&times;</span>
+            <h2 class="modal-title"><i class="fas fa-user-plus"></i> Criar Conta</h2>
+            <form id="register-form" onsubmit="handleRegisterSubmit(event)">
+                <div class="form-group">
+                    <label for="register-company">Nome da Empresa:</label>
+                    <input type="text" id="register-company" name="company" required placeholder="Sua Empresa">
+                </div>
+                <div class="form-group">
+                    <label for="register-cnpj">CNPJ (opcional):</label>
+                    <input type="text" id="register-cnpj" name="cnpj" placeholder="00.000.000/0000-00">
+                </div>
+                <div class="form-group">
+                    <label for="register-name">Nome Completo:</label>
+                    <input type="text" id="register-name" name="name" required placeholder="Seu Nome">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email:</label>
+                    <input type="email" id="register-email" name="email" required placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Senha:</label>
+                    <input type="password" id="register-password" name="password" required placeholder="••••••••"
+                        minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="register-password-confirm">Confirmar Senha:</label>
+                    <input type="password" id="register-password-confirm" name="password_confirm" required
+                        placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full-width">
+                    <i class="fas fa-check"></i> Criar Conta
+                </button>
+            </form>
+            <p class="modal-footer">
+                Já tem conta? <a href="#" onclick="switchModal('register-modal', 'login-modal')">Faça login</a>
+            </p>
+            <div id="register-message" class="form-message"></div>
+        </div>
+    </div>
+
+    <!-- Modal Sucesso -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content modal-success">
+            <div class="modal-success-content">
+                <div class="modal-success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 class="modal-title">Sucesso!</h2>
+                <p id="success-message" class="modal-success-message"></p>
+                <button class="btn btn-primary" onclick="handleSuccessClose()">
+                    <i class="fas fa-arrow-right"></i> Continuar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript -->
     <script src="assets/js/components.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth-modals.js"></script>
 
     <script src="assets/js/matrix.js"></script>
 </body>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Análise SWOT na prática: aprenda como transformar forças, fraquezas, oportunidades e ameaças em decisões estratégicas com a ferramenta iDialog.">
+    <meta name="keywords"
+        content="análise swot, matriz swot, ferramenta swot, planejamento estratégico, gestão empresarial">
+    <meta name="author" content="iDialog">
+    <meta name="robots" content="index, follow">
+    <meta name="canonical" href="/pages/blog/posts/analise-swot-estrategia-real.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Análise SWOT: Estratégia Real Começa no Diagnóstico — Blog iDialog">
+    <meta property="og:description"
+        content="Quem decide melhor executa melhor. Descubra como usar a ferramenta de análise SWOT da iDialog para transformar diagnóstico em ação.">
+    <meta property="og:url" content="/pages/blog/posts/analise-swot-estrategia-real.html">
+    <meta property="og:image" content="/public/icon/1 iDialog icone.ico">
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Análise SWOT: Estratégia Real Começa no Diagnóstico",
+            "description": "Artigo prático sobre análise SWOT para decisões estratégicas e apresentação da ferramenta iDialog para transformar diagnóstico em execução.",
+            "image": "/public/icon/1 iDialog icone.ico",
+            "datePublished": "2026-04-16",
+            "dateModified": "2026-04-16",
+            "author": {
+                "@type": "Organization",
+                "name": "iDialog",
+                "url": "https://idialog.com.br"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "iDialog",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "/public/icon/1 iDialog icone.ico"
+                }
+            }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Ferramenta de Analise SWOT iDialog",
+            "description": "Módulo de análise SWOT para mapear forças, fraquezas, oportunidades e ameaças com exportação em DOCX, PDF e Excel.",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "offers": {
+                "@type": "Offer",
+                "priceCurrency": "BRL",
+                "price": "0",
+                "availability": "https://schema.org/InStock"
+            }
+        }
+    </script>
+
+    <title>Análise SWOT: Estratégia Real Começa no Diagnóstico — Blog iDialog</title>
+
+    <link rel="icon" type="image/x-icon" href="/public/icon/1 iDialog icone.ico">
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/responsive.css">
+    <link rel="stylesheet" href="/src/styles/blog-post.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div id="header-placeholder"></div>
+
+    <main>
+        <article class="blog-post-page">
+            <header class="blog-post-header" data-reveal>
+                <p class="blog-post-breadcrumb">
+                    <a href="/index.html"><i class="fas fa-home"></i> Início</a> &rsaquo;
+                    <a href="/pages/blog/index.html">Blog</a> &rsaquo;
+                    Análise SWOT
+                </p>
+
+                <span class="blog-post-category"><i class="fas fa-sitemap"></i> Gestão Estratégica</span>
+                <h1 class="blog-post-title">Análise SWOT: Estratégia Real Começa no Diagnóstico</h1>
+
+                <p class="blog-post-intro">
+                    Empresa que decide no escuro desperdiça tempo, dinheiro e energia. A análise SWOT coloca clareza
+                    no centro da estratégia: você entende cenário interno e externo antes de agir, e transforma isso em
+                    plano com direção.
+                </p>
+
+                <div class="blog-post-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 16 de abril de 2026</span>
+                    <span><i class="fas fa-user"></i> Equipe iDialog</span>
+                    <span><i class="fas fa-clock"></i> 7 min de leitura</span>
+                </div>
+            </header>
+
+            <hr class="blog-divider">
+
+            <section class="blog-hero-showcase" data-reveal>
+                <div class="blog-panel">
+                    <div class="blog-panel-content">
+                        <h2>Por que SWOT importa agora?</h2>
+                        <p>
+                            Em mercados acelerados, decisão ruim custa caro. A matriz SWOT ajuda a responder perguntas
+                            críticas antes de investir recursos:
+                        </p>
+                        <ul>
+                            <li>Onde somos realmente fortes?</li>
+                            <li>Quais fraquezas travam crescimento?</li>
+                            <li>Quais oportunidades são prioritárias?</li>
+                            <li>Quais ameaças exigem resposta imediata?</li>
+                            <li>Como traduzir isso em ação prática?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="blog-panel blog-hero-vector" aria-hidden="true">
+                    <svg viewBox="0 0 380 300" role="presentation" focusable="false">
+                        <defs>
+                            <linearGradient id="grad-swot" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.9"></stop>
+                                <stop offset="100%" stop-color="#00ff88" stop-opacity="0.75"></stop>
+                            </linearGradient>
+                        </defs>
+                        <rect x="30" y="24" width="320" height="252" rx="16" fill="rgba(10,10,15,0.62)"
+                            stroke="url(#grad-swot)"></rect>
+                        <line x1="190" y1="42" x2="190" y2="258" stroke="rgba(232,234,240,0.25)"></line>
+                        <line x1="46" y1="150" x2="334" y2="150" stroke="rgba(232,234,240,0.25)"></line>
+
+                        <rect x="46" y="42" width="136" height="98" rx="10" fill="rgba(0,255,136,0.14)"
+                            stroke="#00ff88"></rect>
+                        <rect x="198" y="42" width="136" height="98" rx="10" fill="rgba(255,45,149,0.12)"
+                            stroke="#ff2d95"></rect>
+                        <rect x="46" y="160" width="136" height="98" rx="10" fill="rgba(0,229,255,0.14)"
+                            stroke="#00e5ff"></rect>
+                        <rect x="198" y="160" width="136" height="98" rx="10" fill="rgba(77,124,255,0.14)"
+                            stroke="#4d7cff"></rect>
+
+                        <text x="114" y="95" text-anchor="middle" fill="#00ff88" font-size="16"
+                            font-weight="700">Forcas</text>
+                        <text x="266" y="95" text-anchor="middle" fill="#ff2d95" font-size="16"
+                            font-weight="700">Fraquezas</text>
+                        <text x="114" y="213" text-anchor="middle" fill="#00e5ff" font-size="16"
+                            font-weight="700">Oportunidades</text>
+                        <text x="266" y="213" text-anchor="middle" fill="#4d7cff" font-size="16"
+                            font-weight="700">Ameacas</text>
+                    </svg>
+                </div>
+            </section>
+
+            <section class="blog-stats-grid" data-reveal>
+                <article class="blog-stat-card">
+                    <span class="blog-stat-number">Diagnóstico claro</span>
+                    <p class="blog-stat-label">Menos achismo e mais leitura estruturada de cenário.</p>
+                </article>
+                <article class="blog-stat-card">
+                    <span class="blog-stat-number">Prioridade real</span>
+                    <p class="blog-stat-label">Você escolhe batalhas que trazem impacto mensurável.</p>
+                </article>
+                <article class="blog-stat-card">
+                    <span class="blog-stat-number">Execução forte</span>
+                    <p class="blog-stat-label">Estratégia sai do slide e entra no plano de ação.</p>
+                </article>
+            </section>
+
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Sem SWOT, o risco é decidir por percepção</h2>
+                <p class="blog-section-subtitle">
+                    A maioria dos erros estratégicos nasce de diagnóstico incompleto. Quando a leitura do contexto é
+                    fraca, o plano também será.
+                </p>
+
+                <div class="blog-service-grid">
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-triangle-exclamation"></i></span>
+                            <h3>Aposta em prioridade errada</h3>
+                        </div>
+                        <p>
+                            A empresa investe em iniciativas de baixo retorno porque não mapeou forças e limitações com
+                            profundidade.
+                        </p>
+                    </article>
+
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-filter-circle-xmark"></i></span>
+                            <h3>Foco difuso</h3>
+                        </div>
+                        <p>
+                            Sem critérios objetivos, tudo parece urgente. O time perde eficiência e tração.
+                        </p>
+                    </article>
+
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-shield-halved"></i></span>
+                            <h3>Risco subestimado</h3>
+                        </div>
+                        <p>
+                            Ameaças são percebidas tarde, quando custo de resposta já está alto.
+                        </p>
+                    </article>
+
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-people-group"></i></span>
+                            <h3>Desalinhamento de liderança</h3>
+                        </div>
+                        <p>
+                            Áreas diferentes operam com interpretações diferentes do mesmo cenário.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Método de execução em 4 blocos</h2>
+                <div class="blog-publishing-grid">
+                    <article class="blog-publishing-card">
+                        <h3>Forças</h3>
+                        <p>Ativos, competências e diferenciais que podem ser escalados no curto prazo.</p>
+                    </article>
+                    <article class="blog-publishing-card">
+                        <h3>Fraquezas</h3>
+                        <p>Gargalos internos que reduzem performance e precisam de plano corretivo.</p>
+                    </article>
+                    <article class="blog-publishing-card">
+                        <h3>Oportunidades</h3>
+                        <p>Movimentos de mercado e janelas de crescimento que valem prioridade.</p>
+                    </article>
+                    <article class="blog-publishing-card">
+                        <h3>Ameaças</h3>
+                        <p>Fatores externos que exigem plano de mitigação e resposta rápida.</p>
+                    </article>
+                    <article class="blog-publishing-card">
+                        <h3>Cruzamento estratégico</h3>
+                        <p>Use forças para capturar oportunidades e reduzir impacto de ameaças.</p>
+                    </article>
+                    <article class="blog-publishing-card">
+                        <h3>Plano tático</h3>
+                        <p>Transforme cada quadrante em iniciativa com responsável, prazo e indicador.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Ferramenta de Análise SWOT iDialog</h2>
+                <p class="blog-section-subtitle">
+                    A ferramenta foi pensada para transformar SWOT em decisão prática. Você cria análises por título,
+                    unidade de negócio, horizonte e já estrutura os 4 quadrantes com foco executivo.
+                </p>
+
+                <div class="blog-tabs" data-blog-tabs>
+                    <div class="blog-tabs-controls" role="tablist" aria-label="Recursos da ferramenta SWOT">
+                        <button class="blog-tab-btn" role="tab" type="button" data-tab-target="estrutura">Estrutura
+                            guiada</button>
+                        <button class="blog-tab-btn" role="tab" type="button" data-tab-target="gestao">Gestão e
+                            histórico</button>
+                        <button class="blog-tab-btn" role="tab" type="button" data-tab-target="exportacao">Exportações
+                            profissionais</button>
+                    </div>
+
+                    <section class="blog-tab-panel" data-tab-panel="estrutura">
+                        Formulário dedicado para Forças, Fraquezas, Oportunidades e Ameaças, com visão organizada para
+                        análise de direção estratégica.
+                    </section>
+
+                    <section class="blog-tab-panel" data-tab-panel="gestao" hidden>
+                        Edição contínua, listagem por empresa e atualização recorrente para manter a SWOT viva, não
+                        estática.
+                    </section>
+
+                    <section class="blog-tab-panel" data-tab-panel="exportacao" hidden>
+                        Exporte sua análise em DOCX, PDF e Excel para reuniões, comitês e documentação executiva.
+                    </section>
+                </div>
+            </section>
+
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Perguntas que aceleram sua SWOT</h2>
+                <div class="blog-reveal-list">
+                    <details class="blog-reveal">
+                        <summary>
+                            Nossas forças estão conectadas às oportunidades certas?
+                            <span class="blog-summary-action">Ver explicação</span>
+                        </summary>
+                        <div class="blog-reveal-body">
+                            Força sem direção vira desperdício. A pergunta certa é: em qual oportunidade essa força
+                            gera vantagem concreta agora?
+                        </div>
+                    </details>
+
+                    <details class="blog-reveal">
+                        <summary>
+                            Quais fraquezas podem destruir execução nos próximos 90 dias?
+                            <span class="blog-summary-action">Ver explicação</span>
+                        </summary>
+                        <div class="blog-reveal-body">
+                            Nem toda fraqueza é urgente. Priorize as que impactam receita, margem, prazo ou experiência
+                            do cliente.
+                        </div>
+                    </details>
+
+                    <details class="blog-reveal">
+                        <summary>
+                            Qual ameaça exige plano preventivo hoje?
+                            <span class="blog-summary-action">Ver explicação</span>
+                        </summary>
+                        <div class="blog-reveal-body">
+                            Ameaça mapeada sem resposta definida é só um alerta ignorado. Defina ação, dono e gatilho de
+                            execução.
+                        </div>
+                    </details>
+                </div>
+
+                <blockquote class="blog-quote">
+                    "A SWOT certa não descreve o cenário: ela orienta a próxima decisão com clareza."
+                </blockquote>
+            </section>
+
+            <section class="blog-cta-wrap" data-reveal>
+                <h2>Transforme leitura de cenário em decisão estratégica</h2>
+                <p>
+                    Acesse a ferramenta de análise SWOT da iDialog e construa diagnósticos executáveis para guiar
+                    crescimento com mais segurança e foco.
+                </p>
+                <div class="blog-cta-actions">
+                    <a href="/pages/ferramentas/index.html" class="btn btn-primary">
+                        <i class="fas fa-sitemap"></i> Acessar Ferramenta SWOT
+                    </a>
+                    <a href="/pages/contato.html" class="btn btn-secondary">
+                        <i class="fas fa-comments"></i> Falar com a equipe
+                    </a>
+                </div>
+            </section>
+
+            <footer class="blog-post-footer">
+                <a href="/pages/blog/index.html" class="blog-post-footer-link">
+                    <i class="fas fa-arrow-left"></i> Voltar para o Blog
+                </a>
+                <a href="/pages/ferramentas/index.html" class="blog-post-footer-link">
+                    Ir para Ferramentas <i class="fas fa-arrow-right"></i>
+                </a>
+            </footer>
+        </article>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/assets/js/components.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/matrix.js"></script>
+    <script src="/assets/js/blog-post.js"></script>
+</body>
+
+</html>

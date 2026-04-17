@@ -1,0 +1,903 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Albertino Bezerra Lima">
+    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+    <meta name="contact" content="albertinoblima@gmail.com">
+    <meta name="description" content="Ferramentas de gestao iDialog para empresas.">
+    <title>iDialog Hub de Gestao | Suite Empresarial</title>
+
+    <link rel="stylesheet" href="../../src/styles/main.css">
+    <link rel="stylesheet" href="../../src/styles/responsive.css">
+    <link rel="stylesheet" href="./ferramentas.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div id="header-placeholder"></div>
+
+    <main class="main ferramentas-main" id="main-content">
+        <section class="ferramentas-hero">
+            <div class="container ferramentas-hero-inner">
+                <div>
+                    <p class="hero-kicker">Suite de Gestao Empresarial</p>
+                    <h1 class="hero-title">Hub de Gestao <span class="highlight">iDialog</span></h1>
+                    <p class="hero-subtitle">Painel por empresa com identidade visual, documentos com timbre e modulo de
+                        planejamento estrategico, analise SWOT e plano de negocios profissional.</p>
+                </div>
+                <div class="api-box">
+                    <label for="api-base">API</label>
+                    <input id="api-base" type="text" value="http://127.0.0.1:5001/api" aria-label="Endereco da API">
+                    <button class="btn btn-secondary" id="save-api" type="button">
+                        <i class="fas fa-plug"></i> Conectar
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="container ferramentas-content">
+            <div id="auth-view" class="panel-grid">
+                <article class="panel-card">
+                    <h2><i class="fas fa-right-to-bracket"></i> Login</h2>
+                    <form id="login-form" class="stack-form">
+                        <label>Email
+                            <input required type="email" name="email" placeholder="admin@empresa.com">
+                        </label>
+                        <label>Senha
+                            <input required type="password" name="password" minlength="6">
+                        </label>
+                        <button class="btn btn-primary" type="submit">Entrar</button>
+                    </form>
+                </article>
+
+                <article class="panel-card">
+                    <h2><i class="fas fa-building-circle-check"></i> Cadastro de Empresa</h2>
+                    <form id="register-form" class="stack-form">
+                        <label>Nome da empresa
+                            <input required type="text" name="company_name">
+                        </label>
+                        <label>CNPJ
+                            <input type="text" name="cnpj" placeholder="00.000.000/0000-00">
+                        </label>
+                        <label>Email institucional
+                            <input type="email" name="company_email">
+                        </label>
+                        <label>Telefone
+                            <input type="text" name="company_phone">
+                        </label>
+                        <label>Endereco
+                            <input type="text" name="company_address">
+                        </label>
+                        <label>Nome do administrador
+                            <input required type="text" name="admin_name" value="Administrador">
+                        </label>
+                        <label>Email do administrador
+                            <input required type="email" name="admin_email">
+                        </label>
+                        <label>Senha do administrador
+                            <input required type="password" name="admin_password" minlength="6">
+                        </label>
+                        <label>Logo da empresa (opcional)
+                            <input type="file" id="register-logo-file" name="register_logo" accept="image/*">
+                            <small class="field-help">Se enviar agora, a logo ja fica vinculada no cadastro.</small>
+                        </label>
+                        <button class="btn btn-primary" type="submit">Criar empresa</button>
+                    </form>
+                </article>
+            </div>
+
+            <section id="dashboard-view" class="dashboard" hidden>
+                <div class="dashboard-header">
+                    <h2><i class="fas fa-gauge-high"></i> Painel da Empresa</h2>
+                    <button class="btn btn-secondary" id="logout-btn" type="button">Sair</button>
+                </div>
+
+                <div class="tabs-row" role="tablist" aria-label="Modulos">
+                    <button class="tab-btn active" type="button" data-tab="empresa">Empresa</button>
+                    <button class="tab-btn" type="button" data-tab="planejamento">Planejamento Estrategico</button>
+                    <button class="tab-btn" type="button" data-tab="swot">Analise SWOT</button>
+                    <button class="tab-btn" type="button" data-tab="negocios">Plano de Negocios</button>
+                    <button class="tab-btn" type="button" data-tab="viabilidade">Estudo de Viabilidade</button>
+                    <button class="tab-btn" type="button" data-tab="projetos">Gestao de Projetos</button>
+                    <button class="tab-btn" type="button" data-tab="widgets">Anuncios e Widgets</button>
+                </div>
+
+                <div class="tab-content active" id="tab-empresa">
+                    <article class="panel-card">
+                        <h3><i class="fas fa-id-card"></i> Informacoes Institucionais</h3>
+                        <form id="company-form" class="stack-form">
+                            <label>Nome da empresa
+                                <input required type="text" name="name">
+                            </label>
+                            <label>CNPJ
+                                <input type="text" name="cnpj">
+                            </label>
+                            <label>Email
+                                <input type="email" name="email">
+                            </label>
+                            <label>Telefone
+                                <input type="text" name="phone">
+                            </label>
+                            <label>Endereco
+                                <input type="text" name="address">
+                            </label>
+                            <label>Texto do cabecalho para documentos
+                                <input type="text" name="header_text" placeholder="Razao social, CNPJ e endereco">
+                            </label>
+                            <label>Texto do rodape para documentos
+                                <input type="text" name="footer_text" placeholder="Contato, website e aviso legal">
+                            </label>
+                            <button class="btn btn-primary" type="submit">Salvar dados da empresa</button>
+                        </form>
+                    </article>
+
+                    <article class="panel-card">
+                        <h3><i class="fas fa-image"></i> Logo da Empresa</h3>
+                        <form id="logo-form" class="stack-form inline-form">
+                            <input type="file" id="logo-file" name="logo" accept="image/*" required>
+                            <button class="btn btn-secondary" type="submit">Enviar logo</button>
+                        </form>
+                        <div class="logo-preview-wrap">
+                            <img id="logo-preview" alt="Logo da empresa" hidden>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="tab-content" id="tab-planejamento">
+                    <article class="panel-card">
+                        <h3><i class="fas fa-chess-board"></i> Novo Planejamento Estrategico</h3>
+                        <form id="plan-form" class="stack-form">
+                            <input type="hidden" name="plan_id" value="">
+                            <label>Titulo
+                                <input required type="text" name="title" placeholder="Planejamento 2026-2028">
+                            </label>
+                            <div class="split-2">
+                                <label>Inicio
+                                    <input type="date" name="period_start">
+                                </label>
+                                <label>Fim
+                                    <input type="date" name="period_end">
+                                </label>
+                            </div>
+                            <label>Missao
+                                <textarea name="mission" rows="2"></textarea>
+                            </label>
+                            <label>Visao
+                                <textarea name="vision" rows="2"></textarea>
+                            </label>
+                            <label>Valores
+                                <textarea name="values" rows="2" placeholder="Use ; para separar itens"></textarea>
+                            </label>
+                            <div class="split-2">
+                                <label>Forcas
+                                    <textarea name="swot_strengths" rows="3"></textarea>
+                                </label>
+                                <label>Fraquezas
+                                    <textarea name="swot_weaknesses" rows="3"></textarea>
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Oportunidades
+                                    <textarea name="swot_opportunities" rows="3"></textarea>
+                                </label>
+                                <label>Ameacas
+                                    <textarea name="swot_threats" rows="3"></textarea>
+                                </label>
+                            </div>
+                            <label>Objetivos estrategicos
+                                <textarea name="objectives" rows="3" placeholder="Use ; para separar itens"></textarea>
+                            </label>
+                            <label>Iniciativas
+                                <textarea name="initiatives" rows="3" placeholder="Use ; para separar itens"></textarea>
+                            </label>
+                            <label>Indicadores (KPIs)
+                                <textarea name="indicators" rows="3" placeholder="Use ; para separar itens"></textarea>
+                            </label>
+                            <div class="action-row">
+                                <button class="btn btn-primary" type="submit">Salvar planejamento</button>
+                                <button class="btn btn-secondary" type="button" id="plan-reset">Limpar
+                                    formulario</button>
+                            </div>
+                        </form>
+                    </article>
+
+                    <article class="panel-card">
+                        <h3><i class="fas fa-folder-tree"></i> Planejamentos Cadastrados</h3>
+                        <div id="plans-list" class="plans-list"></div>
+                    </article>
+                </div>
+
+                <div class="tab-content" id="tab-swot">
+                    <article class="panel-card">
+                        <h3><i class="fas fa-sitemap"></i> Nova Analise SWOT Profissional</h3>
+                        <p class="panel-lead">Mapeie ambiente interno e externo, priorize fatores e monte estrategias
+                            cruzadas para orientar decisao executiva.</p>
+                        <form id="swot-form" class="stack-form">
+                            <input type="hidden" name="swot_id" value="">
+                            <label>Titulo da analise
+                                <input required type="text" name="title" placeholder="SWOT Corporativa 2026">
+                            </label>
+                            <div class="split-2">
+                                <label>Data da analise
+                                    <input type="date" name="analysis_date">
+                                </label>
+                                <label>Area ou unidade
+                                    <input type="text" name="business_unit"
+                                        placeholder="Comercial, Operacoes, Institucional...">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Inicio do ciclo
+                                    <input type="date" name="period_start">
+                                </label>
+                                <label>Fim do ciclo
+                                    <input type="date" name="period_end">
+                                </label>
+                            </div>
+                            <label>Objetivo da analise
+                                <textarea name="analysis_objective" rows="2"
+                                    placeholder="Ex.: Sustentar crescimento e aumentar rentabilidade no proximo ciclo"></textarea>
+                            </label>
+
+                            <div class="swot-matrix-grid">
+                                <label class="swot-card swot-strengths">Forcas
+                                    <textarea name="strengths" rows="4"
+                                        placeholder="Use ; para separar itens"></textarea>
+                                </label>
+                                <label class="swot-card swot-weaknesses">Fraquezas
+                                    <textarea name="weaknesses" rows="4"
+                                        placeholder="Use ; para separar itens"></textarea>
+                                </label>
+                                <label class="swot-card swot-opportunities">Oportunidades
+                                    <textarea name="opportunities" rows="4"
+                                        placeholder="Use ; para separar itens"></textarea>
+                                </label>
+                                <label class="swot-card swot-threats">Ameacas
+                                    <textarea name="threats" rows="4" placeholder="Use ; para separar itens"></textarea>
+                                </label>
+                            </div>
+
+                            <h4 class="subsection-title">Estrategias Cruzadas</h4>
+                            <div class="split-2">
+                                <label>FO (Forcas + Oportunidades)
+                                    <textarea name="so_strategies" rows="3"
+                                        placeholder="Use ; para separar iniciativas FO"></textarea>
+                                </label>
+                                <label>DO (Fraquezas + Oportunidades)
+                                    <textarea name="wo_strategies" rows="3"
+                                        placeholder="Use ; para separar iniciativas DO"></textarea>
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>FA (Forcas + Ameacas)
+                                    <textarea name="st_strategies" rows="3"
+                                        placeholder="Use ; para separar iniciativas FA"></textarea>
+                                </label>
+                                <label>DA (Fraquezas + Ameacas)
+                                    <textarea name="wt_strategies" rows="3"
+                                        placeholder="Use ; para separar iniciativas DA"></textarea>
+                                </label>
+                            </div>
+
+                            <label>Plano tatico prioritario
+                                <textarea name="priority_actions" rows="3"
+                                    placeholder="Use ; para separar acoes prioritarias"></textarea>
+                            </label>
+                            <label>Riscos criticos e mitigacoes
+                                <textarea name="critical_risks" rows="3"
+                                    placeholder="Use ; para separar riscos e mitigacoes"></textarea>
+                            </label>
+                            <label>Parecer executivo
+                                <textarea name="executive_summary" rows="3"
+                                    placeholder="Sintese final para diretoria"></textarea>
+                            </label>
+
+                            <div class="action-row">
+                                <button class="btn btn-primary" type="submit">Salvar analise SWOT</button>
+                                <button class="btn btn-secondary" type="button" id="swot-reset">Limpar
+                                    formulario</button>
+                            </div>
+                        </form>
+                    </article>
+
+                    <article class="panel-card">
+                        <h3><i class="fas fa-clipboard-check"></i> Analises SWOT Cadastradas</h3>
+                        <div id="swot-list" class="plans-list"></div>
+                    </article>
+                </div>
+
+                <div class="tab-content" id="tab-negocios">
+                    <article class="panel-card">
+                        <h3><i class="fas fa-briefcase"></i> Novo Plano de Negocios Profissional</h3>
+                        <p class="panel-lead">Estruture seu negocio com visao executiva, estrategia comercial, operacao,
+                            time, viabilidade financeira e plano de crescimento.</p>
+                        <form id="business-plan-form" class="stack-form">
+                            <input type="hidden" name="business_plan_id" value="">
+                            <label>Titulo do plano
+                                <input required type="text" name="title" placeholder="Plano de Negocios 2026-2029">
+                            </label>
+                            <div class="split-2">
+                                <label>Segmento
+                                    <input type="text" name="industry" placeholder="Tecnologia, Educacao, Saude...">
+                                </label>
+                                <label>Publico-alvo principal
+                                    <input type="text" name="target_market"
+                                        placeholder="Empresas B2B, setor publico, consumidor final...">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Inicio do ciclo
+                                    <input type="date" name="period_start">
+                                </label>
+                                <label>Fim do ciclo
+                                    <input type="date" name="period_end">
+                                </label>
+                            </div>
+                            <label>Resumo executivo
+                                <textarea name="executive_summary" rows="3"
+                                    placeholder="Sintese do negocio, contexto e direcao estrategica"></textarea>
+                            </label>
+                            <label>Problema que o negocio resolve
+                                <textarea name="problem_statement" rows="2"
+                                    placeholder="Qual dor real o mercado possui?"></textarea>
+                            </label>
+                            <label>Proposta de valor
+                                <textarea name="value_proposition" rows="2"
+                                    placeholder="Por que o cliente escolhe sua solucao?"></textarea>
+                            </label>
+                            <label>Produtos e servicos
+                                <textarea name="products_services" rows="3"
+                                    placeholder="Use ; para separar itens"></textarea>
+                            </label>
+                            <label>Analise de mercado e concorrencia
+                                <textarea name="market_analysis" rows="3"
+                                    placeholder="Tamanho de mercado, concorrentes, posicionamento"></textarea>
+                            </label>
+                            <label>Estrategia comercial e marketing
+                                <textarea name="marketing_strategy" rows="3"
+                                    placeholder="Canais, aquisicao, funil e conversao"></textarea>
+                            </label>
+                            <label>Plano operacional
+                                <textarea name="operational_plan" rows="3"
+                                    placeholder="Processos, tecnologia, entrega e governanca"></textarea>
+                            </label>
+                            <label>Modelo de receita
+                                <textarea name="revenue_streams" rows="3"
+                                    placeholder="Use ; para separar fontes de receita"></textarea>
+                            </label>
+                            <label>Estrutura de custos
+                                <textarea name="cost_structure" rows="3"
+                                    placeholder="Use ; para separar categorias de custos"></textarea>
+                            </label>
+                            <label>Necessidade de investimento e capital
+                                <textarea name="investment_requirements" rows="3"
+                                    placeholder="Use ; para separar investimentos e aportes"></textarea>
+                            </label>
+                            <label>Projecoes financeiras e indicadores
+                                <textarea name="financial_projections" rows="3"
+                                    placeholder="Use ; para separar metas de faturamento, margem e caixa"></textarea>
+                            </label>
+                            <label>Estrutura de equipe e competencias
+                                <textarea name="team_structure" rows="3"
+                                    placeholder="Use ; para separar funcoes-chave"></textarea>
+                            </label>
+                            <label>Marcos estrategicos
+                                <textarea name="milestones" rows="3"
+                                    placeholder="Use ; para separar marcos por etapa"></textarea>
+                            </label>
+                            <label>Riscos e mitigacoes
+                                <textarea name="risks_mitigation" rows="3"
+                                    placeholder="Use ; para separar riscos e planos de mitigacao"></textarea>
+                            </label>
+                            <div class="action-row">
+                                <button class="btn btn-primary" type="submit">Salvar plano de negocios</button>
+                                <button class="btn btn-secondary" type="button" id="business-plan-reset">Limpar
+                                    formulario</button>
+                            </div>
+                        </form>
+                    </article>
+
+                    <article class="panel-card">
+                        <h3><i class="fas fa-folder-open"></i> Planos de Negocios Cadastrados</h3>
+                        <div id="business-plans-list" class="plans-list"></div>
+                    </article>
+                </div>
+
+                <div class="tab-content" id="tab-viabilidade">
+                    <article class="panel-card">
+                        <h3><i class="fas fa-chart-line"></i> Estudo de Viabilidade Tecnica, Economica e Financeira</h3>
+                        <p class="panel-lead">Modelo robusto para validar qualquer empreendimento com analise tecnica,
+                            de mercado, financeira, riscos e recomendacao executiva.</p>
+                        <form id="feasibility-form" class="stack-form">
+                            <input type="hidden" name="feasibility_id" value="">
+                            <label>Titulo do estudo
+                                <input required type="text" name="title"
+                                    placeholder="Estudo de Viabilidade - Nova Unidade">
+                            </label>
+                            <div class="split-2">
+                                <label>Tipo de projeto
+                                    <input type="text" name="project_type"
+                                        placeholder="Implantacao, expansao, modernizacao...">
+                                </label>
+                                <label>Setor
+                                    <input type="text" name="sector"
+                                        placeholder="Energia, saude, educacao, tecnologia...">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Patrocinador
+                                    <input type="text" name="sponsor" placeholder="Empresa ou orgao responsavel">
+                                </label>
+                                <label>Localidade
+                                    <input type="text" name="location" placeholder="Cidade/estado ou abrangencia">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Data do estudo
+                                    <input type="date" name="analysis_date">
+                                </label>
+                                <label>Horizonte de analise (anos)
+                                    <input type="number" name="horizon_years" min="1" max="50" placeholder="10">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>CAPEX estimado (R$)
+                                    <input type="number" step="0.01" min="0" name="capex_estimate"
+                                        placeholder="2500000">
+                                </label>
+                                <label>OPEX anual estimado (R$)
+                                    <input type="number" step="0.01" min="0" name="opex_estimate" placeholder="450000">
+                                </label>
+                            </div>
+
+                            <h4 class="subsection-title">Analise Tecnica</h4>
+                            <label>Contexto e escopo tecnico
+                                <textarea name="technical_scope" rows="3"
+                                    placeholder="Escopo, limites, premissas e arquitetura da solucao"></textarea>
+                            </label>
+                            <label>Requisitos tecnicos criticos
+                                <textarea name="technical_requirements" rows="3"
+                                    placeholder="Use ; para separar requisitos"></textarea>
+                            </label>
+                            <label>Solucao de engenharia/tecnologia proposta
+                                <textarea name="engineering_solution" rows="3"
+                                    placeholder="Alternativa recomendada e justificativa"></textarea>
+                            </label>
+                            <label>Maturidade tecnologica e capacidade de execucao
+                                <textarea name="technology_readiness" rows="3"
+                                    placeholder="TRL, competencias internas e parceiros"></textarea>
+                            </label>
+                            <label>Cronograma macro de implantacao
+                                <textarea name="implementation_schedule" rows="3"
+                                    placeholder="Fases, marcos e prazo total"></textarea>
+                            </label>
+                            <label>Plano de recursos e equipe
+                                <textarea name="resource_plan" rows="3"
+                                    placeholder="Use ; para separar perfis, estrutura e recursos"></textarea>
+                            </label>
+                            <label>Aspectos regulatorios e licencas
+                                <textarea name="regulatory_licensing" rows="3"
+                                    placeholder="Normas, licencas e conformidade"></textarea>
+                            </label>
+                            <label>Aspectos ambientais e sociais
+                                <textarea name="environmental_social" rows="3"
+                                    placeholder="Impactos, condicionantes e medidas de controle"></textarea>
+                            </label>
+
+                            <h4 class="subsection-title">Analise Economica e de Mercado</h4>
+                            <label>Premissas de demanda e mercado
+                                <textarea name="demand_assumptions" rows="3"
+                                    placeholder="Tamanho de mercado, demanda projetada e drivers"></textarea>
+                            </label>
+                            <label>Modelo de precificacao e receita
+                                <textarea name="pricing_model" rows="3"
+                                    placeholder="Estrategia de preco, ticket medio e monetizacao"></textarea>
+                            </label>
+                            <label>Premissas de receita
+                                <textarea name="revenue_assumptions" rows="3"
+                                    placeholder="Use ; para separar premissas de receita"></textarea>
+                            </label>
+                            <label>Premissas de custo
+                                <textarea name="cost_assumptions" rows="3"
+                                    placeholder="Use ; para separar premissas de custo"></textarea>
+                            </label>
+
+                            <h4 class="subsection-title">Analise Financeira</h4>
+                            <label>Estrutura de financiamento
+                                <textarea name="financing_structure" rows="3"
+                                    placeholder="Capital proprio, divida, incentivos e custo de capital"></textarea>
+                            </label>
+                            <label>Taxa de desconto/WACC assumida
+                                <input type="text" name="wacc_assumption" placeholder="Ex.: 12% a.a.">
+                            </label>
+                            <label>Projecao de fluxo de caixa
+                                <textarea name="cash_flow_projection" rows="3"
+                                    placeholder="Resumo da geracao de caixa por periodo"></textarea>
+                            </label>
+                            <label>Indicadores economico-financeiros
+                                <textarea name="economic_indicators" rows="3"
+                                    placeholder="Use ; para separar VPL, TIR, Payback, margem, breakeven..."></textarea>
+                            </label>
+                            <label>Analise de sensibilidade
+                                <textarea name="sensitivity_analysis" rows="3"
+                                    placeholder="Variaveis criticas e impacto nos resultados"></textarea>
+                            </label>
+                            <label>Cenarios (base, otimista, conservador)
+                                <textarea name="scenario_analysis" rows="3"
+                                    placeholder="Resumo comparativo dos cenarios"></textarea>
+                            </label>
+
+                            <h4 class="subsection-title">Riscos e Recomendacao</h4>
+                            <label>Riscos-chave
+                                <textarea name="key_risks" rows="3"
+                                    placeholder="Use ; para separar riscos principais"></textarea>
+                            </label>
+                            <label>Plano de resposta e mitigacao
+                                <textarea name="risk_response_plan" rows="3"
+                                    placeholder="Acoes de mitigacao, contingencia e governanca"></textarea>
+                            </label>
+                            <label>Recomendacao final
+                                <textarea name="final_recommendation" rows="3"
+                                    placeholder="Parecer conclusivo: viavel, viavel com condicoes ou inviavel"></textarea>
+                            </label>
+
+                            <div class="action-row">
+                                <button class="btn btn-primary" type="submit">Salvar estudo de viabilidade</button>
+                                <button class="btn btn-secondary" type="button" id="feasibility-reset">Limpar
+                                    formulario</button>
+                            </div>
+                        </form>
+                    </article>
+
+                    <article class="panel-card">
+                        <h3><i class="fas fa-file-circle-check"></i> Estudos de Viabilidade Cadastrados</h3>
+                        <div id="feasibility-list" class="plans-list"></div>
+                    </article>
+                </div>
+
+                <div class="tab-content" id="tab-projetos">
+                    <!-- KPI Dashboard -->
+                    <div class="pm-dashboard">
+                        <div class="pm-kpi-row">
+                            <div class="pm-kpi-card">
+                                <div class="pm-kpi-icon"><i class="fas fa-folder-open"></i></div>
+                                <div class="pm-kpi-value" id="pm-kpi-total">0</div>
+                                <div class="pm-kpi-label">Projetos</div>
+                            </div>
+                            <div class="pm-kpi-card pm-kpi-active">
+                                <div class="pm-kpi-icon"><i class="fas fa-play-circle"></i></div>
+                                <div class="pm-kpi-value" id="pm-kpi-active">0</div>
+                                <div class="pm-kpi-label">Em Andamento</div>
+                            </div>
+                            <div class="pm-kpi-card pm-kpi-done">
+                                <div class="pm-kpi-icon"><i class="fas fa-trophy"></i></div>
+                                <div class="pm-kpi-value" id="pm-kpi-done">0</div>
+                                <div class="pm-kpi-label">Concluidos</div>
+                            </div>
+                            <div class="pm-kpi-card pm-kpi-overdue">
+                                <div class="pm-kpi-icon"><i class="fas fa-bell"></i></div>
+                                <div class="pm-kpi-value" id="pm-kpi-overdue">0</div>
+                                <div class="pm-kpi-label">Alertas</div>
+                            </div>
+                        </div>
+                        <div id="pm-alerts" class="pm-alerts" hidden></div>
+                        <div id="pm-timeline-container" class="pm-timeline-container" hidden>
+                            <h4 class="pm-section-title">
+                                <i class="fas fa-stream"></i> Linha do Tempo
+                                <span class="help-tip"
+                                    data-help="Visualize o cronograma de todos os projetos ativos. As barras representam a duracao planejada. Cores indicam o status: ciano (ativo), verde (concluido), amarelo (em espera), cinza (planejamento).">?</span>
+                            </h4>
+                            <div id="pm-timeline" class="pm-timeline"></div>
+                        </div>
+                    </div>
+
+                    <!-- Project Form -->
+                    <article class="panel-card">
+                        <h3>
+                            <i class="fas fa-diagram-project"></i> Novo Projeto
+                            <span class="help-tip"
+                                data-help="Preencha os dados do projeto: nome, datas, responsavel e orcamento. Adicione metas e etapas (marcos). Apos salvar, voce podera adicionar tarefas com prazos e responsaveis individuais.">?</span>
+                        </h3>
+                        <p class="panel-lead">Gestao completa de projetos com acompanhamento de etapas, tarefas,
+                            responsaveis, alertas de atraso e dashboard em tempo real.</p>
+                        <form id="project-form" class="stack-form">
+                            <input type="hidden" name="project_id" value="">
+                            <label>Titulo do projeto
+                                <span class="help-tip"
+                                    data-help="Nome descritivo que identifica o projeto. Ex.: 'Implantacao ERP 2026' ou 'Redesign Portal'.">?</span>
+                                <input required type="text" name="title" placeholder="Implantacao do novo sistema ERP">
+                            </label>
+                            <label>Descricao geral
+                                <span class="help-tip"
+                                    data-help="Descreva o escopo, contexto e justificativa do projeto em linhas gerais.">?</span>
+                                <textarea name="description" rows="3"
+                                    placeholder="Contexto, escopo e justificativa do projeto"></textarea>
+                            </label>
+                            <div class="split-2">
+                                <label>Gerente / Responsavel
+                                    <span class="help-tip"
+                                        data-help="Pessoa responsavel por coordenar e acompanhar o projeto.">?</span>
+                                    <input type="text" name="manager_name" placeholder="Nome do gerente">
+                                </label>
+                                <label>Email do responsavel
+                                    <input type="email" name="manager_email" placeholder="gerente@empresa.com">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Data de inicio
+                                    <input type="date" name="start_date">
+                                </label>
+                                <label>Data de termino previsto
+                                    <input type="date" name="end_date">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Status
+                                    <span class="help-tip"
+                                        data-help="Planejamento: sendo estruturado. Ativo: em execucao. Em espera: pausado. Concluido: finalizado. Cancelado: descontinuado.">?</span>
+                                    <select name="status">
+                                        <option value="planning">Planejamento</option>
+                                        <option value="active">Ativo / Em execucao</option>
+                                        <option value="on_hold">Em espera</option>
+                                        <option value="completed">Concluido</option>
+                                        <option value="cancelled">Cancelado</option>
+                                    </select>
+                                </label>
+                                <label>Prioridade
+                                    <span class="help-tip"
+                                        data-help="Baixa: sem urgencia. Media: fluxo normal. Alta: prioridade elevada. Critica: exige atencao imediata.">?</span>
+                                    <select name="priority">
+                                        <option value="low">Baixa</option>
+                                        <option value="medium" selected>Media</option>
+                                        <option value="high">Alta</option>
+                                        <option value="critical">Critica</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <label>Orcamento previsto (R$)
+                                <span class="help-tip" data-help="Valor total estimado para o projeto.">?</span>
+                                <input type="number" step="0.01" min="0" name="budget" placeholder="150000">
+                            </label>
+                            <label>Objetivos e metas
+                                <span class="help-tip"
+                                    data-help="Liste os objetivos SMART do projeto. Use ponto e virgula (;) para separar.">?</span>
+                                <textarea name="objectives" rows="3"
+                                    placeholder="Use ; para separar cada objetivo"></textarea>
+                            </label>
+                            <h4 class="subsection-title">
+                                Etapas / Marcos do Projeto
+                                <span class="help-tip"
+                                    data-help="Marcos sao pontos de controle (ex.: 'Entrega prototipo', 'Go-live'). Adicione quantos precisar. As tarefas serao vinculadas a estes marcos.">?</span>
+                            </h4>
+                            <div id="pm-milestones-wrap" class="pm-milestones-wrap"></div>
+                            <button type="button" class="btn btn-secondary pm-add-milestone-btn" id="pm-add-milestone">
+                                <i class="fas fa-plus"></i> Adicionar etapa
+                            </button>
+                            <label>Riscos identificados
+                                <span class="help-tip"
+                                    data-help="Liste os principais riscos. Use ponto e virgula (;) para separar.">?</span>
+                                <textarea name="risks" rows="3" placeholder="Use ; para separar riscos"></textarea>
+                            </label>
+                            <label>Observacoes gerais
+                                <textarea name="notes" rows="2" placeholder="Anotacoes livres"></textarea>
+                            </label>
+                            <div class="action-row">
+                                <button class="btn btn-primary" type="submit">Salvar projeto</button>
+                                <button class="btn btn-secondary" type="button" id="project-reset">Limpar
+                                    formulario</button>
+                            </div>
+                        </form>
+                    </article>
+
+                    <!-- Projects List -->
+                    <article class="panel-card">
+                        <h3>
+                            <i class="fas fa-layer-group"></i> Projetos Cadastrados
+                            <span class="help-tip"
+                                data-help="Todos os projetos da empresa. Clique em 'Tarefas' para gerenciar atividades. Use 'Editar' para alterar dados e 'Excluir' para remover.">?</span>
+                        </h3>
+                        <div id="projects-list" class="projects-list"></div>
+                    </article>
+
+                    <!-- Task Management Panel -->
+                    <article class="panel-card" id="pm-task-panel" hidden>
+                        <div class="pm-task-header">
+                            <h3>
+                                <i class="fas fa-tasks"></i> Tarefas: <span id="pm-task-project-title"></span>
+                                <span class="help-tip"
+                                    data-help="Gerencie as tarefas do projeto. Cada tarefa tem responsavel, prazo, prioridade e progresso. Tarefas vencidas e nao concluidas geram alertas automaticos.">?</span>
+                            </h3>
+                            <button class="btn btn-secondary" type="button" id="pm-close-tasks">
+                                <i class="fas fa-times"></i> Fechar
+                            </button>
+                        </div>
+                        <div class="pm-task-kpi-row" id="pm-task-kpi-row"></div>
+                        <form id="task-form" class="stack-form pm-task-form">
+                            <input type="hidden" name="task_id" value="">
+                            <input type="hidden" name="task_project_id" value="">
+                            <div class="split-2">
+                                <label>Titulo da tarefa
+                                    <span class="help-tip"
+                                        data-help="Descreva a acao de forma clara. Ex.: 'Configurar servidor de homologacao'.">?</span>
+                                    <input required type="text" name="task_title"
+                                        placeholder="Acao ou entrega especifica">
+                                </label>
+                                <label>Etapa / Marco vinculado
+                                    <span class="help-tip"
+                                        data-help="Vincule a tarefa a uma etapa do projeto para agrupar atividades por fase.">?</span>
+                                    <select name="task_milestone" id="task-milestone-select">
+                                        <option value="">Sem vinculo</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <label>Descricao da tarefa
+                                <textarea name="task_description" rows="2"
+                                    placeholder="Detalhes, criterios de aceite ou instrucoes"></textarea>
+                            </label>
+                            <div class="split-2">
+                                <label>Responsavel
+                                    <span class="help-tip"
+                                        data-help="Pessoa designada para executar esta tarefa.">?</span>
+                                    <input type="text" name="task_assignee_name" placeholder="Nome do responsavel">
+                                </label>
+                                <label>Email do responsavel
+                                    <input type="email" name="task_assignee_email"
+                                        placeholder="responsavel@empresa.com">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Data de inicio
+                                    <input type="date" name="task_start_date">
+                                </label>
+                                <label>Prazo de entrega
+                                    <span class="help-tip"
+                                        data-help="Data limite. Tarefas nao concluidas apos essa data aparecerao como atrasadas.">?</span>
+                                    <input type="date" name="task_due_date">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Status
+                                    <span class="help-tip"
+                                        data-help="A Fazer: nao iniciada. Em Andamento: executando. Em Revisao: validacao. Concluida: finalizada. Bloqueada: impedida.">?</span>
+                                    <select name="task_status">
+                                        <option value="todo">A Fazer</option>
+                                        <option value="in_progress">Em Andamento</option>
+                                        <option value="review">Em Revisao</option>
+                                        <option value="done">Concluida</option>
+                                        <option value="blocked">Bloqueada</option>
+                                    </select>
+                                </label>
+                                <label>Prioridade
+                                    <select name="task_priority">
+                                        <option value="low">Baixa</option>
+                                        <option value="medium" selected>Media</option>
+                                        <option value="high">Alta</option>
+                                        <option value="critical">Critica</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <label>Progresso (%)
+                                <span class="help-tip"
+                                    data-help="Percentual de conclusao (0-100). O dashboard calcula a media do projeto automaticamente.">?</span>
+                                <input type="number" name="task_progress" min="0" max="100" value="0">
+                            </label>
+                            <div class="action-row">
+                                <button class="btn btn-primary" type="submit">Salvar tarefa</button>
+                                <button class="btn btn-secondary" type="button" id="task-reset">Limpar</button>
+                            </div>
+                        </form>
+                        <div id="pm-task-list" class="pm-task-list"></div>
+                    </article>
+                </div>
+
+                <div class="tab-content" id="tab-widgets">
+                    <article class="panel-card">
+                        <h3><i class="fas fa-rectangle-ad"></i> Gestor de Espacos Publicitarios</h3>
+                        <p class="panel-lead">Cadastre banners estreitos, quadrados laterais, widgets visuais e codigo
+                            do Google Ads para site, blog e revista.</p>
+                        <form id="widget-form" class="stack-form">
+                            <input type="hidden" name="widget_id" value="">
+                            <input type="hidden" name="current_media_path" value="">
+                            <label>Nome interno do widget
+                                <input required type="text" name="name" placeholder="Banner superior blog - Google Ads">
+                            </label>
+                            <label>Titulo visivel (opcional)
+                                <input type="text" name="title" placeholder="Publicidade">
+                            </label>
+                            <div class="split-2">
+                                <label>Posicao
+                                    <select name="placement">
+                                        <option value="top_banner">Banner estreito superior</option>
+                                        <option value="prefooter_banner">Banner estreito antes do rodape</option>
+                                        <option value="content_square">Quadrados antes do rodape</option>
+                                        <option value="sidebar_square">Quadrado lateral direito</option>
+                                    </select>
+                                </label>
+                                <label>Escopo
+                                    <select name="scope">
+                                        <option value="all">Site inteiro</option>
+                                        <option value="site">Somente site institucional</option>
+                                        <option value="blog">Somente blog</option>
+                                        <option value="revista">Somente revista</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Tipo do widget
+                                    <select name="widget_type" id="widget-type">
+                                        <option value="image">Imagem ou GIF</option>
+                                        <option value="code">Codigo do Google/HTML</option>
+                                    </select>
+                                </label>
+                                <label>Ordem de exibicao
+                                    <input type="number" name="display_order" value="0" min="0">
+                                </label>
+                            </div>
+                            <label>URL de destino (opcional para imagem/GIF)
+                                <input type="url" name="target_url" placeholder="https://exemplo.com/campanha">
+                            </label>
+                            <label>Texto alternativo da peca
+                                <input type="text" name="alt_text" placeholder="Banner iDialog">
+                            </label>
+                            <div id="widget-media-fields" class="widget-fields-group">
+                                <label>Arquivo do banner ou quadrado
+                                    <input type="file" id="widget-media-file" name="media"
+                                        accept="image/png,image/jpeg,image/webp,image/gif">
+                                    <small class="field-help">Aceita PNG, JPG, WEBP e GIF. Ideal para banners estreitos
+                                        e artes animadas.</small>
+                                </label>
+                                <div class="widget-preview-wrap">
+                                    <img id="widget-preview" alt="Preview do widget" hidden>
+                                </div>
+                            </div>
+                            <div id="widget-code-fields" class="widget-fields-group" hidden>
+                                <label>Codigo embed do Google ou HTML confiavel
+                                    <textarea name="embed_code" rows="7"
+                                        placeholder="Cole aqui o script ou bloco do anuncio"></textarea>
+                                </label>
+                            </div>
+                            <label class="checkbox-row">
+                                <input type="checkbox" name="is_active" checked>
+                                <span>Widget ativo para publicacao</span>
+                            </label>
+                            <div class="action-row">
+                                <button class="btn btn-primary" type="submit">Salvar widget</button>
+                                <button class="btn btn-secondary" type="button" id="widget-reset">Novo widget</button>
+                            </div>
+                        </form>
+                    </article>
+
+                    <article class="panel-card">
+                        <h3><i class="fas fa-layer-group"></i> Widgets Publicados</h3>
+                        <p class="panel-lead">Organize os espacos de propaganda do blog, da revista e das paginas
+                            institucionais dentro do mesmo tema matrix.</p>
+                        <div id="widgets-list" class="widgets-list"></div>
+                    </article>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/matrix.js"></script>
+    <script src="../../assets/js/components.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="./ferramentas.js"></script>
+</body>
+
+</html>

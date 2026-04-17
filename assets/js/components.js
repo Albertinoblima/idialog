@@ -47,9 +47,21 @@ class ComponentLoader {
         const navbarMenu = document.getElementById('navbar-menu');
 
         if (navbarToggle && navbarMenu) {
+            navbarToggle.setAttribute('aria-controls', 'navbar-menu');
+            navbarToggle.setAttribute('aria-expanded', 'false');
+            navbarToggle.setAttribute('aria-label', navbarToggle.getAttribute('aria-label') || 'Abrir menu principal');
+
             navbarToggle.addEventListener('click', () => {
                 navbarMenu.classList.toggle('active');
                 navbarToggle.classList.toggle('active');
+                navbarToggle.setAttribute('aria-expanded', navbarMenu.classList.contains('active') ? 'true' : 'false');
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key !== 'Escape') return;
+                navbarMenu.classList.remove('active');
+                navbarToggle.classList.remove('active');
+                navbarToggle.setAttribute('aria-expanded', 'false');
             });
         }
 
@@ -60,16 +72,41 @@ class ComponentLoader {
             const menu = dropdown.querySelector('.dropdown-menu');
 
             if (toggle && menu) {
+                toggle.setAttribute('aria-haspopup', 'true');
+                toggle.setAttribute('aria-expanded', 'false');
+
                 toggle.addEventListener('click', (e) => {
                     e.preventDefault();
                     dropdown.classList.toggle('active');
+                    toggle.setAttribute('aria-expanded', dropdown.classList.contains('active') ? 'true' : 'false');
+                });
+
+                toggle.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        dropdown.classList.toggle('active');
+                        toggle.setAttribute('aria-expanded', dropdown.classList.contains('active') ? 'true' : 'false');
+                    }
+
+                    if (e.key === 'Escape') {
+                        dropdown.classList.remove('active');
+                        toggle.setAttribute('aria-expanded', 'false');
+                    }
                 });
 
                 // Fechar dropdown ao clicar fora
                 document.addEventListener('click', (e) => {
                     if (!dropdown.contains(e.target)) {
                         dropdown.classList.remove('active');
+                        toggle.setAttribute('aria-expanded', 'false');
                     }
+                });
+
+                menu.addEventListener('keydown', (e) => {
+                    if (e.key !== 'Escape') return;
+                    dropdown.classList.remove('active');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    toggle.focus();
                 });
             }
         });

@@ -1,9 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Albertino Bezerra Lima">
+    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+    <meta name="contact" content="albertinoblima@gmail.com">
     <title>Simulado Personalizado · Aprova Concursos</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
@@ -17,61 +21,64 @@
 <body>
     <div id="header-placeholder"></div>
 
-    <!-- COVER -->
-    <div id="cover">
-        <div class="cv-issue" id="cv-issue-label">Simulado Personalizado</div>
-        <h1><em>Simulado</em><br><span id="cv-h1-sub">Combinado</span></h1>
-        <p class="cv-sub" id="cv-sub">Simulado adaptativo com questões de múltiplas matérias.</p>
-        <div class="cv-tags" id="cv-tags"></div>
-    </div>
+    <main id="main-content">
 
-    <!-- CONTROLS BAR -->
-    <div id="controls">
-        <a class="ctrl" href="simulador.html">← Montar Simulado</a>
-        <a class="ctrl" href="index.html">📖 Revista</a>
-        <a class="ctrl" href="index.html#dashboard">📊 Dashboard</a>
-        <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
-        <span class="ctrl-sep"></span>
-        <span id="round-info">Carregando...</span>
-    </div>
-
-    <!-- QUIZ -->
-    <div id="app">
-        <div id="stats-bar">
-            <div class="stat-card">
-                <div class="stat-n stat-gold" id="s-total">0</div>
-                <div class="stat-l">Respondidas</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-n stat-teal" id="s-ok">0</div>
-                <div class="stat-l">Corretas</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-n stat-red" id="s-err">0</div>
-                <div class="stat-l">Erros</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-n stat-blue" id="s-pct">—</div>
-                <div class="stat-l">Aproveitamento</div>
-            </div>
+        <!-- COVER -->
+        <div id="cover">
+            <div class="cv-issue" id="cv-issue-label">Simulado Personalizado</div>
+            <h1><em>Simulado</em><br><span id="cv-h1-sub">Combinado</span></h1>
+            <p class="cv-sub" id="cv-sub">Simulado adaptativo com questões de múltiplas matérias.</p>
+            <div class="cv-tags" id="cv-tags"></div>
         </div>
 
-        <div class="prog-wrap">
-            <div class="prog-label">
-                <span id="prog-txt">Questão 1</span>
-                <span id="prog-pct">0%</span>
-            </div>
-            <div class="prog-bar">
-                <div class="prog-fill" id="prog-fill" style="width:0%"></div>
-            </div>
+        <!-- CONTROLS BAR -->
+        <div id="controls">
+            <a class="ctrl" href="simulador.html">← Montar Simulado</a>
+            <a class="ctrl" href="index.html">📖 Revista</a>
+            <a class="ctrl" href="index.html#dashboard">📊 Dashboard</a>
+            <button class="ctrl" onclick="stopVoice()">⏹ Parar voz</button>
+            <span class="ctrl-sep"></span>
+            <span id="round-info">Carregando...</span>
         </div>
 
-        <div id="q-map"></div>
-        <div id="question-area"></div>
-    </div>
+        <!-- QUIZ -->
+        <div id="app">
+            <div id="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-n stat-gold" id="s-total">0</div>
+                    <div class="stat-l">Respondidas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-n stat-teal" id="s-ok">0</div>
+                    <div class="stat-l">Corretas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-n stat-red" id="s-err">0</div>
+                    <div class="stat-l">Erros</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-n stat-blue" id="s-pct">—</div>
+                    <div class="stat-l">Aproveitamento</div>
+                </div>
+            </div>
 
-    <!-- SCORE -->
-    <div id="score-screen"></div>
+            <div class="prog-wrap">
+                <div class="prog-label">
+                    <span id="prog-txt">Questão 1</span>
+                    <span id="prog-pct">0%</span>
+                </div>
+                <div class="prog-bar">
+                    <div class="prog-fill" id="prog-fill"></div>
+                </div>
+            </div>
+
+            <div id="q-map"></div>
+            <div id="question-area"></div>
+        </div>
+
+        <!-- SCORE -->
+        <div id="score-screen"></div>
+    </main>
 
     <!-- Questoes data files (populate window.QR) -->
     <script src="assets/js/questoes/dir-constitucional.js"></script>
@@ -154,6 +161,7 @@
         if (window.ALL && window.ALL.length) startRound();
     </script>
     <div id="footer-placeholder"></div>
+    <script src="../../assets/js/main.js"></script>
     <script src="../../assets/js/components.js"></script>
 
 </body>

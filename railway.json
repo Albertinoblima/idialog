@@ -1,0 +1,9 @@
+{
+    "build": {
+        "builder": "nixpacks"
+    },
+    "deploy": {
+        "startCommand": "python backend/app.py",
+        "restartPolicyMaxRetries": 5
+    }
+}

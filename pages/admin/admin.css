@@ -1,0 +1,90 @@
+/* ===========================
+   Admin Panel — exclusive styles
+=========================== */
+
+/* Centre the login card */
+.admin-login-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.admin-login-card {
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+}
+
+.admin-login-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.admin-login-gif {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 229, 255, 0.5);
+    box-shadow: 0 0 16px rgba(0, 229, 255, 0.35);
+    object-fit: cover;
+}
+
+.admin-login-card h2 {
+    margin-bottom: 8px;
+}
+
+.admin-login-card .panel-lead {
+    margin-bottom: 24px;
+}
+
+/* Dashboard tabs — label em destaque */
+.tabs-row .tab-btn i {
+    margin-right: 6px;
+}
+
+.scheduled-list {
+    display: grid;
+    gap: 14px;
+}
+
+.scheduled-card {
+    border: 1px solid rgba(0, 229, 255, 0.28);
+    background: rgba(0, 229, 255, 0.04);
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.scheduled-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.scheduled-title {
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+.scheduled-meta {
+    display: grid;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+}
+
+.scheduled-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.widget-chip.is-scheduled {
+    border-color: rgba(255, 193, 7, 0.42);
+    color: #ffd66b;
+    background: rgba(255, 193, 7, 0.1);
+}

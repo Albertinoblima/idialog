@@ -39,24 +39,24 @@
     <nav id="sidebar">
       <div class="sb-section-title">Disciplinas</div>
       <button class="sb-item active" onclick="showChapter('dpp')" id="nav-dpp">
-        <span class="sb-dot" style="background:#C0392B"></span>D. Processual Penal
+        <span class="sb-dot sb-dot--penal"></span>D. Processual Penal
       </button>
       <button class="sb-item" onclick="showChapter('rl')" id="nav-rl">
-        <span class="sb-dot" style="background:#534AB7"></span>Raciocínio Lógico
+        <span class="sb-dot sb-dot--logico"></span>Raciocínio Lógico
       </button>
       <button class="sb-item" onclick="showChapter('da')" id="nav-da">
-        <span class="sb-dot" style="background:#0D7A5C"></span>D. Administrativo
+        <span class="sb-dot sb-dot--adm"></span>D. Administrativo
       </button>
       <button class="sb-item" onclick="showChapter('dc')" id="nav-dc">
-        <span class="sb-dot" style="background:#1A5CA8"></span>D. Constitucional
+        <span class="sb-dot sb-dot--const"></span>D. Constitucional
       </button>
       <button class="sb-item" onclick="showChapter('dcv')" id="nav-dcv">
-        <span class="sb-dot" style="background:#993C1D"></span>Direito Civil
+        <span class="sb-dot sb-dot--civil"></span>Direito Civil
       </button>
 
       <div class="sb-section-title">Simulados</div>
       <button class="sb-item" onclick="window.location='simulador.html'">
-        <span class="sb-dot" style="background:#C9982A"></span>Montar Simulado
+        <span class="sb-dot sb-dot--sim"></span>Montar Simulado
       </button>
 
       <div class="sb-section-title">Ferramentas</div>
@@ -165,7 +165,7 @@
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
                     <div class="fc-front">
-                      <span class="fc-tag" style="background:rgba(192,57,43,.3);color:#FFAAAA">Natureza Jurídica</span>
+                      <span class="fc-tag fc-tag--red-dark">Natureza Jurídica</span>
                       <div class="fc-kw">Inquérito Policial</div>
                       <div class="fc-hint">O que é e quais são suas características?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -180,7 +180,7 @@
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
                     <div class="fc-front">
-                      <span class="fc-tag" style="background:rgba(192,57,43,.3);color:#FFAAAA">Prazos</span>
+                      <span class="fc-tag fc-tag--red-dark">Prazos</span>
                       <div class="fc-kw">Réu Preso × Solto</div>
                       <div class="fc-hint">Qual o prazo para conclusão do IP?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -195,7 +195,7 @@
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
                     <div class="fc-front">
-                      <span class="fc-tag" style="background:rgba(192,57,43,.3);color:#FFAAAA">Arquivamento</span>
+                      <span class="fc-tag fc-tag--red-dark">Arquivamento</span>
                       <div class="fc-kw">Coisa Julgada?</div>
                       <div class="fc-hint">O arquivamento do IP impede nova investigação?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -245,37 +245,37 @@
                 <td><strong>Próprio / real</strong></td>
                 <td>Agente preso cometendo a infração ou logo após cometê-la</td>
                 <td>Art. 302, I e II</td>
-                <td style="color:var(--teal)">✔ Legal</td>
+                <td class="td-teal">✔ Legal</td>
               </tr>
               <tr>
                 <td><strong>Impróprio / irreal</strong></td>
                 <td>Agente perseguido logo após o crime com objetos que indiquem autoria</td>
                 <td>Art. 302, III</td>
-                <td style="color:var(--teal)">✔ Legal</td>
+                <td class="td-teal">✔ Legal</td>
               </tr>
               <tr>
                 <td><strong>Presumido / ficto</strong></td>
                 <td>Encontrado logo depois com instrumentos, armas, objetos ou papéis do crime</td>
                 <td>Art. 302, IV</td>
-                <td style="color:var(--teal)">✔ Legal</td>
+                <td class="td-teal">✔ Legal</td>
               </tr>
               <tr>
                 <td><strong>Preparado / provocado</strong></td>
                 <td>Autoridade ou particular induz o agente a praticar o crime para prendê-lo</td>
                 <td>Súmula 145 STF</td>
-                <td style="color:var(--red)">✘ Ilegal (crime impossível)</td>
+                <td class="td-red">✘ Ilegal (crime impossível)</td>
               </tr>
               <tr>
                 <td><strong>Esperado</strong></td>
                 <td>Autoridade apenas aguarda que o crime aconteça para prender</td>
                 <td>Doutrina</td>
-                <td style="color:var(--teal)">✔ Legal</td>
+                <td class="td-teal">✔ Legal</td>
               </tr>
               <tr>
                 <td><strong>Forjado</strong></td>
                 <td>Alguém coloca objetos ilícitos no suspeito para incriminá-lo</td>
                 <td>Doutrina</td>
-                <td style="color:var(--red)">✘ Ilegal + crime da autoridade</td>
+                <td class="td-red">✘ Ilegal + crime da autoridade</td>
               </tr>
             </table>
 
@@ -311,8 +311,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#8B1A1A;">
-                      <span class="fc-tag" style="background:rgba(255,100,100,.25);color:#FFB0B0">Súmula 145 STF</span>
+                    <div class="fc-front fc-front--crimson">
+                      <span class="fc-tag fc-tag--red">Súmula 145 STF</span>
                       <div class="fc-kw">Flagrante Preparado</div>
                       <div class="fc-hint">Por que é ilegal?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -326,8 +326,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0D4A38;">
-                      <span class="fc-tag" style="background:rgba(100,220,180,.2);color:#90FFD8">Diferenciação</span>
+                    <div class="fc-front fc-front--teal-deep">
+                      <span class="fc-tag fc-tag--teal-light">Diferenciação</span>
                       <div class="fc-kw">Impróprio × Presumido</div>
                       <div class="fc-hint">Qual a diferença entre os dois?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -417,8 +417,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#2C1654;">
-                      <span class="fc-tag" style="background:rgba(180,150,255,.2);color:#D0BFFF">Teoria</span>
+                    <div class="fc-front fc-front--purple-deep">
+                      <span class="fc-tag fc-tag--purple">Teoria</span>
                       <div class="fc-kw">Frutos da Árvore Envenenada</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -431,8 +431,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#1A4A2C;">
-                      <span class="fc-tag" style="background:rgba(100,220,160,.2);color:#90FFB8">Lei 9.296/96</span>
+                    <div class="fc-front fc-front--green-deep">
+                      <span class="fc-tag fc-tag--teal">Lei 9.296/96</span>
                       <div class="fc-kw">Interceptação Telefônica</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -534,8 +534,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#1A3048;">
-                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Temporária</span>
+                    <div class="fc-front fc-front--blue-dark">
+                      <span class="fc-tag fc-tag--blue">Temporária</span>
                       <div class="fc-kw">Prazo Máximo</div>
                       <div class="fc-hint">Qual o prazo da prisão temporária em crimes hediondos?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -549,8 +549,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A1A1A;">
-                      <span class="fc-tag" style="background:rgba(255,120,120,.2);color:#FFAAAA">Preventiva</span>
+                    <div class="fc-front fc-front--wine">
+                      <span class="fc-tag fc-tag--red-mid">Preventiva</span>
                       <div class="fc-kw">Pode ser de ofício?</div>
                       <div class="fc-hint">O juiz pode decretar preventiva sem provocação?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -710,9 +710,9 @@
           </div>
         </div>
 
-        <div style="text-align:right;margin:1.5rem 0 2.5rem 0;">
+        <div class="section-cta">
           <a href="materias/area-judiciaria/processo-penal/simulado.html" target="_blank" rel="noopener"
-            style="background:#C0392B;color:#fff;padding:10px 22px;border-radius:8px;font-weight:600;text-decoration:none;font-family:var(--font-b);font-size:15px;box-shadow:0 2px 8px rgba(192,57,43,0.08);transition:background .2s;">Fazer
+            class="btn-simulado btn-simulado--penal">Fazer
             Simulado</a>
         </div>
 
@@ -780,27 +780,27 @@
               <tr>
                 <td>"O prazo recursal é de 15 dias."</td>
                 <td>Declarativa</td>
-                <td style="color:var(--teal);font-weight:600;">SIM</td>
+                <td class="td-teal-bold">SIM</td>
               </tr>
               <tr>
                 <td>"Quantos réus há no processo?"</td>
                 <td>Interrogativa</td>
-                <td style="color:var(--red);font-weight:600;">NÃO</td>
+                <td class="td-red-bold">NÃO</td>
               </tr>
               <tr>
                 <td>"Junte os documentos ao processo."</td>
                 <td>Imperativa</td>
-                <td style="color:var(--red);font-weight:600;">NÃO</td>
+                <td class="td-red-bold">NÃO</td>
               </tr>
               <tr>
                 <td>"Toda testemunha deve ser intimada."</td>
                 <td>Declarativa (universal)</td>
-                <td style="color:var(--teal);font-weight:600;">SIM</td>
+                <td class="td-teal-bold">SIM</td>
               </tr>
               <tr>
                 <td>"Algum servidor faltou à audiência."</td>
                 <td>Declarativa (existencial)</td>
-                <td style="color:var(--teal);font-weight:600;">SIM</td>
+                <td class="td-teal-bold">SIM</td>
               </tr>
             </table>
 
@@ -809,10 +809,9 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0A3A28;">
-                      <span class="fc-tag"
-                        style="background:rgba(100,220,160,.2);color:#90FFB8">Situação-problema</span>
-                      <div class="fc-kw" style="font-size:13px;line-height:1.4;">"Não deixe o processo tramitar em
+                    <div class="fc-front fc-front--emerald">
+                      <span class="fc-tag fc-tag--teal">Situação-problema</span>
+                      <div class="fc-kw fc-kw--compact">"Não deixe o processo tramitar em
                         atraso!"</div>
                       <div class="fc-hint">Isso é uma proposição lógica?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -827,10 +826,9 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#26215C;">
-                      <span class="fc-tag"
-                        style="background:rgba(180,160,255,.2);color:#C8B8FF">Situação-problema</span>
-                      <div class="fc-kw" style="font-size:13px;line-height:1.4;">"Algum magistrado atua na 1ª
+                    <div class="fc-front fc-front--indigo">
+                      <span class="fc-tag fc-tag--purple-light">Situação-problema</span>
+                      <div class="fc-kw fc-kw--compact">"Algum magistrado atua na 1ª
                         instância."</div>
                       <div class="fc-hint">É proposição? Se sim, qual seu valor lógico?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -874,22 +872,19 @@
                 <div class="schema-box sb-navy">
                   <strong>E (conjunção)</strong>
                   <small>"O réu compareceu E confirmou o endereço"</small>
-                  <small
-                    style="margin-top:4px;background:rgba(255,80,80,.25);padding:2px 6px;border-radius:4px;color:#FFB0B0;">FALSO
+                  <small class="badge-false">FALSO
                     se qualquer parte for F</small>
                 </div>
                 <div class="schema-box sb-blue">
                   <strong>OU (disjunção)</strong>
                   <small>"O juiz deu vista OU devolveu os autos"</small>
-                  <small
-                    style="margin-top:4px;background:rgba(255,80,80,.25);padding:2px 6px;border-radius:4px;color:#FFB0B0;">FALSO
+                  <small class="badge-false">FALSO
                     APENAS se os dois forem F</small>
                 </div>
                 <div class="schema-box sb-amber">
                   <strong>SE...ENTÃO (condicional)</strong>
                   <small>"Se citado, então o prazo começa a correr"</small>
-                  <small
-                    style="margin-top:4px;background:rgba(255,80,80,.25);padding:2px 6px;border-radius:4px;color:#FFB0B0;">FALSO
+                  <small class="badge-false">FALSO
                     apenas: 1ª = V e 2ª = F</small>
                 </div>
               </div>
@@ -942,25 +937,25 @@
                   <td class="tt-v">V</td>
                   <td class="tt-v">V</td>
                   <td class="tt-v">V</td>
-                  <td style="font-size:11px;color:var(--text2)">Fez a promessa e cumpriu ✓</td>
+                  <td class="td-sm-muted">Fez a promessa e cumpriu ✓</td>
                 </tr>
                 <tr>
                   <td class="tt-v">V</td>
                   <td class="tt-f">F</td>
                   <td class="tt-f">F</td>
-                  <td style="font-size:11px;color:var(--red)">← ÚNICO caso FALSO: prometeu e não cumpriu!</td>
+                  <td class="td-sm-red">← ÚNICO caso FALSO: prometeu e não cumpriu!</td>
                 </tr>
                 <tr>
                   <td class="tt-f">F</td>
                   <td class="tt-v">V</td>
                   <td class="tt-v">V</td>
-                  <td style="font-size:11px;color:var(--text2)">Nem fez a promessa — não pode ser cobrado</td>
+                  <td class="td-sm-muted">Nem fez a promessa — não pode ser cobrado</td>
                 </tr>
                 <tr>
                   <td class="tt-f">F</td>
                   <td class="tt-f">F</td>
                   <td class="tt-v">V</td>
-                  <td style="font-size:11px;color:var(--text2)">Nem fez a promessa — não pode ser cobrado</td>
+                  <td class="td-sm-muted">Nem fez a promessa — não pode ser cobrado</td>
                 </tr>
               </table>
             </div>
@@ -970,10 +965,9 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#26215C;">
-                      <span class="fc-tag"
-                        style="background:rgba(180,160,255,.2);color:#C8B8FF">Situação-problema</span>
-                      <div class="fc-kw" style="font-size:13px;line-height:1.4;">"O processo é físico E tramita em
+                    <div class="fc-front fc-front--indigo">
+                      <span class="fc-tag fc-tag--purple-light">Situação-problema</span>
+                      <div class="fc-kw fc-kw--compact">"O processo é físico E tramita em
                         segredo de justiça." Sabendo que o processo é digital, qual o valor lógico?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -986,10 +980,9 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0A2A40;">
-                      <span class="fc-tag"
-                        style="background:rgba(100,160,255,.2);color:#A8C8FF">Situação-problema</span>
-                      <div class="fc-kw" style="font-size:13px;line-height:1.4;">"Se o mandado foi expedido, então o réu
+                    <div class="fc-front fc-front--navy">
+                      <span class="fc-tag fc-tag--blue">Situação-problema</span>
+                      <div class="fc-kw fc-kw--compact">"Se o mandado foi expedido, então o réu
                         foi citado." O mandado saiu, mas o réu não foi encontrado. A frase é V ou F?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -1017,8 +1010,7 @@
             <div class="art-title">Negações Lógicas — O Coração da Prova IBFC</div>
             <div class="art-badges">
               <span class="badge badge-hot">Muito cobrado</span>
-              <span class="badge"
-                style="background:var(--red-pale);color:var(--red);border:1px solid var(--red-border);">Foco
+              <span class="badge badge--danger">Foco
                 total</span>
               <span class="art-toggle" id="tog-neg">▾</span>
             </div>
@@ -1034,8 +1026,7 @@
               <div class="rule-eq">Adicione "NÃO" (ou retire o "não" se já existir)
                 <span class="comment">Original: "O processo é digital"</span>
                 <span class="comment">Negação: "O processo NÃO é digital"</span>
-                <span class="comment"
-                  style="border-top:1px solid rgba(255,255,255,.12);padding-top:4px;margin-top:2px;">Original: "O juiz
+                <span class="comment" class="sep-top">Original: "O juiz
                   não se declarou suspeito"</span>
                 <span class="comment">Negação: "O juiz SE DECLAROU suspeito"</span>
               </div>
@@ -1050,12 +1041,11 @@
               <div class="rule-name">Negar "E" → "NÃO (1ª parte)" OU "NÃO (2ª parte)"</div>
               <div class="rule-eq">
                 <span class="comment">"O réu foi citado E o advogado foi intimado"</span>
-                <span class="comment" style="color:#FFE08A;">→ "O réu NÃO foi citado OU o advogado NÃO foi
+                <span class="comment comment--amber">→ "O réu NÃO foi citado OU o advogado NÃO foi
                   intimado"</span>
-                <span class="comment"
-                  style="border-top:1px solid rgba(255,255,255,.12);padding-top:4px;margin-top:2px;">"A sentença é
+                <span class="comment" class="sep-top">"A sentença é
                   pública E o processo tramita em autos físicos"</span>
-                <span class="comment" style="color:#FFE08A;">→ "A sentença NÃO é pública OU o processo NÃO tramita em
+                <span class="comment comment--amber">→ "A sentença NÃO é pública OU o processo NÃO tramita em
                   autos físicos"</span>
               </div>
             </div>
@@ -1069,11 +1059,10 @@
               <div class="rule-name">Negar "OU" → "NÃO (1ª parte)" E "NÃO (2ª parte)"</div>
               <div class="rule-eq">
                 <span class="comment">"O juiz é impedido OU o juiz é suspeito"</span>
-                <span class="comment" style="color:#FFE08A;">→ "O juiz NÃO é impedido E o juiz NÃO é suspeito"</span>
-                <span class="comment"
-                  style="border-top:1px solid rgba(255,255,255,.12);padding-top:4px;margin-top:2px;">"O recurso foi
+                <span class="comment comment--amber">→ "O juiz NÃO é impedido E o juiz NÃO é suspeito"</span>
+                <span class="comment" class="sep-top">"O recurso foi
                   interposto OU a sentença transitou em julgado"</span>
-                <span class="comment" style="color:#FFE08A;">→ "O recurso NÃO foi interposto E a sentença NÃO transitou
+                <span class="comment comment--amber">→ "O recurso NÃO foi interposto E a sentença NÃO transitou
                   em julgado"</span>
               </div>
             </div>
@@ -1088,22 +1077,22 @@
             <div class="schema">
               <div class="schema-title">Como aplicar o MANÉ passo a passo</div>
               <div class="schema-row">
-                <div class="schema-box sb-navy" style="min-width:150px;">
+                <div class="schema-box sb-navy schema-box--w150">
                   <strong>PASSO 1</strong>
                   <small>1ª parte (após "Se")</small>
-                  <small style="margin-top:4px;font-style:italic;color:#A8BDD0;">Mantém como está</small>
+                  <small class="note-muted">Mantém como está</small>
                 </div>
-                <div class="schema-arrow" style="font-size:1.4rem;">+</div>
-                <div class="schema-box sb-amber" style="min-width:90px;">
+                <div class="schema-arrow schema-arrow--xl">+</div>
+                <div class="schema-box sb-amber schema-box--w90">
                   <strong>PASSO 2</strong>
                   <small>Conecte com</small>
-                  <strong style="font-size:20px;">"E"</strong>
+                  <strong class="fs-xl">"E"</strong>
                 </div>
-                <div class="schema-arrow" style="font-size:1.4rem;">+</div>
-                <div class="schema-box sb-red" style="min-width:150px;">
+                <div class="schema-arrow schema-arrow--xl">+</div>
+                <div class="schema-box sb-red schema-box--w150">
                   <strong>PASSO 3</strong>
                   <small>2ª parte (após "então")</small>
-                  <small style="margin-top:4px;font-style:italic;">Adicione "NÃO"</small>
+                  <small class="note-italic">Adicione "NÃO"</small>
                 </div>
               </div>
             </div>
@@ -1112,17 +1101,15 @@
               <div class="rule-name">Exemplos práticos com MANÉ</div>
               <div class="rule-eq">
                 <span class="comment">"Se o réu for citado, então o prazo começará a correr"</span>
-                <span class="comment" style="color:#FFE08A;">→ MANÉ: "O réu foi citado E o prazo NÃO começou a
+                <span class="comment comment--amber">→ MANÉ: "O réu foi citado E o prazo NÃO começou a
                   correr"</span>
-                <span class="comment"
-                  style="border-top:1px solid rgba(255,255,255,.12);padding-top:4px;margin-top:2px;">"Se o processo for
+                <span class="comment" class="sep-top">"Se o processo for
                   nulo, então a sentença será anulada"</span>
-                <span class="comment" style="color:#FFE08A;">→ MANÉ: "O processo é nulo E a sentença NÃO será
+                <span class="comment comment--amber">→ MANÉ: "O processo é nulo E a sentença NÃO será
                   anulada"</span>
-                <span class="comment"
-                  style="border-top:1px solid rgba(255,255,255,.12);padding-top:4px;margin-top:2px;">"Se o servidor
+                <span class="comment" class="sep-top">"Se o servidor
                   cometeu infração, então será instaurado PAD"</span>
-                <span class="comment" style="color:#FFE08A;">→ MANÉ: "O servidor cometeu infração E o PAD NÃO será
+                <span class="comment comment--amber">→ MANÉ: "O servidor cometeu infração E o PAD NÃO será
                   instaurado"</span>
               </div>
             </div>
@@ -1135,22 +1122,22 @@
             <div class="schema">
               <div class="schema-title">Recebeu uma frase composta para negar? Siga o fluxo:</div>
               <div class="schema-row">
-                <div class="schema-box sb-navy" style="min-width:190px;">
+                <div class="schema-box sb-navy schema-box--w190">
                   <strong>A frase tem "E"?</strong>
                   <small>"E" vira "OU" + nega as duas partes</small>
                 </div>
-                <div class="schema-box sb-blue" style="min-width:190px;">
+                <div class="schema-box sb-blue schema-box--w190">
                   <strong>A frase tem "OU"?</strong>
                   <small>"OU" vira "E" + nega as duas partes</small>
                 </div>
-                <div class="schema-box sb-amber" style="min-width:190px;">
+                <div class="schema-box sb-amber schema-box--w190">
                   <strong>Tem "Se...então"?</strong>
                   <small>MANÉ: 1ª parte + "E" + NÃO 2ª parte</small>
                 </div>
               </div>
               <div class="schema-divider"></div>
               <div class="schema-row">
-                <div class="schema-box sb-teal" style="max-width:420px;">
+                <div class="schema-box sb-teal schema-box--mw420">
                   <strong>Resumo das Leis de De Morgan</strong>
                   <small>NÃO (A <strong>E</strong> B) = NÃO A <strong>OU</strong> NÃO B</small>
                   <small>NÃO (A <strong>OU</strong> B) = NÃO A <strong>E</strong> NÃO B</small>
@@ -1164,9 +1151,9 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A1010;">
-                      <span class="fc-tag" style="background:rgba(255,120,120,.2);color:#FFB0B0">De Morgan — E</span>
-                      <div class="fc-kw" style="font-size:12.5px;line-height:1.4;">"O réu foi preso em flagrante E o
+                    <div class="fc-front fc-front--maroon">
+                      <span class="fc-tag fc-tag--red-warm">De Morgan — E</span>
+                      <div class="fc-kw fc-kw--sm">"O réu foi preso em flagrante E o
                         delegado lavrou o auto." Qual é a negação correta?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -1180,9 +1167,9 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0D2E50;">
-                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">De Morgan — OU</span>
-                      <div class="fc-kw" style="font-size:12.5px;line-height:1.4;">"O processo foi arquivado OU remetido
+                    <div class="fc-front fc-front--cobalt">
+                      <span class="fc-tag fc-tag--blue">De Morgan — OU</span>
+                      <div class="fc-kw fc-kw--sm">"O processo foi arquivado OU remetido
                         ao MP." Qual é a negação correta?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -1195,9 +1182,9 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A2800;">
-                      <span class="fc-tag" style="background:rgba(240,180,50,.2);color:#FFD080">MANÉ — SE...ENTÃO</span>
-                      <div class="fc-kw" style="font-size:12.5px;line-height:1.4;">"Se o juiz se declarar suspeito,
+                    <div class="fc-front fc-front--amber-dark">
+                      <span class="fc-tag fc-tag--amber">MANÉ — SE...ENTÃO</span>
+                      <div class="fc-kw fc-kw--sm">"Se o juiz se declarar suspeito,
                         então o processo será redistribuído." Negue a frase.</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -1210,10 +1197,9 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#26215C;">
-                      <span class="fc-tag"
-                        style="background:rgba(200,180,255,.2);color:#D0C0FF">Questão-armadilha</span>
-                      <div class="fc-kw" style="font-size:12.5px;line-height:1.4;">"Se a prova é ilícita, então ela será
+                    <div class="fc-front fc-front--indigo">
+                      <span class="fc-tag fc-tag--purple-mid">Questão-armadilha</span>
+                      <div class="fc-kw fc-kw--sm">"Se a prova é ilícita, então ela será
                         descartada." A banca diz que a negação é "Se a prova é ilícita, então ela NÃO será descartada."
                         Correto?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -1261,12 +1247,11 @@
               <div class="rule-name">Original × Contrapositiva — Mesma afirmação, palavras diferentes</div>
               <div class="rule-eq">
                 <span class="comment">"Se o servidor foi aprovado no concurso, então ele tomará posse."</span>
-                <span class="comment" style="color:#90FFB8;">EQUIVALENTE → "Se ele NÃO tomar posse, então NÃO foi
+                <span class="comment comment--teal">EQUIVALENTE → "Se ele NÃO tomar posse, então NÃO foi
                   aprovado no concurso."</span>
-                <span class="comment"
-                  style="border-top:1px solid rgba(255,255,255,.12);padding-top:4px;margin-top:2px;">"Se o processo é
+                <span class="comment" class="sep-top">"Se o processo é
                   nulo, então a sentença será anulada."</span>
-                <span class="comment" style="color:#90FFB8;">EQUIVALENTE → "Se a sentença NÃO foi anulada, então o
+                <span class="comment comment--teal">EQUIVALENTE → "Se a sentença NÃO foi anulada, então o
                   processo NÃO é nulo."</span>
               </div>
             </div>
@@ -1279,22 +1264,21 @@
                 <div class="schema-box sb-red">
                   <strong>Inversa</strong>
                   <small>"Se NÃO A então NÃO B"</small>
-                  <small style="margin-top:4px;background:rgba(255,80,80,.3);padding:2px 6px;border-radius:4px;">NÃO
+                  <small class="badge-not">NÃO
                     EQUIVALENTE</small>
                   <small>Nega as partes mas não inverte a ordem</small>
                 </div>
                 <div class="schema-box sb-red">
                   <strong>Recíproca</strong>
                   <small>"Se B então A"</small>
-                  <small style="margin-top:4px;background:rgba(255,80,80,.3);padding:2px 6px;border-radius:4px;">NÃO
+                  <small class="badge-not">NÃO
                     EQUIVALENTE</small>
                   <small>Inverte a ordem mas não nega as partes</small>
                 </div>
                 <div class="schema-box sb-teal">
                   <strong>Contrapositiva</strong>
                   <small>"Se NÃO B então NÃO A"</small>
-                  <small
-                    style="margin-top:4px;background:rgba(50,180,120,.3);padding:2px 6px;border-radius:4px;color:#003320;">EQUIVALENTE
+                  <small class="badge-equiv">EQUIVALENTE
                     ✓</small>
                   <small>Inverte a ordem E nega as duas partes</small>
                 </div>
@@ -1315,9 +1299,9 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0A3A28;">
-                      <span class="fc-tag" style="background:rgba(100,220,160,.2);color:#90FFB8">Contrapositiva</span>
-                      <div class="fc-kw" style="font-size:12.5px;line-height:1.4;">Qual é a equivalente lógica de "Se o
+                    <div class="fc-front fc-front--emerald">
+                      <span class="fc-tag fc-tag--teal">Contrapositiva</span>
+                      <div class="fc-kw fc-kw--sm">Qual é a equivalente lógica de "Se o
                         mandado foi cumprido, então o réu foi citado"?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -1330,10 +1314,10 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#26215C;">
-                      <span class="fc-tag" style="background:rgba(200,180,255,.2);color:#D0C0FF">Inversa vs.
+                    <div class="fc-front fc-front--indigo">
+                      <span class="fc-tag fc-tag--purple-mid">Inversa vs.
                         Contrapositiva</span>
-                      <div class="fc-kw" style="font-size:12.5px;line-height:1.4;">Original: "Se há infração, então há
+                      <div class="fc-kw fc-kw--sm">Original: "Se há infração, então há
                         punição." A banca diz: "Se não há infração, então não há punição" é equivalente. Certo?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -1431,7 +1415,7 @@
               espaço amostral.</p>
 
             <div class="block-title">Fórmulas fundamentais</div>
-            <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 1rem;">
+            <div class="tag-row">
               <div class="formula">n!<small>Permutação simples de n</small></div>
               <div class="formula">P(n,k) = n!/(n-k)!<small>Arranjo (ordem importa)</small></div>
               <div class="formula">C(n,k) = n!/[k!(n-k)!]<small>Combinação (ordem não importa)</small></div>
@@ -1469,8 +1453,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0A3A28;">
-                      <span class="fc-tag" style="background:rgba(100,220,160,.2);color:#90FFB8">Combinatória</span>
+                    <div class="fc-front fc-front--emerald">
+                      <span class="fc-tag fc-tag--teal">Combinatória</span>
                       <div class="fc-kw">Combinação × Arranjo</div>
                       <div class="fc-hint">Como diferenciar os dois?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -1484,8 +1468,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0D2E50;">
-                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Probabilidade</span>
+                    <div class="fc-front fc-front--cobalt">
+                      <span class="fc-tag fc-tag--blue">Probabilidade</span>
                       <div class="fc-kw">P(A∪B)</div>
                       <div class="fc-hint">Como calcular a probabilidade de A ou B ocorrer?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -1522,7 +1506,7 @@
               padrão das sequências e aplicar os fatores de porcentagem diretamente para economizar tempo.</p>
 
             <div class="block-title">Progressão Aritmética (PA)</div>
-            <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0;">
+            <div class="tag-row--sm">
               <div class="formula">aₙ = a₁ + (n−1)·r<small>Termo geral</small></div>
               <div class="formula">Sₙ = n·(a₁+aₙ)/2<small>Soma dos termos</small></div>
               <div class="formula">r = a₂ − a₁<small>Razão da PA</small></div>
@@ -1532,7 +1516,7 @@
             </div>
 
             <div class="block-title">Progressão Geométrica (PG)</div>
-            <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0;">
+            <div class="tag-row--sm">
               <div class="formula">aₙ = a₁ · q^(n−1)<small>Termo geral</small></div>
               <div class="formula">Sₙ = a₁·(qⁿ−1)/(q−1)<small>Soma finita (q≠1)</small></div>
               <div class="formula">q = a₂ / a₁<small>Razão da PG</small></div>
@@ -1580,9 +1564,9 @@
           </div>
         </div>
 
-        <div style="text-align:right;margin:1.5rem 0 2.5rem 0;">
+        <div class="section-cta">
           <a href="materias/nucleo-comum/raciocinio-logico/simulado.html" target="_blank" rel="noopener"
-            style="background:#534AB7;color:#fff;padding:10px 22px;border-radius:8px;font-weight:600;text-decoration:none;font-family:var(--font-b);font-size:15px;box-shadow:0 2px 8px rgba(83,74,183,0.08);transition:background .2s;">Fazer
+            class="btn-simulado btn-simulado--logico">Fazer
             Simulado</a>
         </div>
 
@@ -1739,8 +1723,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0A3A28;">
-                      <span class="fc-tag" style="background:rgba(100,220,160,.2);color:#90FFB8">Atributo</span>
+                    <div class="fc-front fc-front--emerald">
+                      <span class="fc-tag fc-tag--teal">Atributo</span>
                       <div class="fc-kw">Autoexecutoriedade</div>
                       <div class="fc-hint">A multa administrativa é autoexecutória?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -1754,8 +1738,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A1010;">
-                      <span class="fc-tag" style="background:rgba(255,120,120,.2);color:#FFAAAA">Invalidade</span>
+                    <div class="fc-front fc-front--maroon">
+                      <span class="fc-tag fc-tag--red-mid">Invalidade</span>
                       <div class="fc-kw">Revogação × Anulação</div>
                       <div class="fc-hint">Qual a diferença entre revogar e anular?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2012,8 +1996,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0D4A38;">
-                      <span class="fc-tag" style="background:rgba(100,220,180,.2);color:#90FFD8">Poder de Polícia</span>
+                    <div class="fc-front fc-front--teal-deep">
+                      <span class="fc-tag fc-tag--teal-light">Poder de Polícia</span>
                       <div class="fc-kw">Atributos — DAC</div>
                       <div class="fc-hint">Quais são os atributos do poder de polícia?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2029,8 +2013,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A1A1A;">
-                      <span class="fc-tag" style="background:rgba(255,120,120,.2);color:#FFAAAA">Abuso</span>
+                    <div class="fc-front fc-front--wine">
+                      <span class="fc-tag fc-tag--red-mid">Abuso</span>
                       <div class="fc-kw">Excesso × Desvio</div>
                       <div class="fc-hint">Qual a diferença?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2128,8 +2112,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#1A3048;">
-                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Conceito-chave</span>
+                    <div class="fc-front fc-front--blue-dark">
+                      <span class="fc-tag fc-tag--blue">Conceito-chave</span>
                       <div class="fc-kw">Desconcentração vs. Descentralização</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -2143,8 +2127,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0D4A38;">
-                      <span class="fc-tag" style="background:rgba(100,220,180,.2);color:#90FFD8">Art. 37, XIX CF</span>
+                    <div class="fc-front fc-front--teal-deep">
+                      <span class="fc-tag fc-tag--teal-light">Art. 37, XIX CF</span>
                       <div class="fc-kw">Criada × Autorizada</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -2218,8 +2202,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0D4A38;">
-                      <span class="fc-tag" style="background:rgba(100,220,180,.2);color:#90FFD8">Art. 37, XVI</span>
+                    <div class="fc-front fc-front--teal-deep">
+                      <span class="fc-tag fc-tag--teal-light">Art. 37, XVI</span>
                       <div class="fc-kw">Acumulação de Cargos</div>
                       <div class="fc-hint">Quando pode acumular?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2235,8 +2219,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#1A3048;">
-                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Art. 41 CF</span>
+                    <div class="fc-front fc-front--blue-dark">
+                      <span class="fc-tag fc-tag--blue">Art. 41 CF</span>
                       <div class="fc-kw">Estabilidade — 3 Requisitos</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -2312,8 +2296,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A1A1A;">
-                      <span class="fc-tag" style="background:rgba(255,120,120,.2);color:#FFAAAA">Lei 14.230/2021</span>
+                    <div class="fc-front fc-front--wine">
+                      <span class="fc-tag fc-tag--red-mid">Lei 14.230/2021</span>
                       <div class="fc-kw">Elemento Subjetivo</div>
                       <div class="fc-hint">Improbidade exige dolo ou culpa?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2328,8 +2312,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#26215C;">
-                      <span class="fc-tag" style="background:rgba(200,180,255,.2);color:#D0C0FF">Legitimidade</span>
+                    <div class="fc-front fc-front--indigo">
+                      <span class="fc-tag fc-tag--purple-mid">Legitimidade</span>
                       <div class="fc-kw">Quem pode propor ação de improbidade?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -2352,9 +2336,9 @@
           </div>
         </div>
 
-        <div style="text-align:right;margin:1.5rem 0 2.5rem 0;">
+        <div class="section-cta">
           <a href="materias/nucleo-comum/direito-administrativo/simulado.html" target="_blank" rel="noopener"
-            style="background:#0D7A5C;color:#fff;padding:10px 22px;border-radius:8px;font-weight:600;text-decoration:none;font-family:var(--font-b);font-size:15px;box-shadow:0 2px 8px rgba(13,122,92,0.08);transition:background .2s;">Fazer
+            class="btn-simulado btn-simulado--adm">Fazer
             Simulado</a>
         </div>
 
@@ -2447,8 +2431,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0D2D50;">
-                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Art. 5º, LXIX</span>
+                    <div class="fc-front fc-front--midnight">
+                      <span class="fc-tag fc-tag--blue">Art. 5º, LXIX</span>
                       <div class="fc-kw">Mandado de Segurança</div>
                       <div class="fc-hint">O que é "direito líquido e certo"?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2463,8 +2447,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#2A1A0A;">
-                      <span class="fc-tag" style="background:rgba(255,200,100,.2);color:#FFD880">Art. 5º, LXXI</span>
+                    <div class="fc-front fc-front--umber">
+                      <span class="fc-tag fc-tag--gold">Art. 5º, LXXI</span>
                       <div class="fc-kw">Mandado de Injunção</div>
                       <div class="fc-hint">HD × MI — como diferenciar?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2479,8 +2463,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0A2A1A;">
-                      <span class="fc-tag" style="background:rgba(100,220,160,.2);color:#90FFB8">Art. 5º, LXXIII</span>
+                    <div class="fc-front fc-front--forest">
+                      <span class="fc-tag fc-tag--teal">Art. 5º, LXXIII</span>
                       <div class="fc-kw">Ação Popular</div>
                       <div class="fc-hint">Quem pode ajuizar ação popular?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2601,7 +2585,7 @@
               é o de competências enumeradas para a União com poderes reservados aos Estados.</p>
 
             <div class="competencias-grid">
-              <div class="comp-cell sb-navy" style="border-color:#0A1628">
+              <div class="comp-cell sb-navy comp-cell--navy">
                 <div class="cc-title">Privativa da União (art. 22)</div>
                 <ul>
                   <li>Direito civil, penal, processual</li>
@@ -2612,7 +2596,7 @@
                   <li>LC pode delegar aos Estados</li>
                 </ul>
               </div>
-              <div class="comp-cell sb-blue" style="border-color:#185FA5">
+              <div class="comp-cell sb-blue comp-cell--blue">
                 <div class="cc-title">Concorrente (art. 24) União + Estados + DF</div>
                 <ul>
                   <li>Direito tributário, financeiro</li>
@@ -2623,7 +2607,7 @@
                   <li>Sem lei federal: Estado tem competência plena</li>
                 </ul>
               </div>
-              <div class="comp-cell sb-teal" style="border-color:#0D7A5C">
+              <div class="comp-cell sb-teal comp-cell--teal">
                 <div class="cc-title">Exclusiva dos Municípios (art. 30)</div>
                 <ul>
                   <li>Assuntos de interesse local</li>
@@ -2699,8 +2683,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0A2A40;">
-                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Art. 1º CF</span>
+                    <div class="fc-front fc-front--navy">
+                      <span class="fc-tag fc-tag--blue">Art. 1º CF</span>
                       <div class="fc-kw">SO.CI.DI.VA.PLU</div>
                       <div class="fc-hint">Quais são os fundamentos da República?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2716,8 +2700,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#26215C;">
-                      <span class="fc-tag" style="background:rgba(200,180,255,.2);color:#D0C0FF">Art. 3º CF</span>
+                    <div class="fc-front fc-front--indigo">
+                      <span class="fc-tag fc-tag--purple-mid">Art. 3º CF</span>
                       <div class="fc-kw">CON.GA.ER.PRO</div>
                       <div class="fc-hint">Objetivos fundamentais da República?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2792,8 +2776,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A1A1A;">
-                      <span class="fc-tag" style="background:rgba(255,120,120,.2);color:#FFAAAA">Art. 5º, XI</span>
+                    <div class="fc-front fc-front--wine">
+                      <span class="fc-tag fc-tag--red-mid">Art. 5º, XI</span>
                       <div class="fc-kw">Inviolabilidade do Domicílio</div>
                       <div class="fc-hint">Qual a diferença entre dia e noite?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2808,8 +2792,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0D4A38;">
-                      <span class="fc-tag" style="background:rgba(100,220,180,.2);color:#90FFD8">Art. 5º, XLVII</span>
+                    <div class="fc-front fc-front--teal-deep">
+                      <span class="fc-tag fc-tag--teal-light">Art. 5º, XLVII</span>
                       <div class="fc-kw">Penas Vedadas</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -2904,8 +2888,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0A2A40;">
-                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Art. 12, §3º</span>
+                    <div class="fc-front fc-front--navy">
+                      <span class="fc-tag fc-tag--blue">Art. 12, §3º</span>
                       <div class="fc-kw">MP3.COM</div>
                       <div class="fc-hint">Cargos privativos de brasileiro nato?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -2921,8 +2905,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A2800;">
-                      <span class="fc-tag" style="background:rgba(240,180,50,.2);color:#FFD080">Art. 5º, LI</span>
+                    <div class="fc-front fc-front--amber-dark">
+                      <span class="fc-tag fc-tag--amber">Art. 5º, LI</span>
                       <div class="fc-kw">Extradição</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -3004,8 +2988,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#1A3048;">
-                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Art. 14</span>
+                    <div class="fc-front fc-front--blue-dark">
+                      <span class="fc-tag fc-tag--blue">Art. 14</span>
                       <div class="fc-kw">Idades — 35·30·21·18</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -3019,8 +3003,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A1A1A;">
-                      <span class="fc-tag" style="background:rgba(255,120,120,.2);color:#FFAAAA">Pegadinha</span>
+                    <div class="fc-front fc-front--wine">
+                      <span class="fc-tag fc-tag--red-mid">Pegadinha</span>
                       <div class="fc-kw">Conscritos e Estrangeiros</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -3043,9 +3027,9 @@
           </div>
         </div>
 
-        <div style="text-align:right;margin:1.5rem 0 2.5rem 0;">
+        <div class="section-cta">
           <a href="materias/nucleo-comum/direito-constitucional/simulado.html" target="_blank" rel="noopener"
-            style="background:#1A5CA8;color:#fff;padding:10px 22px;border-radius:8px;font-weight:600;text-decoration:none;font-family:var(--font-b);font-size:15px;box-shadow:0 2px 8px rgba(26,92,168,0.08);transition:background .2s;">Fazer
+            class="btn-simulado btn-simulado--const">Fazer
             Simulado</a>
         </div>
 
@@ -3205,8 +3189,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A0A0A;">
-                      <span class="fc-tag" style="background:rgba(255,100,100,.2);color:#FFAAAA">Distinção</span>
+                    <div class="fc-front fc-front--ruby">
+                      <span class="fc-tag fc-tag--red-light">Distinção</span>
                       <div class="fc-kw">Nulo × Anulável</div>
                       <div class="fc-hint">Qual a diferença prática?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -3221,8 +3205,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#2A1A0A;">
-                      <span class="fc-tag" style="background:rgba(255,200,100,.2);color:#FFD880">Vício</span>
+                    <div class="fc-front fc-front--umber">
+                      <span class="fc-tag fc-tag--gold">Vício</span>
                       <div class="fc-kw">Estado de Perigo × Lesão</div>
                       <div class="fc-hint">Como diferenciar os dois vícios?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -3431,8 +3415,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#26215C;">
-                      <span class="fc-tag" style="background:rgba(200,180,255,.2);color:#D0C0FF">Art. 1º</span>
+                    <div class="fc-front fc-front--indigo">
+                      <span class="fc-tag fc-tag--purple-mid">Art. 1º</span>
                       <div class="fc-kw">Vacatio Legis</div>
                       <div class="fc-hint">Prazos de vigência?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -3446,8 +3430,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A2800;">
-                      <span class="fc-tag" style="background:rgba(240,180,50,.2);color:#FFD080">Art. 4º</span>
+                    <div class="fc-front fc-front--amber-dark">
+                      <span class="fc-tag fc-tag--amber">Art. 4º</span>
                       <div class="fc-kw">A.C.P — Lacunas</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -3530,8 +3514,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0D4A38;">
-                      <span class="fc-tag" style="background:rgba(100,220,180,.2);color:#90FFD8">Art. 3º CC</span>
+                    <div class="fc-front fc-front--teal-deep">
+                      <span class="fc-tag fc-tag--teal-light">Art. 3º CC</span>
                       <div class="fc-kw">Absolutamente Incapaz</div>
                       <div class="fc-hint">Quem é absolutamente incapaz?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -3546,8 +3530,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#3A1A1A;">
-                      <span class="fc-tag" style="background:rgba(255,120,120,.2);color:#FFAAAA">Art. 50 CC</span>
+                    <div class="fc-front fc-front--wine">
+                      <span class="fc-tag fc-tag--red-mid">Art. 50 CC</span>
                       <div class="fc-kw">Desconsideração da PJ</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -3639,8 +3623,8 @@
               <div class="fc-grid">
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#0A2A40;">
-                      <span class="fc-tag" style="background:rgba(100,160,255,.2);color:#A8C8FF">Art. 265 CC</span>
+                    <div class="fc-front fc-front--navy">
+                      <span class="fc-tag fc-tag--blue">Art. 265 CC</span>
                       <div class="fc-kw">Solidariedade</div>
                       <div class="fc-hint">Solidariedade se presume?</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
@@ -3653,8 +3637,8 @@
                 </div>
                 <div class="fc-card" onclick="this.classList.toggle('flipped')">
                   <div class="fc-inner">
-                    <div class="fc-front" style="background:#26215C;">
-                      <span class="fc-tag" style="background:rgba(200,180,255,.2);color:#D0C0FF">Art. 422 CC</span>
+                    <div class="fc-front fc-front--indigo">
+                      <span class="fc-tag fc-tag--purple-mid">Art. 422 CC</span>
                       <div class="fc-kw">Boa-fé Objetiva</div>
                       <div class="fc-flip-hint">toque para ver a resposta</div>
                     </div>
@@ -3676,9 +3660,9 @@
           </div>
         </div>
 
-        <div style="text-align:right;margin:1.5rem 0 2.5rem 0;">
+        <div class="section-cta">
           <a href="materias/area-judiciaria/direito-civil/simulado.html" target="_blank" rel="noopener"
-            style="background:#993C1D;color:#fff;padding:10px 22px;border-radius:8px;font-weight:600;text-decoration:none;font-family:var(--font-b);font-size:15px;box-shadow:0 2px 8px rgba(153,60,29,0.08);transition:background .2s;">Fazer
+            class="btn-simulado btn-simulado--civil">Fazer
             Simulado</a>
         </div>
 
@@ -3686,16 +3670,11 @@
 
       <!-- MOBILE NAV -->
       <div id="mobile-nav">
-        <button class="sb-item" onclick="showChapter('dpp')" id="mnav-dpp"
-          style="flex:1;justify-content:center;font-size:11px">Proc.Penal</button>
-        <button class="sb-item" onclick="showChapter('rl')" id="mnav-rl"
-          style="flex:1;justify-content:center;font-size:11px">Lógico</button>
-        <button class="sb-item" onclick="showChapter('da')" id="mnav-da"
-          style="flex:1;justify-content:center;font-size:11px">Adm</button>
-        <button class="sb-item" onclick="showChapter('dc')" id="mnav-dc"
-          style="flex:1;justify-content:center;font-size:11px">Const</button>
-        <button class="sb-item active" onclick="showChapter('dcv')" id="mnav-dcv"
-          style="flex:1;justify-content:center;font-size:11px">Civil</button>
+        <button class="sb-item" onclick="showChapter('dpp')" id="mnav-dpp" class="btn-nav-xs">Proc.Penal</button>
+        <button class="sb-item" onclick="showChapter('rl')" id="mnav-rl" class="btn-nav-xs">Lógico</button>
+        <button class="sb-item" onclick="showChapter('da')" id="mnav-da" class="btn-nav-xs">Adm</button>
+        <button class="sb-item" onclick="showChapter('dc')" id="mnav-dc" class="btn-nav-xs">Const</button>
+        <button class="sb-item active" onclick="showChapter('dcv')" id="mnav-dcv" class="btn-nav-xs">Civil</button>
       </div>
 
     </main>

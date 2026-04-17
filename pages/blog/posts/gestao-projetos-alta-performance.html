@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Gestao de projetos em alta performance: como transformar planejamento em entregas com dashboard, timeline, tarefas e alertas inteligentes na iDialog.">
+    <meta name="keywords"
+        content="gestao de projetos, ferramenta de projetos, cronograma, tarefas, marcos, dashboard de projetos, produtividade">
+    <meta name="author" content="iDialog">
+    <meta name="robots" content="index, follow">
+    <meta name="canonical" href="/pages/blog/posts/gestao-projetos-alta-performance.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title"
+        content="Gestao de Projetos de Alta Performance: Execute com Clareza e Ritmo — Blog iDialog">
+    <meta property="og:description"
+        content="Projetos nao falham por falta de esforco, falham por falta de visao e controle. Descubra o modulo de gestao de projetos da iDialog.">
+    <meta property="og:url" content="/pages/blog/posts/gestao-projetos-alta-performance.html">
+    <meta property="og:image" content="/public/icon/1 iDialog icone.ico">
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "Gestao de Projetos de Alta Performance: Execute com Clareza e Ritmo",
+            "description": "Artigo sobre gestao de projetos com foco em dashboard, marcos, tarefas e execucao orientada por dados no modulo iDialog.",
+            "image": "/public/icon/1 iDialog icone.ico",
+            "datePublished": "2026-04-16",
+            "dateModified": "2026-04-16",
+            "author": {
+                "@type": "Organization",
+                "name": "iDialog",
+                "url": "https://idialog.com.br"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "iDialog",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "/public/icon/1 iDialog icone.ico"
+                }
+            }
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Gestao de Projetos iDialog",
+            "description": "Modulo de gestao de projetos com KPIs, timeline, marcos, tarefas, alertas de atraso e exportacao em DOCX, PDF e Excel.",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "offers": {
+                "@type": "Offer",
+                "priceCurrency": "BRL",
+                "price": "0",
+                "availability": "https://schema.org/InStock"
+            }
+        }
+    </script>
+
+    <title>Gestao de Projetos de Alta Performance: Execute com Clareza e Ritmo — Blog iDialog</title>
+
+    <link rel="icon" type="image/x-icon" href="/public/icon/1 iDialog icone.ico">
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/responsive.css">
+    <link rel="stylesheet" href="/src/styles/blog-post.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div id="header-placeholder"></div>
+
+    <main>
+        <article class="blog-post-page">
+            <header class="blog-post-header" data-reveal>
+                <p class="blog-post-breadcrumb">
+                    <a href="/index.html"><i class="fas fa-home"></i> Inicio</a> &rsaquo;
+                    <a href="/pages/blog/index.html">Blog</a> &rsaquo;
+                    Gestao de Projetos
+                </p>
+
+                <span class="blog-post-category"><i class="fas fa-diagram-project"></i> Gestao Estrategica</span>
+                <h1 class="blog-post-title">Gestao de Projetos de Alta Performance: Execute com Clareza e Ritmo</h1>
+
+                <p class="blog-post-intro">
+                    Projeto nao precisa de mais reuniao. Precisa de direcao, visibilidade e cadencia de execucao. A
+                    ferramenta de gestao de projetos da iDialog foi criada para isso: tirar o plano do papel e entregar
+                    resultado mensuravel.
+                </p>
+
+                <div class="blog-post-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 16 de abril de 2026</span>
+                    <span><i class="fas fa-user"></i> Equipe iDialog</span>
+                    <span><i class="fas fa-clock"></i> 8 min de leitura</span>
+                </div>
+            </header>
+
+            <hr class="blog-divider">
+
+            <section class="blog-hero-showcase" data-reveal>
+                <div class="blog-panel">
+                    <div class="blog-panel-content">
+                        <h2>Por que essa ferramenta e poderosa?</h2>
+                        <p>
+                            Porque ela conecta estrategia, operacao e acompanhamento continuo no mesmo fluxo. Em vez de
+                            planilhas soltas, voce tem um cockpit de entrega.
+                        </p>
+                        <ul>
+                            <li>KPIs em tempo real: total, ativos, concluidos e alertas.</li>
+                            <li>Linha do tempo para enxergar cronograma com clareza.</li>
+                            <li>Marcos por fase para orientar entregas criticas.</li>
+                            <li>Tarefas com status, prioridade, prazo e progresso.</li>
+                            <li>Alertas automaticos de atrasos para agir no momento certo.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="blog-panel blog-hero-vector" aria-hidden="true">
+                    <svg viewBox="0 0 380 300" role="presentation" focusable="false">
+                        <defs>
+                            <linearGradient id="grad-proj" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.95"></stop>
+                                <stop offset="100%" stop-color="#00ff88" stop-opacity="0.75"></stop>
+                            </linearGradient>
+                        </defs>
+
+                        <rect x="24" y="22" width="332" height="256" rx="16" fill="rgba(10,10,15,0.62)"
+                            stroke="url(#grad-proj)"></rect>
+
+                        <rect x="46" y="46" width="64" height="42" rx="8" fill="rgba(0,229,255,0.2)"></rect>
+                        <rect x="120" y="46" width="64" height="42" rx="8" fill="rgba(0,255,136,0.2)"></rect>
+                        <rect x="194" y="46" width="64" height="42" rx="8" fill="rgba(77,124,255,0.2)"></rect>
+                        <rect x="268" y="46" width="64" height="42" rx="8" fill="rgba(255,45,149,0.18)"></rect>
+
+                        <rect x="46" y="112" width="286" height="20" rx="10" fill="rgba(232,234,240,0.12)"></rect>
+                        <rect x="46" y="146" width="250" height="20" rx="10" fill="rgba(232,234,240,0.12)"></rect>
+                        <rect x="46" y="180" width="206" height="20" rx="10" fill="rgba(232,234,240,0.12)"></rect>
+
+                        <rect x="46" y="226" width="286" height="12" rx="6" fill="rgba(77,124,255,0.18)"></rect>
+                        <rect x="46" y="226" width="198" height="12" rx="6" fill="#00ff88"></rect>
+
+                        <circle cx="198" cy="232" r="4" fill="#00160d"></circle>
+                        <text x="198" y="236" text-anchor="middle" fill="#00ff88" font-size="10"
+                            font-weight="700">69%</text>
+                    </svg>
+                </div>
+            </section>
+
+            <section class="blog-stats-grid" data-reveal>
+                <article class="blog-stat-card">
+                    <span class="blog-stat-number">Visao total</span>
+                    <p class="blog-stat-label">Painel com indicadores de carteira e status de execucao.</p>
+                </article>
+                <article class="blog-stat-card">
+                    <span class="blog-stat-number">Ritmo diario</span>
+                    <p class="blog-stat-label">Time orientado por tarefas, prazos e progresso.</p>
+                </article>
+                <article class="blog-stat-card">
+                    <span class="blog-stat-number">Acao rapida</span>
+                    <p class="blog-stat-label">Alertas de atraso para correcao antes do problema escalar.</p>
+                </article>
+            </section>
+
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Execucao sem atrito em 3 camadas</h2>
+                <div class="blog-service-grid">
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-bullseye"></i></span>
+                            <h3>Camada estrategica</h3>
+                        </div>
+                        <p>
+                            Defina objetivo, escopo, responsavel, prioridade, orcamento, metas e riscos do projeto em
+                            um formulario robusto e orientado a decisao.
+                        </p>
+                    </article>
+
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-road"></i></span>
+                            <h3>Camada de planejamento</h3>
+                        </div>
+                        <p>
+                            Organize etapas e marcos por fase, visualize linha do tempo e acompanhe o percentual de
+                            entrega em cada projeto.
+                        </p>
+                    </article>
+
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-tasks"></i></span>
+                            <h3>Camada operacional</h3>
+                        </div>
+                        <p>
+                            Controle tarefas com status (a fazer, em andamento, revisao, concluida, bloqueada),
+                            prioridade, prazo e progresso para manter tracao.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Recursos que diferenciam a Gestao de Projetos iDialog</h2>
+                <p class="blog-section-subtitle">
+                    Nao e so um cadastro de atividades. E um sistema de comando de execucao com visao gerencial e
+                    controle de detalhe no mesmo ambiente.
+                </p>
+
+                <div class="blog-tabs" data-blog-tabs>
+                    <div class="blog-tabs-controls" role="tablist"
+                        aria-label="Recursos da ferramenta de gestao de projetos">
+                        <button class="blog-tab-btn" role="tab" type="button" data-tab-target="dashboard">Dashboard e
+                            KPIs</button>
+                        <button class="blog-tab-btn" role="tab" type="button" data-tab-target="timeline">Timeline e
+                            marcos</button>
+                        <button class="blog-tab-btn" role="tab" type="button" data-tab-target="taskflow">Fluxo de
+                            tarefas</button>
+                        <button class="blog-tab-btn" role="tab" type="button" data-tab-target="entrega">Governanca e
+                            entrega</button>
+                    </div>
+
+                    <section class="blog-tab-panel" data-tab-panel="dashboard">
+                        Painel com indicadores de projetos totais, ativos, concluidos e quantidade de atrasos para uma
+                        leitura imediata da carteira.
+                    </section>
+
+                    <section class="blog-tab-panel" data-tab-panel="timeline" hidden>
+                        Linha do tempo com barras por projeto e marcos de fase para entender sequencia, janela critica e
+                        dependencia temporal.
+                    </section>
+
+                    <section class="blog-tab-panel" data-tab-panel="taskflow" hidden>
+                        Painel dedicado de tarefas por projeto, com cadastro completo, progresso percentual e sinais de
+                        atraso quando o prazo estoura.
+                    </section>
+
+                    <section class="blog-tab-panel" data-tab-panel="entrega" hidden>
+                        Exporte em DOCX, PDF e Excel para reunioes executivas, comite de projetos e prestacao de contas.
+                    </section>
+                </div>
+            </section>
+
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Perguntas que elevam maturidade de gestao</h2>
+                <div class="blog-reveal-list">
+                    <details class="blog-reveal">
+                        <summary>
+                            Sabemos exatamente onde estamos atrasando?
+                            <span class="blog-summary-action">Ver explicacao</span>
+                        </summary>
+                        <div class="blog-reveal-body">
+                            Alertas de atraso e indicadores de tarefa vencida revelam gargalos antes que eles virem
+                            crise
+                            de entrega.
+                        </div>
+                    </details>
+
+                    <details class="blog-reveal">
+                        <summary>
+                            Nosso time executa com prioridade correta?
+                            <span class="blog-summary-action">Ver explicacao</span>
+                        </summary>
+                        <div class="blog-reveal-body">
+                            Prioridade por tarefa, fase e projeto evita dispersao e melhora alocacao de energia da
+                            equipe.
+                        </div>
+                    </details>
+
+                    <details class="blog-reveal">
+                        <summary>
+                            A lideranca tem visao confiavel para decidir?
+                            <span class="blog-summary-action">Ver explicacao</span>
+                        </summary>
+                        <div class="blog-reveal-body">
+                            Dashboard, timeline e progresso consolidado entregam leitura executiva para decisoes rapidas
+                            e embasadas.
+                        </div>
+                    </details>
+                </div>
+
+                <blockquote class="blog-quote">
+                    "Projeto de alta performance nao e o que comeca bonito. E o que termina no prazo, com qualidade e
+                    previsibilidade."
+                </blockquote>
+            </section>
+
+            <section class="blog-cta-wrap" data-reveal>
+                <h2>Transforme sua operacao em uma maquina de entrega</h2>
+                <p>
+                    Acesse a ferramenta de gestao de projetos da iDialog e conduza seus projetos com mais clareza,
+                    velocidade e controle do inicio ao resultado.
+                </p>
+                <div class="blog-cta-actions">
+                    <a href="/pages/ferramentas/index.html" class="btn btn-primary">
+                        <i class="fas fa-diagram-project"></i> Acessar Gestao de Projetos
+                    </a>
+                    <a href="/pages/contato.html" class="btn btn-secondary">
+                        <i class="fas fa-comments"></i> Falar com especialista
+                    </a>
+                </div>
+            </section>
+
+            <footer class="blog-post-footer">
+                <a href="/pages/blog/index.html" class="blog-post-footer-link">
+                    <i class="fas fa-arrow-left"></i> Voltar para o Blog
+                </a>
+                <a href="/pages/ferramentas/index.html" class="blog-post-footer-link">
+                    Ir para Ferramentas <i class="fas fa-arrow-right"></i>
+                </a>
+            </footer>
+        </article>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/assets/js/components.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/matrix.js"></script>
+    <script src="/assets/js/blog-post.js"></script>
+</body>
+
+</html>

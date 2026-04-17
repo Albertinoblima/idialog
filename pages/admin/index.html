@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel de administracao do site iDialog.">
+    <meta name="robots" content="noindex, nofollow">
+    <title>iDialog Admin | Painel de Controle</title>
+
+    <link rel="stylesheet" href="../../src/styles/main.css">
+    <link rel="stylesheet" href="../../src/styles/responsive.css">
+    <link rel="stylesheet" href="../ferramentas/ferramentas.css">
+    <link rel="stylesheet" href="./admin.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div id="header-placeholder"></div>
+
+    <main class="main ferramentas-main" id="main-content">
+        <section class="ferramentas-hero">
+            <div class="container ferramentas-hero-inner">
+                <div>
+                    <p class="hero-kicker">Acesso Restrito</p>
+                    <h1 class="hero-title">Painel de <span class="highlight">Controle</span></h1>
+                    <p class="hero-subtitle">Gerencie conteudos, publicacoes, simulados e configuracoes visuais do
+                        site iDialog.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container ferramentas-content">
+            <div id="auth-view" class="panel-grid admin-login-wrap">
+                <article class="panel-card admin-login-card">
+                    <div class="admin-login-icon">
+                        <img src="/public/images/Configuracao.gif" alt="Admin" class="admin-login-gif">
+                    </div>
+                    <h2><i class="fas fa-shield-halved"></i> Acesso ao Painel</h2>
+                    <p class="panel-lead">Esta area e exclusiva para administradores do site iDialog.</p>
+                    <form id="login-form" class="stack-form">
+                        <label>Email do administrador
+                            <input required type="email" name="email" placeholder="admin@idialog.com.br"
+                                autocomplete="username">
+                        </label>
+                        <label>Senha
+                            <input required type="password" name="password" minlength="6"
+                                autocomplete="current-password">
+                        </label>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-right-to-bracket"></i> Entrar no painel
+                        </button>
+                    </form>
+                </article>
+            </div>
+
+            <section id="dashboard-view" class="dashboard" hidden>
+                <div class="dashboard-header">
+                    <h2><i class="fas fa-gauge-high"></i> Painel de Controle iDialog</h2>
+                    <button class="btn btn-secondary" id="logout-btn" type="button">
+                        <i class="fas fa-arrow-right-from-bracket"></i> Sair
+                    </button>
+                </div>
+
+                <div class="tabs-row" role="tablist" aria-label="Modulos do painel">
+                    <button class="tab-btn active" type="button" data-tab="cms">
+                        <i class="fas fa-sitemap"></i> CMS &mdash; Conteudo
+                    </button>
+                    <button class="tab-btn" type="button" data-tab="agenda">
+                        <i class="fas fa-calendar-clock"></i> Agenda Editorial
+                    </button>
+                    <button class="tab-btn" type="button" data-tab="cursor">
+                        <i class="fas fa-meteor"></i> Cursor Foguete
+                    </button>
+                </div>
+
+                <!-- ===== CMS ===== -->
+                <div class="tab-content active" id="tab-cms">
+                    <article class="panel-card">
+                        <h3><i class="fas fa-sitemap"></i> Central de Conteudo</h3>
+                        <p class="panel-lead">Crie paginas institucionais, postagens do blog e simulados administraveis
+                            a partir de um painel unico.</p>
+                        <div id="content-stats" class="cms-stats"></div>
+                    </article>
+
+                    <article class="panel-card">
+                        <h3><i class="fas fa-pen-ruler"></i> Estudio de Conteudo</h3>
+                        <form id="content-form" class="stack-form">
+                            <input type="hidden" name="content_id" value="">
+                            <input type="hidden" name="current_cover_path" value="">
+                            <div class="split-2">
+                                <label>Tipo de conteudo
+                                    <select name="content_type" id="content-type">
+                                        <option value="page">Pagina</option>
+                                        <option value="blog_post">Postagem do blog</option>
+                                        <option value="simulado">Simulado</option>
+                                    </select>
+                                </label>
+                                <label>Status
+                                    <select name="status">
+                                        <option value="draft">Rascunho</option>
+                                        <option value="published">Publicado</option>
+                                        <option value="archived">Arquivado</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Titulo
+                                    <input required type="text" id="content-title" name="title"
+                                        placeholder="Titulo principal">
+                                </label>
+                                <label>Slug publico
+                                    <input required type="text" id="content-slug" name="slug"
+                                        placeholder="minha-pagina">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Contexto
+                                    <select name="context">
+                                        <option value="site">Site institucional</option>
+                                        <option value="blog">Blog</option>
+                                        <option value="revista">Revista</option>
+                                    </select>
+                                </label>
+                                <label>Categoria
+                                    <input type="text" name="category"
+                                        placeholder="Tecnologia, Concursos, Institucional...">
+                                </label>
+                            </div>
+                            <label>Resumo / descricao curta
+                                <textarea name="summary" rows="3"
+                                    placeholder="Resumo para cards, listagens e SEO"></textarea>
+                            </label>
+                            <div class="split-2">
+                                <label>SEO title
+                                    <input type="text" name="seo_title" placeholder="Titulo otimizado para busca">
+                                </label>
+                                <label>SEO description
+                                    <input type="text" name="seo_description"
+                                        placeholder="Descricao para Google e compartilhamento">
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Publicar em (data/hora)
+                                    <input type="datetime-local" id="content-published-at" name="published_at">
+                                    <small class="field-help">Se o status estiver como "Publicado" e a data for futura,
+                                        o conteudo fica oculto ate o momento agendado.</small>
+                                </label>
+                            </div>
+                            <div class="widget-fields-group">
+                                <label>Capa / thumb (opcional)
+                                    <input type="file" id="content-cover-file" name="cover_media"
+                                        accept="image/png,image/jpeg,image/webp,image/gif">
+                                    <small class="field-help">Use para capa de postagem, pagina promocional ou
+                                        simulado.</small>
+                                </label>
+                                <div class="widget-preview-wrap">
+                                    <img id="content-cover-preview" alt="Preview da capa" hidden>
+                                </div>
+                            </div>
+                            <div id="content-html-fields" class="widget-fields-group">
+                                <label>Corpo HTML
+                                    <textarea name="body_html" rows="12"
+                                        placeholder="Escreva o HTML do conteudo com o visual matrix do site"></textarea>
+                                </label>
+                            </div>
+                            <div id="content-simulado-fields" class="widget-fields-group" hidden>
+                                <label>Configuracao JSON do simulado
+                                    <textarea name="extra_json" rows="12"
+                                        placeholder='{"questions":[{"question":"...","options":["A","B"],"answer":0,"explanation":"..."}]}'></textarea>
+                                    <small class="field-help">Estrutura recomendada: questions como lista de objetos com
+                                        question, options, answer e explanation.</small>
+                                </label>
+                            </div>
+                            <div class="action-row">
+                                <button class="btn btn-primary" type="submit">Salvar conteudo</button>
+                                <button class="btn btn-secondary" type="button" id="content-reset">Novo
+                                    conteudo</button>
+                            </div>
+                        </form>
+                    </article>
+
+                    <article class="panel-card">
+                        <h3><i class="fas fa-folder-open"></i> Biblioteca Editorial</h3>
+                        <p class="panel-lead">Abra, publique, remova e copie as URLs dos conteudos administraveis.
+                        </p>
+                        <div id="content-list" class="content-list"></div>
+                    </article>
+                </div>
+
+                <!-- ===== AGENDA ===== -->
+                <div class="tab-content" id="tab-agenda">
+                    <article class="panel-card">
+                        <h3><i class="fas fa-calendar-clock"></i> Agenda Editorial</h3>
+                        <p class="panel-lead">Acompanhe os conteudos programados para publicacao automatica.</p>
+                        <div id="scheduled-list" class="scheduled-list"></div>
+                    </article>
+                </div>
+
+                <!-- ===== CURSOR ===== -->
+                <div class="tab-content" id="tab-cursor">
+                    <article class="panel-card">
+                        <h3><i class="fas fa-meteor"></i> Configuracao do Cursor Personalizado</h3>
+                        <p class="panel-lead">Ajuste em tempo real o foguete do mouse: tamanho, brilho e parametros da
+                            cauda/trilha.</p>
+                        <form id="cursor-form" class="stack-form">
+                            <div class="split-2">
+                                <label>Tamanho do foguete
+                                    <input type="range" id="cursor-scale" name="scale" min="50" max="180" step="1"
+                                        value="100">
+                                    <span class="range-value" id="cursor-scale-value">100%</span>
+                                </label>
+                                <label>Brilho do corpo
+                                    <input type="range" id="cursor-glow" name="glow" min="0" max="60" step="1"
+                                        value="9">
+                                    <span class="range-value" id="cursor-glow-value">9%</span>
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Largura da calda
+                                    <input type="range" id="cursor-tail-width" name="tail_width" min="4" max="16"
+                                        step="1" value="8">
+                                    <span class="range-value" id="cursor-tail-width-value">8px</span>
+                                </label>
+                                <label>Comprimento da calda
+                                    <input type="range" id="cursor-tail-length" name="tail_length" min="8" max="30"
+                                        step="1" value="13">
+                                    <span class="range-value" id="cursor-tail-length-value">13px</span>
+                                </label>
+                            </div>
+                            <div class="split-2">
+                                <label>Grossura da trilha de fumaca
+                                    <input type="range" id="cursor-smoke-size" name="smoke_size" min="60" max="220"
+                                        step="1" value="100">
+                                    <span class="range-value" id="cursor-smoke-size-value">100%</span>
+                                </label>
+                                <label>Densidade da trilha
+                                    <input type="range" id="cursor-trail-density" name="trail_density" min="40"
+                                        max="220" step="1" value="100">
+                                    <span class="range-value" id="cursor-trail-density-value">100%</span>
+                                </label>
+                            </div>
+                            <div class="action-row">
+                                <button class="btn btn-primary" type="submit">Salvar ajustes do cursor</button>
+                                <button class="btn btn-secondary" type="button" id="cursor-reset">Restaurar
+                                    padrao</button>
+                            </div>
+                        </form>
+                    </article>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/matrix.js"></script>
+    <script src="../../assets/js/components.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="./admin.js"></script>
+</body>
+
+</html>

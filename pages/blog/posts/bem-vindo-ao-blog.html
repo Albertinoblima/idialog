@@ -1,16 +1,20 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Bem-vindo ao Blog da iDialog - Inauguramos nosso espaço de conteúdo">
-    <meta name="author" content="iDialog">
+    <meta name="author" content="Albertino Bezerra Lima">
+    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+    <meta name="contact" content="albertinoblima@gmail.com">
     <title>Bem-vindo ao Blog da iDialog - Blog iDialog</title>
 
     <link rel="icon" type="image/x-icon" href="/public/icon/1 iDialog icone.ico">
     <link rel="stylesheet" href="/src/styles/main.css">
     <link rel="stylesheet" href="/src/styles/responsive.css">
+    <link rel="stylesheet" href="/src/styles/blog-post.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -18,147 +22,33 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <style>
-        .post-page {
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 40px 20px 80px;
-        }
-
-        .post-page-header {
-            margin-top: 90px;
-            margin-bottom: 40px;
-        }
-
-        .post-breadcrumb {
-            font-size: .85rem;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-        }
-
-        .post-breadcrumb a {
-            color: var(--neon-cyan);
-        }
-
-        .post-breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .post-cat-badge {
-            display: inline-block;
-            background: rgba(0, 229, 255, 0.1);
-            color: var(--neon-cyan);
-            padding: 4px 14px;
-            border-radius: 50px;
-            font-size: .82rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        .post-page h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.4rem;
-            font-weight: 700;
-            line-height: 1.25;
-            color: var(--text-primary);
-            margin-bottom: 16px;
-        }
-
-        .post-page-meta {
-            display: flex;
-            gap: 20px;
-            color: var(--text-muted);
-            font-size: .88rem;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
-        }
-
-        .post-page-meta span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .post-divider {
-            border: none;
-            border-top: 1px solid var(--border-color);
-            margin: 32px 0;
-        }
-
-        .post-content {
-            font-size: 1.05rem;
-            line-height: 1.85;
-            color: var(--text-secondary);
-        }
-
-        .post-content h2 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin: 40px 0 16px;
-        }
-
-        .post-content h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin: 30px 0 12px;
-        }
-
-        .post-content p {
-            margin-bottom: 20px;
-        }
-
-        .post-content ul,
-        .post-content ol {
-            margin: 0 0 20px 24px;
-        }
-
-        .post-content li {
-            margin-bottom: 8px;
-        }
-
-        .post-content blockquote {
-            border-left: 4px solid var(--neon-cyan);
-            background: rgba(0, 229, 255, 0.04);
-            padding: 16px 20px;
-            margin: 24px 0;
-            border-radius: 0 8px 8px 0;
-            font-style: italic;
-            color: var(--text-secondary);
-        }
-
-        .post-footer {
-            margin-top: 60px;
-            padding-top: 32px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .post-footer-nav {
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .post-nav-link {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--neon-cyan);
-            font-weight: 600;
-        }
-
-        .post-nav-link:hover {
-            text-decoration: underline;
-        }
-
-        @media(max-width:600px) {
-            .post-page h1 {
-                font-size: 1.8rem;
+    <!-- Schema.org (SEO) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Bem-vindo ao Blog da iDialog",
+        "description": "Bem-vindo ao Blog da iDialog - Inauguramos nosso espaço de conteúdo sobre gestão, tecnologia e comunicação.",
+        "datePublished": "2026-04-15",
+        "dateModified": "2026-04-15",
+        "author": {
+            "@type": "Person",
+            "name": "Albertino Bezerra Lima",
+            "email": "albertinoblima@gmail.com",
+            "telephone": "+5587988568605"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "iDialog",
+            "url": "https://www.idialog.com.br",
+            "founder": {
+                "@type": "Person",
+                "name": "Albertino Bezerra Lima"
             }
-        }
-    </style>
+        },
+        "url": "https://www.idialog.com.br/pages/blog/posts/bem-vindo-ao-blog.html"
+    }
+    </script>
 </head>
 
 <body>
@@ -168,78 +58,258 @@
     <div id="header-placeholder"></div>
 
     <main>
-        <article class="post-page">
-            <header class="post-page-header">
-                <!-- Navegação de volta -->
-                <p class="post-breadcrumb">
+        <article class="blog-post-page">
+            <header class="blog-post-header" data-reveal>
+                <p class="blog-post-breadcrumb">
                     <a href="/index.html"><i class="fas fa-home"></i> Início</a> &rsaquo;
                     <a href="/pages/blog/index.html">Blog</a> &rsaquo;
                     Bem-vindo ao Blog da iDialog
                 </p>
 
-                <span class="post-cat-badge">Novidades</span>
-                <h1>Bem-vindo ao Blog da iDialog</h1>
+                <span class="blog-post-category"><i class="fas fa-rocket"></i> Novidades</span>
+                <h1 class="blog-post-title">Bem-vindo ao Blog da iDialog</h1>
 
-                <div class="post-page-meta">
+                <p class="blog-post-intro">
+                    Este blog nasce como um hub de conhecimento prático da iDialog: um lugar para conectar visão
+                    estratégica, tecnologia e execução com foco em impacto real para organizações públicas, empresas e
+                    profissionais em formação.
+                </p>
+
+                <div class="blog-post-meta">
                     <span><i class="fas fa-calendar-alt"></i> 15 de abril de 2026</span>
                     <span><i class="fas fa-user"></i> Equipe iDialog</span>
-                    <span><i class="fas fa-clock"></i> 2 min de leitura</span>
+                    <span><i class="fas fa-clock"></i> 6 min de leitura</span>
                 </div>
             </header>
 
-            <hr class="post-divider">
+            <hr class="blog-divider">
 
-            <!-- ============================================================
-                 CONTEÚDO DO ARTIGO — edite livremente abaixo
-            ============================================================ -->
-            <div class="post-content">
-                <p>
-                    É com muita alegria que inauguramos o <strong>Blog iDialog</strong> — nosso espaço dedicado a
-                    compartilhar conhecimento, novidades e reflexões sobre tecnologia, gestão pública, inovação
-                    e tudo que nos inspira no dia a dia.
+            <section class="blog-hero-showcase" data-reveal>
+                <div class="blog-panel">
+                    <div class="blog-panel-content">
+                        <h2>O que somos</h2>
+                        <p>
+                            A iDialog e uma empresa orientada por projetos que unem tecnologia, gestao e comunicacao.
+                            Atuamos em iniciativas que pedem clareza tecnica e resultado mensuravel: da estrategia ao
+                            monitoramento de execucao.
+                        </p>
+                        <p>
+                            Neste blog, abrimos os bastidores de como pensamos, como implementamos e como ajustamos
+                            solucoes para cada contexto.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="blog-panel blog-hero-vector" aria-hidden="true">
+                    <svg viewBox="0 0 380 300" role="presentation" focusable="false">
+                        <defs>
+                            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.85"></stop>
+                                <stop offset="100%" stop-color="#00ff88" stop-opacity="0.7"></stop>
+                            </linearGradient>
+                            <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#4d7cff" stop-opacity="0.9"></stop>
+                                <stop offset="100%" stop-color="#00e5ff" stop-opacity="0.9"></stop>
+                            </linearGradient>
+                        </defs>
+                        <rect x="24" y="30" width="332" height="240" rx="20" fill="rgba(10,10,15,0.68)"
+                            stroke="url(#g1)"></rect>
+                        <circle cx="84" cy="95" r="26" fill="rgba(0,229,255,0.18)" stroke="url(#g2)"></circle>
+                        <rect x="130" y="76" width="186" height="14" rx="7" fill="rgba(0,229,255,0.22)"></rect>
+                        <rect x="130" y="100" width="144" height="10" rx="5" fill="rgba(232,234,240,0.18)"></rect>
+                        <rect x="62" y="144" width="254" height="64" rx="12" fill="rgba(77,124,255,0.12)"
+                            stroke="url(#g2)"></rect>
+                        <path d="M78 192 C132 154, 171 229, 233 174 C257 152, 282 166, 304 148" stroke="#00ff88"
+                            stroke-width="4" fill="none"></path>
+                        <circle cx="305" cy="148" r="5" fill="#00ff88"></circle>
+                        <rect x="62" y="225" width="110" height="18" rx="9" fill="rgba(0,255,136,0.2)"></rect>
+                    </svg>
+                </div>
+            </section>
+
+            <section class="blog-stats-grid" data-reveal>
+                <article class="blog-stat-card">
+                    <span class="blog-stat-number">360°</span>
+                    <p class="blog-stat-label">Visao integrada entre estrategia, processos e tecnologia.</p>
+                </article>
+                <article class="blog-stat-card">
+                    <span class="blog-stat-number">Publico + Privado</span>
+                    <p class="blog-stat-label">Experiencia em cenarios de alta complexidade institucional e empresarial.
+                    </p>
+                </article>
+                <article class="blog-stat-card">
+                    <span class="blog-stat-number">Conteudo acionavel</span>
+                    <p class="blog-stat-label">Materiais pensados para sair da teoria e apoiar decisao e execucao.</p>
+                </article>
+            </section>
+
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Nossos servicos em destaque</h2>
+                <p class="blog-section-subtitle">
+                    O blog vai apresentar, com linguagem clara e exemplos concretos, os pilares que guiam nossos
+                    projetos e entregas.
                 </p>
 
-                <h2>Por que um blog?</h2>
-                <p>
-                    Acreditamos que informação de qualidade transforma realidades. Ao longo dos anos, acumulamos
-                    experiências valiosas trabalhando com organizações públicas e empresas privadas — e chegou a hora
-                    de compartilhar esse conhecimento com você.
+                <div class="blog-service-grid">
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-chess-knight"></i></span>
+                            <h3>Consultoria estrategica</h3>
+                        </div>
+                        <p>
+                            Diagnostico, priorizacao e desenho de planos para crescimento sustentavel e governanca.
+                        </p>
+                    </article>
+
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-gears"></i></span>
+                            <h3>Transformacao digital</h3>
+                        </div>
+                        <p>
+                            Otimizacao de processos, integracao de sistemas e automacoes com foco em eficiencia.
+                        </p>
+                    </article>
+
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-chart-line"></i></span>
+                            <h3>Inteligencia para decisao</h3>
+                        </div>
+                        <p>
+                            Estruturacao de dados, indicadores e dashboards para transformar informacao em resultado.
+                        </p>
+                    </article>
+
+                    <article class="blog-service-card">
+                        <div class="blog-service-head">
+                            <span class="blog-service-icon"><i class="fas fa-graduation-cap"></i></span>
+                            <h3>Educacao e preparacao</h3>
+                        </div>
+                        <p>
+                            Trilhas, conteudos e ferramentas para desenvolvimento de equipes e concurseiros.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Padrao das proximas publicacoes</h2>
+                <p class="blog-section-subtitle">
+                    A partir desta materia, seguimos um formato unico para manter identidade visual, consistencia e
+                    leitura fluida em todo o blog.
                 </p>
 
-                <h2>O que você vai encontrar aqui</h2>
-                <ul>
-                    <li><strong>Tecnologia &amp; Inovação:</strong> tendências, ferramentas e cases práticos</li>
-                    <li><strong>Gestão Pública:</strong> boas práticas, legislação e modernização</li>
-                    <li><strong>Concursos Públicos:</strong> dicas e conteúdo de estudo</li>
-                    <li><strong>Novidades iDialog:</strong> lançamentos, projetos e bastidores</li>
-                </ul>
+                <div class="blog-publishing-grid">
+                    <article class="blog-publishing-card">
+                        <h3>Estrutura visual padrao</h3>
+                        <p>Cabecalho forte, blocos informativos, cards e fechamento com CTA.</p>
+                    </article>
+                    <article class="blog-publishing-card">
+                        <h3>Interacao por clique</h3>
+                        <p>Secoes com "ver explicacao" e abas para aprofundar sem poluir a leitura.</p>
+                    </article>
+                    <article class="blog-publishing-card">
+                        <h3>Aplicacao pratica</h3>
+                        <p>Conteudo com foco em uso real para gestores, equipes tecnicas e decisores.</p>
+                    </article>
+                </div>
+            </section>
 
-                <blockquote>
-                    "Tecnologia só faz sentido quando aproxima pessoas e resolve problemas reais."
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Explore por clique</h2>
+                <div class="blog-reveal-list">
+                    <details class="blog-reveal">
+                        <summary>
+                            Como a iDialog trabalha os projetos de ponta a ponta
+                            <span class="blog-summary-action">Ver explicacao</span>
+                        </summary>
+                        <div class="blog-reveal-body">
+                            Iniciamos com diagnostico tecnico e de contexto, definimos objetivos mensuraveis,
+                            priorizamos entregas e executamos com acompanhamento de indicadores de performance.
+                        </div>
+                    </details>
+
+                    <details class="blog-reveal">
+                        <summary>
+                            O que voce vai aprender neste blog
+                            <span class="blog-summary-action">Ver explicacao</span>
+                        </summary>
+                        <div class="blog-reveal-body">
+                            Taticas de modernizacao, boas praticas de gestao, tendencias em tecnologia aplicada e
+                            experiencias de campo que podem ser adaptadas ao seu contexto.
+                        </div>
+                    </details>
+
+                    <details class="blog-reveal">
+                        <summary>
+                            Como os temas serao organizados
+                            <span class="blog-summary-action">Ver explicacao</span>
+                        </summary>
+                        <div class="blog-reveal-body">
+                            Publicaremos series tematicas com periodicidade e nivel de profundidade definidos, para
+                            facilitar a navegacao e a continuidade do aprendizado.
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <section class="blog-section" data-reveal>
+                <h2 class="blog-section-title">Para quem escrevemos</h2>
+                <div class="blog-tabs" data-blog-tabs>
+                    <div class="blog-tabs-controls" role="tablist" aria-label="Publicos do blog iDialog">
+                        <button class="blog-tab-btn" role="tab" type="button" data-tab-target="setor-publico">Setor
+                            publico</button>
+                        <button class="blog-tab-btn" role="tab" type="button"
+                            data-tab-target="empresas">Empresas</button>
+                        <button class="blog-tab-btn" role="tab" type="button"
+                            data-tab-target="profissionais">Profissionais e estudantes</button>
+                    </div>
+
+                    <section class="blog-tab-panel" data-tab-panel="setor-publico">
+                        Conteudos para modernizacao institucional, eficiencia operacional, transparencia e melhoria de
+                        servicos ao cidadao.
+                    </section>
+
+                    <section class="blog-tab-panel" data-tab-panel="empresas" hidden>
+                        Materiais para liderancas e equipes que querem escalar processos, tomar decisoes com dados e
+                        reduzir retrabalho com tecnologia.
+                    </section>
+
+                    <section class="blog-tab-panel" data-tab-panel="profissionais" hidden>
+                        Guias e referenciais para quem busca evolucao profissional em temas de gestao, inovacao e
+                        preparacao para desafios de carreira.
+                    </section>
+                </div>
+
+                <blockquote class="blog-quote">
+                    "Conhecimento de verdade e aquele que voce consegue aplicar no dia seguinte."
                 </blockquote>
+            </section>
 
-                <h2>Publique com a gente</h2>
+            <section class="blog-cta-wrap" data-reveal>
+                <h2>Vamos conversar sobre seu desafio?</h2>
                 <p>
-                    Novas matérias serão publicadas diariamente. Fique à vontade para compartilhar, comentar
-                    e sugerir temas pelo nosso canal de
-                    <a href="/pages/contato.html" style="color:var(--neon-cyan);font-weight:600;">contato</a>.
+                    Se voce quer acelerar resultados com estrategia, tecnologia e execucao orientada por impacto,
+                    fale com a equipe iDialog.
                 </p>
-
-                <p>Bem-vindo(a)! 🎉</p>
-            </div>
-            <!-- ============================================================
-                 FIM DO CONTEÚDO
-            ============================================================ -->
-
-            <footer class="post-footer">
-                <nav class="post-footer-nav">
-                    <a href="/pages/blog/index.html" class="post-nav-link">
-                        <i class="fas fa-arrow-left"></i> Voltar para o Blog
+                <div class="blog-cta-actions">
+                    <a href="/pages/contato.html" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Entrar em contato
                     </a>
-                    <a href="/pages/contato.html" class="post-nav-link">
-                        Fale Conosco <i class="fas fa-arrow-right"></i>
+                    <a href="/pages/blog/index.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Voltar ao blog
                     </a>
-                </nav>
+                </div>
+            </section>
+
+            <footer class="blog-post-footer">
+                <a href="/pages/blog/index.html" class="blog-post-footer-link">
+                    <i class="fas fa-arrow-left"></i> Voltar para o Blog
+                </a>
+                <a href="/pages/contato.html" class="blog-post-footer-link">
+                    Fale Conosco <i class="fas fa-arrow-right"></i>
+                </a>
             </footer>
         </article>
     </main>
@@ -249,6 +319,7 @@
     <script src="/assets/js/components.js"></script>
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/matrix.js"></script>
+    <script src="/assets/js/blog-post.js"></script>
 </body>
 
 </html>

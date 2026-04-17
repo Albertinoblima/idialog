@@ -4,7 +4,7 @@ Site institucional da iDialog, empresa especializada em soluções de comunicaç
 
 ## 🚀 Estrutura do Projeto
 
-```
+```text
 iDialog/
 ├── index.html                  # Página inicial
 ├── pages/                      # Páginas do site
@@ -175,7 +175,7 @@ php -S localhost:8000
 <script src="../assets/js/components.js"></script>
 ```
 
-3. Adicione o link no menu (`components/header.html`)
+1. Adicione o link no menu (`components/header.html`)
 
 ### Modificando Cores
 

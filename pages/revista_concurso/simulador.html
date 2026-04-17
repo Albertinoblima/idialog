@@ -1,9 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Albertino Bezerra Lima">
+    <meta name="owner" content="Albertino Bezerra Lima - iDialog">
+    <meta name="copyright" content="(c) 2026 Albertino Bezerra Lima - iDialog. Todos os direitos reservados.">
+    <meta name="contact" content="albertinoblima@gmail.com">
     <title>Montar Simulado · Aprova Concursos</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
@@ -360,97 +364,101 @@
 <body>
     <div id="header-placeholder"></div>
 
-    <!-- COVER -->
-    <div id="cover">
-        <div class="cv-label">Aprova Concursos</div>
-        <h1><em>Montar</em> Simulado</h1>
-        <p class="cv-desc">Selecione as matérias, o nível de dificuldade e a quantidade de questões por disciplina.</p>
-    </div>
+    <main id="main-content">
 
-    <!-- CONTROLS BAR -->
-    <div id="controls">
-        <a class="ctrl" href="index.html">← Revista</a>
-        <a class="ctrl" href="index.html#dashboard">📊 Dashboard</a>
-    </div>
-
-    <!-- BODY -->
-    <div id="sim-body">
-
-        <!-- ÁREA: NÚCLEO COMUM -->
-        <div class="area-block">
-            <div class="area-title">📚 &nbsp;Núcleo Comum</div>
-            <div class="subjects-grid" id="grid-nucleo"></div>
+        <!-- COVER -->
+        <div id="cover">
+            <div class="cv-label">Aprova Concursos</div>
+            <h1><em>Montar</em> Simulado</h1>
+            <p class="cv-desc">Selecione as matérias, o nível de dificuldade e a quantidade de questões por disciplina.
+            </p>
         </div>
 
-        <!-- ÁREA: JUDICIÁRIA -->
-        <div class="area-block">
-            <div class="area-title">⚖️ &nbsp;Área Judiciária</div>
-            <div class="subjects-grid" id="grid-judiciaria"></div>
+        <!-- CONTROLS BAR -->
+        <div id="controls">
+            <a class="ctrl" href="index.html">← Revista</a>
+            <a class="ctrl" href="index.html#dashboard">📊 Dashboard</a>
         </div>
 
-        <!-- ÁREA: FISCAL E DE CONTROLE -->
-        <div class="area-block">
-            <div class="area-title">💰 &nbsp;Área Fiscal e de Controle</div>
-            <div class="subjects-grid" id="grid-fiscal"></div>
-        </div>
+        <!-- BODY -->
+        <div id="sim-body">
 
-        <!-- ÁREA: ADMINISTRATIVA -->
-        <div class="area-block">
-            <div class="area-title">🏛️ &nbsp;Área Administrativa</div>
-            <div class="subjects-grid" id="grid-administrativa"></div>
-        </div>
+            <!-- ÁREA: NÚCLEO COMUM -->
+            <div class="area-block">
+                <div class="area-title">📚 &nbsp;Núcleo Comum</div>
+                <div class="subjects-grid" id="grid-nucleo"></div>
+            </div>
 
-        <!-- ÁREA: SEGURANÇA PÚBLICA -->
-        <div class="area-block">
-            <div class="area-title">🛡️ &nbsp;Segurança Pública</div>
-            <div class="subjects-grid" id="grid-seguranca"></div>
-        </div>
+            <!-- ÁREA: JUDICIÁRIA -->
+            <div class="area-block">
+                <div class="area-title">⚖️ &nbsp;Área Judiciária</div>
+                <div class="subjects-grid" id="grid-judiciaria"></div>
+            </div>
 
-        <!-- ÁREA: BANCÁRIA -->
-        <div class="area-block">
-            <div class="area-title">🏦 &nbsp;Área Bancária</div>
-            <div class="subjects-grid" id="grid-bancaria"></div>
-        </div>
+            <!-- ÁREA: FISCAL E DE CONTROLE -->
+            <div class="area-block">
+                <div class="area-title">💰 &nbsp;Área Fiscal e de Controle</div>
+                <div class="subjects-grid" id="grid-fiscal"></div>
+            </div>
 
-        <!-- OPÇÕES -->
-        <div id="options-panel">
-            <div>
-                <div class="opt-group-title">Dificuldade</div>
-                <div class="radio-row">
-                    <div class="radio-pill"><input type="radio" name="dif" id="dif-all" value="all" checked><label
-                            for="dif-all">Todas</label></div>
-                    <div class="radio-pill"><input type="radio" name="dif" id="dif-l" value="l"><label
-                            for="dif-l">Básico</label></div>
-                    <div class="radio-pill"><input type="radio" name="dif" id="dif-m" value="m"><label
-                            for="dif-m">Intermediário</label></div>
-                    <div class="radio-pill"><input type="radio" name="dif" id="dif-h" value="h"><label
-                            for="dif-h">Avançado</label></div>
+            <!-- ÁREA: ADMINISTRATIVA -->
+            <div class="area-block">
+                <div class="area-title">🏛️ &nbsp;Área Administrativa</div>
+                <div class="subjects-grid" id="grid-administrativa"></div>
+            </div>
+
+            <!-- ÁREA: SEGURANÇA PÚBLICA -->
+            <div class="area-block">
+                <div class="area-title">🛡️ &nbsp;Segurança Pública</div>
+                <div class="subjects-grid" id="grid-seguranca"></div>
+            </div>
+
+            <!-- ÁREA: BANCÁRIA -->
+            <div class="area-block">
+                <div class="area-title">🏦 &nbsp;Área Bancária</div>
+                <div class="subjects-grid" id="grid-bancaria"></div>
+            </div>
+
+            <!-- OPÇÕES -->
+            <div id="options-panel">
+                <div>
+                    <div class="opt-group-title">Dificuldade</div>
+                    <div class="radio-row">
+                        <div class="radio-pill"><input type="radio" name="dif" id="dif-all" value="all" checked><label
+                                for="dif-all">Todas</label></div>
+                        <div class="radio-pill"><input type="radio" name="dif" id="dif-l" value="l"><label
+                                for="dif-l">Básico</label></div>
+                        <div class="radio-pill"><input type="radio" name="dif" id="dif-m" value="m"><label
+                                for="dif-m">Intermediário</label></div>
+                        <div class="radio-pill"><input type="radio" name="dif" id="dif-h" value="h"><label
+                                for="dif-h">Avançado</label></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="opt-group-title">Questões por matéria</div>
+                    <div class="radio-row">
+                        <div class="radio-pill"><input type="radio" name="maxPer" id="mp-5" value="5"><label
+                                for="mp-5">5</label></div>
+                        <div class="radio-pill"><input type="radio" name="maxPer" id="mp-10" value="10" checked><label
+                                for="mp-10">10</label></div>
+                        <div class="radio-pill"><input type="radio" name="maxPer" id="mp-15" value="15"><label
+                                for="mp-15">15</label></div>
+                        <div class="radio-pill"><input type="radio" name="maxPer" id="mp-20" value="20"><label
+                                for="mp-20">20</label></div>
+                        <div class="radio-pill"><input type="radio" name="maxPer" id="mp-0" value="0"><label
+                                for="mp-0">Todas</label></div>
+                    </div>
                 </div>
             </div>
-            <div>
-                <div class="opt-group-title">Questões por matéria</div>
-                <div class="radio-row">
-                    <div class="radio-pill"><input type="radio" name="maxPer" id="mp-5" value="5"><label
-                            for="mp-5">5</label></div>
-                    <div class="radio-pill"><input type="radio" name="maxPer" id="mp-10" value="10" checked><label
-                            for="mp-10">10</label></div>
-                    <div class="radio-pill"><input type="radio" name="maxPer" id="mp-15" value="15"><label
-                            for="mp-15">15</label></div>
-                    <div class="radio-pill"><input type="radio" name="maxPer" id="mp-20" value="20"><label
-                            for="mp-20">20</label></div>
-                    <div class="radio-pill"><input type="radio" name="maxPer" id="mp-0" value="0"><label
-                            for="mp-0">Todas</label></div>
-                </div>
-            </div>
+
+        </div><!-- /#sim-body -->
+
+        <!-- ACTION BAR -->
+        <div id="action-bar">
+            <span id="action-summary">Nenhuma matéria selecionada</span>
+            <button id="btn-montar" onclick="montarSimulado()" disabled>Montar Simulado →</button>
         </div>
-
-    </div><!-- /#sim-body -->
-
-    <!-- ACTION BAR -->
-    <div id="action-bar">
-        <span id="action-summary">Nenhuma matéria selecionada</span>
-        <button id="btn-montar" onclick="montarSimulado()" disabled>Montar Simulado →</button>
-    </div>
+    </main>
 
     <script>
         // ── Dados dos subjects ─────────────────────────────────────────────────
@@ -582,6 +590,7 @@
         updateSummary();
     </script>
     <div id="footer-placeholder"></div>
+    <script src="../../assets/js/main.js"></script>
     <script src="../../assets/js/components.js"></script>
 
 </body>
