@@ -1,11 +1,40 @@
+import base64
 import datetime as dt
 import io
 import json
 import os
+import re
 import sqlite3
+import urllib.error
+import urllib.parse
+import urllib.request
 import uuid
 from functools import wraps
 from pathlib import Path
+
+try:
+    from google.analytics.data_v1beta import BetaAnalyticsDataClient
+    from google.analytics.data_v1beta.types import (
+        DateRange, Dimension, Metric, OrderBy, RunReportRequest,
+    )
+    from google.oauth2.service_account import Credentials as ServiceAccountCredentials
+    GA4_AVAILABLE = True
+except Exception:
+    GA4_AVAILABLE = False
+
+try:
+    from flask_limiter import Limiter
+    from flask_limiter.util import get_remote_address
+    LIMITER_AVAILABLE = True
+except Exception:
+    LIMITER_AVAILABLE = False
+
+try:
+    from cryptography.fernet import Fernet
+    import hashlib
+    CRYPTO_AVAILABLE = True
+except Exception:
+    CRYPTO_AVAILABLE = False
 
 from docx import Document
 from docx.shared import Inches
@@ -40,6 +69,33 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 app.config['SECRET_KEY'] = os.getenv('IDIALOG_SECRET_KEY', 'idialog-dev-secret-key')
 
 CORS(app, resources={r"/api/*": {"origins": "*"}, r"/uploads/*": {"origins": "*"}})
+
+if LIMITER_AVAILABLE:
+    limiter = Limiter(get_remote_address, app=app, default_limits=[], storage_uri='memory://')
+else:
+    limiter = None
+
+def _get_fernet():
+    if not CRYPTO_AVAILABLE:
+        return None
+    raw = app.config['SECRET_KEY'].encode()
+    key = base64.urlsafe_b64encode(hashlib.sha256(raw).digest())
+    return Fernet(key)
+
+def _encrypt(value: str) -> str:
+    f = _get_fernet()
+    if not f or not value:
+        return value
+    return f.encrypt(value.encode()).decode()
+
+def _decrypt(value: str) -> str:
+    f = _get_fernet()
+    if not f or not value:
+        return value
+    try:
+        return f.decrypt(value.encode()).decode()
+    except Exception:
+        return value
 
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
@@ -363,6 +419,61 @@ def init_db():
 
     ensure_default_site_admin(conn)
 
+    # ── New tables for CMS v2 ──
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS analytics_config (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ga4_measurement_id TEXT NOT NULL DEFAULT '',
+            ga4_property_id TEXT NOT NULL DEFAULT '',
+            ga4_service_account_json TEXT NOT NULL DEFAULT '',
+            updated_at TEXT NOT NULL DEFAULT ''
+        )
+        """
+    )
+
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS page_blocks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            page_id TEXT NOT NULL,
+            block_key TEXT NOT NULL,
+            content_html TEXT NOT NULL DEFAULT '',
+            updated_at TEXT NOT NULL,
+            UNIQUE(page_id, block_key)
+        )
+        """
+    )
+
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS github_config (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            github_pat TEXT NOT NULL DEFAULT '',
+            repo_owner TEXT NOT NULL DEFAULT '',
+            repo_name TEXT NOT NULL DEFAULT '',
+            branch TEXT NOT NULL DEFAULT 'main',
+            updated_at TEXT NOT NULL DEFAULT ''
+        )
+        """
+    )
+
+    conn.commit()
+    conn.close()
+
+
+def migrate_db():
+    """Add new columns to existing tables without breaking existing data."""
+    conn = get_db()
+    cur = conn.cursor()
+    existing_cols = [row[1] for row in cur.execute('PRAGMA table_info(content_items)').fetchall()]
+    for col_name, col_type in [
+        ('meta_description', 'TEXT'),
+        ('meta_keywords', 'TEXT'),
+        ('canonical_url', 'TEXT'),
+    ]:
+        if col_name not in existing_cols:
+            cur.execute(f"ALTER TABLE content_items ADD COLUMN {col_name} {col_type} DEFAULT ''")
     conn.commit()
     conn.close()
 
@@ -774,6 +885,9 @@ def normalize_content_payload(payload):
         'cover_path': (payload.get('cover_path') or '').strip(),
         'seo_title': (payload.get('seo_title') or '').strip(),
         'seo_description': (payload.get('seo_description') or '').strip(),
+        'meta_description': (payload.get('meta_description') or '').strip(),
+        'meta_keywords': (payload.get('meta_keywords') or '').strip(),
+        'canonical_url': (payload.get('canonical_url') or '').strip(),
         'extra_json': json.dumps(extra, ensure_ascii=False),
         'published_at': published_at,
     }
@@ -1056,8 +1170,9 @@ def create_content():
         INSERT INTO content_items (
             company_id, author_user_id, content_type, title, slug, status, context,
             category, summary, body_html, cover_path, seo_title, seo_description,
+            meta_description, meta_keywords, canonical_url,
             extra_json, published_at, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
             request.current_user['company_id'],
@@ -1073,6 +1188,9 @@ def create_content():
             content['cover_path'],
             content['seo_title'],
             content['seo_description'],
+            content['meta_description'],
+            content['meta_keywords'],
+            content['canonical_url'],
             content['extra_json'],
             content['published_at'],
             timestamp,
@@ -1114,6 +1232,7 @@ def update_content(content_id):
         UPDATE content_items
         SET content_type = ?, title = ?, slug = ?, status = ?, context = ?, category = ?,
             summary = ?, body_html = ?, cover_path = ?, seo_title = ?, seo_description = ?,
+            meta_description = ?, meta_keywords = ?, canonical_url = ?,
             extra_json = ?, published_at = ?, updated_at = ?
         WHERE id = ? AND company_id = ?
         """,
@@ -1129,6 +1248,9 @@ def update_content(content_id):
             content['cover_path'],
             content['seo_title'],
             content['seo_description'],
+            content['meta_description'],
+            content['meta_keywords'],
+            content['canonical_url'],
             content['extra_json'],
             content['published_at'],
             now_iso(),
@@ -3406,6 +3528,377 @@ def export_project_excel(project_id):
 
 
 init_db()
+migrate_db()
+
+# ══════════════════════════════════════════════════════════
+# NEW ENDPOINTS — CMS v2
+# ══════════════════════════════════════════════════════════
+
+# ── Single content by ID ──────────────────────────────────
+@app.route('/api/content/<int:content_id>', methods=['GET'])
+@auth_required
+def get_content_by_id(content_id):
+    conn = get_db()
+    row = get_content_for_company(conn, request.current_user['company_id'], content_id)
+    conn.close()
+    if not row:
+        return jsonify({'error': 'Conteudo nao encontrado.'}), 404
+    return jsonify({'item': row_to_content(row)})
+
+
+# ── Change password ───────────────────────────────────────
+@app.route('/api/auth/change-password', methods=['POST'])
+@auth_required
+def change_password():
+    payload = request.get_json(force=True, silent=True) or {}
+    old_pw = payload.get('old_password') or ''
+    new_pw = payload.get('new_password') or ''
+    if not old_pw or len(new_pw) < 8:
+        return jsonify({'error': 'Senha atual obrigatoria e nova senha deve ter ao menos 8 caracteres.'}), 400
+    conn = get_db()
+    user = conn.execute('SELECT id, password_hash FROM users WHERE id = ?',
+                        (request.current_user['id'],)).fetchone()
+    if not user or not check_password_hash(user['password_hash'], old_pw):
+        conn.close()
+        return jsonify({'error': 'Senha atual incorreta.'}), 403
+    conn.execute('UPDATE users SET password_hash = ? WHERE id = ?',
+                 (generate_password_hash(new_pw), request.current_user['id']))
+    conn.commit()
+    conn.close()
+    return jsonify({'ok': True})
+
+
+# ── Analytics config ─────────────────────────────────────
+@app.route('/api/analytics/config', methods=['GET'])
+@auth_required
+def get_analytics_config():
+    conn = get_db()
+    row = conn.execute('SELECT * FROM analytics_config ORDER BY id LIMIT 1').fetchone()
+    conn.close()
+    if not row:
+        return jsonify({'ga4_measurement_id': '', 'ga4_property_id': '', 'ga4_service_account_json': '', 'configured': False})
+    data = dict(row)
+    data['configured'] = bool(data.get('ga4_property_id') and data.get('ga4_service_account_json'))
+    data.pop('ga4_service_account_json', None)  # never return the raw JSON to the frontend
+    data['has_service_account'] = bool(row['ga4_service_account_json'])
+    return jsonify(data)
+
+
+@app.route('/api/analytics/config', methods=['PUT'])
+@auth_required
+def save_analytics_config():
+    payload = request.get_json(force=True, silent=True) or {}
+    mid = (payload.get('ga4_measurement_id') or '').strip()
+    pid = (payload.get('ga4_property_id') or '').strip()
+    saj = (payload.get('ga4_service_account_json') or '').strip()
+    ts = now_iso()
+    conn = get_db()
+    existing = conn.execute('SELECT id, ga4_service_account_json FROM analytics_config ORDER BY id LIMIT 1').fetchone()
+    if existing:
+        # Keep old service account JSON if not provided
+        final_saj = saj if saj else (existing['ga4_service_account_json'] or '')
+        conn.execute(
+            'UPDATE analytics_config SET ga4_measurement_id=?, ga4_property_id=?, ga4_service_account_json=?, updated_at=? WHERE id=?',
+            (mid, pid, _encrypt(final_saj), ts, existing['id'])
+        )
+    else:
+        conn.execute(
+            'INSERT INTO analytics_config (ga4_measurement_id, ga4_property_id, ga4_service_account_json, updated_at) VALUES (?,?,?,?)',
+            (mid, pid, _encrypt(saj), ts)
+        )
+    conn.commit()
+    conn.close()
+    return jsonify({'ok': True})
+
+
+# ── GA4 Data API proxy ────────────────────────────────────
+@app.route('/api/analytics/ga4', methods=['GET'])
+@auth_required
+def ga4_report():
+    if not GA4_AVAILABLE:
+        return jsonify({'error': 'google-analytics-data nao instalado no servidor.'}), 503
+
+    # Prefer env vars, fall back to database
+    property_id = os.getenv('GA4_PROPERTY_ID', '').strip()
+    sa_json_str = os.getenv('GA4_SERVICE_ACCOUNT_JSON', '').strip()
+
+    if not property_id or not sa_json_str:
+        conn = get_db()
+        row = conn.execute('SELECT * FROM analytics_config ORDER BY id LIMIT 1').fetchone()
+        conn.close()
+        if row:
+            property_id = property_id or row['ga4_property_id']
+            if not sa_json_str and row['ga4_service_account_json']:
+                sa_json_str = _decrypt(row['ga4_service_account_json'])
+
+    if not property_id or not sa_json_str:
+        return jsonify({'configured': False}), 200
+
+    try:
+        sa_info = json.loads(sa_json_str)
+        creds = ServiceAccountCredentials.from_service_account_info(
+            sa_info,
+            scopes=['https://www.googleapis.com/auth/analytics.readonly']
+        )
+        client = BetaAnalyticsDataClient(credentials=creds)
+
+        # Overview: sessions, pageviews, users — last 30 days
+        overview_req = RunReportRequest(
+            property=f'properties/{property_id}',
+            date_ranges=[DateRange(start_date='30daysAgo', end_date='today')],
+            metrics=[
+                Metric(name='sessions'),
+                Metric(name='screenPageViews'),
+                Metric(name='totalUsers'),
+                Metric(name='averageSessionDuration'),
+            ],
+        )
+        overview_resp = client.run_report(overview_req)
+        row_ov = overview_resp.rows[0].metric_values if overview_resp.rows else []
+        overview = {
+            'sessions': int(row_ov[0].value) if row_ov else 0,
+            'pageviews': int(row_ov[1].value) if row_ov else 0,
+            'users': int(row_ov[2].value) if row_ov else 0,
+            'avg_duration': round(float(row_ov[3].value)) if row_ov else 0,
+        }
+
+        # Daily pageviews — last 30 days
+        daily_req = RunReportRequest(
+            property=f'properties/{property_id}',
+            date_ranges=[DateRange(start_date='30daysAgo', end_date='today')],
+            dimensions=[Dimension(name='date')],
+            metrics=[Metric(name='screenPageViews')],
+            order_bys=[OrderBy(dimension=OrderBy.DimensionOrderBy(dimension_name='date'))],
+        )
+        daily_resp = client.run_report(daily_req)
+        daily = [
+            {'date': r.dimension_values[0].value, 'pageviews': int(r.metric_values[0].value)}
+            for r in daily_resp.rows
+        ]
+
+        # Top 10 pages
+        pages_req = RunReportRequest(
+            property=f'properties/{property_id}',
+            date_ranges=[DateRange(start_date='30daysAgo', end_date='today')],
+            dimensions=[Dimension(name='pagePath')],
+            metrics=[Metric(name='screenPageViews'), Metric(name='totalUsers')],
+            order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name='screenPageViews'), desc=True)],
+            limit=10,
+        )
+        pages_resp = client.run_report(pages_req)
+        top_pages = [
+            {
+                'path': r.dimension_values[0].value,
+                'pageviews': int(r.metric_values[0].value),
+                'users': int(r.metric_values[1].value),
+            }
+            for r in pages_resp.rows
+        ]
+
+        # Traffic sources
+        sources_req = RunReportRequest(
+            property=f'properties/{property_id}',
+            date_ranges=[DateRange(start_date='30daysAgo', end_date='today')],
+            dimensions=[Dimension(name='sessionDefaultChannelGroup')],
+            metrics=[Metric(name='sessions')],
+            order_bys=[OrderBy(metric=OrderBy.MetricOrderBy(metric_name='sessions'), desc=True)],
+            limit=8,
+        )
+        sources_resp = client.run_report(sources_req)
+        sources = [
+            {'channel': r.dimension_values[0].value, 'sessions': int(r.metric_values[0].value)}
+            for r in sources_resp.rows
+        ]
+
+        return jsonify({'configured': True, 'overview': overview, 'daily': daily, 'top_pages': top_pages, 'sources': sources})
+
+    except Exception as exc:
+        return jsonify({'error': str(exc), 'configured': True}), 500
+
+
+# ── GitHub config ─────────────────────────────────────────
+@app.route('/api/github/config', methods=['GET'])
+@auth_required
+def get_github_config():
+    conn = get_db()
+    row = conn.execute('SELECT * FROM github_config ORDER BY id LIMIT 1').fetchone()
+    conn.close()
+    if not row:
+        return jsonify({'repo_owner': '', 'repo_name': '', 'branch': 'main', 'has_pat': False, 'configured': False})
+    return jsonify({
+        'repo_owner': row['repo_owner'],
+        'repo_name': row['repo_name'],
+        'branch': row['branch'],
+        'has_pat': bool(row['github_pat']),
+        'configured': bool(row['repo_owner'] and row['repo_name'] and row['github_pat']),
+    })
+
+
+@app.route('/api/github/config', methods=['PUT'])
+@auth_required
+def save_github_config():
+    payload = request.get_json(force=True, silent=True) or {}
+    owner = (payload.get('repo_owner') or '').strip()
+    repo = (payload.get('repo_name') or '').strip()
+    branch = (payload.get('branch') or 'main').strip()
+    pat = (payload.get('github_pat') or '').strip()
+    ts = now_iso()
+    conn = get_db()
+    existing = conn.execute('SELECT id, github_pat FROM github_config ORDER BY id LIMIT 1').fetchone()
+    if existing:
+        final_pat = pat if pat else (existing['github_pat'] or '')
+        conn.execute(
+            'UPDATE github_config SET repo_owner=?, repo_name=?, branch=?, github_pat=?, updated_at=? WHERE id=?',
+            (owner, repo, branch, _encrypt(final_pat), ts, existing['id'])
+        )
+    else:
+        conn.execute(
+            'INSERT INTO github_config (repo_owner, repo_name, branch, github_pat, updated_at) VALUES (?,?,?,?,?)',
+            (owner, repo, branch, _encrypt(pat), ts)
+        )
+    conn.commit()
+    conn.close()
+    return jsonify({'ok': True})
+
+
+# ── GitHub API proxy ──────────────────────────────────────
+def _safe_path(path_str):
+    """Reject paths with traversal attempts or absolute paths."""
+    clean = (path_str or '').strip()
+    if not clean or '..' in clean or clean.startswith('/'):
+        return None
+    # Allow only path chars: letters, digits, -, _, ., /
+    if not re.match(r'^[\w\-./]+$', clean):
+        return None
+    return clean
+
+
+@app.route('/api/github/proxy', methods=['POST'])
+@auth_required
+def github_proxy():
+    payload = request.get_json(force=True, silent=True) or {}
+    method = (payload.get('method') or 'GET').upper()
+    path = _safe_path(payload.get('path') or '')
+    body = payload.get('body')  # dict or None
+
+    if method not in {'GET', 'PUT'}:
+        return jsonify({'error': 'Metodo nao permitido.'}), 405
+    if not path:
+        return jsonify({'error': 'Caminho invalido.'}), 400
+
+    conn = get_db()
+    row = conn.execute('SELECT * FROM github_config ORDER BY id LIMIT 1').fetchone()
+    conn.close()
+    if not row or not row['github_pat']:
+        return jsonify({'error': 'GitHub nao configurado.'}), 503
+
+    pat = _decrypt(row['github_pat'])
+    owner = row['repo_owner']
+    repo_name = row['repo_name']
+
+    url = f'https://api.github.com/repos/{owner}/{repo_name}/{path}'
+    headers = {
+        'Authorization': f'token {pat}',
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'User-Agent': 'iDialog-Admin/2.0',
+    }
+
+    try:
+        req_body = json.dumps(body).encode('utf-8') if body else None
+        if req_body:
+            headers['Content-Type'] = 'application/json'
+
+        gh_req = urllib.request.Request(url, data=req_body, headers=headers, method=method)
+        with urllib.request.urlopen(gh_req, timeout=15) as resp:
+            resp_body = resp.read()
+            resp_data = json.loads(resp_body) if resp_body else {}
+            return jsonify(resp_data), resp.status
+    except urllib.error.HTTPError as exc:
+        error_body = exc.read().decode('utf-8', errors='replace')
+        try:
+            error_data = json.loads(error_body)
+        except Exception:
+            error_data = {'message': error_body}
+        return jsonify(error_data), exc.code
+    except Exception as exc:
+        return jsonify({'error': str(exc)}), 502
+
+
+# ── Media library ─────────────────────────────────────────
+@app.route('/api/media', methods=['GET'])
+@auth_required
+def list_media():
+    files = []
+    for fp in sorted(UPLOADS_DIR.iterdir(), key=lambda p: p.stat().st_mtime, reverse=True):
+        if not fp.is_file():
+            continue
+        stat = fp.stat()
+        ext = fp.suffix.lower().lstrip('.')
+        mime_type = 'image' if ext in {'png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'} else 'video' if ext in {'mp4', 'webm', 'mov'} else 'file'
+        files.append({
+            'filename': fp.name,
+            'url': f"{request.host_url.rstrip('/')}/uploads/{fp.name}",
+            'size': stat.st_size,
+            'mime_type': mime_type,
+            'modified': dt.datetime.fromtimestamp(stat.st_mtime).isoformat(),
+        })
+    return jsonify({'files': files})
+
+
+@app.route('/api/media/<path:filename>', methods=['DELETE'])
+@auth_required
+def delete_media(filename):
+    # Validate filename — no path traversal
+    safe_name = secure_filename(filename)
+    if not safe_name or safe_name != filename:
+        return jsonify({'error': 'Nome de arquivo invalido.'}), 400
+    fp = UPLOADS_DIR / safe_name
+    if not fp.exists() or not fp.is_file():
+        return jsonify({'error': 'Arquivo nao encontrado.'}), 404
+    fp.unlink()
+    return jsonify({'ok': True})
+
+
+# ── Page blocks (public) ──────────────────────────────────
+@app.route('/api/public/pages/<page_id>/blocks', methods=['GET'])
+def public_page_blocks(page_id):
+    clean_id = re.sub(r'[^\w\-]', '', page_id)
+    conn = get_db()
+    rows = conn.execute('SELECT block_key, content_html FROM page_blocks WHERE page_id = ?', (clean_id,)).fetchall()
+    conn.close()
+    return jsonify({'blocks': {row['block_key']: row['content_html'] for row in rows}})
+
+
+# ── Page blocks (admin) ───────────────────────────────────
+@app.route('/api/pages/<page_id>/blocks', methods=['GET'])
+@auth_required
+def list_page_blocks(page_id):
+    clean_id = re.sub(r'[^\w\-]', '', page_id)
+    conn = get_db()
+    rows = conn.execute('SELECT block_key, content_html, updated_at FROM page_blocks WHERE page_id = ?', (clean_id,)).fetchall()
+    conn.close()
+    return jsonify({'blocks': [dict(r) for r in rows]})
+
+
+@app.route('/api/pages/<page_id>/blocks/<block_key>', methods=['PUT'])
+@auth_required
+def save_page_block(page_id, block_key):
+    clean_id = re.sub(r'[^\w\-]', '', page_id)
+    clean_key = re.sub(r'[^\w\-]', '', block_key)
+    payload = request.get_json(force=True, silent=True) or {}
+    content_html = payload.get('content_html') or ''
+    ts = now_iso()
+    conn = get_db()
+    conn.execute(
+        'INSERT INTO page_blocks (page_id, block_key, content_html, updated_at) VALUES (?,?,?,?) '
+        'ON CONFLICT(page_id, block_key) DO UPDATE SET content_html=excluded.content_html, updated_at=excluded.updated_at',
+        (clean_id, clean_key, content_html, ts)
+    )
+    conn.commit()
+    conn.close()
+    return jsonify({'ok': True})
+
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', '5001'))

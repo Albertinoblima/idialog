@@ -1,1330 +1,1092 @@
+﻿/* ═══════════════════════════════════════════════════
+   iDialog CMS — Admin Panel v2 · admin.js
+   WordPress-like: sidebar navigation, TinyMCE, GA4,
+   GitHub/Monaco, media library, settings
+═══════════════════════════════════════════════════ */
 (function () {
     'use strict';
 
-    const ROCKET_CURSOR_CONFIG_KEY = 'idialog-rocket-cursor-settings';
-    const ADMIN_TOKEN_KEY = 'idialog-admin-token';
-    const ADMIN_API_KEY = 'idialog-admin-api';
+    // ── Config ────────────────────────────────────────────────────────────────
+    const TOKEN_KEY = 'idialog-admin-token';
+    const API_KEY   = 'idialog-admin-api';
+    const CURSOR_KEY = 'idialog-rocket-cursor-settings';
 
     const state = {
-        token: localStorage.getItem(ADMIN_TOKEN_KEY) || '',
-        apiBase: localStorage.getItem(ADMIN_API_KEY) || localStorage.getItem('idialog-tools-api') || '/api',
+        token:   localStorage.getItem(TOKEN_KEY) || '',
+        apiBase: localStorage.getItem(API_KEY)   || 'https://idialog-production.up.railway.app/api',
         contents: [],
-        widgets: [],
-        clockTimer: null,
+        widgets:  [],
+        media:    [],
+        monacoEditor: null,
+        monacoModel: null,
+        currentFileSha: null,
+        currentFilePath: null,
+        monacoUnsaved: false,
+        confirmCallback: null,
+        tinyInit: false,
+        chartDaily: null,
+        chartSources: null,
     };
 
-    const el = {
-        authView: document.getElementById('auth-view'),
-        dashboardView: document.getElementById('dashboard-view'),
-        loginForm: document.getElementById('login-form'),
-        contentForm: document.getElementById('content-form'),
-        contentReset: document.getElementById('content-reset'),
-        contentList: document.getElementById('content-list'),
-        contentType: document.getElementById('content-type'),
-        contentTitle: document.getElementById('content-title'),
-        contentSlug: document.getElementById('content-slug'),
-        contentPublishedAt: document.getElementById('content-published-at'),
-        contentHtmlFields: document.getElementById('content-html-fields'),
-        contentSimuladoFields: document.getElementById('content-simulado-fields'),
-        contentCoverFile: document.getElementById('content-cover-file'),
-        contentCoverPreview: document.getElementById('content-cover-preview'),
-        contentStats: document.getElementById('content-stats'),
-        scheduledList: document.getElementById('scheduled-list'),
-        widgetForm: document.getElementById('widget-form'),
-        widgetReset: document.getElementById('widget-reset'),
-        widgetsList: document.getElementById('widgets-list'),
-        widgetType: document.getElementById('widget-type'),
-        widgetMediaFile: document.getElementById('widget-media-file'),
-        widgetMediaFields: document.getElementById('widget-media-fields'),
-        widgetCodeFields: document.getElementById('widget-code-fields'),
-        widgetPreview: document.getElementById('widget-preview'),
-        cursorForm: document.getElementById('cursor-form'),
-        cursorReset: document.getElementById('cursor-reset'),
-        cursorScale: document.getElementById('cursor-scale'),
-        cursorScaleValue: document.getElementById('cursor-scale-value'),
-        cursorGlow: document.getElementById('cursor-glow'),
-        cursorGlowValue: document.getElementById('cursor-glow-value'),
-        cursorTailWidth: document.getElementById('cursor-tail-width'),
-        cursorTailWidthValue: document.getElementById('cursor-tail-width-value'),
-        cursorTailLength: document.getElementById('cursor-tail-length'),
-        cursorTailLengthValue: document.getElementById('cursor-tail-length-value'),
-        cursorSmokeSize: document.getElementById('cursor-smoke-size'),
-        cursorSmokeSizeValue: document.getElementById('cursor-smoke-size-value'),
-        cursorTrailDensity: document.getElementById('cursor-trail-density'),
-        cursorTrailDensityValue: document.getElementById('cursor-trail-density-value'),
-        logoutBtn: document.getElementById('logout-btn'),
-        toast: document.getElementById('toast'),
-    };
-
-    // ── Toast ─────────────────────────────────────────────────────────────────
-    function showToast(message, isError) {
-        if (!el.toast) {
-            return;
-        }
-        el.toast.textContent = message;
-        el.toast.style.borderColor = isError
-            ? 'rgba(255, 80, 80, 0.45)'
-            : 'rgba(0, 229, 255, 0.35)';
-        el.toast.classList.add('show');
-        window.clearTimeout(showToast._timer);
-        showToast._timer = window.setTimeout(() => el.toast.classList.remove('show'), 2800);
+    // ── API helper ───────────────────────────────────────────────────────────
+    async function api(method, path, body) {
+        const opts = { method, headers: { 'Content-Type': 'application/json' } };
+        if (state.token) opts.headers['Authorization'] = 'Bearer ' + state.token;
+        if (body !== undefined) opts.body = JSON.stringify(body);
+        const res = await fetch(state.apiBase + path, opts);
+        if (res.status === 204) return {};
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.message || data.error || 'Erro ' + res.status);
+        return data;
     }
 
-    // ── Utilities ─────────────────────────────────────────────────────────────
-    function getApiBase() {
-        return (state.apiBase || '').replace(/\/$/, '');
+    // ── Toast ────────────────────────────────────────────────────────────────
+    function toast(msg, type) {
+        type = type || 'success';
+        var icons = { success: 'fa-circle-check', error: 'fa-circle-exclamation', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+        var el = document.createElement('div');
+        el.className = 'toast toast-' + type;
+        el.innerHTML = '<i class="fas ' + (icons[type] || icons.info) + '"></i>' + escHtml(msg);
+        document.getElementById('toast-container').appendChild(el);
+        setTimeout(function() {
+            el.classList.add('toast-out');
+            el.addEventListener('animationend', function() { el.remove(); });
+        }, 3500);
     }
 
-    function escapeHtml(value) {
-        return String(value || '')
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
+    // ── Utility ──────────────────────────────────────────────────────────────
+    function escHtml(s) {
+        if (typeof s !== 'string') return '';
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function fmtDate(str) {
+        if (!str) return '—';
+        var d = new Date(str);
+        return isNaN(d) ? str : d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
+    }
+    function fmtNum(n) {
+        if (n == null) return '—';
+        return Number(n).toLocaleString('pt-BR');
+    }
+    function slugify(s) {
+        return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+            .replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
+    }
+    function statusBadge(s) {
+        var map = { published: ['badge-published','Publicado'], draft: ['badge-draft','Rascunho'], archived: ['badge-archived','Arquivado'], scheduled: ['badge-scheduled','Agendado'] };
+        var pair = map[s] || ['badge-draft', s || '?'];
+        return '<span class="badge ' + pair[0] + '">' + escHtml(pair[1]) + '</span>';
+    }
+    function typeBadge(t) {
+        var map = { blog_post: 'Post', page: 'Página', simulado: 'Simulado' };
+        return '<span class="badge badge-draft">' + escHtml(map[t] || t) + '</span>';
+    }
+    function showConfirm(title, msg, cb) {
+        document.getElementById('confirm-title').textContent = title;
+        document.getElementById('confirm-message').textContent = msg;
+        state.confirmCallback = cb;
+        openModal('modal-confirm');
     }
 
-    function slugify(value) {
-        return String(value || '')
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLowerCase()
-            .replace(/[^a-z0-9_-]+/g, '-')
-            .replace(/^-+|-+$/g, '')
-            .replace(/-{2,}/g, '-');
-    }
+    // ── Modal ────────────────────────────────────────────────────────────────
+    function openModal(id) { document.getElementById(id).removeAttribute('hidden'); }
+    function closeModal(id) { document.getElementById(id).setAttribute('hidden', ''); }
 
-    function parseDateSafe(value) {
-        if (!value) {
-            return null;
+    document.addEventListener('click', function(e) {
+        var t = e.target.closest('[data-close-modal]');
+        if (t) closeModal(t.dataset.closeModal);
+        if (e.target.classList.contains('modal-backdrop')) {
+            var modal = e.target.closest('.wp-modal');
+            if (modal) closeModal(modal.id);
         }
-        const parsed = new Date(value);
-        if (Number.isNaN(parsed.getTime())) {
-            return null;
-        }
-        return parsed;
-    }
+    });
+    document.getElementById('btn-confirm-cancel').addEventListener('click', function() { closeModal('modal-confirm'); });
+    document.getElementById('btn-confirm-ok').addEventListener('click', function() {
+        closeModal('modal-confirm');
+        if (typeof state.confirmCallback === 'function') state.confirmCallback();
+    });
 
-    function toDatetimeLocalValue(value) {
-        const parsed = parseDateSafe(value);
-        if (!parsed) {
-            return '';
-        }
-
-        const year = parsed.getFullYear();
-        const month = String(parsed.getMonth() + 1).padStart(2, '0');
-        const day = String(parsed.getDate()).padStart(2, '0');
-        const hour = String(parsed.getHours()).padStart(2, '0');
-        const minute = String(parsed.getMinutes()).padStart(2, '0');
-        return `${year}-${month}-${day}T${hour}:${minute}`;
-    }
-
-    function fromDatetimeLocalToIso(value) {
-        const raw = String(value || '').trim();
-        if (!raw) {
-            return '';
-        }
-
-        const parsed = parseDateSafe(raw);
-        if (!parsed) {
-            throw new Error('Data/hora de publicacao invalida.');
-        }
-
-        return parsed.toISOString();
-    }
-
-    function formatDateTimePtBr(value) {
-        const parsed = parseDateSafe(value);
-        if (!parsed) {
-            return '-';
-        }
-
-        return parsed.toLocaleString('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-    }
-
-    function isScheduledPublication(item) {
-        if (!item || item.status !== 'published') {
-            return false;
-        }
-        const parsed = parseDateSafe(item.published_at);
-        return Boolean(parsed && parsed.getTime() > Date.now());
-    }
-
-    function formatCountdown(publishedAt) {
-        const target = parseDateSafe(publishedAt);
-        if (!target) {
-            return '';
-        }
-
-        const diffMs = target.getTime() - Date.now();
-        if (diffMs <= 0) {
-            return 'publica em instantes';
-        }
-
-        const totalMinutes = Math.floor(diffMs / 60000);
-        const days = Math.floor(totalMinutes / 1440);
-        const hours = Math.floor((totalMinutes % 1440) / 60);
-        const minutes = totalMinutes % 60;
-
-        const parts = [];
-        if (days > 0) parts.push(`${days}d`);
-        if (hours > 0 || days > 0) parts.push(`${hours}h`);
-        parts.push(`${minutes}min`);
-        return `em ${parts.join(' ')}`;
-    }
-
-    function startClockTick() {
-        if (state.clockTimer) {
-            window.clearInterval(state.clockTimer);
-        }
-
-        state.clockTimer = window.setInterval(() => {
-            renderContentLibrary();
-            renderScheduledAgenda();
-        }, 60000);
-    }
-
-    // ── HTTP ──────────────────────────────────────────────────────────────────
-    async function request(path, options) {
-        const headers = Object.assign({}, options && options.headers ? options.headers : {});
-        if (state.token) {
-            headers.Authorization = `Bearer ${state.token}`;
-        }
-
-        let response;
-        try {
-            response = await fetch(
-                `${getApiBase()}${path}`,
-                Object.assign({}, options || {}, { headers })
-            );
-        } catch (_err) {
-            throw new Error(
-                'Nao foi possivel conectar na API. Verifique a URL e se o backend esta online.'
-            );
-        }
-
-        const contentType = response.headers.get('content-type') || '';
-
-        if (!response.ok) {
-            let errorMessage = `Erro ${response.status}`;
-            if (contentType.includes('application/json')) {
-                const data = await response.json();
-                errorMessage = data.error || errorMessage;
-            }
-            throw new Error(errorMessage);
-        }
-
-        if (contentType.includes('application/json')) {
-            return response.json();
-        }
-
-        return response;
-    }
-
-    // ── Auth / session ────────────────────────────────────────────────────────
-    function setLoggedIn(loggedIn) {
-        if (el.authView) {
-            el.authView.hidden = loggedIn;
-        }
-        if (el.dashboardView) {
-            el.dashboardView.hidden = !loggedIn;
-        }
-        // Hide site header/footer when admin dashboard is active
-        var header = document.getElementById('header-placeholder');
-        var footer = document.getElementById('footer-placeholder');
-        if (header) header.hidden = loggedIn;
-        if (footer) footer.hidden = loggedIn;
-    }
-
-    async function handleLogin(event) {
-        event.preventDefault();
-        const formData = new FormData(el.loginForm);
-
-        try {
-            const data = await request('/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: formData.get('email'),
-                    password: formData.get('password'),
-                }),
-            });
-
-            state.token = data.token;
-            localStorage.setItem(ADMIN_TOKEN_KEY, state.token);
-            await loadDashboard();
-            showToast('Login realizado com sucesso.');
-        } catch (error) {
-            showToast(error.message, true);
-        }
-    }
-
-    function handleLogout() {
-        state.token = '';
-        state.contents = [];
-        state.widgets = [];
-        localStorage.removeItem(ADMIN_TOKEN_KEY);
-        setLoggedIn(false);
-        showToast('Sessao encerrada.');
-    }
-
-    async function loadDashboard() {
-        var loadingEl = document.getElementById('admin-loading');
-        if (loadingEl) loadingEl.hidden = false;
-
-        try {
-            const [contentRes, widgetsRes] = await Promise.all([
-                refreshContent(),
-                refreshWidgets(),
-            ]);
-            populateKpis();
-            setLoggedIn(true);
-            switchToTab('dashboard');
-        } catch (error) {
-            throw error;
-        } finally {
-            if (loadingEl) loadingEl.hidden = true;
-        }
-    }
-
-    function populateKpis() {
-        var total = state.contents.length;
-        var published = state.contents.filter(function (i) { return i.status === 'published'; }).length;
-        var scheduled = state.contents.filter(function (i) { return isScheduledPublication(i); }).length;
-        var drafts = state.contents.filter(function (i) { return i.status === 'draft'; }).length;
-        var simulados = state.contents.filter(function (i) { return i.content_type === 'simulado'; }).length;
-        var widgets = state.widgets.length;
-
-        var map = {
-            'kpi-total': total,
-            'kpi-published': published,
-            'kpi-scheduled': scheduled,
-            'kpi-drafts': drafts,
-            'kpi-widgets': widgets,
-            'kpi-simulados': simulados,
-        };
-        Object.keys(map).forEach(function (id) {
-            var e = document.getElementById(id);
-            if (e) e.textContent = map[id];
-        });
-    }
+    // ── Auth ─────────────────────────────────────────────────────────────────
+    var authView   = document.getElementById('auth-view');
+    var adminShell = document.getElementById('admin-shell');
+    var loginErr   = document.getElementById('login-error');
+    var loginBtn   = document.getElementById('login-btn');
 
     async function restoreSession() {
-        if (!state.token) {
-            setLoggedIn(false);
-            return;
-        }
-
+        if (!state.token) { showAuth(); return; }
         try {
-            await loadDashboard();
-        } catch (_err) {
+            var me = await api('GET', '/me');
+            showShell(me.email || 'Admin');
+        } catch(e) {
+            localStorage.removeItem(TOKEN_KEY);
             state.token = '';
-            localStorage.removeItem(ADMIN_TOKEN_KEY);
-            setLoggedIn(false);
+            showAuth();
         }
     }
 
-    // ── CMS ───────────────────────────────────────────────────────────────────
-    function contentTypeLabel(value) {
-        const labels = { page: 'Pagina', blog_post: 'Postagem', simulado: 'Simulado' };
-        return labels[value] || value;
+    function showAuth() {
+        authView.removeAttribute('hidden');
+        adminShell.setAttribute('hidden', '');
     }
 
-    function contentStatusLabel(value) {
-        const labels = { draft: 'Rascunho', published: 'Publicado', archived: 'Arquivado' };
-        return labels[value] || value;
+    function showShell(email) {
+        authView.setAttribute('hidden', '');
+        adminShell.removeAttribute('hidden');
+        document.getElementById('sidebar-username').textContent = email || 'Admin';
+        loadDashboard();
     }
 
-    function effectiveStatusLabel(item) {
-        if (isScheduledPublication(item)) {
-            return 'Agendado';
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        loginErr.setAttribute('hidden', '');
+        loginBtn.disabled = true;
+        loginBtn.querySelector('.btn-text').textContent = 'Entrando…';
+        try {
+            var email    = document.getElementById('login-email').value.trim();
+            var password = document.getElementById('login-password').value;
+            var data = await api('POST', '/auth/login', { email: email, password: password });
+            state.token = data.token;
+            localStorage.setItem(TOKEN_KEY, data.token);
+            showShell(email);
+        } catch(err) {
+            loginErr.textContent = err.message || 'Credenciais inválidas';
+            loginErr.removeAttribute('hidden');
+        } finally {
+            loginBtn.disabled = false;
+            loginBtn.querySelector('.btn-text').textContent = 'Entrar';
         }
-        return contentStatusLabel(item.status);
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', function() {
+        localStorage.removeItem(TOKEN_KEY);
+        state.token = '';
+        showAuth();
+    });
+
+    // ── Sidebar navigation ───────────────────────────────────────────────────
+    var tabTitles = {
+        dashboard: 'Dashboard',
+        posts: 'Posts · Blog',
+        'post-editor': 'Editor de Post',
+        pages: 'Editor de Páginas HTML',
+        media: 'Biblioteca de Mídia',
+        analytics: 'Analytics · GA4',
+        widgets: 'Widgets · Publicidade',
+        appearance: 'Aparência',
+        settings: 'Configurações'
+    };
+
+    function switchTab(name) {
+        document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+        document.querySelectorAll('.nav-item').forEach(function(a) { a.classList.remove('active'); });
+        var panel = document.getElementById('tab-' + name);
+        if (panel) panel.classList.add('active');
+        var navItem = document.querySelector('.nav-item[data-tab="' + name + '"]');
+        if (navItem) navItem.classList.add('active');
+        document.getElementById('topbar-title').textContent = tabTitles[name] || name;
+        if (name === 'posts')      loadPosts();
+        else if (name === 'analytics')  loadAnalytics();
+        else if (name === 'widgets')    loadWidgets();
+        else if (name === 'media')      loadMedia();
+        else if (name === 'pages')      loadPagesTab();
+        else if (name === 'appearance') loadAppearanceTab();
+        else if (name === 'settings')   loadSettings();
+        closeMobileSidebar();
     }
 
-    function effectiveStatusClass(item) {
-        if (isScheduledPublication(item)) {
-            return 'is-scheduled';
+    document.querySelectorAll('.nav-item[data-tab]').forEach(function(a) {
+        a.addEventListener('click', function(e) { e.preventDefault(); switchTab(a.dataset.tab); });
+    });
+
+    document.addEventListener('click', function(e) {
+        var qc = e.target.closest('[data-tab]:not(.nav-item)');
+        if (qc) switchTab(qc.dataset.tab);
+        var gt = e.target.closest('[data-goto]');
+        if (gt) {
+            var g = gt.dataset.goto;
+            if (g === 'posts-new') { switchTab('post-editor'); openPostEditor(null); }
+            else if (g === 'settings-github')    { switchTab('settings'); document.getElementById('settings-github').scrollIntoView({behavior:'smooth'}); }
+            else if (g === 'settings-analytics') { switchTab('settings'); document.getElementById('settings-analytics').scrollIntoView({behavior:'smooth'}); }
         }
-        if (item.status === 'published') {
-            return 'is-live';
-        }
-        if (item.status === 'archived') {
-            return 'is-paused';
-        }
-        return '';
+    });
+
+    var sidebarEl  = document.getElementById('admin-sidebar');
+    var overlayEl  = document.getElementById('sidebar-overlay');
+    document.getElementById('sidebar-toggle').addEventListener('click', function() {
+        sidebarEl.classList.add('open');
+        overlayEl.classList.add('active');
+    });
+    overlayEl.addEventListener('click', closeMobileSidebar);
+    function closeMobileSidebar() {
+        sidebarEl.classList.remove('open');
+        overlayEl.classList.remove('active');
     }
 
-    function scopeLabel(value) {
-        const labels = {
-            all: 'Site inteiro',
-            site: 'Site institucional',
-            blog: 'Blog',
-            revista: 'Aprova Concursos',
-        };
-        return labels[value] || value;
+    // ── Dashboard ────────────────────────────────────────────────────────────
+    async function loadDashboard() {
+        document.getElementById('dash-date').textContent = new Date().toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+        try {
+            var results = await Promise.allSettled([
+                api('GET', '/content'),
+                api('GET', '/widgets'),
+                api('GET', '/media')
+            ]);
+            var items   = (results[0].value && results[0].value.items)   || [];
+            var widgets = (results[1].value && results[1].value.widgets)  || [];
+            var files   = (results[2].value && results[2].value.files)    || [];
+            state.contents = items;
+            state.widgets  = widgets;
+            state.media    = files;
+
+            var pub   = items.filter(function(i){ return i.status === 'published'; }).length;
+            var sched = items.filter(function(i){ return i.status === 'scheduled'; }).length;
+            var draft = items.filter(function(i){ return i.status === 'draft'; }).length;
+            document.getElementById('kpi-total').textContent     = fmtNum(items.length);
+            document.getElementById('kpi-published').textContent = fmtNum(pub);
+            document.getElementById('kpi-scheduled').textContent = fmtNum(sched);
+            document.getElementById('kpi-drafts').textContent    = fmtNum(draft);
+            document.getElementById('kpi-widgets').textContent   = fmtNum(widgets.filter(function(w){ return w.is_active; }).length);
+            document.getElementById('kpi-media').textContent     = fmtNum(files.length);
+
+            var recent = items.slice(0, 8);
+            var tbody  = document.getElementById('dash-recent-tbody');
+            if (!recent.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="table-empty">Nenhum conteúdo cadastrado ainda.</td></tr>';
+            } else {
+                tbody.innerHTML = recent.map(function(item) {
+                    return '<tr>' +
+                        '<td><strong>' + escHtml(item.title || '(sem título)') + '</strong></td>' +
+                        '<td>' + typeBadge(item.content_type) + '</td>' +
+                        '<td>' + statusBadge(item.status) + '</td>' +
+                        '<td>' + fmtDate(item.updated_at || item.published_at || item.created_at) + '</td>' +
+                        '<td class="table-actions"><button class="btn btn-ghost btn-sm" onclick="adminEditPost(' + item.id + ')"><i class="fas fa-pen"></i></button></td>' +
+                        '</tr>';
+                }).join('');
+            }
+        } catch(err) {
+            toast('Erro ao carregar dashboard: ' + err.message, 'error');
+        }
     }
 
-    function renderContentStats() {
-        if (!el.contentStats) {
+    window.adminEditPost = function(id) {
+        var item = state.contents.find(function(i){ return i.id === id; });
+        if (item) { switchTab('post-editor'); openPostEditor(item); }
+    };
+
+    // ── Posts list ───────────────────────────────────────────────────────────
+    var allPosts = [];
+
+    async function loadPosts() {
+        var tbody = document.getElementById('posts-tbody');
+        tbody.innerHTML = '<tr><td colspan="6" class="table-empty"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>';
+        try {
+            var data = await api('GET', '/content');
+            allPosts = data.items || [];
+            state.contents = allPosts;
+            renderPostsTable();
+        } catch(err) {
+            tbody.innerHTML = '<tr><td colspan="6" class="table-empty">Erro: ' + escHtml(err.message) + '</td></tr>';
+        }
+    }
+
+    function renderPostsTable() {
+        var search = (document.getElementById('posts-search').value || '').toLowerCase();
+        var fSt    = document.getElementById('posts-filter-status').value;
+        var fTy    = document.getElementById('posts-filter-type').value;
+        var tbody  = document.getElementById('posts-tbody');
+
+        var list = allPosts.filter(function(i) {
+            if (search && !(i.title || '').toLowerCase().includes(search)) return false;
+            if (fSt && i.status !== fSt) return false;
+            if (fTy && i.content_type !== fTy) return false;
+            return true;
+        });
+
+        if (!list.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="table-empty">Nenhum item encontrado.</td></tr>';
             return;
         }
-
-        const total = state.contents.length;
-        const published = state.contents.filter(item => item.status === 'published').length;
-        const drafts = state.contents.filter(item => item.status === 'draft').length;
-        const scheduled = state.contents.filter(item => isScheduledPublication(item)).length;
-        const simulados = state.contents.filter(item => item.content_type === 'simulado').length;
-
-        el.contentStats.innerHTML = `
-            <div class="cms-stat-card"><div class="cms-stat-label">Conteudos</div><div class="cms-stat-value">${total}</div></div>
-            <div class="cms-stat-card"><div class="cms-stat-label">Publicados</div><div class="cms-stat-value">${published}</div></div>
-            <div class="cms-stat-card"><div class="cms-stat-label">Agendados</div><div class="cms-stat-value">${scheduled}</div></div>
-            <div class="cms-stat-card"><div class="cms-stat-label">Rascunhos</div><div class="cms-stat-value">${drafts}</div></div>
-            <div class="cms-stat-card"><div class="cms-stat-label">Simulados</div><div class="cms-stat-value">${simulados}</div></div>
-        `;
-    }
-
-    function renderContentLibrary() {
-        if (!el.contentList) {
-            return;
-        }
-
-        renderContentStats();
-
-        if (!state.contents.length) {
-            el.contentList.innerHTML = '<p>Nenhum conteudo cadastrado ate o momento.</p>';
-            return;
-        }
-
-        el.contentList.innerHTML = state.contents.map(item => {
-            const preview = item.cover_url
-                ? `<img src="${item.cover_url}" alt="${escapeHtml(item.title)}">`
-                : `<div class="content-item-preview-fallback">${contentTypeLabel(item.content_type)} sem capa</div>`;
-
-            return `
-                <div class="content-item" data-content-id="${item.id}">
-                    <div class="content-item-header">
-                        <div>
-                            <div class="content-item-title">${escapeHtml(item.title)}</div>
-                            <div class="widget-item-meta">
-                                <span class="widget-chip">${contentTypeLabel(item.content_type)}</span>
-                                <span class="widget-chip">${scopeLabel(item.context)}</span>
-                                <span class="widget-chip ${effectiveStatusClass(item)}">${effectiveStatusLabel(item)}</span>
-                                ${isScheduledPublication(item) ? `<span class="widget-chip is-scheduled">${formatCountdown(item.published_at)}</span>` : ''}
-                            </div>
-                        </div>
-                        <div class="plan-item-actions">
-                            <button type="button" class="mini-btn" data-action="edit">Editar</button>
-                            <button type="button" class="mini-btn" data-action="status">${item.status === 'published' ? 'Despublicar' : 'Publicar'}</button>
-                            <button type="button" class="mini-btn" data-action="open">Abrir</button>
-                            <button type="button" class="mini-btn" data-action="delete">Excluir</button>
-                        </div>
-                    </div>
-                    <div class="content-item-body">
-                        <div class="content-item-copy">
-                            <p><strong>Slug:</strong> ${escapeHtml(item.slug)}</p>
-                            <p><strong>Categoria:</strong> ${escapeHtml(item.category || '-')}</p>
-                            <p><strong>Publicacao:</strong> ${escapeHtml(formatDateTimePtBr(item.published_at))}</p>
-                            <p><strong>URL:</strong> ${escapeHtml(item.preview_url || '-')}</p>
-                            <p><strong>Resumo:</strong> ${escapeHtml(item.summary || 'Sem resumo editorial.')}</p>
-                        </div>
-                        <div class="content-item-preview">${preview}</div>
-                    </div>
-                </div>
-            `;
+        tbody.innerHTML = list.map(function(item) {
+            return '<tr>' +
+                '<td><strong>' + escHtml(item.title || '(sem título)') + '</strong><br><small style="color:var(--txt3)">' + escHtml(item.slug || '') + '</small></td>' +
+                '<td>' + typeBadge(item.content_type) + '</td>' +
+                '<td>' + statusBadge(item.status) + '</td>' +
+                '<td><small>' + escHtml(item.category || '—') + '</small></td>' +
+                '<td><small>' + fmtDate(item.published_at || item.created_at) + '</small></td>' +
+                '<td class="table-actions">' +
+                    '<button class="btn btn-ghost btn-sm" onclick="postsEdit(' + item.id + ')" title="Editar"><i class="fas fa-pen"></i></button>' +
+                    '<button class="btn btn-danger btn-sm" onclick="postsDelete(' + item.id + ')" title="Excluir"><i class="fas fa-trash"></i></button>' +
+                '</td>' +
+                '</tr>';
         }).join('');
     }
 
-    function renderScheduledAgenda() {
-        if (!el.scheduledList) {
-            return;
+    ['posts-search', 'posts-filter-status', 'posts-filter-type'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', renderPostsTable);
+    });
+
+    window.postsEdit = function(id) {
+        var item = allPosts.find(function(i){ return i.id === id; });
+        switchTab('post-editor');
+        openPostEditor(item || null);
+    };
+    window.postsDelete = function(id) {
+        var item = allPosts.find(function(i){ return i.id === id; });
+        showConfirm('Excluir post', 'Excluir "' + (item ? item.title : 'este post') + '"? Esta ação não pode ser desfeita.', async function() {
+            try {
+                await api('DELETE', '/content/' + id);
+                toast('Post excluído.');
+                loadPosts();
+            } catch(err) { toast('Erro ao excluir: ' + err.message, 'error'); }
+        });
+    };
+
+    document.getElementById('btn-new-post').addEventListener('click', function() {
+        switchTab('post-editor');
+        openPostEditor(null);
+    });
+    document.getElementById('btn-back-to-posts').addEventListener('click', function() { switchTab('posts'); });
+
+    // ── Post editor ──────────────────────────────────────────────────────────
+    function openPostEditor(item) {
+        document.getElementById('editing-post-id').value = item ? item.id : '';
+        document.getElementById('post-editor-title').textContent = item ? ('Editar: ' + (item.title || '')) : 'Novo Post';
+        document.getElementById('post-title').value       = item ? (item.title || '')        : '';
+        document.getElementById('post-slug').value        = item ? (item.slug  || '')        : '';
+        document.getElementById('post-status').value      = item ? (item.status || 'draft')  : 'draft';
+        document.getElementById('post-type').value        = item ? (item.content_type || 'blog_post') : 'blog_post';
+        document.getElementById('post-category').value    = item ? (item.category || '')     : '';
+        document.getElementById('post-summary').value     = item ? (item.summary || '')      : '';
+        document.getElementById('post-seo-desc').value    = item ? (item.meta_description || '') : '';
+        document.getElementById('post-keywords').value    = item ? (item.meta_keywords || '') : '';
+        document.getElementById('post-canonical').value   = item ? (item.canonical_url || '') : '';
+        document.getElementById('post-cover-path').value  = item ? (item.cover_image_url || '') : '';
+        document.getElementById('seo-desc-count').textContent = ((item && item.meta_description) ? item.meta_description.length : 0) + '/160';
+
+        var pubAt = (item && item.published_at) ? new Date(item.published_at).toISOString().slice(0,16) : '';
+        document.getElementById('post-published-at').value = pubAt;
+
+        var previewWrap = document.getElementById('cover-preview-wrap');
+        var uploadWrap  = document.getElementById('cover-upload-wrap');
+        var previewImg  = document.getElementById('cover-preview-img');
+        if (item && item.cover_image_url) {
+            previewImg.src = item.cover_image_url;
+            previewWrap.removeAttribute('hidden');
+            uploadWrap.setAttribute('hidden', '');
+        } else {
+            previewWrap.setAttribute('hidden', '');
+            uploadWrap.removeAttribute('hidden');
         }
 
-        const scheduled = state.contents
-            .filter(item => isScheduledPublication(item))
-            .sort((a, b) => (a.published_at || '').localeCompare(b.published_at || ''));
-
-        if (!scheduled.length) {
-            el.scheduledList.innerHTML = '<p>Nenhum conteudo com publicacao futura no momento.</p>';
-            return;
+        var pvLink = document.getElementById('post-preview-link');
+        var pvWrap = document.getElementById('post-preview-wrap');
+        if (item && item.slug) {
+            pvLink.href = '../../pages/blog/posts/' + item.slug + '.html';
+            pvWrap.removeAttribute('hidden');
+        } else {
+            pvWrap.setAttribute('hidden', '');
         }
 
-        el.scheduledList.innerHTML = scheduled.map(item => `
-            <article class="scheduled-card" data-content-id="${item.id}">
-                <div class="scheduled-head">
-                    <div class="scheduled-title">${escapeHtml(item.title)}</div>
-                    <span class="widget-chip is-scheduled">${formatCountdown(item.published_at)}</span>
-                </div>
-                <div class="scheduled-meta">
-                    <div><strong>Publicacao:</strong> ${escapeHtml(formatDateTimePtBr(item.published_at))}</div>
-                    <div><strong>Tipo:</strong> ${escapeHtml(contentTypeLabel(item.content_type))} | <strong>Contexto:</strong> ${escapeHtml(scopeLabel(item.context))}</div>
-                    <div><strong>Slug:</strong> ${escapeHtml(item.slug)}</div>
-                </div>
-                <div class="scheduled-actions">
-                    <button type="button" class="mini-btn" data-action="edit">Editar</button>
-                    <button type="button" class="mini-btn" data-action="status">Despublicar</button>
-                </div>
-            </article>
-        `).join('');
-    }
-
-    function syncContentFieldVisibility() {
-        if (!el.contentType || !el.contentHtmlFields || !el.contentSimuladoFields) {
-            return;
-        }
-
-        const isSimulado = el.contentType.value === 'simulado';
-        el.contentHtmlFields.hidden = isSimulado;
-        el.contentSimuladoFields.hidden = !isSimulado;
-    }
-
-    function setContentCoverPreview(mediaUrl, altText) {
-        if (!el.contentCoverPreview) {
-            return;
-        }
-
-        if (!mediaUrl) {
-            el.contentCoverPreview.hidden = true;
-            el.contentCoverPreview.removeAttribute('src');
-            return;
-        }
-
-        el.contentCoverPreview.src = mediaUrl;
-        el.contentCoverPreview.alt = altText || 'Preview da capa';
-        el.contentCoverPreview.hidden = false;
-    }
-
-    function fillContentForm(item) {
-        if (!el.contentForm || !item) {
-            return;
-        }
-
-        el.contentForm.elements.content_id.value = item.id || '';
-        el.contentForm.elements.current_cover_path.value = item.cover_path || '';
-        el.contentForm.elements.content_type.value = item.content_type || 'page';
-        el.contentForm.elements.status.value = item.status || 'draft';
-        el.contentForm.elements.title.value = item.title || '';
-        el.contentForm.elements.slug.value = item.slug || '';
-        el.contentForm.elements.context.value = item.context || 'site';
-        el.contentForm.elements.category.value = item.category || '';
-        el.contentForm.elements.summary.value = item.summary || '';
-        el.contentForm.elements.seo_title.value = item.seo_title || '';
-        el.contentForm.elements.seo_description.value = item.seo_description || '';
-        el.contentForm.elements.published_at.value = toDatetimeLocalValue(item.published_at);
-        el.contentForm.elements.body_html.value = item.body_html || '';
-        el.contentForm.elements.extra_json.value = JSON.stringify(item.extra || {}, null, 2);
-        setContentCoverPreview(item.cover_url || '', item.title || 'Preview da capa');
-        syncContentFieldVisibility();
-        // Mark slug as manual to prevent overwrite when editing title
-        if (el.contentSlug) {
-            el.contentSlug.dataset.manual = item.slug ? 'true' : '';
-        }
-    }
-
-    function clearContentForm() {
-        if (!el.contentForm) {
-            return;
-        }
-
-        el.contentForm.reset();
-        el.contentForm.elements.content_id.value = '';
-        el.contentForm.elements.current_cover_path.value = '';
-        el.contentForm.elements.content_type.value = 'page';
-        el.contentForm.elements.status.value = 'draft';
-        el.contentForm.elements.context.value = 'site';
-        el.contentForm.elements.published_at.value = '';
-        setContentCoverPreview('', '');
-        syncContentFieldVisibility();
-    }
-
-    async function refreshContent() {
-        const response = await request('/content', { method: 'GET' });
-        state.contents = response.items || [];
-        renderContentLibrary();
-        renderScheduledAgenda();
-    }
-
-    async function uploadContentCoverIfNeeded() {
-        if (!el.contentCoverFile || !el.contentCoverFile.files || !el.contentCoverFile.files.length) {
-            return null;
-        }
-
-        const payload = new FormData();
-        payload.append('media', el.contentCoverFile.files[0]);
-        return request('/content/media', { method: 'POST', body: payload });
-    }
-
-    function buildContentPayload(formData, uploadedCover) {
-        const contentType = formData.get('content_type');
-        const rawExtra = (formData.get('extra_json') || '').trim();
-        let extra = {};
-        if (contentType === 'simulado') {
-            extra = rawExtra ? JSON.parse(rawExtra) : {};
-        }
-
-        const publishedAt = fromDatetimeLocalToIso(formData.get('published_at'));
-
-        return {
-            content_type: contentType,
-            status: formData.get('status'),
-            title: formData.get('title'),
-            slug: slugify(formData.get('slug')),
-            context: formData.get('context'),
-            category: formData.get('category'),
-            summary: formData.get('summary'),
-            seo_title: formData.get('seo_title'),
-            seo_description: formData.get('seo_description'),
-            cover_path: uploadedCover && uploadedCover.cover_path
-                ? uploadedCover.cover_path
-                : formData.get('current_cover_path'),
-            body_html: contentType === 'simulado' ? '' : formData.get('body_html'),
-            extra: extra,
-            published_at: publishedAt,
-        };
-    }
-
-    function createContentUpdatePayload(item, overrides) {
-        return Object.assign({
-            content_type: item.content_type,
-            status: item.status,
-            title: item.title,
-            slug: item.slug,
-            context: item.context,
-            category: item.category,
-            summary: item.summary,
-            seo_title: item.seo_title,
-            seo_description: item.seo_description,
-            cover_path: item.cover_path,
-            body_html: item.body_html,
-            extra: item.extra || {},
-            published_at: item.published_at,
-        }, overrides || {});
-    }
-
-    async function handleContentSave(event) {
-        event.preventDefault();
-        const formData = new FormData(el.contentForm);
-        const contentId = formData.get('content_id');
-
-        try {
-            const uploadedCover = await uploadContentCoverIfNeeded();
-            const payload = buildContentPayload(formData, uploadedCover);
-
-            if (contentId) {
-                await request(`/content/${contentId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
-                showToast('Conteudo atualizado com sucesso.');
-            } else {
-                await request('/content', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
-                showToast('Conteudo criado com sucesso.');
-            }
-
-            clearContentForm();
-            await refreshContent();
-        } catch (error) {
-            const message = error instanceof SyntaxError
-                ? 'JSON do simulado invalido. Revise a estrutura.'
-                : error.message;
-            showToast(message, true);
-        }
-    }
-
-    async function handleContentActions(event) {
-        const target = event.target;
-        if (!(target instanceof HTMLButtonElement)) {
-            return;
-        }
-
-        const action = target.dataset.action;
-        if (!action) {
-            return;
-        }
-
-        const wrapper = target.closest('.content-item, .scheduled-card');
-        if (!wrapper) {
-            return;
-        }
-
-        const contentId = wrapper.getAttribute('data-content-id');
-        const item = state.contents.find(entry => String(entry.id) === String(contentId));
         if (!item) {
-            return;
+            document.getElementById('post-delete-wrap').setAttribute('hidden', '');
+        } else {
+            document.getElementById('post-delete-wrap').removeAttribute('hidden');
         }
 
+        var bodyVal = item ? (item.body_html || item.content || '') : '';
+        if (state.tinyInit && typeof tinymce !== 'undefined' && tinymce.get('post-body-html')) {
+            tinymce.get('post-body-html').setContent(bodyVal);
+        } else {
+            document.getElementById('post-body-html').value = bodyVal;
+        }
+    }
+
+    document.getElementById('post-seo-desc').addEventListener('input', function() {
+        document.getElementById('seo-desc-count').textContent = this.value.length + '/160';
+    });
+    document.getElementById('post-title').addEventListener('input', function() {
+        if (!document.getElementById('editing-post-id').value) {
+            document.getElementById('post-slug').value = slugify(this.value);
+        }
+    });
+    document.getElementById('btn-slug-reset').addEventListener('click', function() {
+        document.getElementById('post-slug').value = slugify(document.getElementById('post-title').value);
+    });
+
+    document.getElementById('cover-file-input').addEventListener('change', async function() {
+        var file = this.files[0];
+        if (!file) return;
+        var fd = new FormData();
+        fd.append('file', file);
         try {
-            if (action === 'edit') {
-                fillContentForm(item);
-                showToast('Conteudo carregado para edicao.');
-                return;
-            }
+            var res = await fetch(state.apiBase + '/media/upload', { method: 'POST', headers: { Authorization: 'Bearer ' + state.token }, body: fd });
+            var data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Erro upload');
+            document.getElementById('post-cover-path').value = data.url;
+            document.getElementById('cover-preview-img').src = data.url;
+            document.getElementById('cover-preview-wrap').removeAttribute('hidden');
+            document.getElementById('cover-upload-wrap').setAttribute('hidden', '');
+            toast('Imagem de capa salva.');
+        } catch(err) { toast('Erro no upload: ' + err.message, 'error'); }
+    });
+    document.getElementById('btn-remove-cover').addEventListener('click', function() {
+        document.getElementById('post-cover-path').value = '';
+        document.getElementById('cover-preview-img').src = '';
+        document.getElementById('cover-preview-wrap').setAttribute('hidden', '');
+        document.getElementById('cover-upload-wrap').removeAttribute('hidden');
+    });
 
-            if (action === 'open') {
-                if (item.status !== 'published') {
-                    showToast('Publique o conteudo antes de abrir a URL publica.', true);
-                    return;
-                }
-                if (isScheduledPublication(item)) {
-                    showToast('Conteudo agendado. Aguarde a data/hora de publicacao.', true);
-                    return;
-                }
-                const anchor = document.createElement('a');
-                anchor.href = item.preview_url;
-                anchor.target = '_blank';
-                anchor.rel = 'noopener noreferrer';
-                anchor.click();
-                return;
-            }
+    async function savePost(status) {
+        var id    = document.getElementById('editing-post-id').value;
+        var title = document.getElementById('post-title').value.trim();
+        if (!title) { toast('O título é obrigatório.', 'warning'); return; }
 
-            if (action === 'status') {
-                const nextStatus = item.status === 'published' ? 'draft' : 'published';
-                await request(`/content/${item.id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(createContentUpdatePayload(item, { status: nextStatus })),
+        var bodyHtml = document.getElementById('post-body-html').value;
+        if (state.tinyInit && typeof tinymce !== 'undefined' && tinymce.get('post-body-html')) {
+            bodyHtml = tinymce.get('post-body-html').getContent();
+        }
+
+        var pubAtVal = document.getElementById('post-published-at').value;
+        var finalStatus = status || document.getElementById('post-status').value;
+        var payload = {
+            title: title,
+            slug:             document.getElementById('post-slug').value.trim() || slugify(title),
+            content_type:     document.getElementById('post-type').value,
+            status:           finalStatus,
+            context:          'blog',
+            category:         document.getElementById('post-category').value,
+            summary:          document.getElementById('post-summary').value,
+            body_html:        bodyHtml,
+            cover_image_url:  document.getElementById('post-cover-path').value,
+            meta_description: document.getElementById('post-seo-desc').value,
+            meta_keywords:    document.getElementById('post-keywords').value,
+            canonical_url:    document.getElementById('post-canonical').value,
+            published_at:     pubAtVal ? new Date(pubAtVal).toISOString() : (finalStatus === 'published' ? new Date().toISOString() : null)
+        };
+
+        var saveBtn = document.getElementById('btn-publish-post');
+        saveBtn.disabled = true;
+        try {
+            if (id) {
+                await api('PUT', '/content/' + id, payload);
+                toast('Post atualizado!');
+            } else {
+                var resp = await api('POST', '/content', payload);
+                document.getElementById('editing-post-id').value = resp.id || '';
+                document.getElementById('post-delete-wrap').removeAttribute('hidden');
+                toast('Post criado!');
+            }
+            await loadPosts();
+        } catch(err) {
+            toast('Erro ao salvar: ' + err.message, 'error');
+        } finally {
+            saveBtn.disabled = false;
+        }
+    }
+
+    document.getElementById('btn-save-draft').addEventListener('click', function() { savePost('draft'); });
+    document.getElementById('btn-publish-post').addEventListener('click', function() { savePost('published'); });
+    document.getElementById('btn-delete-post').addEventListener('click', function() {
+        var id = document.getElementById('editing-post-id').value;
+        if (!id) return;
+        showConfirm('Excluir post', 'Deseja excluir este post? A ação não pode ser desfeita.', async function() {
+            try {
+                await api('DELETE', '/content/' + id);
+                toast('Post excluído.');
+                switchTab('posts');
+                loadPosts();
+            } catch(err) { toast('Erro: ' + err.message, 'error'); }
+        });
+    });
+
+    function initTinyMCE() {
+        if (state.tinyInit || typeof tinymce === 'undefined') return;
+        state.tinyInit = true;
+        tinymce.init({
+            selector: '#post-body-html',
+            height: 450,
+            menubar: false,
+            language: 'pt_BR',
+            plugins: 'lists link image media table code fullscreen wordcount',
+            toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image media | table | code fullscreen',
+            promotion: false
+        });
+    }
+    document.getElementById('btn-new-post').addEventListener('click', function() { setTimeout(initTinyMCE, 100); });
+
+    // ── Pages (GitHub + Monaco) ──────────────────────────────────────────────
+    var ghConfig = null;
+
+    async function loadPagesTab() {
+        try {
+            ghConfig = await api('GET', '/github/config');
+            if (!ghConfig.owner || !ghConfig.repo) {
+                document.getElementById('pages-not-configured').removeAttribute('hidden');
+                document.getElementById('pages-ui').style.display = 'none';
+            } else {
+                document.getElementById('pages-not-configured').setAttribute('hidden', '');
+                document.getElementById('pages-ui').style.display = '';
+                loadFileTree();
+            }
+        } catch(e) {
+            document.getElementById('pages-not-configured').removeAttribute('hidden');
+        }
+    }
+
+    async function loadFileTree() {
+        var treeEl = document.getElementById('file-tree');
+        treeEl.innerHTML = '<div class="tree-loading"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>';
+        try {
+            var data = await api('POST', '/github/proxy', {
+                method: 'GET',
+                path: 'repos/' + ghConfig.owner + '/' + ghConfig.repo + '/git/trees/' + (ghConfig.branch || 'main') + '?recursive=1'
+            });
+            var files = (data.tree || []).filter(function(f){ return f.type === 'blob' && /\.(html|css|js|json|md|txt)$/i.test(f.path); });
+            renderFileTree(files);
+        } catch(err) {
+            treeEl.innerHTML = '<div class="tree-loading" style="color:var(--red)"><i class="fas fa-circle-exclamation"></i> ' + escHtml(err.message) + '</div>';
+        }
+    }
+
+    function renderFileTree(files) {
+        var search = document.getElementById('tree-search').value.toLowerCase();
+        var list = search ? files.filter(function(f){ return f.path.toLowerCase().includes(search); }) : files;
+        var treeEl = document.getElementById('file-tree');
+        if (!list.length) { treeEl.innerHTML = '<div class="tree-loading">Nenhum arquivo encontrado.</div>'; return; }
+        treeEl.innerHTML = list.map(function(f) {
+            var icon = f.path.endsWith('.html') ? 'fa-file-code' : f.path.endsWith('.css') ? 'fa-file-lines' : f.path.endsWith('.js') ? 'fa-file-code' : 'fa-file';
+            return '<div class="tree-item" data-path="' + escHtml(f.path) + '"><i class="fas ' + icon + '"></i>' + escHtml(f.path) + '</div>';
+        }).join('');
+        treeEl.querySelectorAll('.tree-item').forEach(function(item) {
+            item.addEventListener('click', function() { openFileInMonaco(item.dataset.path); });
+        });
+        window._treeFiles = files;
+    }
+
+    document.getElementById('tree-search').addEventListener('input', function() {
+        if (window._treeFiles) renderFileTree(window._treeFiles);
+    });
+    document.getElementById('btn-refresh-tree').addEventListener('click', loadFileTree);
+
+    async function openFileInMonaco(path) {
+        if (state.monacoUnsaved) {
+            if (!window.confirm('Há alterações não salvas. Deseja descartar?')) return;
+        }
+        document.querySelectorAll('.tree-item').forEach(function(i){ i.classList.remove('active'); });
+        var activeItem = document.querySelector('.tree-item[data-path="' + path.replace(/"/g, '\\"') + '"]');
+        if (activeItem) activeItem.classList.add('active');
+
+        document.getElementById('monaco-placeholder').setAttribute('hidden', '');
+        document.getElementById('monaco-editor-wrap').removeAttribute('hidden');
+        document.getElementById('monaco-filename').textContent = path;
+        document.getElementById('monaco-status').textContent = 'Carregando…';
+        document.getElementById('monaco-unsaved').setAttribute('hidden', '');
+        state.monacoUnsaved = false;
+        state.currentFilePath = path;
+
+        try {
+            var data = await api('POST', '/github/proxy', {
+                method: 'GET',
+                path: 'repos/' + ghConfig.owner + '/' + ghConfig.repo + '/contents/' + path
+            });
+            var content = atob(data.content.replace(/\n/g, ''));
+            state.currentFileSha = data.sha;
+            document.getElementById('monaco-status').textContent = path + ' — ' + content.length + ' bytes';
+            await ensureMonaco();
+            var lang = path.endsWith('.html') ? 'html' : path.endsWith('.css') ? 'css' : path.endsWith('.js') ? 'javascript' : path.endsWith('.json') ? 'json' : 'plaintext';
+            if (state.monacoEditor) {
+                var newModel = window.monaco.editor.createModel(content, lang);
+                state.monacoEditor.setModel(newModel);
+                if (state.monacoModel) state.monacoModel.dispose();
+                state.monacoModel = newModel;
+            } else {
+                state.monacoEditor = window.monaco.editor.create(document.getElementById('monaco-editor-container'), {
+                    value: content, language: lang,
+                    theme: 'vs', automaticLayout: true, fontSize: 13,
+                    minimap: { enabled: false }, wordWrap: 'on'
                 });
-                await refreshContent();
-                showToast(
-                    nextStatus === 'published'
-                        ? 'Conteudo publicado.'
-                        : 'Conteudo movido para rascunho.'
-                );
-                return;
+                state.monacoEditor.onDidChangeModelContent(function() {
+                    state.monacoUnsaved = true;
+                    document.getElementById('monaco-unsaved').removeAttribute('hidden');
+                });
             }
-
-            if (action === 'delete') {
-                const confirmed = window.confirm('Deseja excluir este conteudo?');
-                if (!confirmed) {
-                    return;
-                }
-                await request(`/content/${item.id}`, { method: 'DELETE' });
-                if (String(el.contentForm.elements.content_id.value) === String(item.id)) {
-                    clearContentForm();
-                }
-                await refreshContent();
-                showToast('Conteudo excluido.');
-            }
-        } catch (error) {
-            showToast(error.message, true);
+        } catch(err) {
+            document.getElementById('monaco-status').textContent = 'Erro: ' + err.message;
+            toast('Erro ao abrir arquivo: ' + err.message, 'error');
         }
     }
 
-    // ── Cursor ────────────────────────────────────────────────────────────────
-    function sanitizeCursorConfig(rawConfig) {
-        const raw = rawConfig && typeof rawConfig === 'object' ? rawConfig : {};
-        const toNumber = (value, fallback) => {
-            const parsed = Number(value);
-            return Number.isFinite(parsed) ? parsed : fallback;
-        };
-        const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
-
-        return {
-            scale: clamp(toNumber(raw.scale, 100), 50, 180),
-            glow: clamp(toNumber(raw.glow, 9), 0, 60),
-            tail_width: clamp(toNumber(raw.tail_width, 8), 4, 16),
-            tail_length: clamp(toNumber(raw.tail_length, 13), 8, 30),
-            smoke_size: clamp(toNumber(raw.smoke_size, 100), 60, 220),
-            trail_density: clamp(toNumber(raw.trail_density, 100), 40, 220),
-        };
+    function ensureMonaco() {
+        if (window.monaco) return Promise.resolve();
+        return new Promise(function(resolve, reject) {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs/loader.js';
+            script.onload = function() {
+                window.require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs' } });
+                window.require(['vs/editor/editor.main'], function() { window.monaco = monaco; resolve(); });
+            };
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
     }
 
-    function getCursorConfigFromStorage() {
+    document.getElementById('btn-monaco-save').addEventListener('click', saveFileViaGitHub);
+
+    async function saveFileViaGitHub() {
+        if (!state.monacoEditor || !state.currentFilePath) return;
+        var content = state.monacoEditor.getValue();
+        var encoded = btoa(unescape(encodeURIComponent(content)));
+        var btn = document.getElementById('btn-monaco-save');
+        btn.disabled = true;
+        document.getElementById('monaco-status').textContent = 'Salvando…';
         try {
-            const stored = localStorage.getItem(ROCKET_CURSOR_CONFIG_KEY);
-            if (!stored) {
-                return sanitizeCursorConfig();
-            }
-            return sanitizeCursorConfig(JSON.parse(stored));
-        } catch (_err) {
-            return sanitizeCursorConfig();
+            await api('POST', '/github/proxy', {
+                method: 'PUT',
+                path: 'repos/' + ghConfig.owner + '/' + ghConfig.repo + '/contents/' + state.currentFilePath,
+                body: {
+                    message: 'admin: update ' + state.currentFilePath,
+                    content: encoded,
+                    sha: state.currentFileSha,
+                    branch: ghConfig.branch || 'main'
+                }
+            });
+            state.monacoUnsaved = false;
+            document.getElementById('monaco-unsaved').setAttribute('hidden', '');
+            document.getElementById('monaco-status').textContent = 'Salvo em ' + new Date().toLocaleTimeString('pt-BR');
+            toast('Arquivo publicado no GitHub!');
+            var updated = await api('POST', '/github/proxy', {
+                method: 'GET',
+                path: 'repos/' + ghConfig.owner + '/' + ghConfig.repo + '/contents/' + state.currentFilePath
+            });
+            state.currentFileSha = updated.sha;
+        } catch(err) {
+            document.getElementById('monaco-status').textContent = 'Erro: ' + err.message;
+            toast('Erro ao salvar: ' + err.message, 'error');
+        } finally {
+            btn.disabled = false;
         }
     }
 
-    function saveCursorConfig(config) {
-        const normalized = sanitizeCursorConfig(config);
-        localStorage.setItem(ROCKET_CURSOR_CONFIG_KEY, JSON.stringify(normalized));
-        window.dispatchEvent(
-            new CustomEvent('idialog:rocket-config-updated', { detail: normalized })
+    document.getElementById('btn-monaco-preview').addEventListener('click', function() {
+        if (state.currentFilePath && ghConfig) {
+            window.open('https://raw.githubusercontent.com/' + ghConfig.owner + '/' + ghConfig.repo + '/' + (ghConfig.branch || 'main') + '/' + state.currentFilePath, '_blank');
+        }
+    });
+
+    // ── Media library ────────────────────────────────────────────────────────
+    async function loadMedia() {
+        var grid = document.getElementById('media-grid');
+        grid.innerHTML = '<div class="media-loading"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>';
+        try {
+            var data = await api('GET', '/media');
+            state.media = data.files || [];
+            renderMediaGrid();
+        } catch(err) {
+            grid.innerHTML = '<div class="media-loading" style="color:var(--red)">Erro: ' + escHtml(err.message) + '</div>';
+        }
+    }
+
+    function renderMediaGrid() {
+        var filter = document.getElementById('media-filter').value;
+        var search = document.getElementById('media-search').value.toLowerCase();
+        var grid   = document.getElementById('media-grid');
+        var list = state.media.filter(function(f) {
+            if (filter === 'image' && !(f.mime_type && f.mime_type.startsWith('image/'))) return false;
+            if (filter === 'video' && !(f.mime_type && f.mime_type.startsWith('video/'))) return false;
+            if (search && !f.filename.toLowerCase().includes(search)) return false;
+            return true;
+        });
+        if (!list.length) { grid.innerHTML = '<div class="media-loading">Nenhum arquivo encontrado.</div>'; return; }
+        grid.innerHTML = list.map(function(f) {
+            var isImg = f.mime_type && f.mime_type.startsWith('image/');
+            var thumb = isImg
+                ? '<img class="media-thumb" src="' + escHtml(f.url) + '" alt="' + escHtml(f.filename) + '" loading="lazy">'
+                : '<div class="media-thumb-icon"><i class="fas fa-' + (f.mime_type && f.mime_type.startsWith('video/') ? 'film' : 'file') + '"></i></div>';
+            return '<div class="media-item" data-filename="' + escHtml(f.filename) + '">' +
+                thumb +
+                '<div class="media-item-overlay">' +
+                    '<button class="btn btn-ghost btn-sm" onclick="mediaCopy(\'' + escHtml(f.url) + '\')" title="Copiar URL"><i class="fas fa-copy"></i></button>' +
+                    '<button class="btn btn-danger btn-sm" onclick="mediaDelete(\'' + escHtml(f.filename) + '\')" title="Excluir"><i class="fas fa-trash"></i></button>' +
+                '</div>' +
+                '<div class="media-item-footer" title="' + escHtml(f.filename) + '">' + escHtml(f.filename) + '</div>' +
+                '</div>';
+        }).join('');
+    }
+
+    ['media-filter', 'media-search'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', renderMediaGrid);
+    });
+
+    window.mediaCopy = function(url) {
+        navigator.clipboard.writeText(url).then(
+            function() { toast('URL copiada!'); },
+            function() { toast('Falha ao copiar', 'error'); }
         );
-    }
+    };
+    window.mediaDelete = function(filename) {
+        showConfirm('Excluir arquivo', 'Excluir "' + filename + '"? Esta ação não pode ser desfeita.', async function() {
+            try {
+                await api('DELETE', '/media/' + encodeURIComponent(filename));
+                toast('Arquivo excluído.');
+                loadMedia();
+            } catch(err) { toast('Erro: ' + err.message, 'error'); }
+        });
+    };
 
-    function renderCursorConfigPreview(config) {
-        if (!el.cursorScaleValue) {
-            return;
+    async function uploadFiles(fileList) {
+        for (var i = 0; i < fileList.length; i++) {
+            var file = fileList[i];
+            var fd = new FormData();
+            fd.append('file', file);
+            try {
+                var res = await fetch(state.apiBase + '/media/upload', { method: 'POST', headers: { Authorization: 'Bearer ' + state.token }, body: fd });
+                var data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Erro upload');
+                toast('Upload: ' + file.name);
+            } catch(err) { toast('Erro: ' + err.message, 'error'); }
         }
-
-        el.cursorScaleValue.textContent = `${config.scale}%`;
-        el.cursorGlowValue.textContent = `${config.glow}%`;
-        el.cursorTailWidthValue.textContent = `${config.tail_width}px`;
-        el.cursorTailLengthValue.textContent = `${config.tail_length}px`;
-        el.cursorSmokeSizeValue.textContent = `${config.smoke_size}%`;
-        el.cursorTrailDensityValue.textContent = `${config.trail_density}%`;
+        loadMedia();
     }
 
-    function fillCursorForm(config) {
-        if (!el.cursorForm) {
-            return;
-        }
+    document.getElementById('media-upload-input').addEventListener('change', function() { uploadFiles(this.files); this.value = ''; });
 
-        el.cursorScale.value = String(config.scale);
-        el.cursorGlow.value = String(config.glow);
-        el.cursorTailWidth.value = String(config.tail_width);
-        el.cursorTailLength.value = String(config.tail_length);
-        el.cursorSmokeSize.value = String(config.smoke_size);
-        el.cursorTrailDensity.value = String(config.trail_density);
-        renderCursorConfigPreview(config);
-    }
+    var dropzone = document.getElementById('media-dropzone');
+    dropzone.addEventListener('dragover', function(e) { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', function() { dropzone.classList.remove('dragover'); });
+    dropzone.addEventListener('drop', function(e) { e.preventDefault(); dropzone.classList.remove('dragover'); uploadFiles(e.dataTransfer.files); });
+    dropzone.addEventListener('click', function() { document.getElementById('media-upload-input').click(); });
 
-    function getCursorConfigFromForm() {
-        return sanitizeCursorConfig({
-            scale: el.cursorScale.value,
-            glow: el.cursorGlow.value,
-            tail_width: el.cursorTailWidth.value,
-            tail_length: el.cursorTailLength.value,
-            smoke_size: el.cursorSmokeSize.value,
-            trail_density: el.cursorTrailDensity.value,
-        });
-    }
-
-    function handleCursorInput() {
-        const config = getCursorConfigFromForm();
-        renderCursorConfigPreview(config);
-        saveCursorConfig(config);
-    }
-
-    function handleCursorSave(event) {
-        event.preventDefault();
-        const config = getCursorConfigFromForm();
-        saveCursorConfig(config);
-        showToast('Cursor atualizado com sucesso.');
-    }
-
-    function handleCursorReset() {
-        const defaults = sanitizeCursorConfig();
-        fillCursorForm(defaults);
-        saveCursorConfig(defaults);
-        showToast('Cursor restaurado para o padrao.');
-    }
-
-    // ── Tabs / Navigation ──────────────────────────────────────────────────
-    function handleTabSwitch(event) {
-        var trigger = event.target.closest('.admin-nav-item[data-tab]') || event.target.closest('[data-tab-go]');
-        if (!trigger) return;
-        var tabName = trigger.dataset.tab || trigger.dataset.tabGo;
-        if (!tabName) return;
-        switchToTab(tabName);
-        closeSidebar();
-    }
-
-    function switchToTab(tabName) {
-        document.querySelectorAll('.admin-nav-item').forEach(function (btn) {
-            btn.classList.toggle('active', btn.dataset.tab === tabName);
-        });
-        document.querySelectorAll('.admin-shell .tab-content').forEach(function (tab) {
-            tab.classList.remove('active');
-        });
-        var tabContent = document.getElementById('tab-' + tabName);
-        if (tabContent) tabContent.classList.add('active');
-    }
-
-    function openSidebar() {
-        var sidebar = document.getElementById('admin-sidebar');
-        var overlay = document.getElementById('admin-overlay');
-        if (sidebar) sidebar.classList.add('open');
-        if (overlay) overlay.classList.add('open');
-    }
-
-    function closeSidebar() {
-        var sidebar = document.getElementById('admin-sidebar');
-        var overlay = document.getElementById('admin-overlay');
-        if (sidebar) sidebar.classList.remove('open');
-        if (overlay) overlay.classList.remove('open');
-    }
-
-    // ── Widgets CRUD ──────────────────────────────────────────────────────────
-    function syncWidgetFieldVisibility() {
-        if (!el.widgetType || !el.widgetMediaFields || !el.widgetCodeFields) return;
-        var isCode = el.widgetType.value === 'code';
-        el.widgetMediaFields.hidden = isCode;
-        el.widgetCodeFields.hidden = !isCode;
-    }
-
-    async function refreshWidgets() {
+    // ── Analytics (GA4) ──────────────────────────────────────────────────────
+    async function loadAnalytics() {
         try {
-            var response = await request('/widgets', { method: 'GET' });
-            state.widgets = response.widgets || [];
-            renderWidgets();
-        } catch (_err) {
-            state.widgets = [];
+            var cfg = await api('GET', '/analytics/config');
+            if (!cfg.has_property_id && !cfg.ga4_property_id) {
+                document.getElementById('analytics-not-configured').removeAttribute('hidden');
+                return;
+            }
+            document.getElementById('analytics-not-configured').setAttribute('hidden', '');
+        } catch(e) { return; }
+
+        try {
+            var data = await api('GET', '/analytics/ga4');
+            var ov = data.overview || {};
+            document.getElementById('ga-users').textContent     = fmtNum(ov.active_users || ov.users);
+            document.getElementById('ga-pageviews').textContent = fmtNum(ov.page_views || ov.pageviews);
+            document.getElementById('ga-sessions').textContent  = fmtNum(ov.sessions);
+            var dur = ov.avg_session_duration;
+            document.getElementById('ga-duration').textContent  = dur ? (Math.floor(dur / 60) + 'm ' + (dur % 60 | 0) + 's') : '—';
+
+            if (state.chartDaily) { state.chartDaily.destroy(); state.chartDaily = null; }
+            var daily = data.daily_chart || [];
+            var ctx1 = document.getElementById('chart-daily').getContext('2d');
+            state.chartDaily = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: daily.map(function(d){ return d.date; }),
+                    datasets: [{ label: 'Pageviews', data: daily.map(function(d){ return d.value; }), borderColor: '#2271b1', backgroundColor: 'rgba(34,113,177,.1)', tension: .3, fill: true, pointRadius: 2 }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+            });
+
+            if (state.chartSources) { state.chartSources.destroy(); state.chartSources = null; }
+            var sources = data.sources || [];
+            var ctx2 = document.getElementById('chart-sources').getContext('2d');
+            var srcColors = ['#2271b1','#00a32a','#b8860b','#7e5dc4','#d63638','#d97706','#50575e','#0c3a6e'];
+            state.chartSources = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: sources.map(function(s){ return s.source; }),
+                    datasets: [{ data: sources.map(function(s){ return s.value; }), backgroundColor: srcColors, borderWidth: 2 }]
+                },
+                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
+            });
+
+            var pages = data.top_pages || [];
+            var tbody = document.getElementById('analytics-pages-tbody');
+            tbody.innerHTML = pages.length
+                ? pages.map(function(p, i){ return '<tr><td>' + (i+1) + '</td><td>' + escHtml(p.page) + '</td><td>' + fmtNum(p.pageviews) + '</td><td>' + fmtNum(p.users) + '</td></tr>'; }).join('')
+                : '<tr><td colspan="4" class="table-empty">Nenhum dado disponível.</td></tr>';
+        } catch(err) {
+            toast('Erro ao carregar analytics: ' + err.message, 'error');
         }
     }
 
-    function renderWidgets() {
-        if (!el.widgetsList) return;
+    // ── Widgets ──────────────────────────────────────────────────────────────
+    async function loadWidgets() {
+        var tbody = document.getElementById('widgets-tbody');
+        tbody.innerHTML = '<tr><td colspan="6" class="table-empty"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>';
+        try {
+            var data = await api('GET', '/widgets');
+            state.widgets = data.widgets || [];
+            renderWidgetsTable();
+        } catch(err) {
+            tbody.innerHTML = '<tr><td colspan="6" class="table-empty">Erro: ' + escHtml(err.message) + '</td></tr>';
+        }
+    }
+
+    function renderWidgetsTable() {
+        var tbody = document.getElementById('widgets-tbody');
         if (!state.widgets.length) {
-            el.widgetsList.innerHTML = '<p>Nenhum widget cadastrado.</p>';
+            tbody.innerHTML = '<tr><td colspan="6" class="table-empty">Nenhum widget cadastrado.</td></tr>';
             return;
         }
-        el.widgetsList.innerHTML = state.widgets.map(function (w) {
-            var statusClass = w.is_active ? 'is-live' : 'is-paused';
-            var statusLabel = w.is_active ? 'Ativo' : 'Inativo';
-            var placementLabels = {
-                top_banner: 'Banner superior',
-                prefooter_banner: 'Banner rodape',
-                content_square: 'Quadrado conteudo',
-                sidebar_square: 'Quadrado lateral',
-            };
-            return '<div class="content-item" data-widget-id="' + w.id + '">' +
-                '<div class="content-item-header">' +
-                '<div>' +
-                '<div class="content-item-title">' + escapeHtml(w.name) + '</div>' +
-                '<div class="widget-item-meta">' +
-                '<span class="widget-chip">' + escapeHtml(placementLabels[w.placement] || w.placement) + '</span>' +
-                '<span class="widget-chip">' + escapeHtml(w.scope || 'all') + '</span>' +
-                '<span class="widget-chip ' + statusClass + '">' + statusLabel + '</span>' +
-                '</div></div>' +
-                '<div class="plan-item-actions">' +
-                '<button type="button" class="mini-btn" data-action="edit-widget">Editar</button>' +
-                '<button type="button" class="mini-btn" data-action="delete-widget">Excluir</button>' +
-                '</div></div></div>';
+        tbody.innerHTML = state.widgets.map(function(w) {
+            return '<tr>' +
+                '<td><strong>' + escHtml(w.name) + '</strong></td>' +
+                '<td>' + escHtml(w.placement || '—') + '</td>' +
+                '<td><span class="badge ' + (w.type === 'code' ? 'badge-code' : 'badge-image') + '">' + escHtml(w.type || '—') + '</span></td>' +
+                '<td>' + escHtml(w.scope || 'all') + '</td>' +
+                '<td><span class="badge ' + (w.is_active ? 'badge-active' : 'badge-inactive') + '">' + (w.is_active ? 'Ativo' : 'Inativo') + '</span></td>' +
+                '<td class="table-actions">' +
+                    '<button class="btn btn-ghost btn-sm" onclick="widgetEdit(' + w.id + ')" title="Editar"><i class="fas fa-pen"></i></button>' +
+                    '<button class="btn btn-danger btn-sm" onclick="widgetDelete(' + w.id + ')" title="Excluir"><i class="fas fa-trash"></i></button>' +
+                '</td>' +
+                '</tr>';
         }).join('');
     }
 
-    function fillWidgetForm(widget) {
-        if (!el.widgetForm || !widget) return;
-        el.widgetForm.elements.widget_id.value = widget.id || '';
-        el.widgetForm.elements.current_media_path.value = widget.media_path || '';
-        el.widgetForm.elements.name.value = widget.name || '';
-        el.widgetForm.elements.title.value = widget.title || '';
-        el.widgetForm.elements.placement.value = widget.placement || 'top_banner';
-        el.widgetForm.elements.scope.value = widget.scope || 'all';
-        el.widgetForm.elements.widget_type.value = widget.widget_type || 'image';
-        el.widgetForm.elements.display_order.value = widget.display_order || 0;
-        el.widgetForm.elements.target_url.value = widget.target_url || '';
-        el.widgetForm.elements.alt_text.value = widget.alt_text || '';
-        el.widgetForm.elements.embed_code.value = widget.embed_code || '';
-        el.widgetForm.elements.is_active.checked = widget.is_active !== false;
-        if (widget.media_url && el.widgetPreview) {
-            el.widgetPreview.src = widget.media_url;
-            el.widgetPreview.hidden = false;
-        } else if (el.widgetPreview) {
-            el.widgetPreview.hidden = true;
+    document.getElementById('btn-new-widget').addEventListener('click', function() { openWidgetModal(null); });
+    window.widgetEdit = function(id) { openWidgetModal(state.widgets.find(function(w){ return w.id === id; }) || null); };
+    window.widgetDelete = function(id) {
+        var w = state.widgets.find(function(w){ return w.id === id; });
+        showConfirm('Excluir widget', 'Excluir "' + (w ? w.name : '') + '"?', async function() {
+            try { await api('DELETE', '/widgets/' + id); toast('Widget excluído.'); loadWidgets(); }
+            catch(err) { toast('Erro: ' + err.message, 'error'); }
+        });
+    };
+
+    function openWidgetModal(w) {
+        document.getElementById('widget-modal-title').textContent = w ? 'Editar Widget' : 'Novo Widget';
+        document.getElementById('editing-widget-id').value = w ? w.id : '';
+        document.getElementById('wg-name').value       = w ? (w.name || '')      : '';
+        document.getElementById('wg-title').value      = w ? (w.title || '')     : '';
+        document.getElementById('wg-placement').value  = w ? (w.placement || 'top_banner') : 'top_banner';
+        document.getElementById('wg-scope').value      = w ? (w.scope || 'all') : 'all';
+        document.getElementById('wg-type').value       = w ? (w.type || 'image') : 'image';
+        document.getElementById('wg-target-url').value = w ? (w.target_url || '') : '';
+        document.getElementById('wg-alt-text').value   = w ? (w.alt_text || '')  : '';
+        document.getElementById('wg-order').value      = w ? (w.display_order !== undefined ? w.display_order : 0) : 0;
+        document.getElementById('wg-active').checked   = w ? w.is_active !== false : true;
+        document.getElementById('wg-embed-code').value = w ? (w.embed_code || '') : '';
+        document.getElementById('wg-media-path').value = w ? (w.media_path || '') : '';
+        toggleWidgetTypeFields(w ? (w.type || 'image') : 'image');
+        if (w && w.media_path) {
+            document.getElementById('wg-media-preview').src = w.media_path;
+            document.getElementById('wg-media-preview-wrap').removeAttribute('hidden');
+            document.getElementById('wg-upload-wrap').setAttribute('hidden', '');
+        } else {
+            document.getElementById('wg-media-preview-wrap').setAttribute('hidden', '');
+            document.getElementById('wg-upload-wrap').removeAttribute('hidden');
         }
-        syncWidgetFieldVisibility();
+        openModal('modal-widget');
     }
 
-    function clearWidgetForm() {
-        if (!el.widgetForm) return;
-        el.widgetForm.reset();
-        el.widgetForm.elements.widget_id.value = '';
-        el.widgetForm.elements.current_media_path.value = '';
-        if (el.widgetPreview) {
-            el.widgetPreview.hidden = true;
-            el.widgetPreview.removeAttribute('src');
-        }
-        syncWidgetFieldVisibility();
+    function toggleWidgetTypeFields(type) {
+        document.getElementById('wg-image-section').style.display = type === 'image' ? '' : 'none';
+        document.getElementById('wg-code-section').style.display  = type === 'code'  ? '' : 'none';
     }
+    document.getElementById('wg-type').addEventListener('change', function() { toggleWidgetTypeFields(this.value); });
 
-    async function handleWidgetSave(event) {
-        event.preventDefault();
-        var formData = new FormData(el.widgetForm);
-        var widgetId = formData.get('widget_id');
-
+    document.getElementById('wg-media-input').addEventListener('change', async function() {
+        var file = this.files[0]; if (!file) return;
+        var fd = new FormData(); fd.append('file', file);
         try {
-            var uploadedMedia = null;
-            if (el.widgetMediaFile && el.widgetMediaFile.files && el.widgetMediaFile.files.length) {
-                var mediaPayload = new FormData();
-                mediaPayload.append('media', el.widgetMediaFile.files[0]);
-                uploadedMedia = await request('/widgets/media', { method: 'POST', body: mediaPayload });
-            }
+            var res = await fetch(state.apiBase + '/media/upload', { method: 'POST', headers: { Authorization: 'Bearer ' + state.token }, body: fd });
+            var data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Erro');
+            document.getElementById('wg-media-path').value = data.url;
+            document.getElementById('wg-media-preview').src = data.url;
+            document.getElementById('wg-media-preview-wrap').removeAttribute('hidden');
+            document.getElementById('wg-upload-wrap').setAttribute('hidden', '');
+            toast('Mídia do widget salva.');
+        } catch(err) { toast('Erro: ' + err.message, 'error'); }
+    });
+    document.getElementById('btn-remove-widget-media').addEventListener('click', function() {
+        document.getElementById('wg-media-path').value = '';
+        document.getElementById('wg-media-preview').src = '';
+        document.getElementById('wg-media-preview-wrap').setAttribute('hidden', '');
+        document.getElementById('wg-upload-wrap').removeAttribute('hidden');
+    });
 
-            var widgetType = formData.get('widget_type');
-            var payload = {
-                name: formData.get('name'),
-                title: formData.get('title'),
-                placement: formData.get('placement'),
-                scope: formData.get('scope'),
-                widget_type: widgetType,
-                media_path: uploadedMedia && uploadedMedia.media_path ? uploadedMedia.media_path : formData.get('current_media_path'),
-                target_url: formData.get('target_url'),
-                alt_text: formData.get('alt_text'),
-                embed_code: widgetType === 'code' ? formData.get('embed_code') : '',
-                display_order: Number(formData.get('display_order') || 0),
-                is_active: formData.get('is_active') === 'on',
-            };
-
-            if (widgetId) {
-                await request('/widgets/' + widgetId, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
-                showToast('Widget atualizado.');
-            } else {
-                await request('/widgets', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
-                showToast('Widget criado.');
-            }
-
-            clearWidgetForm();
-            await refreshWidgets();
-            populateKpis();
-        } catch (error) {
-            showToast(error.message, true);
-        }
-    }
-
-    async function handleWidgetActions(event) {
-        var target = event.target;
-        if (!(target instanceof HTMLButtonElement)) return;
-        var action = target.dataset.action;
-        if (!action) return;
-        var wrapper = target.closest('[data-widget-id]');
-        if (!wrapper) return;
-        var widgetId = wrapper.getAttribute('data-widget-id');
-        var widget = state.widgets.find(function (w) { return String(w.id) === String(widgetId); });
-        if (!widget) return;
-
+    document.getElementById('btn-save-widget').addEventListener('click', async function() {
+        var id   = document.getElementById('editing-widget-id').value;
+        var name = document.getElementById('wg-name').value.trim();
+        if (!name) { toast('Nome é obrigatório.', 'warning'); return; }
+        var payload = {
+            name: name,
+            title:         document.getElementById('wg-title').value,
+            placement:     document.getElementById('wg-placement').value,
+            scope:         document.getElementById('wg-scope').value,
+            type:          document.getElementById('wg-type').value,
+            target_url:    document.getElementById('wg-target-url').value,
+            alt_text:      document.getElementById('wg-alt-text').value,
+            display_order: parseInt(document.getElementById('wg-order').value) || 0,
+            is_active:     document.getElementById('wg-active').checked,
+            embed_code:    document.getElementById('wg-embed-code').value,
+            media_path:    document.getElementById('wg-media-path').value
+        };
         try {
-            if (action === 'edit-widget') {
-                fillWidgetForm(widget);
-                showToast('Widget carregado para edicao.');
-                return;
-            }
-            if (action === 'delete-widget') {
-                if (!window.confirm('Excluir este widget?')) return;
-                await request('/widgets/' + widget.id, { method: 'DELETE' });
-                clearWidgetForm();
-                await refreshWidgets();
-                populateKpis();
-                showToast('Widget excluido.');
-            }
-        } catch (error) {
-            showToast(error.message, true);
-        }
-    }
+            if (id) { await api('PUT', '/widgets/' + id, payload); toast('Widget atualizado!'); }
+            else    { await api('POST', '/widgets', payload);       toast('Widget criado!'); }
+            closeModal('modal-widget');
+            loadWidgets();
+        } catch(err) { toast('Erro: ' + err.message, 'error'); }
+    });
 
-    // ── API Auto-detect ───────────────────────────────────────────────────────
-    async function autoDetectApi() {
-        var detected = localStorage.getItem('idialog-tools-api');
-        if (detected && detected !== '/api') {
-            state.apiBase = detected;
-            localStorage.setItem(ADMIN_API_KEY, detected);
-        }
-        try {
-            var resp = await fetch(state.apiBase + '/health', { method: 'GET' });
-            if (resp.ok) return;
-        } catch (_) { }
-        showToast('Servidor nao respondeu. Verifique se o backend esta online.', true);
-    }
+    // ── Appearance (rocket cursor) ───────────────────────────────────────────
+    var APPEARANCE_SLIDERS = [
+        { key: 'scale',        label: 'Tamanho do foguete', min: 0.5, max: 3,   step: 0.1, def: 1 },
+        { key: 'glow',         label: 'Brilho do foguete',  min: 0,   max: 40,  step: 1,   def: 15 },
+        { key: 'tailWidth',    label: 'Largura da cauda',   min: 1,   max: 10,  step: 1,   def: 3 },
+        { key: 'tailLength',   label: 'Comprimento da cauda', min: 5, max: 50,  step: 1,   def: 20 },
+        { key: 'smokeSize',    label: 'Tamanho da fumaça',  min: 1,   max: 20,  step: 1,   def: 6 },
+        { key: 'trailDensity', label: 'Densidade do rastro', min: 1,  max: 20,  step: 1,   def: 5 }
+    ];
+    var appearanceValues = {};
 
-    // ── Widgets CRUD ──────────────────────────────────────────────────────────
-    function syncWidgetFieldVisibility() {
-        if (!el.widgetType || !el.widgetMediaFields || !el.widgetCodeFields) return;
-        var isCode = el.widgetType.value === 'code';
-        el.widgetMediaFields.hidden = isCode;
-        el.widgetCodeFields.hidden = !isCode;
-    }
-
-    async function refreshWidgets() {
-        try {
-            var response = await request('/widgets', { method: 'GET' });
-            state.widgets = response.widgets || [];
-            renderWidgets();
-        } catch (_err) {
-            state.widgets = [];
-        }
-    }
-
-    function renderWidgets() {
-        if (!el.widgetsList) return;
-        if (!state.widgets.length) {
-            el.widgetsList.innerHTML = '<p>Nenhum widget cadastrado.</p>';
-            return;
-        }
-        el.widgetsList.innerHTML = state.widgets.map(function (w) {
-            var statusClass = w.is_active ? 'is-live' : 'is-paused';
-            var statusLabel = w.is_active ? 'Ativo' : 'Inativo';
-            var placementLabels = {
-                top_banner: 'Banner superior',
-                prefooter_banner: 'Banner rodape',
-                content_square: 'Quadrado conteudo',
-                sidebar_square: 'Quadrado lateral',
-            };
-            return '<div class="content-item" data-widget-id="' + w.id + '">' +
-                '<div class="content-item-header">' +
-                '<div>' +
-                '<div class="content-item-title">' + escapeHtml(w.name) + '</div>' +
-                '<div class="widget-item-meta">' +
-                '<span class="widget-chip">' + escapeHtml(placementLabels[w.placement] || w.placement) + '</span>' +
-                '<span class="widget-chip">' + escapeHtml(w.scope || 'all') + '</span>' +
-                '<span class="widget-chip ' + statusClass + '">' + statusLabel + '</span>' +
-                '</div></div>' +
-                '<div class="plan-item-actions">' +
-                '<button type="button" class="mini-btn" data-action="edit-widget">Editar</button>' +
-                '<button type="button" class="mini-btn" data-action="delete-widget">Excluir</button>' +
-                '</div></div></div>';
+    function loadAppearanceTab() {
+        var saved = JSON.parse(localStorage.getItem(CURSOR_KEY) || '{}');
+        var grid = document.getElementById('appearance-grid');
+        grid.innerHTML = APPEARANCE_SLIDERS.map(function(s) {
+            var val = saved[s.key] !== undefined ? saved[s.key] : s.def;
+            appearanceValues[s.key] = val;
+            return '<div><div class="appearance-slider-row">' +
+                '<label>' + escHtml(s.label) + '</label>' +
+                '<input type="range" min="' + s.min + '" max="' + s.max + '" step="' + s.step + '" value="' + val + '" data-key="' + s.key + '">' +
+                '<span class="slider-val" id="av-' + s.key + '">' + val + '</span>' +
+                '</div></div>';
         }).join('');
+        grid.querySelectorAll('input[type="range"]').forEach(function(inp) {
+            inp.addEventListener('input', function() {
+                appearanceValues[this.dataset.key] = parseFloat(this.value);
+                document.getElementById('av-' + this.dataset.key).textContent = this.value;
+            });
+        });
     }
 
-    function fillWidgetForm(widget) {
-        if (!el.widgetForm || !widget) return;
-        el.widgetForm.elements.widget_id.value = widget.id || '';
-        el.widgetForm.elements.current_media_path.value = widget.media_path || '';
-        el.widgetForm.elements.name.value = widget.name || '';
-        el.widgetForm.elements.title.value = widget.title || '';
-        el.widgetForm.elements.placement.value = widget.placement || 'top_banner';
-        el.widgetForm.elements.scope.value = widget.scope || 'all';
-        el.widgetForm.elements.widget_type.value = widget.widget_type || 'image';
-        el.widgetForm.elements.display_order.value = widget.display_order || 0;
-        el.widgetForm.elements.target_url.value = widget.target_url || '';
-        el.widgetForm.elements.alt_text.value = widget.alt_text || '';
-        el.widgetForm.elements.embed_code.value = widget.embed_code || '';
-        el.widgetForm.elements.is_active.checked = widget.is_active !== false;
-        if (widget.media_url && el.widgetPreview) {
-            el.widgetPreview.src = widget.media_url;
-            el.widgetPreview.hidden = false;
-        } else if (el.widgetPreview) {
-            el.widgetPreview.hidden = true;
-        }
-        syncWidgetFieldVisibility();
-    }
+    document.getElementById('btn-save-appearance').addEventListener('click', function() {
+        localStorage.setItem(CURSOR_KEY, JSON.stringify(appearanceValues));
+        toast('Aparência salva!');
+    });
 
-    function clearWidgetForm() {
-        if (!el.widgetForm) return;
-        el.widgetForm.reset();
-        el.widgetForm.elements.widget_id.value = '';
-        el.widgetForm.elements.current_media_path.value = '';
-        if (el.widgetPreview) {
-            el.widgetPreview.hidden = true;
-            el.widgetPreview.removeAttribute('src');
-        }
-        syncWidgetFieldVisibility();
-    }
-
-    async function handleWidgetSave(event) {
-        event.preventDefault();
-        var formData = new FormData(el.widgetForm);
-        var widgetId = formData.get('widget_id');
+    // ── Settings ─────────────────────────────────────────────────────────────
+    async function loadSettings() {
+        try {
+            var data = await api('GET', '/settings/company');
+            var cfg = data.settings || data;
+            document.getElementById('cfg-company-name').value    = cfg.company_name || cfg.name || '';
+            document.getElementById('cfg-company-email').value   = cfg.company_email || cfg.email || '';
+            document.getElementById('cfg-company-phone').value   = cfg.company_phone || cfg.phone || '';
+            document.getElementById('cfg-company-address').value = cfg.company_address || cfg.address || '';
+            if (cfg.logo_url) {
+                document.getElementById('company-logo-preview').src = cfg.logo_url;
+                document.getElementById('company-logo-preview').removeAttribute('hidden');
+            }
+        } catch(e) { /* no company settings yet */ }
 
         try {
-            var uploadedMedia = null;
-            if (el.widgetMediaFile && el.widgetMediaFile.files && el.widgetMediaFile.files.length) {
-                var mediaPayload = new FormData();
-                mediaPayload.append('media', el.widgetMediaFile.files[0]);
-                uploadedMedia = await request('/widgets/media', { method: 'POST', body: mediaPayload });
-            }
-
-            var widgetType = formData.get('widget_type');
-            var payload = {
-                name: formData.get('name'),
-                title: formData.get('title'),
-                placement: formData.get('placement'),
-                scope: formData.get('scope'),
-                widget_type: widgetType,
-                media_path: uploadedMedia && uploadedMedia.media_path ? uploadedMedia.media_path : formData.get('current_media_path'),
-                target_url: formData.get('target_url'),
-                alt_text: formData.get('alt_text'),
-                embed_code: widgetType === 'code' ? formData.get('embed_code') : '',
-                display_order: Number(formData.get('display_order') || 0),
-                is_active: formData.get('is_active') === 'on',
-            };
-
-            if (widgetId) {
-                await request('/widgets/' + widgetId, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
-                showToast('Widget atualizado.');
-            } else {
-                await request('/widgets', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
-                showToast('Widget criado.');
-            }
-
-            clearWidgetForm();
-            await refreshWidgets();
-            populateKpis();
-        } catch (error) {
-            showToast(error.message, true);
-        }
-    }
-
-    async function handleWidgetActions(event) {
-        var target = event.target;
-        if (!(target instanceof HTMLButtonElement)) return;
-        var action = target.dataset.action;
-        if (!action) return;
-        var wrapper = target.closest('[data-widget-id]');
-        if (!wrapper) return;
-        var widgetId = wrapper.getAttribute('data-widget-id');
-        var widget = state.widgets.find(function (w) { return String(w.id) === String(widgetId); });
-        if (!widget) return;
+            var acfg = await api('GET', '/analytics/config');
+            document.getElementById('cfg-ga4-mid').value = acfg.ga4_measurement_id || '';
+            document.getElementById('cfg-ga4-pid').value = acfg.ga4_property_id    || '';
+        } catch(e) { /* ok */ }
 
         try {
-            if (action === 'edit-widget') {
-                fillWidgetForm(widget);
-                showToast('Widget carregado para edicao.');
-                return;
-            }
-            if (action === 'delete-widget') {
-                if (!window.confirm('Excluir este widget?')) return;
-                await request('/widgets/' + widget.id, { method: 'DELETE' });
-                clearWidgetForm();
-                await refreshWidgets();
-                populateKpis();
-                showToast('Widget excluido.');
-            }
-        } catch (error) {
-            showToast(error.message, true);
-        }
+            var gcfg = await api('GET', '/github/config');
+            document.getElementById('cfg-gh-owner').value  = gcfg.owner  || '';
+            document.getElementById('cfg-gh-repo').value   = gcfg.repo   || '';
+            document.getElementById('cfg-gh-branch').value = gcfg.branch || 'main';
+        } catch(e) { /* ok */ }
     }
 
-    // ── API Auto-detect ───────────────────────────────────────────────────────
-    async function autoDetectApi() {
-        var detected = localStorage.getItem('idialog-tools-api');
-        if (detected && detected !== '/api') {
-            state.apiBase = detected;
-            localStorage.setItem(ADMIN_API_KEY, detected);
+    document.getElementById('btn-save-company').addEventListener('click', async function() {
+        try {
+            await api('PUT', '/settings/company', {
+                company_name:    document.getElementById('cfg-company-name').value,
+                company_email:   document.getElementById('cfg-company-email').value,
+                company_phone:   document.getElementById('cfg-company-phone').value,
+                company_address: document.getElementById('cfg-company-address').value
+            });
+            toast('Dados da empresa salvos!');
+        } catch(err) { toast('Erro: ' + err.message, 'error'); }
+    });
+
+    document.getElementById('company-logo-input').addEventListener('change', async function() {
+        var file = this.files[0]; if (!file) return;
+        var fd = new FormData(); fd.append('file', file);
+        try {
+            var res = await fetch(state.apiBase + '/media/upload', { method: 'POST', headers: { Authorization: 'Bearer ' + state.token }, body: fd });
+            var data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Erro');
+            await api('PUT', '/settings/company', { logo_url: data.url });
+            document.getElementById('company-logo-preview').src = data.url;
+            document.getElementById('company-logo-preview').removeAttribute('hidden');
+            toast('Logo atualizado!');
+        } catch(err) { toast('Erro: ' + err.message, 'error'); }
+    });
+
+    document.getElementById('btn-save-analytics').addEventListener('click', async function() {
+        var jsonRaw = document.getElementById('cfg-ga4-json').value.trim();
+        var payload = {
+            ga4_measurement_id: document.getElementById('cfg-ga4-mid').value.trim(),
+            ga4_property_id:    document.getElementById('cfg-ga4-pid').value.trim()
+        };
+        if (jsonRaw) {
+            try { JSON.parse(jsonRaw); } catch(e) { toast('JSON da conta de serviço inválido.', 'error'); return; }
+            payload.service_account_json = jsonRaw;
         }
         try {
-            var resp = await fetch(state.apiBase + '/health', { method: 'GET' });
-            if (resp.ok) return;
-        } catch (_) { }
-        showToast('Servidor nao respondeu. Verifique se o backend esta online.', true);
-    }
+            await api('PUT', '/analytics/config', payload);
+            toast('Configuração GA4 salva!');
+        } catch(err) { toast('Erro: ' + err.message, 'error'); }
+    });
 
-    // ── Bootstrap ─────────────────────────────────────────────────────────────
-    function bindEvents() {
-        if (el.loginForm) {
-            el.loginForm.addEventListener('submit', handleLogin);
-        }
-        if (el.logoutBtn) {
-            el.logoutBtn.addEventListener('click', handleLogout);
-        }
-        if (el.contentForm) {
-            el.contentForm.addEventListener('submit', handleContentSave);
-        }
-        if (el.contentReset) {
-            el.contentReset.addEventListener('click', clearContentForm);
-        }
-        if (el.contentList) {
-            el.contentList.addEventListener('click', handleContentActions);
-        }
-        if (el.scheduledList) {
-            el.scheduledList.addEventListener('click', handleContentActions);
-        }
-        if (el.contentType) {
-            el.contentType.addEventListener('change', syncContentFieldVisibility);
-        }
-        if (el.contentTitle) {
-            el.contentTitle.addEventListener('input', () => {
-                if (!el.contentSlug.dataset.manual || el.contentSlug.dataset.manual !== 'true') {
-                    el.contentSlug.value = slugify(el.contentTitle.value);
-                }
-            });
-        }
-        if (el.contentSlug) {
-            el.contentSlug.addEventListener('input', () => {
-                el.contentSlug.dataset.manual = el.contentSlug.value ? 'true' : '';
-                el.contentSlug.value = slugify(el.contentSlug.value);
-            });
-        }
-        // Cover preview on file select
-        if (el.contentCoverFile) {
-            el.contentCoverFile.addEventListener('change', function () {
-                if (el.contentCoverFile.files && el.contentCoverFile.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        setContentCoverPreview(e.target.result, 'Preview');
-                    };
-                    reader.readAsDataURL(el.contentCoverFile.files[0]);
-                }
-            });
-        }
+    document.getElementById('btn-test-analytics').addEventListener('click', async function() {
+        try {
+            await api('GET', '/analytics/ga4');
+            toast('Conexão GA4 funcionando!');
+        } catch(err) { toast('Erro GA4: ' + err.message, 'error'); }
+    });
 
-        // Widget events
-        if (el.widgetForm) {
-            el.widgetForm.addEventListener('submit', handleWidgetSave);
-        }
-        if (el.widgetReset) {
-            el.widgetReset.addEventListener('click', clearWidgetForm);
-        }
-        if (el.widgetsList) {
-            el.widgetsList.addEventListener('click', handleWidgetActions);
-        }
-        if (el.widgetType) {
-            el.widgetType.addEventListener('change', syncWidgetFieldVisibility);
-        }
+    document.getElementById('btn-save-github').addEventListener('click', async function() {
+        var pat = document.getElementById('cfg-gh-pat').value.trim();
+        var payload = {
+            owner:  document.getElementById('cfg-gh-owner').value.trim(),
+            repo:   document.getElementById('cfg-gh-repo').value.trim(),
+            branch: document.getElementById('cfg-gh-branch').value.trim() || 'main'
+        };
+        if (pat) payload.pat = pat;
+        try {
+            await api('PUT', '/github/config', payload);
+            toast('Configuração GitHub salva!');
+        } catch(err) { toast('Erro: ' + err.message, 'error'); }
+    });
 
-        // Cursor events
-        if (el.cursorForm) {
-            el.cursorForm.addEventListener('submit', handleCursorSave);
-        }
-        if (el.cursorReset) {
-            el.cursorReset.addEventListener('click', handleCursorReset);
-        }
+    document.getElementById('btn-test-github').addEventListener('click', async function() {
+        try {
+            var cfg = await api('GET', '/github/config');
+            if (!cfg.owner) { toast('Configuração incompleta.', 'warning'); return; }
+            await api('POST', '/github/proxy', { method: 'GET', path: 'repos/' + cfg.owner + '/' + cfg.repo });
+            toast('Conexão GitHub funcionando!');
+        } catch(err) { toast('Erro GitHub: ' + err.message, 'error'); }
+    });
 
-        [
-            el.cursorScale,
-            el.cursorGlow,
-            el.cursorTailWidth,
-            el.cursorTailLength,
-            el.cursorSmokeSize,
-            el.cursorTrailDensity,
-        ].forEach(input => {
-            if (input) {
-                input.addEventListener('input', handleCursorInput);
-            }
-        });
+    document.getElementById('btn-change-password').addEventListener('click', async function() {
+        var oldPw  = document.getElementById('cfg-old-password').value;
+        var newPw  = document.getElementById('cfg-new-password').value;
+        var confPw = document.getElementById('cfg-confirm-password').value;
+        if (!oldPw || !newPw) { toast('Preencha todos os campos.', 'warning'); return; }
+        if (newPw.length < 8) { toast('Nova senha deve ter pelo menos 8 caracteres.', 'warning'); return; }
+        if (newPw !== confPw) { toast('Senhas não conferem.', 'warning'); return; }
+        try {
+            await api('POST', '/auth/change-password', { old_password: oldPw, new_password: newPw });
+            toast('Senha alterada com sucesso!');
+            ['cfg-old-password','cfg-new-password','cfg-confirm-password'].forEach(function(id) { document.getElementById(id).value = ''; });
+        } catch(err) { toast('Erro: ' + err.message, 'error'); }
+    });
 
-        // Sidebar navigation
-        document.querySelectorAll('.admin-nav-item[data-tab]').forEach(btn => {
-            btn.addEventListener('click', handleTabSwitch);
-        });
-        // Quick cards on dashboard
-        document.querySelectorAll('[data-tab-go]').forEach(card => {
-            card.addEventListener('click', handleTabSwitch);
-        });
-        // Sidebar mobile toggle
-        var sidebarToggle = document.getElementById('admin-sidebar-toggle');
-        if (sidebarToggle) sidebarToggle.addEventListener('click', openSidebar);
-        var adminOverlay = document.getElementById('admin-overlay');
-        if (adminOverlay) adminOverlay.addEventListener('click', closeSidebar);
-        // Mobile logout
-        var logoutMobile = document.getElementById('logout-btn-mobile');
-        if (logoutMobile) logoutMobile.addEventListener('click', handleLogout);
-    }
+    // ── Boot ─────────────────────────────────────────────────────────────────
+    restoreSession();
 
-    function init() {
-        syncContentFieldVisibility();
-        syncWidgetFieldVisibility();
-        fillCursorForm(getCursorConfigFromStorage());
-        startClockTick();
-        bindEvents();
-        autoDetectApi();
-        restoreSession();
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
 })();
