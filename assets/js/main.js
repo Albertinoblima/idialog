@@ -1854,12 +1854,12 @@ if ('performance' in window) {
             s.src = 'https://www.googletagmanager.com/gtag/js?id=' + mid;
             document.head.appendChild(s);
             window.dataLayer = window.dataLayer || [];
-            function gtag(){ window.dataLayer.push(arguments); }
+            function gtag() { window.dataLayer.push(arguments); }
             gtag('js', new Date());
             gtag('config', mid);
             window.gtag = gtag;
         })
-        .catch(() => {});
+        .catch(() => { });
 })();
 
 // ===========================
@@ -1868,7 +1868,7 @@ if ('performance' in window) {
 (function loadPageBlocks() {
     const slots = document.querySelectorAll('[data-cms-block]');
     if (!slots.length) return;
-    const pageId = document.body.dataset.pageId || location.pathname.replace(/\//g,'-').replace(/^-|-html$/g,'') || 'home';
+    const pageId = document.body.dataset.pageId || location.pathname.replace(/\//g, '-').replace(/^-|-html$/g, '') || 'home';
     const apiBase = localStorage.getItem('idialog-tools-api') || 'https://idialog-production.up.railway.app/api';
     fetch(apiBase + '/public/pages/' + encodeURIComponent(pageId) + '/blocks')
         .then(r => r.ok ? r.json() : null)
@@ -1883,5 +1883,5 @@ if ('performance' in window) {
                 }
             });
         })
-        .catch(() => {});
+        .catch(() => { });
 })();
