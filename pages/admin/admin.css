@@ -1377,7 +1377,6 @@ label {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, .5);
-    z-index: -1;
 }
 
 .modal-dialog {
@@ -1387,6 +1386,7 @@ label {
     max-width: 620px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
     position: relative;
+    z-index: 1;
 }
 
 .modal-dialog--sm {

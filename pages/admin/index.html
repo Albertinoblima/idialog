@@ -659,7 +659,8 @@
                                         <li>Crie uma <strong>conta de serviço</strong> e baixe o JSON da chave</li>
                                         <li>Copie o <strong>Property ID</strong> (número) do painel GA4</li>
                                         <li>Adicione no Railway: <code>GA4_PROPERTY_ID</code> e
-                                            <code>GA4_SERVICE_ACCOUNT_JSON</code></li>
+                                            <code>GA4_SERVICE_ACCOUNT_JSON</code>
+                                        </li>
                                     </ol>
                                 </div>
                             </div>
@@ -705,22 +706,26 @@
                                 </div>
                             </div>
                             <form autocomplete="off" onsubmit="return false;">
-                            <div class="settings-form-grid settings-form-grid--4">
-                                <div class="field-group"><label for="cfg-gh-owner">Owner (usuário/org)</label><input
-                                        id="cfg-gh-owner" type="text" placeholder="albertinoblima"></div>
-                                <div class="field-group"><label for="cfg-gh-repo">Repositório</label><input
-                                        id="cfg-gh-repo" type="text" placeholder="iDialog"></div>
-                                <div class="field-group"><label for="cfg-gh-branch">Branch</label><input
-                                        id="cfg-gh-branch" type="text" placeholder="main"></div>
-                                <div class="field-group"><label for="cfg-gh-pat">Personal Access Token</label><input
-                                        id="cfg-gh-pat" type="password" placeholder="github_pat_..." autocomplete="new-password"></div>
-                            </div>
-                            <div class="flex-gap mt-4">
-                                <button id="btn-save-github" class="btn btn-primary" type="button"><i class="fas fa-floppy-disk"></i>
-                                    Salvar GitHub</button>
-                                <button id="btn-test-github" class="btn btn-ghost" type="button"><i class="fas fa-flask"></i> Testar
-                                    Conexão</button>
-                            </div>
+                                <div class="settings-form-grid settings-form-grid--4">
+                                    <div class="field-group"><label for="cfg-gh-owner">Owner (usuário/org)</label><input
+                                            id="cfg-gh-owner" type="text" placeholder="albertinoblima"
+                                            autocomplete="off"></div>
+                                    <div class="field-group"><label for="cfg-gh-repo">Repositório</label><input
+                                            id="cfg-gh-repo" type="text" placeholder="iDialog" autocomplete="off"></div>
+                                    <div class="field-group"><label for="cfg-gh-branch">Branch</label><input
+                                            id="cfg-gh-branch" type="text" placeholder="main" autocomplete="off"></div>
+                                    <div class="field-group"><label for="cfg-gh-pat">Personal Access Token</label><input
+                                            id="cfg-gh-pat" type="password" placeholder="github_pat_..."
+                                            autocomplete="new-password"></div>
+                                </div>
+                                <div class="flex-gap mt-4">
+                                    <button id="btn-save-github" class="btn btn-primary" type="button"><i
+                                            class="fas fa-floppy-disk"></i>
+                                        Salvar GitHub</button>
+                                    <button id="btn-test-github" class="btn btn-ghost" type="button"><i
+                                            class="fas fa-flask"></i> Testar
+                                        Conexão</button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -731,19 +736,22 @@
                             <h3 class="card-title"><i class="fas fa-shield-halved"></i> Segurança</h3>
                         </div>
                         <div class="card-body">
-                            <form autocomplete="on" onsubmit="return false;">
-                            <div class="settings-form-grid">
-                                <div class="field-group"><label for="cfg-old-password">Senha atual</label><input
-                                        id="cfg-old-password" type="password" autocomplete="current-password"></div>
-                                <div class="field-group"><label for="cfg-new-password">Nova senha</label><input
-                                        id="cfg-new-password" type="password" autocomplete="new-password"><small
-                                        class="field-hint">Mínimo 8 caracteres</small></div>
-                                <div class="field-group"><label for="cfg-confirm-password">Confirmar nova
-                                        senha</label><input id="cfg-confirm-password" type="password"
-                                        autocomplete="new-password"></div>
-                            </div>
-                            <button id="btn-change-password" class="btn btn-primary mt-4" type="button"><i class="fas fa-key"></i>
-                                Alterar Senha</button>
+                            <form autocomplete="on" onsubmit="return false;"> <input type="text"
+                                    id="cfg-username-hidden" autocomplete="username" style="display:none"
+                                    aria-hidden="true" tabindex="-1">
+                                <div class="settings-form-grid">
+                                    <div class="field-group"><label for="cfg-old-password">Senha atual</label><input
+                                            id="cfg-old-password" type="password" autocomplete="current-password"></div>
+                                    <div class="field-group"><label for="cfg-new-password">Nova senha</label><input
+                                            id="cfg-new-password" type="password" autocomplete="new-password"><small
+                                            class="field-hint">Mínimo 8 caracteres</small></div>
+                                    <div class="field-group"><label for="cfg-confirm-password">Confirmar nova
+                                            senha</label><input id="cfg-confirm-password" type="password"
+                                            autocomplete="new-password"></div>
+                                </div>
+                                <button id="btn-change-password" class="btn btn-primary mt-4" type="button"><i
+                                        class="fas fa-key"></i>
+                                    Alterar Senha</button>
                             </form>
                         </div>
                     </div>
@@ -847,8 +855,8 @@
                 <p id="confirm-message"></p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-ghost" id="btn-confirm-cancel">Cancelar</button>
-                <button class="btn btn-danger" id="btn-confirm-ok">Confirmar</button>
+                <button class="btn btn-ghost" id="btn-confirm-cancel" type="button">Cancelar</button>
+                <button class="btn btn-danger" id="btn-confirm-ok" type="button">Confirmar</button>
             </div>
         </div>
     </div>
