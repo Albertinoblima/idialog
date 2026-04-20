@@ -866,11 +866,26 @@ label {
     align-items: center;
 }
 
+.post-body-textarea {
+    min-height: 400px;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    font-family: monospace;
+    resize: vertical;
+}
+
+.textarea-code {
+    font-family: monospace;
+    font-size: .8rem;
+}
+
 .toggle-label {
     display: flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
+    -webkit-user-select: none;
     user-select: none;
     font-weight: 600;
     color: var(--txt2);
