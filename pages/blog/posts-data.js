@@ -277,10 +277,10 @@ const posts = [
     },
     {
         id: 3,
-        titulo: "Revista Para Concursos: Aprovado Resolve Questões",
+        titulo: "Aprova Concursos: Plataforma de Estudos com Questões e Simulados",
         data: "2026-04-16",
         categoria: "Concursos Públicos",
-        resumo: "A melhor forma de aprovação é resolver questões com método. Conheça a Revista para Concursos da iDialog e acelere sua evolução.",
+        resumo: "Conheça o Aprova Concursos, plataforma de estudos da iDialog com simulados adaptativos, conteúdo por disciplina e dashboard de desempenho — focada em concursos da Área Judiciária.",
         arquivo: "posts/revista-concursos-questoes.html",
         svg: '<svg viewBox="0 0 320 200" style="width: 100%; height: 100%; display: block;"><defs><linearGradient id="grad-revista" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00e5ff" stop-opacity="0.9"></stop><stop offset="100%" stop-color="#00ff88" stop-opacity="0.75"></stop></linearGradient></defs><rect x="30" y="24" width="260" height="152" rx="12" fill="rgba(10,10,15,0.62)" stroke="url(#grad-revista)" stroke-width="1.5"></rect><rect x="52" y="48" width="220" height="18" rx="7" fill="rgba(0,229,255,0.2)"></rect><rect x="52" y="78" width="14" height="14" rx="3" fill="rgba(0,255,136,0.3)" stroke="#00ff88"></rect><path d="M55 85 L59 89 L63 82" stroke="#00ff88" stroke-width="2" fill="none"></path><rect x="74" y="79" width="170" height="12" rx="6" fill="rgba(232,234,240,0.18)"></rect><rect x="52" y="102" width="14" height="14" rx="3" fill="rgba(0,255,136,0.3)" stroke="#00ff88"></rect><path d="M55 109 L59 113 L63 106" stroke="#00ff88" stroke-width="2" fill="none"></path><rect x="74" y="103" width="150" height="12" rx="6" fill="rgba(232,234,240,0.18)"></rect><rect x="52" y="126" width="14" height="14" rx="3" fill="rgba(255,45,149,0.25)" stroke="#ff2d95"></rect><path d="M55 129 L63 137 M63 129 L55 137" stroke="#ff2d95" stroke-width="1.8"></path><rect x="74" y="127" width="132" height="12" rx="6" fill="rgba(232,234,240,0.18)"></rect></svg>'
     },

@@ -366,7 +366,7 @@
             all: 'Site inteiro',
             site: 'Site institucional',
             blog: 'Blog',
-            revista: 'Revista',
+            revista: 'Aprova Concursos',
         };
         return labels[value] || value;
     }

@@ -405,7 +405,7 @@ window.App = (() => {
         if (!container) return;
 
         const items = [
-            { icon: 'fa-book-open', label: 'Revista de Estudos', desc: '5 disciplinas com conteúdo completo', action: "App.goTo('study')", color: '#00e5ff' },
+            { icon: 'fa-book-open', label: 'Conteúdo das Disciplinas', desc: '5 disciplinas com conteúdo completo', action: "App.goTo('study')", color: '#00e5ff' },
             { icon: 'fa-play', label: 'Montar Simulado', desc: 'Escolha matérias e nível de dificuldade', action: "window.location='simulador.html'", color: '#a855f7' },
         ];
 
