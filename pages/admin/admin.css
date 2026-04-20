@@ -1358,6 +1358,10 @@ label {
 }
 
 /* MODALS */
+.wp-modal[hidden] {
+    display: none;
+}
+
 .wp-modal {
     position: fixed;
     inset: 0;
