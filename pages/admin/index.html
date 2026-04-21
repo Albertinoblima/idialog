@@ -409,8 +409,10 @@
                             <div class="card-header">
                                 <h3 class="card-title"><i class="fas fa-folder-open"></i> Arquivos</h3>
                                 <div style="display:flex;gap:6px">
-                                    <button id="btn-new-file" class="btn btn-primary btn-sm" title="Novo arquivo"><i class="fas fa-plus"></i> Novo</button>
-                                    <button id="btn-refresh-tree" class="btn btn-ghost btn-sm" title="Atualizar"><i class="fas fa-rotate"></i></button>
+                                    <button id="btn-new-file" class="btn btn-primary btn-sm" title="Novo arquivo"><i
+                                            class="fas fa-plus"></i> Novo</button>
+                                    <button id="btn-refresh-tree" class="btn btn-ghost btn-sm" title="Atualizar"><i
+                                            class="fas fa-rotate"></i></button>
                                 </div>
                             </div>
                             <div class="card-body p-0">
@@ -869,18 +871,21 @@
         <div class="modal-dialog modal-dialog--sm">
             <div class="modal-header">
                 <h3>Novo Arquivo</h3>
-                <button class="modal-close" data-close-modal="modal-new-file" type="button"><i class="fas fa-xmark"></i></button>
+                <button class="modal-close" data-close-modal="modal-new-file" type="button"><i
+                        class="fas fa-xmark"></i></button>
             </div>
             <div class="modal-body">
                 <div class="field-group">
                     <label for="new-file-path">Caminho do arquivo (ex: pages/minha-pagina.html)</label>
-                    <input id="new-file-path" type="text" placeholder="pages/nova-pagina.html" class="form-control" autocomplete="off">
+                    <input id="new-file-path" type="text" placeholder="pages/nova-pagina.html" class="form-control"
+                        autocomplete="off">
                 </div>
                 <p id="new-file-error" class="form-error" hidden></p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-ghost" data-close-modal="modal-new-file" type="button">Cancelar</button>
-                <button class="btn btn-primary" id="btn-create-file" type="button"><i class="fas fa-plus"></i> Criar arquivo</button>
+                <button class="btn btn-primary" id="btn-create-file" type="button"><i class="fas fa-plus"></i> Criar
+                    arquivo</button>
             </div>
         </div>
     </div>
