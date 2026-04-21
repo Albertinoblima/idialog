@@ -4,13 +4,22 @@ import io
 import json
 import os
 import re
-import sqlite3
 import urllib.error
 import urllib.parse
 import urllib.request
 import uuid
 from functools import wraps
 from pathlib import Path
+
+# ── Database driver (PostgreSQL or SQLite fallback) ────────────────────────
+DATABASE_URL = os.getenv('DATABASE_URL', '')
+USE_POSTGRES = bool(DATABASE_URL)
+
+if USE_POSTGRES:
+    import psycopg2
+    import psycopg2.extras
+else:
+    import sqlite3
 
 try:
     from google.analytics.data_v1beta import BetaAnalyticsDataClient
@@ -99,16 +108,95 @@ def _decrypt(value: str) -> str:
 
 serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
+# ── DB connection abstraction ─────────────────────────────────────────────
+
+class _PgRow(dict):
+    """Dict subclass that allows attribute-style and index access (mimics sqlite3.Row)."""
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            return list(self.values())[key]
+        return super().__getitem__(key)
+
+    def get(self, key, default=None):
+        return super().get(key, default)
+
+
+class _PgCursor:
+    """Wraps psycopg2 cursor to auto-convert ? -> %s and return _PgRow objects."""
+    def __init__(self, cur):
+        self._cur = cur
+
+    @staticmethod
+    def _adapt(sql):
+        return sql.replace('?', '%s')
+
+    def execute(self, sql, params=()):
+        self._cur.execute(self._adapt(sql), params)
+        return self
+
+    def executemany(self, sql, seq):
+        self._cur.executemany(self._adapt(sql), seq)
+        return self
+
+    def fetchone(self):
+        row = self._cur.fetchone()
+        return _PgRow(row) if row else None
+
+    def fetchall(self):
+        return [_PgRow(r) for r in self._cur.fetchall()]
+
+    @property
+    def lastrowid(self):
+        self._cur.execute('SELECT lastval()')
+        return self._cur.fetchone()[0]
+
+    @property
+    def rowcount(self):
+        return self._cur.rowcount
+
+
+class _PgConn:
+    """Wraps psycopg2 connection to expose sqlite3-compatible interface."""
+    def __init__(self, conn):
+        self._conn = conn
+        self._cur = _PgCursor(conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor))
+
+    def cursor(self):
+        return _PgCursor(self._conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor))
+
+    def execute(self, sql, params=()):
+        return self._cur.execute(sql, params)
+
+    def fetchone(self):
+        return self._cur.fetchone()
+
+    def fetchall(self):
+        return self._cur.fetchall()
+
+    def commit(self):
+        self._conn.commit()
+
+    def close(self):
+        self._conn.close()
+
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+    if USE_POSTGRES:
+        url = DATABASE_URL
+        # Railway uses postgres:// but psycopg2 needs postgresql://
+        if url.startswith('postgres://'):
+            url = 'postgresql://' + url[len('postgres://'):]
+        raw = psycopg2.connect(url)
+        return _PgConn(raw)
+    else:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        return conn
 
 
 def ensure_default_site_admin(conn):
     company = conn.execute(
-        'SELECT id FROM companies WHERE name = ?',
+        'SELECT id FROM companies WHERE name = %s' if USE_POSTGRES else 'SELECT id FROM companies WHERE name = ?',
         (DEFAULT_ADMIN_COMPANY,),
     ).fetchone()
 
@@ -118,48 +206,74 @@ def ensure_default_site_admin(conn):
         company_id = company['id']
     else:
         cur = conn.cursor()
-        cur.execute(
-            """
-            INSERT INTO companies (name, cnpj, email, phone, address, header_text, footer_text, logo_path, created_at, updated_at)
-            VALUES (?, '', ?, '', '', '', '', '', ?, ?)
-            """,
-            (DEFAULT_ADMIN_COMPANY, DEFAULT_ADMIN_EMAIL, timestamp, timestamp),
-        )
-        company_id = cur.lastrowid
+        if USE_POSTGRES:
+            cur.execute(
+                """
+                INSERT INTO companies (name, cnpj, email, phone, address, header_text, footer_text, logo_path, created_at, updated_at)
+                VALUES (%s, '', %s, '', '', '', '', '', %s, %s) RETURNING id
+                """,
+                (DEFAULT_ADMIN_COMPANY, DEFAULT_ADMIN_EMAIL, timestamp, timestamp),
+            )
+            company_id = cur.fetchone()['id']
+        else:
+            cur.execute(
+                """
+                INSERT INTO companies (name, cnpj, email, phone, address, header_text, footer_text, logo_path, created_at, updated_at)
+                VALUES (?, '', ?, '', '', '', '', '', ?, ?)
+                """,
+                (DEFAULT_ADMIN_COMPANY, DEFAULT_ADMIN_EMAIL, timestamp, timestamp),
+            )
+            company_id = cur.lastrowid
 
     user = conn.execute(
-        'SELECT id FROM users WHERE email = ?',
+        'SELECT id FROM users WHERE email = %s' if USE_POSTGRES else 'SELECT id FROM users WHERE email = ?',
         (DEFAULT_ADMIN_EMAIL,),
     ).fetchone()
 
     password_hash = generate_password_hash(DEFAULT_ADMIN_PASSWORD)
+    ph = '%s' if USE_POSTGRES else '?'
     if user:
         conn.execute(
-            """
+            f"""
             UPDATE users
-            SET company_id = ?, name = ?, password_hash = ?, role = 'admin'
-            WHERE id = ?
+            SET company_id = {ph}, name = {ph}, password_hash = {ph}, role = 'admin'
+            WHERE id = {ph}
             """,
             (company_id, DEFAULT_ADMIN_NAME, password_hash, user['id']),
         )
     else:
         conn.execute(
-            """
+            f"""
             INSERT INTO users (company_id, name, email, password_hash, role, created_at)
-            VALUES (?, ?, ?, ?, 'admin', ?)
+            VALUES ({ph}, {ph}, {ph}, {ph}, 'admin', {ph})
             """,
             (company_id, DEFAULT_ADMIN_NAME, DEFAULT_ADMIN_EMAIL, password_hash, timestamp),
         )
+
+
+def _pk(col='id'):
+    """Returns the appropriate primary key definition for current DB engine."""
+    if USE_POSTGRES:
+        return f'{col} BIGSERIAL PRIMARY KEY'
+    return f'{col} INTEGER PRIMARY KEY AUTOINCREMENT'
+
+
+def _fk(col, ref_table, ref_col='id'):
+    """Returns a FOREIGN KEY clause compatible with both engines."""
+    if USE_POSTGRES:
+        return f'FOREIGN KEY({col}) REFERENCES {ref_table}({ref_col})'
+    return f'FOREIGN KEY({col}) REFERENCES {ref_table}({ref_col})'
 
 
 def init_db():
     conn = get_db()
     cur = conn.cursor()
 
-    cur.execute(
-        """
+    pk = _pk()
+
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS companies (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            {pk},
             name TEXT NOT NULL,
             cnpj TEXT,
             email TEXT,
@@ -171,14 +285,12 @@ def init_db():
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            company_id INTEGER NOT NULL,
+            {pk},
+            company_id BIGINT NOT NULL,
             name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
             password_hash TEXT NOT NULL,
@@ -186,14 +298,12 @@ def init_db():
             created_at TEXT NOT NULL,
             FOREIGN KEY(company_id) REFERENCES companies(id)
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS strategic_plans (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            company_id INTEGER NOT NULL,
+            {pk},
+            company_id BIGINT NOT NULL,
             title TEXT NOT NULL,
             period_start TEXT,
             period_end TEXT,
@@ -211,14 +321,12 @@ def init_db():
             updated_at TEXT NOT NULL,
             FOREIGN KEY(company_id) REFERENCES companies(id)
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS swot_analyses (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            company_id INTEGER NOT NULL,
+            {pk},
+            company_id BIGINT NOT NULL,
             title TEXT NOT NULL,
             analysis_date TEXT,
             business_unit TEXT,
@@ -240,14 +348,12 @@ def init_db():
             updated_at TEXT NOT NULL,
             FOREIGN KEY(company_id) REFERENCES companies(id)
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS business_plans (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            company_id INTEGER NOT NULL,
+            {pk},
+            company_id BIGINT NOT NULL,
             title TEXT NOT NULL,
             industry TEXT,
             target_market TEXT,
@@ -271,14 +377,12 @@ def init_db():
             updated_at TEXT NOT NULL,
             FOREIGN KEY(company_id) REFERENCES companies(id)
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS feasibility_studies (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            company_id INTEGER NOT NULL,
+            {pk},
+            company_id BIGINT NOT NULL,
             title TEXT NOT NULL,
             project_type TEXT,
             sector TEXT,
@@ -313,14 +417,12 @@ def init_db():
             updated_at TEXT NOT NULL,
             FOREIGN KEY(company_id) REFERENCES companies(id)
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS projects (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            company_id INTEGER NOT NULL,
+            {pk},
+            company_id BIGINT NOT NULL,
             title TEXT NOT NULL,
             description TEXT,
             status TEXT NOT NULL DEFAULT 'planning',
@@ -338,15 +440,13 @@ def init_db():
             updated_at TEXT NOT NULL,
             FOREIGN KEY(company_id) REFERENCES companies(id)
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS project_tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            project_id INTEGER NOT NULL,
-            company_id INTEGER NOT NULL,
+            {pk},
+            project_id BIGINT NOT NULL,
+            company_id BIGINT NOT NULL,
             title TEXT NOT NULL,
             description TEXT,
             milestone TEXT,
@@ -363,14 +463,12 @@ def init_db():
             FOREIGN KEY(project_id) REFERENCES projects(id),
             FOREIGN KEY(company_id) REFERENCES companies(id)
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS ad_widgets (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            company_id INTEGER NOT NULL,
+            {pk},
+            company_id BIGINT NOT NULL,
             name TEXT NOT NULL,
             title TEXT,
             placement TEXT NOT NULL,
@@ -386,15 +484,13 @@ def init_db():
             updated_at TEXT NOT NULL,
             FOREIGN KEY(company_id) REFERENCES companies(id)
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS content_items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            company_id INTEGER NOT NULL,
-            author_user_id INTEGER,
+            {pk},
+            company_id BIGINT NOT NULL,
+            author_user_id BIGINT,
             content_type TEXT NOT NULL,
             title TEXT NOT NULL,
             slug TEXT NOT NULL,
@@ -406,6 +502,9 @@ def init_db():
             cover_path TEXT,
             seo_title TEXT,
             seo_description TEXT,
+            meta_description TEXT DEFAULT '',
+            meta_keywords TEXT DEFAULT '',
+            canonical_url TEXT DEFAULT '',
             extra_json TEXT,
             published_at TEXT,
             created_at TEXT NOT NULL,
@@ -414,49 +513,42 @@ def init_db():
             FOREIGN KEY(company_id) REFERENCES companies(id),
             FOREIGN KEY(author_user_id) REFERENCES users(id)
         )
-        """
-    )
+    """)
 
     ensure_default_site_admin(conn)
 
-    # ── New tables for CMS v2 ──
-    cur.execute(
-        """
+    # ── CMS v2 tables ──
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS analytics_config (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            {pk},
             ga4_measurement_id TEXT NOT NULL DEFAULT '',
             ga4_property_id TEXT NOT NULL DEFAULT '',
             ga4_service_account_json TEXT NOT NULL DEFAULT '',
             updated_at TEXT NOT NULL DEFAULT ''
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS page_blocks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            {pk},
             page_id TEXT NOT NULL,
             block_key TEXT NOT NULL,
             content_html TEXT NOT NULL DEFAULT '',
             updated_at TEXT NOT NULL,
             UNIQUE(page_id, block_key)
         )
-        """
-    )
+    """)
 
-    cur.execute(
-        """
+    cur.execute(f"""
         CREATE TABLE IF NOT EXISTS github_config (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            {pk},
             github_pat TEXT NOT NULL DEFAULT '',
             repo_owner TEXT NOT NULL DEFAULT '',
             repo_name TEXT NOT NULL DEFAULT '',
             branch TEXT NOT NULL DEFAULT 'main',
             updated_at TEXT NOT NULL DEFAULT ''
         )
-        """
-    )
+    """)
 
     conn.commit()
     conn.close()
@@ -466,14 +558,30 @@ def migrate_db():
     """Add new columns to existing tables without breaking existing data."""
     conn = get_db()
     cur = conn.cursor()
-    existing_cols = [row[1] for row in cur.execute('PRAGMA table_info(content_items)').fetchall()]
-    for col_name, col_type in [
-        ('meta_description', 'TEXT'),
-        ('meta_keywords', 'TEXT'),
-        ('canonical_url', 'TEXT'),
-    ]:
-        if col_name not in existing_cols:
-            cur.execute(f"ALTER TABLE content_items ADD COLUMN {col_name} {col_type} DEFAULT ''")
+
+    if USE_POSTGRES:
+        # PostgreSQL: use information_schema
+        existing = cur.execute(
+            "SELECT column_name FROM information_schema.columns WHERE table_name='content_items'"
+        ).fetchall()
+        existing_cols = [row['column_name'] for row in existing]
+        for col_name, col_type in [
+            ('meta_description', 'TEXT'),
+            ('meta_keywords', 'TEXT'),
+            ('canonical_url', 'TEXT'),
+        ]:
+            if col_name not in existing_cols:
+                cur.execute(f"ALTER TABLE content_items ADD COLUMN IF NOT EXISTS {col_name} {col_type} DEFAULT ''")
+    else:
+        existing_cols = [row[1] for row in cur.execute('PRAGMA table_info(content_items)').fetchall()]
+        for col_name, col_type in [
+            ('meta_description', 'TEXT'),
+            ('meta_keywords', 'TEXT'),
+            ('canonical_url', 'TEXT'),
+        ]:
+            if col_name not in existing_cols:
+                cur.execute(f"ALTER TABLE content_items ADD COLUMN {col_name} {col_type} DEFAULT ''")
+
     conn.commit()
     conn.close()
 

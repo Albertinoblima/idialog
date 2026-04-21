@@ -10,3 +10,4 @@ gunicorn==22.0.0
 google-analytics-data==0.18.3
 flask-limiter==3.7.0
 cryptography==42.0.8
+psycopg2-binary==2.9.9
