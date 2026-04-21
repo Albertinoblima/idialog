@@ -1067,16 +1067,12 @@ def fix_scheduled():
         if not admin_secret or secret_param != admin_secret:
             return jsonify({'error': 'Invalid secret'}), 403
     else:
-        # fall back to JWT auth
-        from functools import wraps
-        token = token_header.replace('Bearer ', '').strip()
+        token = token_header.replace('Bearer', '').strip()
         if not token:
             return jsonify({'error': 'Unauthorized'}), 401
         try:
-            import jwt as pyjwt
-            JWT_SECRET = os.getenv('JWT_SECRET', 'dev-secret')
-            pyjwt.decode(token, JWT_SECRET, algorithms=['HS256'])
-        except Exception:
+            decode_token(token)
+        except (SignatureExpired, BadSignature, Exception):
             return jsonify({'error': 'Invalid token'}), 401
 
     fixed = migrate_scheduled_status()
