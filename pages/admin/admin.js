@@ -517,6 +517,135 @@
 
     // ── Pages (GitHub + Monaco) ──────────────────────────────────────────────
     var ghConfig = null;
+    var _monacoTheme = 'vs';
+
+    // Templates de novo arquivo
+    var FILE_TEMPLATES = {
+        'blank': '',
+        'css': '/* Estilos — ' + new Date().getFullYear() + ' iDialog */\n\n',
+        'js': '/* Módulo JavaScript — iDialog */\n(function () {\n    \'use strict\';\n\n    // Seu código aqui\n\n})();\n',
+        'html-page': `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MN7ZZDKVP"><\/script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MN7ZZDKVP');
+    <\/script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descrição da página">
+    <title>Título da Página — iDialog</title>
+    <link rel="icon" type="image/x-icon" href="/public/icon/1 iDialog icone.ico">
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <div id="header-placeholder"></div>
+
+    <main class="main">
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title">Título da Página</h1>
+                <p class="page-subtitle">Subtítulo ou descrição breve da página.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <!-- Conteúdo principal aqui -->
+                <p>Conteúdo da página.</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="/assets/js/main.js"><\/script>
+</body>
+</html>`,
+        'html-blog': `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MN7ZZDKVP"><\/script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MN7ZZDKVP');
+    <\/script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descrição do post">
+    <title>Título do Post — Blog iDialog</title>
+    <link rel="icon" type="image/x-icon" href="/public/icon/1 iDialog icone.ico">
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <link rel="stylesheet" href="/src/styles/responsive.css">
+    <link rel="stylesheet" href="/src/styles/blog-post.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Título do Post",
+      "description": "Descrição do post",
+      "datePublished": "${new Date().toISOString().split('T')[0]}",
+      "author": { "@type": "Person", "name": "Albertino Bezerra Lima" },
+      "publisher": { "@type": "Organization", "name": "iDialog", "url": "https://www.idialog.com.br" }
+    }
+    <\/script>
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <div id="header-placeholder"></div>
+
+    <main class="main">
+        <article class="blog-post-page">
+            <header class="blog-post-header">
+                <nav class="blog-breadcrumb" aria-label="Navegação estrutural">
+                    <a href="/index.html">Início</a> /
+                    <a href="/pages/blog/index.html">Blog</a> /
+                    <span>Título do Post</span>
+                </nav>
+                <span class="blog-post-category">Categoria</span>
+                <h1 class="blog-post-title">Título do Post</h1>
+                <p class="blog-post-intro">Introdução ou resumo do post.</p>
+                <div class="blog-post-meta">
+                    <span><i class="fas fa-calendar"></i> ${new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric'})}</span>
+                    <span><i class="fas fa-user"></i> Albertino Bezerra Lima</span>
+                    <span><i class="fas fa-clock"></i> 5 min de leitura</span>
+                </div>
+            </header>
+
+            <section>
+                <h2>Seção 1</h2>
+                <p>Conteúdo da primeira seção.</p>
+            </section>
+
+            <section>
+                <h2>Conclusão</h2>
+                <p>Considerações finais.</p>
+            </section>
+        </article>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="/assets/js/main.js"><\/script>
+    <script src="/assets/js/blog-post.js"><\/script>
+</body>
+</html>`
+    };
 
     async function loadPagesTab() {
         try {
@@ -536,36 +665,155 @@
 
     async function loadFileTree() {
         var treeEl = document.getElementById('file-tree');
-        treeEl.innerHTML = '<div class="tree-loading"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>';
+        treeEl.innerHTML = '<div class="tree-loading"><i class="fas fa-spinner fa-spin"></i> Carregando arquivos do repositório…</div>';
         try {
             var data = await api('POST', '/github/proxy', {
                 method: 'GET',
                 path: 'git/trees/' + (ghConfig.branch || 'main') + '?recursive=1'
             });
-            var files = (data.tree || []).filter(function (f) { return f.type === 'blob' && /\.(html|css|js|json|md|txt)$/i.test(f.path); });
-            renderFileTree(files);
+            // Filtra apenas arquivos relevantes, exclui node_modules, .git e arquivos ocultos
+            var files = (data.tree || []).filter(function (f) {
+                if (f.type !== 'blob') return false;
+                if (/\/(node_modules|\.git|\.github|__pycache__|\.pytest_cache)\//i.test('/' + f.path)) return false;
+                if (/^\.(git|env|DS_Store)/i.test(f.path.split('/').pop())) return false;
+                return /\.(html|css|js|json|md|txt)$/i.test(f.path);
+            });
+            window._treeFiles = files;
+            renderFileTree();
         } catch (err) {
             treeEl.innerHTML = '<div class="tree-loading" style="color:var(--red)"><i class="fas fa-circle-exclamation"></i> ' + escHtml(err.message) + '</div>';
         }
     }
 
-    function renderFileTree(files) {
-        var search = document.getElementById('tree-search').value.toLowerCase();
-        var list = search ? files.filter(function (f) { return f.path.toLowerCase().includes(search); }) : files;
-        var treeEl = document.getElementById('file-tree');
-        if (!list.length) { treeEl.innerHTML = '<div class="tree-loading">Nenhum arquivo encontrado.</div>'; return; }
-        treeEl.innerHTML = list.map(function (f) {
-            var icon = f.path.endsWith('.html') ? 'fa-file-code' : f.path.endsWith('.css') ? 'fa-file-lines' : f.path.endsWith('.js') ? 'fa-file-code' : 'fa-file';
-            return '<div class="tree-item" data-path="' + escHtml(f.path) + '"><i class="fas ' + icon + '"></i>' + escHtml(f.path) + '</div>';
-        }).join('');
-        treeEl.querySelectorAll('.tree-item').forEach(function (item) {
-            item.addEventListener('click', function () { openFileInMonaco(item.dataset.path); });
-        });
-        window._treeFiles = files;
+    function getActiveTypeFilter() {
+        var tab = document.querySelector('.tree-type-tab.active');
+        return tab ? tab.dataset.ext : '';
     }
 
+    function renderFileTree() {
+        var files = window._treeFiles || [];
+        var search = (document.getElementById('tree-search').value || '').toLowerCase().trim();
+        var ext = getActiveTypeFilter();
+
+        // Aplica filtros
+        var list = files.filter(function (f) {
+            if (search && !f.path.toLowerCase().includes(search)) return false;
+            if (ext === 'html') return /\.html$/i.test(f.path);
+            if (ext === 'css') return /\.css$/i.test(f.path);
+            if (ext === 'js') return /\.js$/i.test(f.path);
+            if (ext === 'other') return !/\.(html|css|js)$/i.test(f.path);
+            return true;
+        });
+
+        var treeEl = document.getElementById('file-tree');
+        if (!list.length) {
+            treeEl.innerHTML = '<div class="tree-loading">Nenhum arquivo encontrado.</div>';
+            return;
+        }
+
+        // Constrói estrutura de pastas
+        var tree = {}; // { folderPath: [fileNode, ...] }
+        list.forEach(function (f) {
+            var parts = f.path.split('/');
+            var folder = parts.length > 1 ? parts.slice(0, -1).join('/') : '';
+            if (!tree[folder]) tree[folder] = [];
+            tree[folder].push(f);
+        });
+
+        // Ordena pastas: raiz primeiro, depois alfabético
+        var folders = Object.keys(tree).sort(function (a, b) {
+            if (a === '') return -1;
+            if (b === '') return 1;
+            return a.localeCompare(b);
+        });
+
+        var html = '';
+
+        // Arquivos na raiz
+        if (tree['']) {
+            tree[''].sort(function (a, b) { return a.path.localeCompare(b.path); }).forEach(function (f) {
+                html += renderFileNode(f);
+            });
+        }
+
+        // Pastas
+        folders.filter(function (f) { return f !== ''; }).forEach(function (folder) {
+            var folderFiles = tree[folder].sort(function (a, b) { return a.path.localeCompare(b.path); });
+            var topFolder = folder.split('/')[0];
+            var isOpen = (search || ext) ? 'open' : (topFolder === 'pages' || topFolder === 'assets' ? 'open' : '');
+            html += '<div class="tree-folder-node ' + isOpen + '" data-folder="' + escHtml(folder) + '">';
+            html += '<div class="tree-folder-label">';
+            html += '<i class="fas fa-chevron-right tree-chevron"></i>';
+            html += '<i class="fas fa-folder tree-folder-icon"></i>';
+            html += '<span class="tree-folder-name">' + escHtml(folder) + '</span>';
+            html += '<span class="tree-count">' + folderFiles.length + '</span>';
+            html += '</div>';
+            html += '<div class="tree-folder-children">';
+            folderFiles.forEach(function (f) { html += renderFileNode(f); });
+            html += '</div></div>';
+        });
+
+        treeEl.innerHTML = html;
+
+        // Eventos: toggle de pasta
+        treeEl.querySelectorAll('.tree-folder-label').forEach(function (label) {
+            label.addEventListener('click', function () {
+                label.closest('.tree-folder-node').classList.toggle('open');
+            });
+        });
+
+        // Eventos: abrir arquivo
+        treeEl.querySelectorAll('.tree-item').forEach(function (item) {
+            item.addEventListener('click', function (e) {
+                if (e.target.closest('.tree-item-btn')) return; // deixa botão tratar
+                openFileInMonaco(item.dataset.path);
+            });
+        });
+
+        // Eventos: deletar via botão inline
+        treeEl.querySelectorAll('.tree-item-btn.del').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var path = btn.dataset.path;
+                showConfirm('Excluir arquivo', 'Excluir "' + path + '" do repositório? Esta ação não pode ser desfeita.', function () {
+                    deleteFileViaGitHub(path);
+                });
+            });
+        });
+
+        // Realça arquivo ativo
+        if (state.currentFilePath) {
+            var active = treeEl.querySelector('.tree-item[data-path="' + state.currentFilePath.replace(/"/g, '\\"') + '"]');
+            if (active) { active.classList.add('active'); }
+        }
+    }
+
+    function renderFileNode(f) {
+        var name = f.path.split('/').pop();
+        var icon = /\.html$/i.test(f.path) ? 'fa-file-code' :
+                   /\.css$/i.test(f.path) ? 'fa-file-lines' :
+                   /\.js$/i.test(f.path) ? 'fa-brands fa-js' :
+                   /\.json$/i.test(f.path) ? 'fa-file-code' :
+                   /\.md$/i.test(f.path) ? 'fa-file-lines' : 'fa-file';
+        return '<div class="tree-item" data-path="' + escHtml(f.path) + '" title="' + escHtml(f.path) + '">' +
+               '<i class="fas ' + icon + ' tree-item-icon"></i>' +
+               '<span class="tree-item-name">' + escHtml(name) + '</span>' +
+               '<span class="tree-item-actions">' +
+               '<button class="tree-item-btn del" data-path="' + escHtml(f.path) + '" title="Excluir arquivo"><i class="fas fa-trash"></i></button>' +
+               '</span></div>';
+    }
+
+    // Filtros por tipo
+    document.querySelectorAll('.tree-type-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            document.querySelectorAll('.tree-type-tab').forEach(function (t) { t.classList.remove('active'); });
+            tab.classList.add('active');
+            renderFileTree();
+        });
+    });
+
     document.getElementById('tree-search').addEventListener('input', function () {
-        if (window._treeFiles) renderFileTree(window._treeFiles);
+        renderFileTree();
     });
     document.getElementById('btn-refresh-tree').addEventListener('click', loadFileTree);
 
@@ -577,6 +825,7 @@
 
     document.getElementById('btn-create-file').addEventListener('click', async function () {
         var rawPath = (document.getElementById('new-file-path').value || '').trim().replace(/^\//, '');
+        var template = document.getElementById('new-file-template').value;
         var errEl = document.getElementById('new-file-error');
         if (!rawPath) { errEl.textContent = 'Informe o caminho do arquivo.'; errEl.removeAttribute('hidden'); return; }
         if (!/\.(html|css|js|json|md|txt)$/i.test(rawPath)) { errEl.textContent = 'Extensão não permitida. Use .html, .css, .js, .json, .md ou .txt'; errEl.removeAttribute('hidden'); return; }
@@ -584,7 +833,11 @@
         var btn = document.getElementById('btn-create-file');
         btn.disabled = true;
         try {
-            var encoded = btoa('');
+            // Seleciona template correto baseado na extensão se não escolheu explicitamente
+            var tmplKey = template;
+            if (tmplKey === 'html-page' && rawPath.includes('blog/posts/')) tmplKey = 'html-blog';
+            var content = FILE_TEMPLATES[tmplKey] || FILE_TEMPLATES['blank'];
+            var encoded = btoa(unescape(encodeURIComponent(content)));
             await api('POST', '/github/proxy', {
                 method: 'PUT',
                 path: 'contents/' + rawPath,
@@ -597,12 +850,41 @@
             toast('Arquivo criado: ' + rawPath);
             closeModal('modal-new-file');
             await loadFileTree();
-            openFileInMonaco(rawPath);
+            openFileInMonaco(rawPath, true);
         } catch (err) {
             errEl.textContent = 'Erro: ' + err.message;
             errEl.removeAttribute('hidden');
         } finally { btn.disabled = false; }
     });
+
+    async function deleteFileViaGitHub(path) {
+        // Busca SHA atual do arquivo
+        try {
+            var fileData = await api('POST', '/github/proxy', { method: 'GET', path: 'contents/' + path });
+            var sha = fileData.sha;
+            await api('POST', '/github/proxy', {
+                method: 'DELETE',
+                path: 'contents/' + path,
+                body: {
+                    message: 'admin: delete ' + path,
+                    sha: sha,
+                    branch: ghConfig.branch || 'main'
+                }
+            });
+            toast('Arquivo excluído: ' + path);
+            // Limpa editor se arquivo aberto era o excluído
+            if (state.currentFilePath === path) {
+                state.currentFilePath = null;
+                state.currentFileSha = null;
+                state.monacoUnsaved = false;
+                document.getElementById('monaco-editor-wrap').setAttribute('hidden', '');
+                document.getElementById('monaco-placeholder').removeAttribute('hidden');
+            }
+            await loadFileTree();
+        } catch (err) {
+            toast('Erro ao excluir: ' + err.message, 'error');
+        }
+    }
 
     async function openFileInMonaco(path, force) {
         if (state.monacoUnsaved && !force) {
@@ -610,13 +892,23 @@
             showConfirm('Alterações não salvas', 'Há alterações não salvas. Deseja descartar e abrir outro arquivo?', function () { openFileInMonaco(_doOpen, true); });
             return;
         }
+
         document.querySelectorAll('.tree-item').forEach(function (i) { i.classList.remove('active'); });
         var activeItem = document.querySelector('.tree-item[data-path="' + path.replace(/"/g, '\\"') + '"]');
-        if (activeItem) activeItem.classList.add('active');
+        if (activeItem) {
+            activeItem.classList.add('active');
+            activeItem.scrollIntoView({ block: 'nearest' });
+        }
 
         document.getElementById('monaco-placeholder').setAttribute('hidden', '');
         document.getElementById('monaco-editor-wrap').removeAttribute('hidden');
-        document.getElementById('monaco-filename').textContent = path;
+
+        // Atualiza breadcrumb e filename
+        var parts = path.split('/');
+        var fname = parts.pop();
+        document.getElementById('monaco-breadcrumb').textContent = parts.join(' / ');
+        document.getElementById('monaco-filename').textContent = fname;
+
         document.getElementById('monaco-status').textContent = 'Carregando…';
         document.getElementById('monaco-unsaved').setAttribute('hidden', '');
         state.monacoUnsaved = false;
@@ -629,23 +921,42 @@
             });
             var content = atob(data.content.replace(/\n/g, ''));
             state.currentFileSha = data.sha;
-            document.getElementById('monaco-status').textContent = path + ' — ' + content.length + ' bytes';
+            var lang = /\.html$/i.test(path) ? 'html' : /\.css$/i.test(path) ? 'css' : /\.js$/i.test(path) ? 'javascript' : /\.json$/i.test(path) ? 'json' : /\.md$/i.test(path) ? 'markdown' : 'plaintext';
+
+            document.getElementById('monaco-status').textContent = 'Pronto · ' + content.length.toLocaleString('pt-BR') + ' bytes · última modificação: ' + fmtDate(data.commit ? data.commit.committer.date : null);
+            document.getElementById('monaco-lang-badge').textContent = lang.toUpperCase();
+
             await ensureMonaco();
-            var lang = path.endsWith('.html') ? 'html' : path.endsWith('.css') ? 'css' : path.endsWith('.js') ? 'javascript' : path.endsWith('.json') ? 'json' : 'plaintext';
             if (state.monacoEditor) {
                 var newModel = window.monaco.editor.createModel(content, lang);
                 state.monacoEditor.setModel(newModel);
                 if (state.monacoModel) state.monacoModel.dispose();
                 state.monacoModel = newModel;
+                newModel.onDidChangeContent(function () {
+                    state.monacoUnsaved = true;
+                    document.getElementById('monaco-unsaved').removeAttribute('hidden');
+                });
             } else {
                 state.monacoEditor = window.monaco.editor.create(document.getElementById('monaco-editor-container'), {
                     value: content, language: lang,
-                    theme: 'vs', automaticLayout: true, fontSize: 13,
-                    minimap: { enabled: false }, wordWrap: 'on'
+                    theme: _monacoTheme, automaticLayout: true, fontSize: 13,
+                    minimap: { enabled: true, scale: 1 }, wordWrap: 'off',
+                    scrollBeyondLastLine: false,
+                    formatOnPaste: true,
+                    tabSize: 4, insertSpaces: true,
+                    folding: true, lineNumbers: 'on',
+                    renderWhitespace: 'selection',
+                    bracketPairColorization: { enabled: true }
                 });
+                state.monacoModel = state.monacoEditor.getModel();
                 state.monacoEditor.onDidChangeModelContent(function () {
                     state.monacoUnsaved = true;
                     document.getElementById('monaco-unsaved').removeAttribute('hidden');
+                });
+                // Atualiza posição do cursor na statusbar
+                state.monacoEditor.onDidChangeCursorPosition(function (e) {
+                    document.getElementById('monaco-cursor-pos').textContent =
+                        'Ln ' + e.position.lineNumber + ', Col ' + e.position.column;
                 });
             }
         } catch (err) {
@@ -676,7 +987,7 @@
         var encoded = btoa(unescape(encodeURIComponent(content)));
         var btn = document.getElementById('btn-monaco-save');
         btn.disabled = true;
-        document.getElementById('monaco-status').textContent = 'Salvando…';
+        document.getElementById('monaco-status').textContent = 'Publicando no GitHub…';
         try {
             await api('POST', '/github/proxy', {
                 method: 'PUT',
@@ -690,35 +1001,44 @@
             });
             state.monacoUnsaved = false;
             document.getElementById('monaco-unsaved').setAttribute('hidden', '');
-            document.getElementById('monaco-status').textContent = 'Salvo em ' + new Date().toLocaleTimeString('pt-BR');
-            toast('Arquivo publicado no GitHub!');
-            var updated = await api('POST', '/github/proxy', {
-                method: 'GET',
-                path: 'contents/' + state.currentFilePath
-            });
+            document.getElementById('monaco-status').textContent = 'Publicado em ' + new Date().toLocaleTimeString('pt-BR');
+            toast('✅ Arquivo publicado no GitHub!');
+            var updated = await api('POST', '/github/proxy', { method: 'GET', path: 'contents/' + state.currentFilePath });
             state.currentFileSha = updated.sha;
         } catch (err) {
-            document.getElementById('monaco-status').textContent = 'Erro: ' + err.message;
+            document.getElementById('monaco-status').textContent = 'Erro ao salvar: ' + err.message;
             toast('Erro ao salvar: ' + err.message, 'error');
         } finally {
             btn.disabled = false;
         }
     }
 
+    document.getElementById('btn-monaco-format').addEventListener('click', function () {
+        if (state.monacoEditor) state.monacoEditor.getAction('editor.action.formatDocument').run();
+    });
+
+    document.getElementById('btn-monaco-theme').addEventListener('click', function () {
+        _monacoTheme = _monacoTheme === 'vs' ? 'vs-dark' : 'vs';
+        if (window.monaco) window.monaco.editor.setTheme(_monacoTheme);
+    });
+
+    document.getElementById('btn-monaco-delete').addEventListener('click', function () {
+        if (!state.currentFilePath) return;
+        showConfirm('Excluir arquivo', 'Excluir "' + state.currentFilePath + '" do repositório? Esta ação não pode ser desfeita.', function () {
+            deleteFileViaGitHub(state.currentFilePath);
+        });
+    });
+
     document.getElementById('btn-monaco-preview').addEventListener('click', function () {
-        if (state.currentFilePath && ghConfig) {
-            var siteBase = 'https://idialog.com.br';
-            var urlMap = {
-                'index.html': '/',
-                'pages/': '/pages/'
-            };
-            var fp = state.currentFilePath;
-            var url;
-            if (fp === 'index.html') url = siteBase + '/';
-            else if (fp.startsWith('pages/') && fp.endsWith('.html')) url = siteBase + '/' + fp.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
-            else url = 'https://raw.githubusercontent.com/' + ghConfig.repo_owner + '/' + ghConfig.repo_name + '/' + (ghConfig.branch || 'main') + '/' + fp;
-            window.open(url, '_blank', 'noopener');
-        }
+        if (!state.currentFilePath) return;
+        var siteBase = 'https://idialog.com.br';
+        var fp = state.currentFilePath;
+        var url;
+        if (fp === 'index.html') url = siteBase + '/';
+        else if (fp === '404.html') url = siteBase + '/404.html';
+        else if (/^pages\/.+\.html$/i.test(fp)) url = siteBase + '/' + fp;
+        else url = 'https://github.com/' + ghConfig.repo_owner + '/' + ghConfig.repo_name + '/blob/' + (ghConfig.branch || 'main') + '/' + fp;
+        window.open(url, '_blank', 'noopener');
     });
 
     document.getElementById('btn-monaco-history').addEventListener('click', function () {

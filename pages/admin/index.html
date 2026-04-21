@@ -405,43 +405,74 @@
                         </div>
                     </div>
                     <div id="pages-ui" class="pages-layout">
+                        <!-- Sidebar: Árvore de Arquivos -->
                         <div class="pages-filetree card">
                             <div class="card-header">
-                                <h3 class="card-title"><i class="fas fa-folder-open"></i> Arquivos</h3>
+                                <h3 class="card-title"><i class="fas fa-code-branch"></i> Repositório</h3>
                                 <div class="card-header-actions">
                                     <button id="btn-new-file" class="btn btn-primary btn-sm" title="Novo arquivo"><i
                                             class="fas fa-plus"></i> Novo</button>
-                                    <button id="btn-refresh-tree" class="btn btn-ghost btn-sm" title="Atualizar"><i
-                                            class="fas fa-rotate"></i></button>
+                                    <button id="btn-refresh-tree" class="btn btn-ghost btn-sm"
+                                        title="Atualizar árvore"><i class="fas fa-rotate"></i></button>
                                 </div>
                             </div>
+                            <!-- Filtros de tipo -->
+                            <div class="tree-type-tabs">
+                                <button class="tree-type-tab active" data-ext="">Todos</button>
+                                <button class="tree-type-tab" data-ext="html">HTML</button>
+                                <button class="tree-type-tab" data-ext="css">CSS</button>
+                                <button class="tree-type-tab" data-ext="js">JS</button>
+                                <button class="tree-type-tab" data-ext="other">Outros</button>
+                            </div>
                             <div class="card-body p-0">
-                                <div class="tree-search-wrap"><input id="tree-search" type="search"
-                                        placeholder="Filtrar..." class="tree-search"></div>
+                                <div class="tree-search-wrap">
+                                    <input id="tree-search" type="search" placeholder="🔍 Buscar arquivo..."
+                                        class="tree-search">
+                                </div>
                                 <div id="file-tree" class="file-tree">
                                     <div class="tree-loading"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Editor principal -->
                         <div class="pages-editor">
-                            <div id="monaco-placeholder" class="monaco-placeholder"><i class="fas fa-file-code"></i>
-                                <p>Selecione um arquivo para editar</p>
+                            <div id="monaco-placeholder" class="monaco-placeholder">
+                                <i class="fas fa-file-code"></i>
+                                <p>Selecione um arquivo na árvore para editar</p>
+                                <p class="monaco-placeholder-hint">Suporte a HTML, CSS, JavaScript, JSON, Markdown</p>
                             </div>
                             <div id="monaco-editor-wrap" hidden>
                                 <div class="editor-topbar">
-                                    <span id="monaco-filename" class="editor-filename"></span>
-                                    <div class="editor-topbar-actions">
+                                    <div class="editor-topbar-left">
+                                        <span id="monaco-breadcrumb" class="editor-breadcrumb"></span>
+                                        <span id="monaco-filename" class="editor-filename"></span>
                                         <span id="monaco-unsaved" class="unsaved-badge" hidden>● Não salvo</span>
+                                    </div>
+                                    <div class="editor-topbar-actions">
+                                        <button id="btn-monaco-format" class="btn btn-ghost btn-sm"
+                                            title="Formatar código (Alt+Shift+F)"><i class="fas fa-indent"></i></button>
+                                        <button id="btn-monaco-theme" class="btn btn-ghost btn-sm"
+                                            title="Alternar tema claro/escuro"><i
+                                                class="fas fa-circle-half-stroke"></i></button>
+                                        <span class="editor-divider"></span>
                                         <button id="btn-monaco-preview" class="btn btn-ghost btn-sm"><i
                                                 class="fas fa-eye"></i> Preview</button>
                                         <button id="btn-monaco-history" class="btn btn-ghost btn-sm"><i
                                                 class="fas fa-clock-rotate-left"></i> Histórico</button>
+                                        <button id="btn-monaco-delete" class="btn btn-danger btn-sm"
+                                            title="Excluir arquivo"><i class="fas fa-trash"></i></button>
                                         <button id="btn-monaco-save" class="btn btn-primary btn-sm"><i
                                                 class="fas fa-floppy-disk"></i> Salvar e Publicar</button>
                                     </div>
                                 </div>
                                 <div id="monaco-editor-container" class="monaco-container"></div>
-                                <div class="editor-statusbar"><span id="monaco-status">Pronto</span></div>
+                                <div class="editor-statusbar">
+                                    <span id="monaco-status">Pronto</span>
+                                    <span class="statusbar-right">
+                                        <span id="monaco-cursor-pos"></span>
+                                        <span id="monaco-lang-badge"></span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -870,22 +901,34 @@
         <div class="modal-backdrop"></div>
         <div class="modal-dialog modal-dialog--sm">
             <div class="modal-header">
-                <h3>Novo Arquivo</h3>
+                <h3><i class="fas fa-file-circle-plus"></i> Novo Arquivo</h3>
                 <button class="modal-close" data-close-modal="modal-new-file" type="button"><i
                         class="fas fa-xmark"></i></button>
             </div>
             <div class="modal-body">
                 <div class="field-group">
-                    <label for="new-file-path">Caminho do arquivo (ex: pages/minha-pagina.html)</label>
-                    <input id="new-file-path" type="text" placeholder="pages/nova-pagina.html" class="form-control"
+                    <label for="new-file-path">Caminho do arquivo</label>
+                    <input id="new-file-path" type="text" placeholder="pages/minha-pagina.html" class="form-control"
                         autocomplete="off">
+                    <small class="field-hint">Ex: <code>pages/contato.html</code> ·
+                        <code>assets/css/custom.css</code></small>
+                </div>
+                <div class="field-group">
+                    <label for="new-file-template">Template inicial</label>
+                    <select id="new-file-template" class="form-control">
+                        <option value="blank">— Arquivo em branco —</option>
+                        <option value="html-page" selected>Página HTML completa (padrão iDialog)</option>
+                        <option value="html-blog">Post de Blog (padrão iDialog)</option>
+                        <option value="css">Folha de estilos CSS</option>
+                        <option value="js">Módulo JavaScript</option>
+                    </select>
                 </div>
                 <p id="new-file-error" class="form-error" hidden></p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-ghost" data-close-modal="modal-new-file" type="button">Cancelar</button>
-                <button class="btn btn-primary" id="btn-create-file" type="button"><i class="fas fa-plus"></i> Criar
-                    arquivo</button>
+                <button class="btn btn-primary" id="btn-create-file" type="button"><i class="fas fa-plus"></i> Criar e
+                    Abrir</button>
             </div>
         </div>
     </div>

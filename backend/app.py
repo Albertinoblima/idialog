@@ -3914,7 +3914,7 @@ def github_proxy():
     path = _safe_path(payload.get('path') or '')
     body = payload.get('body')  # dict or None
 
-    if method not in {'GET', 'PUT'}:
+    if method not in {'GET', 'PUT', 'DELETE'}:
         return jsonify({'error': 'Metodo nao permitido.'}), 405
     if not path:
         return jsonify({'error': 'Caminho invalido.'}), 400
