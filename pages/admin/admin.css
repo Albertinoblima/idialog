@@ -1434,6 +1434,12 @@ label {
     padding: 20px 24px;
 }
 
+.form-error {
+    color: var(--red, #d63638);
+    font-size: 12px;
+    margin-top: 6px;
+}
+
 .modal-footer {
     display: flex;
     justify-content: flex-end;

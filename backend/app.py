@@ -3887,12 +3887,21 @@ def save_github_config():
 
 # ── GitHub API proxy ──────────────────────────────────────
 def _safe_path(path_str):
-    """Reject paths with traversal attempts or absolute paths."""
+    """Reject paths with traversal attempts or absolute paths.
+    Allows an optional query string (after ?) with safe characters."""
     clean = (path_str or '').strip()
-    if not clean or '..' in clean or clean.startswith('/'):
+    if not clean or clean.startswith('/'):
         return None
-    # Allow only path chars: letters, digits, -, _, ., /
-    if not re.match(r'^[\w\-./]+$', clean):
+    # Split path from optional query string
+    parts = clean.split('?', 1)
+    path_only = parts[0]
+    if '..' in path_only:
+        return None
+    # Validate path portion: letters, digits, -, _, ., /
+    if not re.match(r'^[\w\-./]+$', path_only):
+        return None
+    # Validate query string if present: allow word chars, =, &, %, +, -
+    if len(parts) > 1 and not re.match(r'^[\w\-=&%.+]+$', parts[1]):
         return None
     return clean
 
