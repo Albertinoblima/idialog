@@ -521,7 +521,7 @@
     async function loadPagesTab() {
         try {
             ghConfig = await api('GET', '/github/config');
-            if (!ghConfig.owner || !ghConfig.repo) {
+            if (!ghConfig.repo_owner || !ghConfig.repo_name) {
                 document.getElementById('pages-not-configured').removeAttribute('hidden');
                 document.getElementById('pages-ui').style.display = 'none';
             } else {
@@ -540,7 +540,7 @@
         try {
             var data = await api('POST', '/github/proxy', {
                 method: 'GET',
-                path: 'repos/' + ghConfig.owner + '/' + ghConfig.repo + '/git/trees/' + (ghConfig.branch || 'main') + '?recursive=1'
+                path: 'repos/' + ghConfig.repo_owner + '/' + ghConfig.repo_name + '/git/trees/' + (ghConfig.branch || 'main') + '?recursive=1'
             });
             var files = (data.tree || []).filter(function(f){ return f.type === 'blob' && /\.(html|css|js|json|md|txt)$/i.test(f.path); });
             renderFileTree(files);
@@ -670,7 +670,7 @@
 
     document.getElementById('btn-monaco-preview').addEventListener('click', function() {
         if (state.currentFilePath && ghConfig) {
-            window.open('https://raw.githubusercontent.com/' + ghConfig.owner + '/' + ghConfig.repo + '/' + (ghConfig.branch || 'main') + '/' + state.currentFilePath, '_blank');
+            window.open('https://raw.githubusercontent.com/' + ghConfig.repo_owner + '/' + ghConfig.repo_name + '/' + (ghConfig.branch || 'main') + '/' + state.currentFilePath, '_blank');
         }
     });
 
@@ -762,7 +762,7 @@
     async function loadAnalytics() {
         try {
             var cfg = await api('GET', '/analytics/config');
-            if (!cfg.has_property_id && !cfg.ga4_property_id) {
+            if (!cfg.has_service_account && !cfg.ga4_property_id) {
                 document.getElementById('analytics-not-configured').removeAttribute('hidden');
                 return;
             }
@@ -994,8 +994,8 @@
 
         try {
             var gcfg = await api('GET', '/github/config');
-            document.getElementById('cfg-gh-owner').value  = gcfg.owner  || '';
-            document.getElementById('cfg-gh-repo').value   = gcfg.repo   || '';
+            document.getElementById('cfg-gh-owner').value  = gcfg.repo_owner  || '';
+            document.getElementById('cfg-gh-repo').value   = gcfg.repo_name   || '';
             document.getElementById('cfg-gh-branch').value = gcfg.branch || 'main';
         } catch(e) { /* ok */ }
     }
@@ -1052,11 +1052,11 @@
     document.getElementById('btn-save-github').addEventListener('click', async function() {
         var pat = document.getElementById('cfg-gh-pat').value.trim();
         var payload = {
-            owner:  document.getElementById('cfg-gh-owner').value.trim(),
-            repo:   document.getElementById('cfg-gh-repo').value.trim(),
+            repo_owner:  document.getElementById('cfg-gh-owner').value.trim(),
+            repo_name:   document.getElementById('cfg-gh-repo').value.trim(),
             branch: document.getElementById('cfg-gh-branch').value.trim() || 'main'
         };
-        if (pat) payload.pat = pat;
+        if (pat) payload.github_pat = pat;
         try {
             await api('PUT', '/github/config', payload);
             toast('Configuração GitHub salva!');
@@ -1066,8 +1066,8 @@
     document.getElementById('btn-test-github').addEventListener('click', async function() {
         try {
             var cfg = await api('GET', '/github/config');
-            if (!cfg.owner) { toast('Configuração incompleta.', 'warning'); return; }
-            await api('POST', '/github/proxy', { method: 'GET', path: 'repos/' + cfg.owner + '/' + cfg.repo });
+            if (!cfg.repo_owner) { toast('Configuração incompleta.', 'warning'); return; }
+            await api('POST', '/github/proxy', { method: 'GET', path: 'repos/' + cfg.repo_owner + '/' + cfg.repo_name });
             toast('Conexão GitHub funcionando!');
         } catch(err) { toast('Erro GitHub: ' + err.message, 'error'); }
     });

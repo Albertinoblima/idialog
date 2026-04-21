@@ -117,6 +117,10 @@ label {
 }
 
 /* AUTH */
+.auth-screen[hidden] {
+    display: none;
+}
+
 .auth-screen {
     min-height: 100vh;
     display: flex;
@@ -188,6 +192,10 @@ label {
 }
 
 /* SHELL */
+.wp-shell[hidden] {
+    display: none;
+}
+
 .wp-shell {
     display: flex;
     min-height: 100vh;
