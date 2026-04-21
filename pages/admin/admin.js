@@ -400,7 +400,33 @@
         } else {
             document.getElementById('post-body-html').value = bodyVal;
         }
+
+        // Load CSS and CTA from extra_json
+        var extra = (item && item.extra) ? item.extra : {};
+        document.getElementById('post-body-css').value = extra.post_css || '';
+        document.getElementById('post-cta-title').value = extra.cta_title || '';
+        document.getElementById('post-cta-text').value = extra.cta_text || '';
+        document.getElementById('post-cta-btn').value = extra.cta_btn || '';
+        document.getElementById('post-cta-url').value = extra.cta_url || '';
+
+        // Reset to HTML tab
+        document.querySelectorAll('.editor-tab').forEach(function (b) { b.classList.remove('active'); });
+        var htmlTab = document.querySelector('.editor-tab[data-editor-tab="html"]');
+        if (htmlTab) htmlTab.classList.add('active');
+        document.getElementById('editor-tab-html').hidden = false;
+        document.getElementById('editor-tab-css').hidden = true;
     }
+
+    // ── Editor tabs HTML / CSS ────────────────────────────────────────────
+    document.querySelectorAll('.editor-tab').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var tab = btn.dataset.editorTab;
+            document.querySelectorAll('.editor-tab').forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            document.getElementById('editor-tab-html').hidden = (tab !== 'html');
+            document.getElementById('editor-tab-css').hidden = (tab !== 'css');
+        });
+    });
 
     document.getElementById('post-seo-desc').addEventListener('input', function () {
         document.getElementById('seo-desc-count').textContent = this.value.length + '/160';
@@ -449,6 +475,12 @@
 
         var pubAtVal = document.getElementById('post-published-at').value;
         var finalStatus = status || document.getElementById('post-status').value;
+        var postCss = document.getElementById('post-body-css').value.trim();
+        var ctaTitle = document.getElementById('post-cta-title').value.trim();
+        var ctaText = document.getElementById('post-cta-text').value.trim();
+        var ctaBtn = document.getElementById('post-cta-btn').value.trim();
+        var ctaUrl = document.getElementById('post-cta-url').value.trim();
+
         var payload = {
             title: title,
             slug: document.getElementById('post-slug').value.trim() || slugify(title),
@@ -462,7 +494,14 @@
             meta_description: document.getElementById('post-seo-desc').value,
             meta_keywords: document.getElementById('post-keywords').value,
             canonical_url: document.getElementById('post-canonical').value,
-            published_at: pubAtVal ? new Date(pubAtVal).toISOString() : (finalStatus === 'published' ? new Date().toISOString() : null)
+            published_at: pubAtVal ? new Date(pubAtVal).toISOString() : (finalStatus === 'published' ? new Date().toISOString() : null),
+            extra: {
+                post_css: postCss,
+                cta_title: ctaTitle,
+                cta_text: ctaText,
+                cta_btn: ctaBtn,
+                cta_url: ctaUrl
+            }
         };
 
         var saveBtn = document.getElementById('btn-publish-post');

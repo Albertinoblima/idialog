@@ -266,11 +266,21 @@
                                 </div>
                             </div>
                             <div class="card mt-4">
-                                <div class="card-header">
-                                    <h3 class="card-title">Conteúdo</h3>
+                                <div class="card-header editor-tab-header">
+                                    <div class="editor-tabs">
+                                        <button class="editor-tab active" data-editor-tab="html" type="button"><i class="fas fa-code"></i> HTML</button>
+                                        <button class="editor-tab" data-editor-tab="css" type="button"><i class="fab fa-css3-alt"></i> CSS do Post</button>
+                                    </div>
+                                    <small class="editor-tab-hint">O CSS é injetado como <code>&lt;style scoped&gt;</code> apenas neste post</small>
                                 </div>
-                                <div class="card-body p-0">
+                                <div class="card-body p-0" id="editor-tab-html">
                                     <textarea id="post-body-html" class="post-body-textarea"></textarea>
+                                </div>
+                                <div class="card-body p-0" id="editor-tab-css" hidden>
+                                    <textarea id="post-body-css" class="post-body-textarea post-css-textarea" placeholder="/* CSS exclusivo deste post — sem inline styles */
+
+.post-hero { background: linear-gradient(135deg, #0a0a0f, #0d1117); }
+.cta-box { border: 1px solid #00e5ff; padding: 2rem; }"></textarea>
                                 </div>
                             </div>
                             <details class="card seo-panel mt-4">
@@ -301,6 +311,31 @@
                                         <label for="post-canonical">URL Canônica</label>
                                         <input id="post-canonical" type="url" placeholder="https://idialog.com.br/...">
                                     </div>
+                                </div>
+                            </details>
+                            <details class="card seo-panel mt-4" id="cta-panel">
+                                <summary class="card-header seo-toggle">
+                                    <h3 class="card-title"><i class="fas fa-bullhorn"></i> Chamada para Ação (CTA)</h3>
+                                    <i class="fas fa-chevron-down seo-chevron"></i>
+                                </summary>
+                                <div class="card-body">
+                                    <div class="field-group">
+                                        <label for="post-cta-title">Título do CTA</label>
+                                        <input id="post-cta-title" type="text" placeholder="Quer ter uma experiência impressionante?">
+                                    </div>
+                                    <div class="field-group">
+                                        <label for="post-cta-text">Texto do CTA</label>
+                                        <textarea id="post-cta-text" rows="2" placeholder="Descubra como a iDialog pode transformar seu atendimento. Fale com um especialista hoje."></textarea>
+                                    </div>
+                                    <div class="field-group">
+                                        <label for="post-cta-btn">Texto do botão</label>
+                                        <input id="post-cta-btn" type="text" placeholder="Quero conhecer a iDialog">
+                                    </div>
+                                    <div class="field-group">
+                                        <label for="post-cta-url">URL do botão</label>
+                                        <input id="post-cta-url" type="url" placeholder="/pages/contato.html">
+                                    </div>
+                                    <small class="field-hint">O bloco CTA é renderizado automaticamente ao final do post no site público.</small>
                                 </div>
                             </details>
                         </div>
