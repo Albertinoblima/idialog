@@ -3680,15 +3680,31 @@ def change_password():
 @app.route('/api/analytics/config', methods=['GET'])
 @auth_required
 def get_analytics_config():
+    env_saj = os.getenv('GA4_SERVICE_ACCOUNT_JSON', '').strip()
+    env_pid = os.getenv('GA4_PROPERTY_ID', '').strip()
+    env_mid = os.getenv('GA4_MEASUREMENT_ID', '').strip()
     conn = get_db()
     row = conn.execute('SELECT * FROM analytics_config ORDER BY id LIMIT 1').fetchone()
     conn.close()
     if not row:
-        return jsonify({'ga4_measurement_id': '', 'ga4_property_id': '', 'ga4_service_account_json': '', 'configured': False})
+        has_saj = bool(env_saj)
+        pid = env_pid
+        mid = env_mid
+        return jsonify({
+            'ga4_measurement_id': mid,
+            'ga4_property_id': pid,
+            'has_service_account': has_saj,
+            'configured': bool(pid and has_saj),
+        })
     data = dict(row)
-    data['configured'] = bool(data.get('ga4_property_id') and data.get('ga4_service_account_json'))
+    has_saj = bool(row['ga4_service_account_json']) or bool(env_saj)
+    pid = data.get('ga4_property_id') or env_pid
+    mid = data.get('ga4_measurement_id') or env_mid
+    data['configured'] = bool(pid and has_saj)
+    data['ga4_property_id'] = pid
+    data['ga4_measurement_id'] = mid
     data.pop('ga4_service_account_json', None)  # never return the raw JSON to the frontend
-    data['has_service_account'] = bool(row['ga4_service_account_json'])
+    data['has_service_account'] = has_saj
     return jsonify(data)
 
 
