@@ -609,6 +609,15 @@ label {
     background: #fafafa;
 }
 
+.card-header-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.visually-hidden {
+    display: none;
+}
+
 .card-title {
     font-size: .9rem;
     font-weight: 700;
