@@ -665,30 +665,55 @@
 
     async function loadFileTree() {
         var treeEl = document.getElementById('file-tree');
-        var branch = (ghConfig && (ghConfig.branch || ghConfig.repo_branch)) || 'main';
-        treeEl.innerHTML = '<div class="tree-loading"><i class="fas fa-spinner fa-spin"></i> Carregando arquivos… (branch: ' + escHtml(branch) + ')</div>';
+        // Determina branch: tenta da config, senão 'main', senão 'master'
+        var branch = (ghConfig && (ghConfig.branch || '').trim()) || 'main';
+        treeEl.innerHTML = '<div class="tree-loading"><i class="fas fa-spinner fa-spin"></i> Carregando arquivos…</div>';
         try {
+            // Primeiro tenta obter SHA do HEAD do branch para garantir que o ref existe
+            var refData = await api('POST', '/github/proxy', {
+                method: 'GET',
+                path: 'git/ref/heads/' + branch
+            }).catch(function () { return null; });
+
+            var treeSha = branch;
+            if (refData && refData.object && refData.object.sha) {
+                // Usa o SHA do commit HEAD para garantir acesso correto
+                var commitData = await api('POST', '/github/proxy', {
+                    method: 'GET',
+                    path: 'git/commits/' + refData.object.sha
+                }).catch(function () { return null; });
+                if (commitData && commitData.tree && commitData.tree.sha) {
+                    treeSha = commitData.tree.sha;
+                }
+            }
+
             var data = await api('POST', '/github/proxy', {
                 method: 'GET',
-                path: 'git/trees/' + branch + '?recursive=1'
+                path: 'git/trees/' + treeSha + '?recursive=1'
             });
 
-            // Diagnóstico de resposta no console
+            // Diagnóstico no console
             console.log('[iDialog Pages] GitHub tree response:', {
+                branch: branch,
+                treeSha: treeSha,
                 truncated: data.truncated,
                 totalItems: (data.tree || []).length,
-                message: data.message,
-                branch: branch
+                message: data.message
             });
 
-            // Se o GitHub retornou um erro (ex: branch inválido)
+            // GitHub retornou mensagem de erro em vez de tree
             if (data.message && !data.tree) {
+                // Fallback: tenta branch alternativo
+                if (branch !== 'master') {
+                    console.log('[iDialog Pages] Trying fallback branch: master');
+                    ghConfig.branch = 'master';
+                    return loadFileTree();
+                }
                 treeEl.innerHTML = '<div class="tree-loading" style="color:var(--red)"><i class="fas fa-circle-exclamation"></i> GitHub: ' + escHtml(data.message) + '</div>';
                 return;
             }
 
             var rawCount = (data.tree || []).length;
-            // Filtra apenas arquivos relevantes
             var files = (data.tree || []).filter(function (f) {
                 if (f.type !== 'blob') return false;
                 if (/\/(node_modules|\.git|\.github|__pycache__|\.pytest_cache)\//i.test('/' + f.path)) return false;
@@ -698,18 +723,74 @@
 
             console.log('[iDialog Pages] Filtered files:', files.length, 'of', rawCount);
 
-            if (files.length === 0 && rawCount > 0) {
-                treeEl.innerHTML = '<div class="tree-loading" style="color:var(--orange)"><i class="fas fa-triangle-exclamation"></i> ' +
-                    rawCount + ' itens recebidos do GitHub mas nenhum com extensão suportada (.html/.css/.js). Branch: ' + escHtml(branch) + '</div>';
-                window._treeFiles = [];
-                return;
+            if (rawCount === 0) {
+                // Nenhum item na árvore — tenta listar a pasta raiz via Contents API como fallback
+                return loadFileTreeViaContents();
             }
 
             window._treeFiles = files;
+            if (data.truncated) {
+                toast('Atenção: repositório grande — alguns arquivos podem não aparecer.', 'warning');
+            }
             renderFileTree();
         } catch (err) {
             console.error('[iDialog Pages] loadFileTree error:', err);
-            treeEl.innerHTML = '<div class="tree-loading" style="color:var(--red)"><i class="fas fa-circle-exclamation"></i> ' + escHtml(err.message) + '</div>';
+            // Fallback: usa Contents API
+            return loadFileTreeViaContents();
+        }
+    }
+
+    // Fallback: carrega arquivos usando Contents API (lista recursiva de pastas chave)
+    async function loadFileTreeViaContents() {
+        var treeEl = document.getElementById('file-tree');
+        treeEl.innerHTML = '<div class="tree-loading"><i class="fas fa-spinner fa-spin"></i> Carregando via Contents API…</div>';
+        try {
+            // Pastas relevantes para o site iDialog
+            var foldersToScan = ['', 'pages', 'assets', 'src', 'public', 'components', 'backend'];
+            var allFiles = [];
+
+            for (var i = 0; i < foldersToScan.length; i++) {
+                var folder = foldersToScan[i];
+                try {
+                    var items = await api('POST', '/github/proxy', {
+                        method: 'GET',
+                        path: 'contents/' + folder
+                    });
+                    if (!Array.isArray(items)) continue;
+                    items.forEach(function (item) {
+                        if (item.type === 'file' && /\.(html|css|js|json|md|txt)$/i.test(item.name)) {
+                            allFiles.push({ path: item.path, type: 'blob', sha: item.sha, size: item.size });
+                        }
+                    });
+                } catch (e) { /* pasta não existe, ignora */ }
+            }
+
+            // Varre subpastas de pages e assets (um nível)
+            var subfolderParents = ['pages', 'pages/blog', 'pages/blog/posts', 'pages/servicos', 'pages/servicos/privados', 'pages/servicos/publicos', 'pages/legal', 'pages/ferramentas', 'pages/admin', 'assets/js', 'assets/css', 'src/styles', 'src/scripts'];
+            for (var j = 0; j < subfolderParents.length; j++) {
+                try {
+                    var subitems = await api('POST', '/github/proxy', {
+                        method: 'GET',
+                        path: 'contents/' + subfolderParents[j]
+                    });
+                    if (!Array.isArray(subitems)) continue;
+                    subitems.forEach(function (item) {
+                        if (item.type === 'file' && /\.(html|css|js|json|md|txt)$/i.test(item.name)) {
+                            // Evita duplicatas
+                            if (!allFiles.some(function (f) { return f.path === item.path; })) {
+                                allFiles.push({ path: item.path, type: 'blob', sha: item.sha, size: item.size });
+                            }
+                        }
+                    });
+                } catch (e) { /* ignora */ }
+            }
+
+            console.log('[iDialog Pages] Contents API fallback found', allFiles.length, 'files');
+            window._treeFiles = allFiles;
+            renderFileTree();
+        } catch (err) {
+            console.error('[iDialog Pages] loadFileTreeViaContents error:', err);
+            treeEl.innerHTML = '<div class="tree-loading" style="color:var(--red)"><i class="fas fa-circle-exclamation"></i> Não foi possível carregar os arquivos: ' + escHtml(err.message) + '</div>';
         }
     }
 
