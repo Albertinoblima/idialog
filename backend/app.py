@@ -586,7 +586,29 @@ def migrate_db():
     conn.close()
 
 
-def now_iso():
+def migrate_scheduled_status():
+    """Fix existing posts that are 'published' but have a future published_at — set them to 'scheduled'."""
+    conn = get_db()
+    cur = conn.cursor()
+    now_str = dt.datetime.now(dt.timezone.utc).isoformat()
+    # Find published posts with a future published_at
+    rows = cur.execute(
+        "SELECT id, published_at FROM content_items WHERE status = 'published' AND published_at <> '' AND published_at IS NOT NULL"
+    ).fetchall()
+    fixed = 0
+    for row in rows:
+        try:
+            pub_dt = parse_iso_datetime(row['published_at'] if hasattr(row, 'keys') else row[1])
+            if pub_dt and pub_dt > dt.datetime.now(dt.timezone.utc):
+                item_id = row['id'] if hasattr(row, 'keys') else row[0]
+                cur.execute("UPDATE content_items SET status = 'scheduled' WHERE id = ?", (item_id,))
+                fixed += 1
+        except Exception:
+            pass
+    if fixed:
+        conn.commit()
+    conn.close()
+    return fixed
     return dt.datetime.utcnow().isoformat()
 
 
@@ -603,12 +625,14 @@ def parse_iso_datetime(value):
 
 
 def is_content_public_now(payload, reference_dt=None):
-    if (payload.get('status') or '').strip().lower() != 'published':
+    status = (payload.get('status') or '').strip().lower()
+    if status not in {'published', 'scheduled'}:
         return False
 
     published_at = (payload.get('published_at') or '').strip()
     if not published_at:
-        return True
+        # published without date = always visible; scheduled without date = not visible
+        return status == 'published'
 
     try:
         publish_time = parse_iso_datetime(published_at)
@@ -948,7 +972,7 @@ def normalize_content_payload(payload):
 
     if content_type not in {'page', 'blog_post', 'simulado'}:
         raise ValueError('Tipo de conteudo invalido.')
-    if status not in {'draft', 'published', 'archived'}:
+    if status not in {'draft', 'published', 'scheduled', 'archived'}:
         raise ValueError('Status de conteudo invalido.')
     if context not in {'site', 'blog', 'revista'}:
         raise ValueError('Contexto de conteudo invalido.')
@@ -980,6 +1004,22 @@ def normalize_content_payload(payload):
 
     if status == 'published' and not published_at:
         published_at = dt.datetime.now(dt.timezone.utc).isoformat()
+
+    # Auto-promote: if user set status=published but date is in the future, store as scheduled
+    if status == 'published' and published_at:
+        try:
+            if parse_iso_datetime(published_at) > dt.datetime.now(dt.timezone.utc):
+                status = 'scheduled'
+        except ValueError:
+            pass
+
+    # Auto-promote: if status=scheduled but date has already passed, flip to published
+    if status == 'scheduled' and published_at:
+        try:
+            if parse_iso_datetime(published_at) <= dt.datetime.now(dt.timezone.utc):
+                status = 'published'
+        except ValueError:
+            pass
 
     return {
         'content_type': content_type,
@@ -1403,8 +1443,8 @@ def public_content_list():
         conn.close()
         return jsonify({'items': []})
 
-    query = 'SELECT * FROM content_items WHERE company_id = ? AND status = ?'
-    params = [company_id, 'published']
+    query = 'SELECT * FROM content_items WHERE company_id = ? AND status IN (?, ?)'
+    params = [company_id, 'published', 'scheduled']
     if content_type:
         query += ' AND content_type = ?'
         params.append(content_type)
@@ -1438,8 +1478,8 @@ def public_content_detail(slug):
         return jsonify({'error': 'Conteudo nao encontrado.'}), 404
 
     row = conn.execute(
-        'SELECT * FROM content_items WHERE company_id = ? AND slug = ? AND status = ?',
-        (company_id, clean_slug, 'published'),
+        'SELECT * FROM content_items WHERE company_id = ? AND slug = ? AND status IN (?, ?)',
+        (company_id, clean_slug, 'published', 'scheduled'),
     ).fetchone()
     conn.close()
     if not row:
@@ -3637,6 +3677,7 @@ def export_project_excel(project_id):
 
 init_db()
 migrate_db()
+migrate_scheduled_status()
 
 # ══════════════════════════════════════════════════════════
 # NEW ENDPOINTS — CMS v2

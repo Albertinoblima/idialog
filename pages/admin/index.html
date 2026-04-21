@@ -197,6 +197,7 @@
                         <select id="posts-filter-status" class="filter-select">
                             <option value="">Todos os status</option>
                             <option value="published">Publicado</option>
+                            <option value="scheduled">Agendado</option>
                             <option value="draft">Rascunho</option>
                             <option value="archived">Arquivado</option>
                         </select>
@@ -314,13 +315,15 @@
                                         <select id="post-status">
                                             <option value="draft">Rascunho</option>
                                             <option value="published">Publicado</option>
+                                            <option value="scheduled">Agendado</option>
                                             <option value="archived">Arquivado</option>
                                         </select>
                                     </div>
                                     <div class="field-group">
                                         <label for="post-published-at">Data de Publicação</label>
                                         <input id="post-published-at" type="datetime-local">
-                                        <small class="field-hint">Deixe vazio para publicar imediatamente</small>
+                                        <small class="field-hint">Data futura + "Publicado" → salvo automaticamente como
+                                            Agendado</small>
                                     </div>
                                     <div class="field-group">
                                         <label for="post-context">Contexto</label>
