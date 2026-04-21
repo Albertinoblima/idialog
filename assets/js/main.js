@@ -1840,14 +1840,18 @@ if ('performance' in window) {
 }
 
 // ===========================
-// GA4 Injection via CMS config
+// GA4 Injection via CMS config (fallback — skips if static tag already loaded)
 // ===========================
 (function injectGA4() {
+    // Se a tag estática já foi carregada no <head>, apenas garante window.gtag
+    if (window.dataLayer && window.dataLayer.length) return;
     const apiBase = localStorage.getItem('idialog-tools-api') || 'https://idialog-production.up.railway.app/api';
     fetch(apiBase + '/analytics/config')
         .then(r => r.ok ? r.json() : null)
         .then(cfg => {
             if (!cfg || !cfg.ga4_measurement_id) return;
+            // Verifica novamente após o fetch (evita corrida com tag estática)
+            if (window.dataLayer && window.dataLayer.length) return;
             const mid = cfg.ga4_measurement_id;
             const s = document.createElement('script');
             s.async = true;
