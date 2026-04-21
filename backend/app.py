@@ -1052,10 +1052,32 @@ def health():
     return jsonify({'status': 'ok', 'service': 'idialog-tools-api'})
 
 
-@app.route('/api/admin/fix-scheduled', methods=['POST'])
-@auth_required
+@app.route('/api/admin/fix-scheduled', methods=['GET', 'POST'])
 def fix_scheduled():
-    """Manually trigger migration: set published posts with future dates to 'scheduled'."""
+    """Manually trigger migration: set published posts with future dates to 'scheduled'.
+    Accepts JWT auth OR ?secret=ADMIN_SECRET query param for one-time use."""
+    secret_param = request.args.get('secret', '')
+    admin_secret = os.getenv('ADMIN_SECRET', '')
+    token_header = request.headers.get('Authorization', '')
+
+    if not secret_param and not token_header:
+        return jsonify({'error': 'Unauthorized'}), 401
+    if secret_param:
+        if not admin_secret or secret_param != admin_secret:
+            return jsonify({'error': 'Invalid secret'}), 403
+    else:
+        # fall back to JWT auth
+        from functools import wraps
+        token = token_header.replace('Bearer ', '').strip()
+        if not token:
+            return jsonify({'error': 'Unauthorized'}), 401
+        try:
+            import jwt as pyjwt
+            JWT_SECRET = os.getenv('JWT_SECRET', 'dev-secret')
+            pyjwt.decode(token, JWT_SECRET, algorithms=['HS256'])
+        except Exception:
+            return jsonify({'error': 'Invalid token'}), 401
+
     fixed = migrate_scheduled_status()
     return jsonify({'ok': True, 'fixed': fixed})
 
