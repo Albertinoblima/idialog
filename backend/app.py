@@ -590,18 +590,21 @@ def migrate_scheduled_status():
     """Fix existing posts that are 'published' but have a future published_at — set them to 'scheduled'."""
     conn = get_db()
     cur = conn.cursor()
-    now_str = dt.datetime.now(dt.timezone.utc).isoformat()
-    # Find published posts with a future published_at
+    ph = '%s' if USE_POSTGRES else '?'
     rows = cur.execute(
-        "SELECT id, published_at FROM content_items WHERE status = 'published' AND published_at <> '' AND published_at IS NOT NULL"
+        "SELECT id, published_at FROM content_items WHERE status = 'published' AND published_at IS NOT NULL AND published_at <> ''"
     ).fetchall()
     fixed = 0
     for row in rows:
         try:
-            pub_dt = parse_iso_datetime(row['published_at'] if hasattr(row, 'keys') else row[1])
+            pub_at = row['published_at'] if hasattr(row, 'keys') else row[1]
+            item_id = row['id'] if hasattr(row, 'keys') else row[0]
+            pub_dt = parse_iso_datetime(pub_at)
             if pub_dt and pub_dt > dt.datetime.now(dt.timezone.utc):
-                item_id = row['id'] if hasattr(row, 'keys') else row[0]
-                cur.execute("UPDATE content_items SET status = 'scheduled' WHERE id = ?", (item_id,))
+                cur.execute(
+                    "UPDATE content_items SET status = " + ph + " WHERE id = " + ph,
+                    ('scheduled', item_id)
+                )
                 fixed += 1
         except Exception:
             pass
@@ -609,7 +612,9 @@ def migrate_scheduled_status():
         conn.commit()
     conn.close()
     return fixed
-    return dt.datetime.utcnow().isoformat()
+
+
+def now_iso():
 
 
 def parse_iso_datetime(value):
@@ -1044,6 +1049,14 @@ def normalize_content_payload(payload):
 @app.route('/api/health', methods=['GET'])
 def health():
     return jsonify({'status': 'ok', 'service': 'idialog-tools-api'})
+
+
+@app.route('/api/admin/fix-scheduled', methods=['POST'])
+@auth_required
+def fix_scheduled():
+    """Manually trigger migration: set published posts with future dates to 'scheduled'."""
+    fixed = migrate_scheduled_status()
+    return jsonify({'ok': True, 'fixed': fixed})
 
 
 @app.route('/uploads/<path:filename>', methods=['GET'])

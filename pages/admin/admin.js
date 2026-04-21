@@ -1571,6 +1571,25 @@
         } catch (err) { toast('Erro: ' + err.message, 'error'); }
     });
 
+    document.getElementById('btn-fix-scheduled').addEventListener('click', async function () {
+        var btn = this;
+        var resultEl = document.getElementById('fix-scheduled-result');
+        btn.disabled = true;
+        resultEl.textContent = 'Executando…';
+        try {
+            var res = await api('POST', '/admin/fix-scheduled');
+            resultEl.textContent = res.fixed > 0
+                ? '✅ ' + res.fixed + ' post(s) corrigido(s) para "Agendado".'
+                : '✅ Nenhum post precisava de correção.';
+            if (res.fixed > 0) toast(res.fixed + ' post(s) atualizados para Agendado!');
+        } catch (err) {
+            resultEl.textContent = '❌ Erro: ' + err.message;
+            toast('Erro: ' + err.message, 'error');
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
     // ── Boot ─────────────────────────────────────────────────────────────────
     restoreSession();
 

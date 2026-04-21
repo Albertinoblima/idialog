@@ -768,6 +768,23 @@
                         </div>
                     </div>
 
+                    <!-- Manutenção -->
+                    <div class="settings-section card" id="settings-maintenance">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-screwdriver-wrench"></i> Manutenção</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="field-hint mb-3">Ferramentas de correção e manutenção do banco de dados.</p>
+                            <div class="flex-gap">
+                                <button id="btn-fix-scheduled" class="btn btn-ghost"><i
+                                        class="fas fa-calendar-check"></i> Corrigir Status Agendados</button>
+                                <span id="fix-scheduled-result" class="field-hint"></span>
+                            </div>
+                            <small class="field-hint mt-2">Converte posts com data futura de "Publicado" para
+                                "Agendado". Execute após importar posts ou alterar datas.</small>
+                        </div>
+                    </div>
+
                     <!-- Security -->
                     <div class="settings-section card" id="settings-security">
                         <div class="card-header">
