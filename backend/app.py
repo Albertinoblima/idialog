@@ -3712,9 +3712,14 @@ def export_project_excel(project_id):
                      mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
-init_db()
-migrate_db()
-migrate_scheduled_status()
+try:
+    init_db()
+    migrate_db()
+    migrate_scheduled_status()
+except Exception as _startup_err:
+    import traceback, sys
+    print(f'[STARTUP ERROR] {_startup_err}', file=sys.stderr)
+    traceback.print_exc(file=sys.stderr)
 
 # ══════════════════════════════════════════════════════════
 # NEW ENDPOINTS — CMS v2
