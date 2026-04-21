@@ -1829,8 +1829,14 @@ label {
         grid-template-columns: 1fr;
         height: auto;
     }
-    .pages-filetree { max-height: 320px; }
-    .monaco-container { min-height: 400px; }
+
+    .pages-filetree {
+        max-height: 320px;
+    }
+
+    .monaco-container {
+        min-height: 400px;
+    }
 
     .charts-row {
         grid-template-columns: 1fr;

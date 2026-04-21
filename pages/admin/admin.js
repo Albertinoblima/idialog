@@ -622,7 +622,7 @@
                 <h1 class="blog-post-title">Título do Post</h1>
                 <p class="blog-post-intro">Introdução ou resumo do post.</p>
                 <div class="blog-post-meta">
-                    <span><i class="fas fa-calendar"></i> ${new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric'})}</span>
+                    <span><i class="fas fa-calendar"></i> ${new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
                     <span><i class="fas fa-user"></i> Albertino Bezerra Lima</span>
                     <span><i class="fas fa-clock"></i> 5 min de leitura</span>
                 </div>
@@ -791,16 +791,16 @@
     function renderFileNode(f) {
         var name = f.path.split('/').pop();
         var icon = /\.html$/i.test(f.path) ? 'fa-file-code' :
-                   /\.css$/i.test(f.path) ? 'fa-file-lines' :
-                   /\.js$/i.test(f.path) ? 'fa-brands fa-js' :
-                   /\.json$/i.test(f.path) ? 'fa-file-code' :
-                   /\.md$/i.test(f.path) ? 'fa-file-lines' : 'fa-file';
+            /\.css$/i.test(f.path) ? 'fa-file-lines' :
+                /\.js$/i.test(f.path) ? 'fa-brands fa-js' :
+                    /\.json$/i.test(f.path) ? 'fa-file-code' :
+                        /\.md$/i.test(f.path) ? 'fa-file-lines' : 'fa-file';
         return '<div class="tree-item" data-path="' + escHtml(f.path) + '" title="' + escHtml(f.path) + '">' +
-               '<i class="fas ' + icon + ' tree-item-icon"></i>' +
-               '<span class="tree-item-name">' + escHtml(name) + '</span>' +
-               '<span class="tree-item-actions">' +
-               '<button class="tree-item-btn del" data-path="' + escHtml(f.path) + '" title="Excluir arquivo"><i class="fas fa-trash"></i></button>' +
-               '</span></div>';
+            '<i class="fas ' + icon + ' tree-item-icon"></i>' +
+            '<span class="tree-item-name">' + escHtml(name) + '</span>' +
+            '<span class="tree-item-actions">' +
+            '<button class="tree-item-btn del" data-path="' + escHtml(f.path) + '" title="Excluir arquivo"><i class="fas fa-trash"></i></button>' +
+            '</span></div>';
     }
 
     // Filtros por tipo
