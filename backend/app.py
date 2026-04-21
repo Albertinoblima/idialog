@@ -1317,7 +1317,7 @@ def list_content():
     if content_type:
         query += ' AND content_type = ?'
         params.append(content_type)
-    query += ' ORDER BY updated_at DESC, created_at DESC'
+    query += ' ORDER BY published_at DESC, updated_at DESC, created_at DESC'
 
     conn = get_db()
     rows = conn.execute(query, tuple(params)).fetchall()
@@ -3708,9 +3708,118 @@ def export_project_excel(project_id):
                      mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
+_BLOG_POSTS_SEED = [
+    {"slug":"caso-setor-privado-aumento-conversao-reducao-churn","title":"Caso de sucesso: aumento de conversao e reducao de churn com operacao integrada","published_at":"2026-04-28T09:00:00-03:00","category":"Setor Privado","summary":"Empresa B2B integrou CRM, atendimento e automacao e avancou conversao, receita recorrente e retencao."},
+    {"slug":"caso-setor-publico-reducao-filas-sla-cidadao","title":"Caso de sucesso: reducao de filas e ganho de SLA no atendimento ao cidadao","published_at":"2026-04-27T09:00:00-03:00","category":"Setor Publico","summary":"Orgao municipal reduziu espera, elevou resolucao no prazo e melhorou satisfacao com jornada integrada."},
+    {"slug":"seguranca-informacao-operacoes-atendimento-sem-friccao","title":"Seguranca da informacao em operacoes de atendimento sem friccao","published_at":"2026-04-26T09:00:00-03:00","category":"Setor Privado","summary":"Proteja dados com controle por contexto, auditoria e resposta a incidente sem travar a experiencia."},
+    {"slug":"lgpd-aplicada-atendimento-publico-risco-confianca","title":"LGPD aplicada ao atendimento publico: menos risco, mais confianca","published_at":"2026-04-25T09:00:00-03:00","category":"Setor Publico","summary":"Governanca de dados com minimizacao, trilha de auditoria e politica viva para atendimento publico."},
+    {"slug":"integracao-crm-omnichannel-marketing-funil-vivo","title":"Integracao CRM + Omnichannel + Marketing: construa um Funil Vivo","published_at":"2026-04-24T09:00:00-03:00","category":"Setor Privado","summary":"Integre canais e times para operar funil com score dinamico, handoff claro e conversao por etapa."},
+    {"slug":"indicadores-atendimento-publico-decisao-gestao","title":"Indicadores de atendimento publico para decisao de gestao","published_at":"2026-04-23T09:00:00-03:00","category":"Setor Publico","summary":"Monitore resposta, resolucao e SLA por secretaria para agir cedo e melhorar desempenho publico."},
+    {"slug":"sla-comercial-como-diferencial-competitivo","title":"SLA comercial como diferencial competitivo","published_at":"2026-04-22T09:00:00-03:00","category":"Setor Privado","summary":"Converta rapidez de resposta em vantagem comercial com metas por etapa e monitoramento ativo."},
+    {"slug":"acessibilidade-digital-servicos-publicos-operacional","title":"Acessibilidade digital em servicos publicos: foco no fluxo completo","published_at":"2026-04-21T09:00:00-03:00","category":"Setor Publico","summary":"Acessibilidade de ponta a ponta: linguagem clara, navegacao inclusiva e jornada sem barreiras."},
+    {"slug":"app-mobile-corporativo-operacao-campo","title":"App Mobile Corporativo para Operacao de Campo em Tempo Real","published_at":"2026-04-20T09:00:00-03:00","category":"Setor Privado","summary":"Digitalize o campo com tarefas guiadas, evidencia estruturada e KPI em tempo real para decisao rapida."},
+    {"slug":"chatbot-publico-triagem-inteligente","title":"ChatBot Publico com triagem inteligente","published_at":"2026-04-19T09:00:00-03:00","category":"Setor Publico","summary":"Classifique demandas por urgencia e servico para escalar ao humano no momento certo."},
+    {"slug":"ecommerce-orientado-margem-inteligencia-conversao","title":"E-commerce orientado a margem com Inteligencia de Conversao","published_at":"2026-04-18T09:00:00-03:00","category":"Setor Privado","summary":"Conecte mix, CRM e campanha para aumentar conversao preservando margem real."},
+    {"slug":"plataforma-atendimento-cidadao-jornada-unica","title":"Plataforma de Atendimento ao Cidadao com Jornada Unica","published_at":"2026-04-17T09:00:00-03:00","category":"Setor Publico","summary":"Unifique canais, protocolo e acompanhamento para entregar transparencia e previsibilidade ao cidadao."},
+    {"slug":"automacao-marketing-jornada-conversao","title":"Automacao de Marketing com jornada de conversao","published_at":"2026-04-16T09:00:00-03:00","category":"Setor Privado","summary":"Automatize com inteligencia: segmentacao, lead scoring e jornada para escalar conversao com previsibilidade."},
+    {"slug":"sistema-agendamento-reducao-filas","title":"Sistema de Agendamento e reducao de filas","published_at":"2026-04-16T09:00:00-03:00","category":"Setor Publico","summary":"Organize demanda, reduza espera e melhore atendimento com agendamento digital e confirmacoes automaticas."},
+    {"slug":"analytics-relatorios-decisao-comercial","title":"Analytics e Relatorios para decisao comercial","published_at":"2026-04-16T09:00:00-03:00","category":"Setor Privado","summary":"Conecte dashboards e rituais de decisao para transformar dados comerciais em acao de crescimento."},
+    {"slug":"app-mobile-cidadao-servicos-essenciais","title":"App Mobile do Cidadao para servicos essenciais","published_at":"2026-04-16T09:00:00-03:00","category":"Setor Publico","summary":"Leve servicos publicos para o celular com notificacoes, protocolos e solicitacoes em fluxo simples."},
+    {"slug":"chatbot-24h-integracao-crm","title":"Chatbot inteligente 24/7 com integracao a CRM","published_at":"2026-04-16T09:00:00-03:00","category":"Setor Privado","summary":"Automacao com contexto: bot integrado ao CRM para atender melhor e qualificar leads com eficiencia."},
+    {"slug":"gestao-protocolos-rastreabilidade","title":"Gestao de Protocolos com rastreabilidade ponta a ponta","published_at":"2026-04-16T09:00:00-03:00","category":"Setor Publico","summary":"Ganhe controle de processos com numeracao automatica, tramitacao digital e historico completo."},
+    {"slug":"centro-contato-omnichannel-sla","title":"Centro de Contato Omnichannel com SLA real","published_at":"2026-04-16T09:00:00-03:00","category":"Setor Privado","summary":"Integre canais e monitore SLA em tempo real para escalar atendimento com qualidade e consistencia."},
+    {"slug":"portal-transparencia-linguagem-cidada","title":"Portal de Transparencia com linguagem cidada","published_at":"2026-04-16T09:00:00-03:00","category":"Setor Publico","summary":"Transparencia efetiva: dados publicos claros, pesquisaveis e compreensiveis para qualquer cidadao."},
+    {"slug":"crm-avancado-receita-recorrente","title":"CRM Avancado: previsibilidade comercial e receita recorrente","published_at":"2026-04-16T09:00:00-03:00","category":"Setor Privado","summary":"CRM maduro conecta marketing, vendas e atendimento para escalar conversao e receita recorrente com previsibilidade."},
+    {"slug":"ouvidoria-digital-dados-governanca","title":"Ouvidoria Digital orientada por dados: da reclamacao a melhoria publica","published_at":"2026-04-16T09:00:00-03:00","category":"Setor Publico","summary":"Modernize a ouvidoria com workflow digital, leitura de tendencia e indicadores para melhorar servicos publicos."},
+    {"slug":"governanca-portfolio-projetos","title":"Governanca de Portfolio de Projetos: Priorizar, Executar e Entregar","published_at":"2026-04-16T09:00:00-03:00","category":"Gestao Estrategica","summary":"Sem governanca, o portfolio vira fila de urgencias. Organize prioridades e execute com previsibilidade usando a iDialog."},
+    {"slug":"gestao-projetos-alta-performance","title":"Gestao de Projetos de Alta Performance: Execute com Clareza e Ritmo","published_at":"2026-04-16T09:00:00-03:00","category":"Gestao Estrategica","summary":"Uma ferramenta poderosa para tirar projetos do plano e levar ate a entrega com dashboard, timeline, tarefas e alertas inteligentes."},
+    {"slug":"plano-viabilidade-tecnico-economico-financeiro","title":"Plano de Viabilidade Tecnico Economico Financeiro: Decidir Antes de Investir","published_at":"2026-04-16T09:00:00-03:00","category":"Gestao Estrategica","summary":"Validar antes de investir e decisao inteligente. Conheca o estudo de viabilidade da iDialog com foco tecnico, economico e financeiro."},
+    {"slug":"analise-swot-estrategia-real","title":"Analise SWOT: Estrategia Real Comeca no Diagnostico","published_at":"2026-04-16T09:00:00-03:00","category":"Gestao Estrategica","summary":"Quem decide melhor executa melhor. Conheca a ferramenta SWOT da iDialog e transforme diagnostico em acao estrategica."},
+    {"slug":"revista-concursos-questoes","title":"Aprova Concursos: Plataforma de Estudos com Questoes e Simulados","published_at":"2026-04-16T09:00:00-03:00","category":"Concursos Publicos","summary":"Conheca o Aprova Concursos, plataforma de estudos da iDialog com simulados adaptativos, conteudo por disciplina e dashboard de desempenho."},
+    {"slug":"planejamento-estrategico","title":"Planejamento Estrategico: Do Conceito a Execucao","published_at":"2026-04-16T09:00:00-03:00","category":"Gestao Estrategica","summary":"Empresas que planejam crescem 30% mais rapido. Descubra a importancia do planejamento estrategico e como a ferramenta iDialog transforma estrategia em acao."},
+    {"slug":"bem-vindo-ao-blog","title":"Bem-vindo ao Blog da iDialog","published_at":"2026-04-15T09:00:00-03:00","category":"Novidades","summary":"Este e o blog oficial da iDialog. Aqui voce encontra artigos, tutoriais e novidades sobre a plataforma."},
+]
+
+
+def _read_post_body(slug):
+    """Read HTML body from deployed pages/blog/posts/<slug>.html file."""
+    posts_dir = ROOT_DIR.parent / 'pages' / 'blog' / 'posts'
+    html_file = posts_dir / f'{slug}.html'
+    if not html_file.exists():
+        return f'<p>{slug}</p>'
+    html = html_file.read_text(encoding='utf-8', errors='replace')
+    for tag in ('article', 'main', 'body'):
+        m = re.search(rf'<{tag}[^>]*>(.*?)</{tag}>', html, re.DOTALL | re.IGNORECASE)
+        if m:
+            return m.group(1).strip()
+    return html
+
+
+def seed_blog_posts():
+    """Insert default blog posts on startup if they don't already exist (idempotent)."""
+    conn = get_db()
+    # Locate the iDialog company
+    company = conn.execute(
+        'SELECT id FROM companies WHERE name = %s' if USE_POSTGRES else 'SELECT id FROM companies WHERE name = ?',
+        (DEFAULT_ADMIN_COMPANY,),
+    ).fetchone()
+    if not company:
+        conn.close()
+        return  # company not ready yet, will run on next startup
+
+    company_id = company['id']
+    user = conn.execute(
+        'SELECT id FROM users WHERE email = %s' if USE_POSTGRES else 'SELECT id FROM users WHERE email = ?',
+        (DEFAULT_ADMIN_EMAIL,),
+    ).fetchone()
+    author_id = user['id'] if user else None
+
+    ph = '%s' if USE_POSTGRES else '?'
+    now = dt.datetime.now(dt.timezone.utc).isoformat()
+    inserted = 0
+
+    for post in _BLOG_POSTS_SEED:
+        slug = post['slug']
+        existing = conn.execute(
+            f'SELECT id FROM content_items WHERE company_id = {ph} AND slug = {ph}',
+            (company_id, slug),
+        ).fetchone()
+        if existing:
+            continue  # already seeded
+
+        pub_at_raw = post['published_at']
+        try:
+            pub_dt = parse_iso_datetime(pub_at_raw)
+            status = 'published' if pub_dt <= dt.datetime.now(dt.timezone.utc) else 'scheduled'
+        except Exception:
+            status = 'published'
+
+        body_html = _read_post_body(slug)
+        conn.execute(
+            f"""
+            INSERT INTO content_items
+                (company_id, author_user_id, content_type, title, slug, status, context,
+                 category, summary, body_html, cover_path, seo_title, seo_description,
+                 meta_description, meta_keywords, canonical_url,
+                 extra_json, published_at, created_at, updated_at)
+            VALUES ({ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph},{ph})
+            """,
+            (company_id, author_id, 'blog_post', post['title'], slug, status, 'blog',
+             post['category'], post['summary'], body_html, '', '', '',
+             '', '', '', '{}', pub_at_raw, now, now),
+        )
+        inserted += 1
+
+    if inserted:
+        conn.commit()
+        print(f'[SEED] Inserted {inserted} default blog posts.', file=sys.stderr)
+    conn.close()
+
+
 try:
     init_db()
     migrate_db()
+    seed_blog_posts()
     migrate_scheduled_status()
 except Exception as _startup_err:
     import traceback, sys
