@@ -268,16 +268,20 @@
                             <div class="card mt-4">
                                 <div class="card-header editor-tab-header">
                                     <div class="editor-tabs">
-                                        <button class="editor-tab active" data-editor-tab="html" type="button"><i class="fas fa-code"></i> HTML</button>
-                                        <button class="editor-tab" data-editor-tab="css" type="button"><i class="fab fa-css3-alt"></i> CSS do Post</button>
+                                        <button class="editor-tab active" data-editor-tab="html" type="button"><i
+                                                class="fas fa-code"></i> HTML</button>
+                                        <button class="editor-tab" data-editor-tab="css" type="button"><i
+                                                class="fab fa-css3-alt"></i> CSS do Post</button>
                                     </div>
-                                    <small class="editor-tab-hint">O CSS é injetado como <code>&lt;style scoped&gt;</code> apenas neste post</small>
+                                    <small class="editor-tab-hint">O CSS é injetado como
+                                        <code>&lt;style scoped&gt;</code> apenas neste post</small>
                                 </div>
                                 <div class="card-body p-0" id="editor-tab-html">
                                     <textarea id="post-body-html" class="post-body-textarea"></textarea>
                                 </div>
                                 <div class="card-body p-0" id="editor-tab-css" hidden>
-                                    <textarea id="post-body-css" class="post-body-textarea post-css-textarea" placeholder="/* CSS exclusivo deste post — sem inline styles */
+                                    <textarea id="post-body-css" class="post-body-textarea post-css-textarea"
+                                        placeholder="/* CSS exclusivo deste post — sem inline styles */
 
 .post-hero { background: linear-gradient(135deg, #0a0a0f, #0d1117); }
 .cta-box { border: 1px solid #00e5ff; padding: 2rem; }"></textarea>
@@ -321,11 +325,13 @@
                                 <div class="card-body">
                                     <div class="field-group">
                                         <label for="post-cta-title">Título do CTA</label>
-                                        <input id="post-cta-title" type="text" placeholder="Quer ter uma experiência impressionante?">
+                                        <input id="post-cta-title" type="text"
+                                            placeholder="Quer ter uma experiência impressionante?">
                                     </div>
                                     <div class="field-group">
                                         <label for="post-cta-text">Texto do CTA</label>
-                                        <textarea id="post-cta-text" rows="2" placeholder="Descubra como a iDialog pode transformar seu atendimento. Fale com um especialista hoje."></textarea>
+                                        <textarea id="post-cta-text" rows="2"
+                                            placeholder="Descubra como a iDialog pode transformar seu atendimento. Fale com um especialista hoje."></textarea>
                                     </div>
                                     <div class="field-group">
                                         <label for="post-cta-btn">Texto do botão</label>
@@ -335,7 +341,8 @@
                                         <label for="post-cta-url">URL do botão</label>
                                         <input id="post-cta-url" type="url" placeholder="/pages/contato.html">
                                     </div>
-                                    <small class="field-hint">O bloco CTA é renderizado automaticamente ao final do post no site público.</small>
+                                    <small class="field-hint">O bloco CTA é renderizado automaticamente ao final do post
+                                        no site público.</small>
                                 </div>
                             </details>
                         </div>
@@ -430,10 +437,10 @@
                     <input id="editing-post-id" type="hidden" value="">
                 </section>
 
-                <!-- PAGES (GitHub + Monaco) -->
+                <!-- PAGES (GitHub + Monaco) — Page Builder -->
                 <section id="tab-pages" class="tab-panel">
                     <div class="page-header">
-                        <h2>Editor de Páginas HTML</h2>
+                        <h2><i class="fas fa-hammer" style="color:var(--sb-accent)"></i> Construtor de Páginas HTML</h2>
                     </div>
                     <div id="pages-not-configured" class="card mb-4" hidden>
                         <div class="card-body notice notice--warning">
@@ -475,11 +482,13 @@
                         <!-- Editor principal -->
                         <div class="pages-editor">
                             <div id="monaco-placeholder" class="monaco-placeholder">
-                                <i class="fas fa-file-code"></i>
+                                <i class="fas fa-hammer"></i>
                                 <p>Selecione um arquivo na árvore para editar</p>
-                                <p class="monaco-placeholder-hint">Suporte a HTML, CSS, JavaScript, JSON, Markdown</p>
+                                <p class="monaco-placeholder-hint">Editor de código + Preview ao vivo · Snippets ·
+                                    Inspetor SEO</p>
                             </div>
                             <div id="monaco-editor-wrap" hidden>
+                                <!-- ── Topbar principal ── -->
                                 <div class="editor-topbar">
                                     <div class="editor-topbar-left">
                                         <span id="monaco-breadcrumb" class="editor-breadcrumb"></span>
@@ -487,30 +496,152 @@
                                         <span id="monaco-unsaved" class="unsaved-badge" hidden>● Não salvo</span>
                                     </div>
                                     <div class="editor-topbar-actions">
+                                        <!-- Arquivo -->
+                                        <button id="btn-monaco-rename" class="btn btn-ghost btn-sm"
+                                            title="Renomear/Mover arquivo"><i class="fas fa-pen-to-square"></i>
+                                            Renomear</button>
+                                        <button id="btn-monaco-duplicate" class="btn btn-ghost btn-sm"
+                                            title="Duplicar arquivo"><i class="fas fa-copy"></i></button>
+                                        <span class="editor-divider"></span>
+                                        <!-- Editor -->
                                         <button id="btn-monaco-format" class="btn btn-ghost btn-sm"
                                             title="Formatar código (Alt+Shift+F)"><i class="fas fa-indent"></i></button>
+                                        <button id="btn-monaco-wordwrap" class="btn btn-ghost btn-sm"
+                                            title="Quebra de linha"><i class="fas fa-text-width"></i></button>
+                                        <button id="btn-monaco-find" class="btn btn-ghost btn-sm"
+                                            title="Buscar e Substituir (Ctrl+H)"><i
+                                                class="fas fa-magnifying-glass"></i></button>
                                         <button id="btn-monaco-theme" class="btn btn-ghost btn-sm"
-                                            title="Alternar tema claro/escuro"><i
-                                                class="fas fa-circle-half-stroke"></i></button>
+                                            title="Tema claro/escuro"><i class="fas fa-circle-half-stroke"></i></button>
                                         <span class="editor-divider"></span>
-                                        <button id="btn-monaco-preview" class="btn btn-ghost btn-sm"><i
-                                                class="fas fa-eye"></i> Preview</button>
-                                        <button id="btn-monaco-history" class="btn btn-ghost btn-sm"><i
-                                                class="fas fa-clock-rotate-left"></i> Histórico</button>
+                                        <!-- Ferramentas -->
+                                        <button id="btn-monaco-snippets" class="btn btn-ghost btn-sm"
+                                            title="Biblioteca de Blocos HTML"><i class="fas fa-puzzle-piece"></i>
+                                            Blocos</button>
+                                        <button id="btn-monaco-seo" class="btn btn-ghost btn-sm" title="Inspetor SEO"><i
+                                                class="fas fa-chart-simple"></i> SEO</button>
+                                        <span class="editor-divider"></span>
+                                        <!-- Preview -->
+                                        <button id="btn-monaco-split-preview" class="btn btn-ghost btn-sm"
+                                            title="Preview ao vivo (split view)"><i class="fas fa-columns"></i>
+                                            Split</button>
+                                        <button id="btn-monaco-preview" class="btn btn-ghost btn-sm"
+                                            title="Abrir no site"><i class="fas fa-arrow-up-right-from-square"></i>
+                                            Site</button>
+                                        <button id="btn-monaco-history" class="btn btn-ghost btn-sm"
+                                            title="Histórico de commits"><i
+                                                class="fas fa-clock-rotate-left"></i></button>
+                                        <span class="editor-divider"></span>
+                                        <!-- Ações -->
                                         <button id="btn-monaco-delete" class="btn btn-danger btn-sm"
                                             title="Excluir arquivo"><i class="fas fa-trash"></i></button>
                                         <button id="btn-monaco-save" class="btn btn-primary btn-sm"><i
                                                 class="fas fa-floppy-disk"></i> Salvar e Publicar</button>
                                     </div>
                                 </div>
-                                <div id="monaco-editor-container" class="monaco-container"></div>
+                                <!-- ── Área de edição (editor + split preview) ── -->
+                                <div class="editor-split-area">
+                                    <div id="monaco-editor-container" class="monaco-container"></div>
+                                    <div id="split-preview-pane" class="split-preview-pane" hidden>
+                                        <div class="split-preview-topbar">
+                                            <span class="split-preview-title"><i class="fas fa-eye"></i> Preview ao
+                                                Vivo</span>
+                                            <div class="split-preview-actions">
+                                                <button id="btn-split-preview-refresh" class="btn btn-ghost btn-sm"
+                                                    title="Atualizar preview"><i class="fas fa-rotate"></i></button>
+                                                <button id="btn-split-preview-fullscreen" class="btn btn-ghost btn-sm"
+                                                    title="Expandir"><i
+                                                        class="fas fa-up-right-and-down-left-from-center"></i></button>
+                                                <button id="btn-close-split" class="btn btn-ghost btn-sm"
+                                                    title="Fechar preview"><i class="fas fa-xmark"></i></button>
+                                            </div>
+                                        </div>
+                                        <iframe id="split-preview-iframe" class="split-preview-iframe"
+                                            sandbox="allow-scripts allow-same-origin allow-forms"
+                                            title="Preview da página"></iframe>
+                                    </div>
+                                </div>
+                                <!-- ── Painel SEO ── -->
+                                <div id="seo-panel" class="seo-panel" hidden>
+                                    <div class="seo-panel-header">
+                                        <span><i class="fas fa-chart-simple"></i> Inspetor SEO</span>
+                                        <button id="btn-seo-apply" class="btn btn-primary btn-sm"><i
+                                                class="fas fa-check"></i> Aplicar no HTML</button>
+                                        <button id="btn-seo-close" class="btn btn-ghost btn-sm"><i
+                                                class="fas fa-xmark"></i></button>
+                                    </div>
+                                    <div class="seo-panel-body">
+                                        <div class="seo-field-grid">
+                                            <div class="seo-field">
+                                                <label class="seo-label"><i class="fas fa-heading"></i> Title</label>
+                                                <input id="seo-title" type="text"
+                                                    placeholder="Título da página (50–60 chars recomendado)"
+                                                    class="form-control">
+                                                <div class="seo-counter"><span id="seo-title-count">0</span>/60 chars
+                                                    <span class="seo-score" id="seo-title-score"></span></div>
+                                            </div>
+                                            <div class="seo-field">
+                                                <label class="seo-label"><i class="fas fa-align-left"></i> Meta
+                                                    Description</label>
+                                                <textarea id="seo-desc" rows="2"
+                                                    placeholder="Descrição da página (120–160 chars recomendado)"
+                                                    class="form-control"></textarea>
+                                                <div class="seo-counter"><span id="seo-desc-count">0</span>/160 chars
+                                                    <span class="seo-score" id="seo-desc-score"></span></div>
+                                            </div>
+                                            <div class="seo-field">
+                                                <label class="seo-label"><i class="fab fa-facebook"></i> OG
+                                                    Title</label>
+                                                <input id="seo-og-title" type="text"
+                                                    placeholder="Título para redes sociais" class="form-control">
+                                            </div>
+                                            <div class="seo-field">
+                                                <label class="seo-label"><i class="fab fa-facebook"></i> OG
+                                                    Description</label>
+                                                <input id="seo-og-desc" type="text"
+                                                    placeholder="Descrição para redes sociais" class="form-control">
+                                            </div>
+                                            <div class="seo-field">
+                                                <label class="seo-label"><i class="fas fa-image"></i> OG Image
+                                                    URL</label>
+                                                <input id="seo-og-image" type="url" placeholder="https://..."
+                                                    class="form-control">
+                                            </div>
+                                            <div class="seo-field">
+                                                <label class="seo-label"><i class="fas fa-robot"></i> Robots</label>
+                                                <select id="seo-robots" class="form-control">
+                                                    <option value="index, follow">index, follow (padrão)</option>
+                                                    <option value="noindex, nofollow">noindex, nofollow (não indexar)
+                                                    </option>
+                                                    <option value="noindex, follow">noindex, follow</option>
+                                                    <option value="index, nofollow">index, nofollow</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ── Status bar ── -->
                                 <div class="editor-statusbar">
                                     <span id="monaco-status">Pronto</span>
                                     <span class="statusbar-right">
+                                        <span id="monaco-words"></span>
                                         <span id="monaco-cursor-pos"></span>
                                         <span id="monaco-lang-badge"></span>
                                     </span>
                                 </div>
+                            </div>
+                            <!-- Snippets Drawer (overlay lateral) -->
+                            <div id="snippets-drawer" class="snippets-drawer" hidden>
+                                <div class="snippets-drawer-header">
+                                    <span><i class="fas fa-puzzle-piece"></i> Blocos HTML</span>
+                                    <button id="btn-snippets-close" class="btn btn-ghost btn-sm"><i
+                                            class="fas fa-xmark"></i></button>
+                                </div>
+                                <div class="snippets-search-wrap">
+                                    <input id="snippets-search" type="search" placeholder="🔍 Filtrar blocos..."
+                                        class="tree-search">
+                                </div>
+                                <div id="snippets-list" class="snippets-list"></div>
                             </div>
                         </div>
                     </div>
@@ -954,6 +1085,66 @@
             <div class="modal-footer">
                 <button class="btn btn-ghost" id="btn-confirm-cancel" type="button">Cancelar</button>
                 <button class="btn btn-danger" id="btn-confirm-ok" type="button">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Renomear Arquivo -->
+    <div id="modal-rename-file" class="wp-modal" role="dialog" aria-modal="true" hidden>
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog modal-dialog--sm">
+            <div class="modal-header">
+                <h3><i class="fas fa-pen-to-square"></i> Renomear / Mover Arquivo</h3>
+                <button class="modal-close" data-close-modal="modal-rename-file" type="button"><i
+                        class="fas fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="field-group">
+                    <label for="rename-current-path">Caminho atual</label>
+                    <input id="rename-current-path" type="text" class="form-control" disabled>
+                </div>
+                <div class="field-group">
+                    <label for="rename-new-path">Novo caminho</label>
+                    <input id="rename-new-path" type="text" placeholder="pages/novo-nome.html" class="form-control"
+                        autocomplete="off">
+                    <small class="field-hint">O arquivo antigo será excluído e o novo criado com o mesmo
+                        conteúdo.</small>
+                </div>
+                <p id="rename-file-error" class="form-error" hidden></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close-modal="modal-rename-file" type="button">Cancelar</button>
+                <button class="btn btn-primary" id="btn-confirm-rename" type="button"><i class="fas fa-check"></i>
+                    Renomear</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Duplicar Arquivo -->
+    <div id="modal-duplicate-file" class="wp-modal" role="dialog" aria-modal="true" hidden>
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog modal-dialog--sm">
+            <div class="modal-header">
+                <h3><i class="fas fa-copy"></i> Duplicar Arquivo</h3>
+                <button class="modal-close" data-close-modal="modal-duplicate-file" type="button"><i
+                        class="fas fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="field-group">
+                    <label for="duplicate-source-path">Arquivo de origem</label>
+                    <input id="duplicate-source-path" type="text" class="form-control" disabled>
+                </div>
+                <div class="field-group">
+                    <label for="duplicate-new-path">Caminho da cópia</label>
+                    <input id="duplicate-new-path" type="text" placeholder="pages/copia-da-pagina.html"
+                        class="form-control" autocomplete="off">
+                </div>
+                <p id="duplicate-file-error" class="form-error" hidden></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" data-close-modal="modal-duplicate-file" type="button">Cancelar</button>
+                <button class="btn btn-primary" id="btn-confirm-duplicate" type="button"><i class="fas fa-copy"></i>
+                    Duplicar</button>
             </div>
         </div>
     </div>

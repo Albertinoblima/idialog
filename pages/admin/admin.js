@@ -1083,6 +1083,8 @@
                 newModel.onDidChangeContent(function () {
                     state.monacoUnsaved = true;
                     document.getElementById('monaco-unsaved').removeAttribute('hidden');
+                    updateWordCount();
+                    updateSplitPreview();
                 });
             } else {
                 state.monacoEditor = window.monaco.editor.create(document.getElementById('monaco-editor-container'), {
@@ -1100,6 +1102,8 @@
                 state.monacoEditor.onDidChangeModelContent(function () {
                     state.monacoUnsaved = true;
                     document.getElementById('monaco-unsaved').removeAttribute('hidden');
+                    updateWordCount();
+                    updateSplitPreview();
                 });
                 // Atualiza posição do cursor na statusbar
                 state.monacoEditor.onDidChangeCursorPosition(function (e) {
@@ -1107,10 +1111,24 @@
                         'Ln ' + e.position.lineNumber + ', Col ' + e.position.column;
                 });
             }
+            updateWordCount();
+            // Atualiza preview ao vivo se estiver aberto
+            updateSplitPreview(true);
         } catch (err) {
             document.getElementById('monaco-status').textContent = 'Erro: ' + err.message;
             toast('Erro ao abrir arquivo: ' + err.message, 'error');
         }
+    }
+
+    function updateWordCount() {
+        if (!state.monacoEditor) return;
+        var text = state.monacoEditor.getValue();
+        // Remove tags HTML para contar palavras reais
+        var plain = text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        var words = plain ? plain.split(' ').filter(function (w) { return w.length > 0; }).length : 0;
+        var chars = text.length;
+        var el = document.getElementById('monaco-words');
+        if (el) el.textContent = words + ' palavras · ' + chars.toLocaleString('pt-BR') + ' chars';
     }
 
     function ensureMonaco() {
@@ -1197,6 +1215,396 @@
             toast('Selecione um arquivo primeiro.', 'warning');
         }
     });
+
+    // ── Word Wrap ────────────────────────────────────────────────────────────
+    document.getElementById('btn-monaco-wordwrap').addEventListener('click', function () {
+        if (!state.monacoEditor) return;
+        var cur = state.monacoEditor.getOption(window.monaco.editor.EditorOption.wordWrap);
+        var next = (cur === 'off') ? 'on' : 'off';
+        state.monacoEditor.updateOptions({ wordWrap: next });
+        this.classList.toggle('is-active', next === 'on');
+    });
+
+    // ── Find & Replace ───────────────────────────────────────────────────────
+    document.getElementById('btn-monaco-find').addEventListener('click', function () {
+        if (state.monacoEditor) state.monacoEditor.getAction('editor.action.startFindReplaceAction').run();
+    });
+
+    // ── Split Preview ────────────────────────────────────────────────────────
+    var _splitDebounce = null;
+
+    document.getElementById('btn-monaco-split-preview').addEventListener('click', function () {
+        toggleSplitPreview();
+    });
+    document.getElementById('btn-close-split').addEventListener('click', function () {
+        toggleSplitPreview(false);
+    });
+    document.getElementById('btn-split-preview-refresh').addEventListener('click', function () {
+        updateSplitPreview(true);
+    });
+    document.getElementById('btn-split-preview-fullscreen').addEventListener('click', function () {
+        var pane = document.getElementById('split-preview-pane');
+        var area = document.querySelector('.editor-split-area');
+        if (pane.classList.contains('preview-fullscreen')) {
+            pane.classList.remove('preview-fullscreen');
+            area.classList.remove('preview-only');
+        } else {
+            pane.classList.add('preview-fullscreen');
+            area.classList.add('preview-only');
+        }
+        if (state.monacoEditor) state.monacoEditor.layout();
+    });
+
+    function toggleSplitPreview(force) {
+        var pane = document.getElementById('split-preview-pane');
+        var btn = document.getElementById('btn-monaco-split-preview');
+        var show = (force !== undefined) ? force : pane.hasAttribute('hidden');
+        if (show) {
+            pane.removeAttribute('hidden');
+            btn.classList.add('is-active');
+            updateSplitPreview(true);
+        } else {
+            pane.setAttribute('hidden', '');
+            btn.classList.remove('is-active');
+            var area = document.querySelector('.editor-split-area');
+            if (area) area.classList.remove('preview-only');
+            pane.classList.remove('preview-fullscreen');
+        }
+        if (state.monacoEditor) state.monacoEditor.layout();
+    }
+
+    function updateSplitPreview(immediate) {
+        var pane = document.getElementById('split-preview-pane');
+        if (pane.hasAttribute('hidden') || !state.monacoEditor) return;
+        if (!immediate) {
+            clearTimeout(_splitDebounce);
+            _splitDebounce = setTimeout(function () { updateSplitPreview(true); }, 600);
+            return;
+        }
+        var iframe = document.getElementById('split-preview-iframe');
+        var content = state.monacoEditor.getValue();
+        var fp = state.currentFilePath || '';
+        var ext = fp.split('.').pop().toLowerCase();
+        if (ext === 'html') {
+            iframe.srcdoc = content;
+        } else if (ext === 'css') {
+            iframe.srcdoc = '<style>' + content + '</style>' +
+                '<div style="padding:24px;font-family:sans-serif;color:#333">' +
+                '<h2 style="color:#888;font-size:14px;margin-bottom:12px">CSS Preview (applique as classes a elementos HTML para visualizar)</h2>' +
+                '<p class="example">Parágrafo de exemplo</p>' +
+                '<h1 class="example-title">Título de exemplo</h1>' +
+                '<button class="btn example">Botão de exemplo</button>' +
+                '</div>';
+        } else {
+            iframe.srcdoc = '<pre style="padding:16px;white-space:pre-wrap;word-break:break-all;font-family:monospace;font-size:12px;color:#333">' +
+                content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</pre>';
+        }
+    }
+
+    // ── Painel SEO ───────────────────────────────────────────────────────────
+    document.getElementById('btn-monaco-seo').addEventListener('click', function () {
+        var panel = document.getElementById('seo-panel');
+        var show = panel.hasAttribute('hidden');
+        if (show) {
+            if (!state.monacoEditor) { toast('Abra um arquivo HTML primeiro.', 'warning'); return; }
+            panel.removeAttribute('hidden');
+            this.classList.add('is-active');
+            loadSeoFromEditor();
+        } else {
+            panel.setAttribute('hidden', '');
+            this.classList.remove('is-active');
+        }
+    });
+
+    document.getElementById('btn-seo-close').addEventListener('click', function () {
+        document.getElementById('seo-panel').setAttribute('hidden', '');
+        document.getElementById('btn-monaco-seo').classList.remove('is-active');
+    });
+
+    document.getElementById('btn-seo-apply').addEventListener('click', applySeoToEditor);
+
+    // Contadores SEO
+    ['seo-title', 'seo-desc'].forEach(function (id) {
+        var el = document.getElementById(id);
+        var countId = id + '-count';
+        var scoreId = id + '-score';
+        var maxLen = id === 'seo-title' ? 60 : 160;
+        var minLen = id === 'seo-title' ? 50 : 120;
+        el.addEventListener('input', function () {
+            var len = el.value.length;
+            document.getElementById(countId).textContent = len;
+            var scoreEl = document.getElementById(scoreId);
+            if (len === 0) { scoreEl.textContent = ''; scoreEl.className = 'seo-score'; }
+            else if (len >= minLen && len <= maxLen) { scoreEl.textContent = '✓ Ideal'; scoreEl.className = 'seo-score good'; }
+            else if (len < minLen) { scoreEl.textContent = '⚠ Curto'; scoreEl.className = 'seo-score ok'; }
+            else { scoreEl.textContent = '✗ Longo'; scoreEl.className = 'seo-score bad'; }
+        });
+    });
+
+    function loadSeoFromEditor() {
+        if (!state.monacoEditor) return;
+        var html = state.monacoEditor.getValue();
+        function getMeta(attr, val) {
+            var re = new RegExp('<meta\\s[^>]*' + attr + '=["\']' + val + '["\'][^>]*content=["\']([^"\']*)["\']', 'i');
+            var m = html.match(re);
+            if (m) return m[1];
+            re = new RegExp('<meta\\s[^>]*content=["\']([^"\']*)["\'][^>]*' + attr + '=["\']' + val + '["\']', 'i');
+            m = html.match(re);
+            return m ? m[1] : '';
+        }
+        function getTitle() {
+            var m = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+            return m ? m[1].trim() : '';
+        }
+        document.getElementById('seo-title').value = getTitle();
+        document.getElementById('seo-desc').value = getMeta('name', 'description');
+        document.getElementById('seo-og-title').value = getMeta('property', 'og:title');
+        document.getElementById('seo-og-desc').value = getMeta('property', 'og:description');
+        document.getElementById('seo-og-image').value = getMeta('property', 'og:image');
+        var robots = getMeta('name', 'robots');
+        var sel = document.getElementById('seo-robots');
+        sel.value = robots || 'index, follow';
+        // Dispara contadores
+        ['seo-title', 'seo-desc'].forEach(function (id) {
+            document.getElementById(id).dispatchEvent(new Event('input'));
+        });
+    }
+
+    function applySeoToEditor() {
+        if (!state.monacoEditor) return;
+        var html = state.monacoEditor.getValue();
+        var title = document.getElementById('seo-title').value;
+        var desc = document.getElementById('seo-desc').value;
+        var ogTitle = document.getElementById('seo-og-title').value;
+        var ogDesc = document.getElementById('seo-og-desc').value;
+        var ogImage = document.getElementById('seo-og-image').value;
+        var robots = document.getElementById('seo-robots').value;
+
+        // Atualiza <title>
+        if (title) {
+            html = html.replace(/<title[^>]*>[^<]*<\/title>/i, '<title>' + title + '</title>');
+        }
+        // Atualiza ou adiciona meta tags
+        function setMeta(content, attr, val) {
+            var re = new RegExp('(<meta\\s[^>]*' + attr + '=["\']' + val + '["\'][^>]*content=["\'])([^"\']*)(["\'\\s/>])', 'i');
+            var re2 = new RegExp('(<meta\\s[^>]*content=["\'])([^"\']*)(["\'\\s][^>]*' + attr + '=["\']' + val + '["\'][^>]*>)', 'i');
+            if (re.test(html)) {
+                html = html.replace(re, '$1' + content + '$3');
+            } else if (re2.test(html)) {
+                html = html.replace(re2, '$1' + content + '$3');
+            } else if (content) {
+                // Adiciona antes de </head>
+                var tag = '<meta ' + attr + '="' + val + '" content="' + content + '">';
+                html = html.replace(/<\/head>/i, '    ' + tag + '\n</head>');
+            }
+        }
+        setMeta(desc, 'name', 'description');
+        setMeta(robots, 'name', 'robots');
+        setMeta(ogTitle || title, 'property', 'og:title');
+        setMeta(ogDesc || desc, 'property', 'og:description');
+        if (ogImage) setMeta(ogImage, 'property', 'og:image');
+
+        state.monacoEditor.setValue(html);
+        toast('Meta tags SEO aplicadas!');
+    }
+
+    // ── Snippets / Blocos HTML ────────────────────────────────────────────────
+    var SNIPPETS = [
+        // Layout
+        { cat: 'Layout', icon: 'fa-table-columns', name: 'Section com Container', desc: 'Seção padrão iDialog', code: '<section class="section">\n    <div class="container">\n        <!-- Conteúdo aqui -->\n    </div>\n</section>' },
+        { cat: 'Layout', icon: 'fa-grip', name: 'Grid 2 Colunas', desc: 'Layout em duas colunas', code: '<div class="grid-2">\n    <div>Coluna 1</div>\n    <div>Coluna 2</div>\n</div>' },
+        { cat: 'Layout', icon: 'fa-table-cells', name: 'Grid 3 Colunas', desc: 'Layout em três colunas', code: '<div class="grid-3">\n    <div>Coluna 1</div>\n    <div>Coluna 2</div>\n    <div>Coluna 3</div>\n</div>' },
+        { cat: 'Layout', icon: 'fa-heading', name: 'Page Header', desc: 'Cabeçalho de página', code: '<section class="page-header">\n    <div class="container">\n        <h1 class="page-title">Título da Página</h1>\n        <p class="page-subtitle">Subtítulo ou descrição da página.</p>\n    </div>\n</section>' },
+        // Conteúdo
+        { cat: 'Conteúdo', icon: 'fa-rectangle-ad', name: 'Card', desc: 'Card com título e corpo', code: '<div class="card">\n    <div class="card-header">\n        <h3 class="card-title">Título do Card</h3>\n    </div>\n    <div class="card-body">\n        <p>Conteúdo do card.</p>\n    </div>\n</div>' },
+        { cat: 'Conteúdo', icon: 'fa-star', name: 'Hero Section', desc: 'Seção hero com CTA', code: '<section class="hero">\n    <div class="container">\n        <div class="hero-content">\n            <h1 class="hero-title">Título Principal</h1>\n            <p class="hero-subtitle">Descrição do serviço ou produto.</p>\n            <div class="hero-cta">\n                <a href="#" class="btn btn-primary btn-lg">Começar Agora</a>\n                <a href="#" class="btn btn-ghost btn-lg">Saiba Mais</a>\n            </div>\n        </div>\n    </div>\n</section>' },
+        { cat: 'Conteúdo', icon: 'fa-list', name: 'Lista com Ícones', desc: 'Lista com ícones FontAwesome', code: '<ul class="icon-list">\n    <li><i class="fas fa-check-circle"></i> Item 1</li>\n    <li><i class="fas fa-check-circle"></i> Item 2</li>\n    <li><i class="fas fa-check-circle"></i> Item 3</li>\n</ul>' },
+        { cat: 'Conteúdo', icon: 'fa-table', name: 'Tabela Responsiva', desc: 'Tabela com cabeçalho', code: '<div class="table-wrap">\n    <table class="data-table">\n        <thead>\n            <tr>\n                <th>Coluna 1</th>\n                <th>Coluna 2</th>\n                <th>Coluna 3</th>\n            </tr>\n        </thead>\n        <tbody>\n            <tr>\n                <td>Dado 1</td>\n                <td>Dado 2</td>\n                <td>Dado 3</td>\n            </tr>\n        </tbody>\n    </table>\n</div>' },
+        { cat: 'Conteúdo', icon: 'fa-quote-left', name: 'Blockquote / Depoimento', desc: 'Citação ou depoimento', code: '<blockquote class="testimonial">\n    <p class="testimonial-text">"Texto do depoimento ou citação aqui."</p>\n    <footer class="testimonial-author">\n        <strong>Nome do Autor</strong> — Cargo, Empresa\n    </footer>\n</blockquote>' },
+        { cat: 'Conteúdo', icon: 'fa-circle-info', name: 'Alert / Aviso', desc: 'Caixa de alerta', code: '<div class="alert alert-info">\n    <i class="fas fa-circle-info"></i>\n    <div>\n        <strong>Informação:</strong> Texto do aviso aqui.\n    </div>\n</div>' },
+        { cat: 'Conteúdo', icon: 'fa-bolt', name: 'CTA Banner', desc: 'Call to action em destaque', code: '<section class="cta-banner">\n    <div class="container">\n        <h2 class="cta-title">Pronto para começar?</h2>\n        <p class="cta-desc">Fale com nossos especialistas e descubra como podemos ajudar.</p>\n        <a href="/pages/contato.html" class="btn btn-primary btn-lg">Entre em Contato</a>\n    </div>\n</section>' },
+        // Componentes iDialog
+        { cat: 'iDialog', icon: 'fa-bars', name: 'Header Placeholder', desc: 'Inclui o header do site', code: '<div id="header-placeholder"></div>' },
+        { cat: 'iDialog', icon: 'fa-shoe-prints', name: 'Footer Placeholder', desc: 'Inclui o footer do site', code: '<div id="footer-placeholder"></div>' },
+        { cat: 'iDialog', icon: 'fa-display', name: 'Matrix Canvas', desc: 'Efeito matrix do site', code: '<canvas id="matrix-canvas"></canvas>' },
+        { cat: 'iDialog', icon: 'fa-file-code', name: 'Script Main', desc: 'Script principal iDialog', code: '<script src="/assets/js/main.js"><\/script>' },
+        { cat: 'iDialog', icon: 'fa-tag', name: 'Badge', desc: 'Etiqueta de status', code: '<span class="badge badge-published">Publicado</span>' },
+        // Formulário
+        { cat: 'Formulário', icon: 'fa-envelope', name: 'Campo de E-mail', desc: 'Input de e-mail com label', code: '<div class="field-group">\n    <label for="email">E-mail</label>\n    <input type="email" id="email" name="email" placeholder="seu@email.com" required>\n</div>' },
+        { cat: 'Formulário', icon: 'fa-keyboard', name: 'Campo de Texto', desc: 'Input de texto simples', code: '<div class="field-group">\n    <label for="nome">Nome</label>\n    <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>\n</div>' },
+        { cat: 'Formulário', icon: 'fa-comment', name: 'Textarea', desc: 'Campo de texto longo', code: '<div class="field-group">\n    <label for="mensagem">Mensagem</label>\n    <textarea id="mensagem" name="mensagem" rows="4" placeholder="Sua mensagem..." required></textarea>\n</div>' },
+        { cat: 'Formulário', icon: 'fa-list-check', name: 'Select', desc: 'Lista de opções', code: '<div class="field-group">\n    <label for="assunto">Assunto</label>\n    <select id="assunto" name="assunto">\n        <option value="">Selecione...</option>\n        <option value="comercial">Comercial</option>\n        <option value="suporte">Suporte</option>\n        <option value="outros">Outros</option>\n    </select>\n</div>' },
+        { cat: 'Formulário', icon: 'fa-square-check', name: 'Checkbox', desc: 'Campo de múltipla escolha', code: '<div class="field-group">\n    <label class="checkbox-label">\n        <input type="checkbox" name="aceito" value="1" required>\n        Aceito os <a href="/pages/legal/termos-de-uso.html">Termos de Uso</a>\n    </label>\n</div>' },
+        { cat: 'Formulário', icon: 'fa-paper-plane', name: 'Botão Submit', desc: 'Botão de envio do formulário', code: '<button type="submit" class="btn btn-primary">\n    <i class="fas fa-paper-plane"></i> Enviar Mensagem\n</button>' },
+        // Mídia
+        { cat: 'Mídia', icon: 'fa-image', name: 'Imagem Responsiva', desc: 'Imagem com alt e lazy load', code: '<img src="/public/images/foto.jpg" alt="Descrição da imagem" loading="lazy" class="img-responsive">' },
+        { cat: 'Mídia', icon: 'fa-film', name: 'Vídeo Embed (YouTube)', desc: 'Iframe responsivo do YouTube', code: '<div class="video-embed">\n    <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Título do vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>\n</div>' },
+        { cat: 'Mídia', icon: 'fa-icons', name: 'Ícone + Texto', desc: 'Combinação ícone e texto', code: '<div class="icon-text">\n    <i class="fas fa-check-circle" style="color: var(--green)"></i>\n    <span>Texto acompanhando o ícone</span>\n</div>' },
+    ];
+
+    var _snippetsRendered = false;
+
+    document.getElementById('btn-monaco-snippets').addEventListener('click', function () {
+        var drawer = document.getElementById('snippets-drawer');
+        var show = drawer.hasAttribute('hidden');
+        if (show) {
+            drawer.removeAttribute('hidden');
+            this.classList.add('is-active');
+            if (!_snippetsRendered) { renderSnippets(''); _snippetsRendered = true; }
+        } else {
+            drawer.setAttribute('hidden', '');
+            this.classList.remove('is-active');
+        }
+    });
+
+    document.getElementById('btn-snippets-close').addEventListener('click', function () {
+        document.getElementById('snippets-drawer').setAttribute('hidden', '');
+        document.getElementById('btn-monaco-snippets').classList.remove('is-active');
+    });
+
+    document.getElementById('snippets-search').addEventListener('input', function () {
+        renderSnippets(this.value.toLowerCase().trim());
+    });
+
+    function renderSnippets(filter) {
+        var list = SNIPPETS.filter(function (s) {
+            if (!filter) return true;
+            return s.name.toLowerCase().includes(filter) || s.desc.toLowerCase().includes(filter) || s.cat.toLowerCase().includes(filter);
+        });
+        var html = '';
+        var lastCat = null;
+        list.forEach(function (s) {
+            if (s.cat !== lastCat) {
+                html += '<div class="snippet-category">' + escHtml(s.cat) + '</div>';
+                lastCat = s.cat;
+            }
+            html += '<div class="snippet-item" data-code="' + encodeURIComponent(s.code) + '">' +
+                '<div class="snippet-item-icon"><i class="fas ' + s.icon + '"></i></div>' +
+                '<div class="snippet-item-info">' +
+                '<div class="snippet-item-name">' + escHtml(s.name) + '</div>' +
+                '<div class="snippet-item-desc">' + escHtml(s.desc) + '</div>' +
+                '</div>' +
+                '<button class="btn btn-ghost btn-sm snippet-item-insert" title="Inserir no editor"><i class="fas fa-plus"></i></button>' +
+                '</div>';
+        });
+        if (!html) html = '<div style="padding:16px;color:var(--txt3);font-size:.8rem;text-align:center">Nenhum bloco encontrado.</div>';
+        var listEl = document.getElementById('snippets-list');
+        listEl.innerHTML = html;
+        listEl.querySelectorAll('.snippet-item').forEach(function (item) {
+            item.addEventListener('click', function () {
+                insertSnippet(decodeURIComponent(item.dataset.code));
+            });
+        });
+    }
+
+    function insertSnippet(code) {
+        if (!state.monacoEditor) { toast('Abra um arquivo para inserir o bloco.', 'warning'); return; }
+        var selection = state.monacoEditor.getSelection();
+        var id = { major: 1, minor: 1 };
+        var op = { identifier: id, range: selection, text: code, forceMoveMarkers: true };
+        state.monacoEditor.executeEdits('snippet', [op]);
+        state.monacoEditor.focus();
+        toast('Bloco inserido!', 'success');
+    }
+
+    // ── Renomear Arquivo ─────────────────────────────────────────────────────
+    document.getElementById('btn-monaco-rename').addEventListener('click', function () {
+        if (!state.currentFilePath) { toast('Selecione um arquivo primeiro.', 'warning'); return; }
+        document.getElementById('rename-current-path').value = state.currentFilePath;
+        document.getElementById('rename-new-path').value = state.currentFilePath;
+        document.getElementById('rename-file-error').setAttribute('hidden', '');
+        openModal('modal-rename-file');
+    });
+
+    document.getElementById('btn-confirm-rename').addEventListener('click', async function () {
+        var oldPath = state.currentFilePath;
+        var newPath = (document.getElementById('rename-new-path').value || '').trim().replace(/^\//, '');
+        var errEl = document.getElementById('rename-file-error');
+        if (!newPath) { errEl.textContent = 'Informe o novo caminho.'; errEl.removeAttribute('hidden'); return; }
+        if (newPath === oldPath) { errEl.textContent = 'O novo caminho é igual ao atual.'; errEl.removeAttribute('hidden'); return; }
+        if (!/\.(html|css|js|json|md|txt)$/i.test(newPath)) { errEl.textContent = 'Extensão não permitida.'; errEl.removeAttribute('hidden'); return; }
+        var btn = this;
+        btn.disabled = true;
+        try {
+            // Lê conteúdo atual (do editor ou GitHub)
+            var content = state.monacoEditor ? state.monacoEditor.getValue() : null;
+            if (!content) {
+                var raw = await api('POST', '/github/proxy', { method: 'GET', path: 'contents/' + oldPath });
+                content = atob(raw.content.replace(/\n/g, ''));
+            }
+            var encoded = btoa(unescape(encodeURIComponent(content)));
+            // Cria no novo caminho
+            await api('POST', '/github/proxy', {
+                method: 'PUT',
+                path: 'contents/' + newPath,
+                body: { message: 'admin: rename ' + oldPath + ' → ' + newPath, content: encoded, branch: ghConfig.branch || 'main' }
+            });
+            // Exclui o antigo
+            var oldData = await api('POST', '/github/proxy', { method: 'GET', path: 'contents/' + oldPath });
+            await api('POST', '/github/proxy', {
+                method: 'DELETE',
+                path: 'contents/' + oldPath,
+                body: { message: 'admin: delete old ' + oldPath, sha: oldData.sha, branch: ghConfig.branch || 'main' }
+            });
+            toast('Arquivo renomeado para ' + newPath);
+            closeModal('modal-rename-file');
+            state.currentFilePath = null;
+            state.currentFileSha = null;
+            document.getElementById('monaco-editor-wrap').setAttribute('hidden', '');
+            document.getElementById('monaco-placeholder').removeAttribute('hidden');
+            await loadFileTree();
+            openFileInMonaco(newPath, true);
+        } catch (err) {
+            errEl.textContent = 'Erro: ' + err.message;
+            errEl.removeAttribute('hidden');
+        } finally { btn.disabled = false; }
+    });
+
+    // ── Duplicar Arquivo ─────────────────────────────────────────────────────
+    document.getElementById('btn-monaco-duplicate').addEventListener('click', function () {
+        if (!state.currentFilePath) { toast('Selecione um arquivo primeiro.', 'warning'); return; }
+        var fp = state.currentFilePath;
+        var parts = fp.split('.');
+        var ext = parts.pop();
+        var suggested = parts.join('.') + '-copia.' + ext;
+        document.getElementById('duplicate-source-path').value = fp;
+        document.getElementById('duplicate-new-path').value = suggested;
+        document.getElementById('duplicate-file-error').setAttribute('hidden', '');
+        openModal('modal-duplicate-file');
+    });
+
+    document.getElementById('btn-confirm-duplicate').addEventListener('click', async function () {
+        var srcPath = state.currentFilePath;
+        var destPath = (document.getElementById('duplicate-new-path').value || '').trim().replace(/^\//, '');
+        var errEl = document.getElementById('duplicate-file-error');
+        if (!destPath) { errEl.textContent = 'Informe o caminho de destino.'; errEl.removeAttribute('hidden'); return; }
+        if (destPath === srcPath) { errEl.textContent = 'O destino não pode ser igual à origem.'; errEl.removeAttribute('hidden'); return; }
+        var btn = this;
+        btn.disabled = true;
+        try {
+            var content = state.monacoEditor ? state.monacoEditor.getValue() : null;
+            if (!content) {
+                var raw = await api('POST', '/github/proxy', { method: 'GET', path: 'contents/' + srcPath });
+                content = atob(raw.content.replace(/\n/g, ''));
+            }
+            var encoded = btoa(unescape(encodeURIComponent(content)));
+            await api('POST', '/github/proxy', {
+                method: 'PUT',
+                path: 'contents/' + destPath,
+                body: { message: 'admin: duplicate ' + srcPath + ' → ' + destPath, content: encoded, branch: ghConfig.branch || 'main' }
+            });
+            toast('Arquivo duplicado: ' + destPath);
+            closeModal('modal-duplicate-file');
+            await loadFileTree();
+            openFileInMonaco(destPath, true);
+        } catch (err) {
+            errEl.textContent = 'Erro: ' + err.message;
+            errEl.removeAttribute('hidden');
+        } finally { btn.disabled = false; }
+    });
+
+    // ── Atualiza contagem de palavras e preview ao vivo ───────────────────────
+    // (hookado no openFileInMonaco após setup do editor)
 
     // ── Media library ────────────────────────────────────────────────────────
     async function loadMedia() {
