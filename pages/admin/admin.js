@@ -665,22 +665,50 @@
 
     async function loadFileTree() {
         var treeEl = document.getElementById('file-tree');
-        treeEl.innerHTML = '<div class="tree-loading"><i class="fas fa-spinner fa-spin"></i> Carregando arquivos do repositório…</div>';
+        var branch = (ghConfig && (ghConfig.branch || ghConfig.repo_branch)) || 'main';
+        treeEl.innerHTML = '<div class="tree-loading"><i class="fas fa-spinner fa-spin"></i> Carregando arquivos… (branch: ' + escHtml(branch) + ')</div>';
         try {
             var data = await api('POST', '/github/proxy', {
                 method: 'GET',
-                path: 'git/trees/' + (ghConfig.branch || 'main') + '?recursive=1'
+                path: 'git/trees/' + branch + '?recursive=1'
             });
-            // Filtra apenas arquivos relevantes, exclui node_modules, .git e arquivos ocultos
+
+            // Diagnóstico de resposta no console
+            console.log('[iDialog Pages] GitHub tree response:', {
+                truncated: data.truncated,
+                totalItems: (data.tree || []).length,
+                message: data.message,
+                branch: branch
+            });
+
+            // Se o GitHub retornou um erro (ex: branch inválido)
+            if (data.message && !data.tree) {
+                treeEl.innerHTML = '<div class="tree-loading" style="color:var(--red)"><i class="fas fa-circle-exclamation"></i> GitHub: ' + escHtml(data.message) + '</div>';
+                return;
+            }
+
+            var rawCount = (data.tree || []).length;
+            // Filtra apenas arquivos relevantes
             var files = (data.tree || []).filter(function (f) {
                 if (f.type !== 'blob') return false;
                 if (/\/(node_modules|\.git|\.github|__pycache__|\.pytest_cache)\//i.test('/' + f.path)) return false;
                 if (/^\.(git|env|DS_Store)/i.test(f.path.split('/').pop())) return false;
                 return /\.(html|css|js|json|md|txt)$/i.test(f.path);
             });
+
+            console.log('[iDialog Pages] Filtered files:', files.length, 'of', rawCount);
+
+            if (files.length === 0 && rawCount > 0) {
+                treeEl.innerHTML = '<div class="tree-loading" style="color:var(--orange)"><i class="fas fa-triangle-exclamation"></i> ' +
+                    rawCount + ' itens recebidos do GitHub mas nenhum com extensão suportada (.html/.css/.js). Branch: ' + escHtml(branch) + '</div>';
+                window._treeFiles = [];
+                return;
+            }
+
             window._treeFiles = files;
             renderFileTree();
         } catch (err) {
+            console.error('[iDialog Pages] loadFileTree error:', err);
             treeEl.innerHTML = '<div class="tree-loading" style="color:var(--red)"><i class="fas fa-circle-exclamation"></i> ' + escHtml(err.message) + '</div>';
         }
     }
