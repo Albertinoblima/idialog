@@ -616,6 +616,7 @@ def migrate_scheduled_status():
 
 
 def now_iso():
+    return dt.datetime.now(dt.timezone.utc).isoformat()
 
 
 def parse_iso_datetime(value):
