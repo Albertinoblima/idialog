@@ -160,6 +160,10 @@ label {
     color: var(--sb-accent);
 }
 
+.icon-accent {
+    color: var(--sb-accent);
+}
+
 .auth-brand h1 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -1879,6 +1883,7 @@ label {
     align-items: center;
     gap: 10px;
     cursor: pointer;
+    -webkit-user-select: none;
     user-select: none;
     font-weight: 500;
     color: var(--txt1);
