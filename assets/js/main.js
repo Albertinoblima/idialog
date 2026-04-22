@@ -1252,6 +1252,18 @@ function initRocketCursor() {
         return;
     }
 
+    // Verifica se o cursor está habilitado para esta página
+    try {
+        const pagesConfig = JSON.parse(localStorage.getItem('idialog-rocket-cursor-pages') || 'null');
+        if (pagesConfig && pagesConfig.allPages === false && Array.isArray(pagesConfig.enabledPages)) {
+            const currentPath = window.location.pathname.replace(/\\/g, '/');
+            const isEnabled = pagesConfig.enabledPages.some(function (p) {
+                return currentPath === p || currentPath.endsWith('/' + p) || currentPath.endsWith(p);
+            });
+            if (!isEnabled) return;
+        }
+    } catch (e) { /* usa comportamento padrão */ }
+
     document.documentElement.classList.add('rocket-cursor-enabled');
 
     const rocket = document.createElement('div');

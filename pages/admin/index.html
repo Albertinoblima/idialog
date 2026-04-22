@@ -578,7 +578,8 @@
                                                     placeholder="Título da página (50–60 chars recomendado)"
                                                     class="form-control">
                                                 <div class="seo-counter"><span id="seo-title-count">0</span>/60 chars
-                                                    <span class="seo-score" id="seo-title-score"></span></div>
+                                                    <span class="seo-score" id="seo-title-score"></span>
+                                                </div>
                                             </div>
                                             <div class="seo-field">
                                                 <label class="seo-label"><i class="fas fa-align-left"></i> Meta
@@ -587,7 +588,8 @@
                                                     placeholder="Descrição da página (120–160 chars recomendado)"
                                                     class="form-control"></textarea>
                                                 <div class="seo-counter"><span id="seo-desc-count">0</span>/160 chars
-                                                    <span class="seo-score" id="seo-desc-score"></span></div>
+                                                    <span class="seo-score" id="seo-desc-score"></span>
+                                                </div>
                                             </div>
                                             <div class="seo-field">
                                                 <label class="seo-label"><i class="fab fa-facebook"></i> OG
@@ -804,9 +806,19 @@
                         </div>
                         <div class="card-body">
                             <div class="appearance-grid" id="appearance-grid"></div>
-                            <button id="btn-save-appearance" class="btn btn-primary mt-4"><i
-                                    class="fas fa-floppy-disk"></i> Salvar Aparência</button>
                         </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-file-code"></i> Páginas com Cursor Ativo</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="cursor-pages-section"></div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button id="btn-save-appearance" class="btn btn-primary"><i class="fas fa-floppy-disk"></i>
+                            Salvar Aparência</button>
                     </div>
                 </section>
 

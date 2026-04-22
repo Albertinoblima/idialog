@@ -10,6 +10,8 @@
     const TOKEN_KEY = 'idialog-admin-token';
     const API_KEY = 'idialog-admin-api';
     const CURSOR_KEY = 'idialog-rocket-cursor-settings';
+    const CURSOR_PAGES_KEY = 'idialog-rocket-cursor-pages';
+    const HTML_PAGES_KEY = 'idialog-html-pages';
 
     const state = {
         token: localStorage.getItem(TOKEN_KEY) || '',
@@ -902,6 +904,14 @@
         });
 
         treeEl.innerHTML = html;
+
+        // Persiste lista de páginas HTML para uso na aba Aparência
+        var allHtmlFiles = (window._treeFiles || [])
+            .filter(function (f) { return /\.html$/i.test(f.path); })
+            .map(function (f) { return f.path; });
+        if (allHtmlFiles.length) {
+            localStorage.setItem(HTML_PAGES_KEY, JSON.stringify(allHtmlFiles));
+        }
 
         // Eventos: toggle de pasta
         treeEl.querySelectorAll('.tree-folder-label').forEach(function (label) {
@@ -1896,10 +1906,79 @@
                 document.getElementById('av-' + this.dataset.key).textContent = this.value;
             });
         });
+
+        // Carrega seção de páginas
+        renderCursorPagesSection();
+    }
+
+    function renderCursorPagesSection() {
+        var pagesConfig = JSON.parse(localStorage.getItem(CURSOR_PAGES_KEY) || '{"allPages":true,"enabledPages":[]}');
+        var allPages = pagesConfig.allPages !== false;
+        var enabledPages = pagesConfig.enabledPages || [];
+
+        // Obtém lista de páginas HTML: de window._treeFiles ou localStorage
+        var htmlPages = [];
+        if (window._treeFiles && window._treeFiles.length) {
+            htmlPages = window._treeFiles.filter(function (f) { return /\.html$/i.test(f.path); }).map(function (f) { return f.path; });
+            if (htmlPages.length) {
+                localStorage.setItem(HTML_PAGES_KEY, JSON.stringify(htmlPages));
+            }
+        }
+        if (!htmlPages.length) {
+            htmlPages = JSON.parse(localStorage.getItem(HTML_PAGES_KEY) || '[]');
+        }
+
+        var container = document.getElementById('cursor-pages-section');
+        if (!container) return;
+
+        var pageListHtml = htmlPages.length
+            ? htmlPages.map(function (p) {
+                var checked = allPages || enabledPages.indexOf(p) !== -1 ? 'checked' : '';
+                var disabled = allPages ? 'disabled' : '';
+                return '<label class="cursor-page-item ' + (allPages ? 'all-pages-mode' : '') + '">' +
+                    '<input type="checkbox" class="cursor-page-cb" data-path="' + escHtml(p) + '" ' + checked + ' ' + disabled + '>' +
+                    '<span>' + escHtml(p) + '</span></label>';
+            }).join('')
+            : '<p class="text-muted" style="font-size:.85rem">Nenhuma página encontrada. Acesse a aba <strong>Páginas HTML</strong> para carregar a lista.</p>';
+
+        container.innerHTML =
+            '<div class="cursor-pages-toggle">' +
+            '<label class="toggle-switch-label">' +
+            '<input type="checkbox" id="cursor-all-pages-toggle" ' + (allPages ? 'checked' : '') + '>' +
+            '<span class="toggle-switch"></span>' +
+            '<span class="toggle-label">Ativar em todas as páginas</span>' +
+            '</label>' +
+            '</div>' +
+            '<div id="cursor-pages-list" class="cursor-pages-list ' + (allPages ? 'hidden' : '') + '">' +
+            pageListHtml +
+            '</div>';
+
+        document.getElementById('cursor-all-pages-toggle').addEventListener('change', function () {
+            var isAll = this.checked;
+            var listEl = document.getElementById('cursor-pages-list');
+            listEl.classList.toggle('hidden', isAll);
+            listEl.querySelectorAll('.cursor-page-cb').forEach(function (cb) {
+                cb.disabled = isAll;
+                cb.checked = isAll || enabledPages.indexOf(cb.dataset.path) !== -1;
+                cb.closest('label').classList.toggle('all-pages-mode', isAll);
+            });
+        });
     }
 
     document.getElementById('btn-save-appearance').addEventListener('click', function () {
         localStorage.setItem(CURSOR_KEY, JSON.stringify(appearanceValues));
+
+        // Salva configuração de páginas
+        var allToggle = document.getElementById('cursor-all-pages-toggle');
+        var allPages = allToggle ? allToggle.checked : true;
+        var enabledPages = [];
+        if (!allPages) {
+            document.querySelectorAll('.cursor-page-cb:checked').forEach(function (cb) {
+                enabledPages.push(cb.dataset.path);
+            });
+        }
+        localStorage.setItem(CURSOR_PAGES_KEY, JSON.stringify({ allPages: allPages, enabledPages: enabledPages }));
+
         toast('Aparência salva!');
     });
 
